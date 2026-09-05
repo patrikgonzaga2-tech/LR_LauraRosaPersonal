@@ -1,5 +1,8 @@
 # laurarosapersonal.com
 
+> **Manual de operação** — como usar, publicar e ler o painel, explicado do zero:
+> https://claude.ai/code/artifact/325faca1-d6e4-42ce-9ebe-de225b822722
+
 Funil do Efeito Lipo 21 **e** painel de métricas da marca — Laüra Rosa.
 
 Publicado automaticamente pela Vercel (projeto `efeito-lipo-21`) a cada envio
