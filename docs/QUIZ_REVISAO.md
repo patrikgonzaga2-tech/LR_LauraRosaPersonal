@@ -107,6 +107,12 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 
 Uma linha por sessão: data, o que foi feito e o que ficou pendente. Mais recente em cima.
 
+- **07/10/2026 (2)**: **T1 com nova promessa no ar** (PR #2, merge `bd262bd` na `main`): "Você começa
+  toda segunda e na sexta já saiu do plano?" + "Descubra o porquê em 2 minutos" + texto do "Quiz Volta
+  ao Eixo" + 3 itens com ✓ abaixo da foto. Cores, foto, barra de vagas e botão iguais.
+  **Pendente:** o botão continua "Garantir minha vaga", a barra continua "As vagas do desafio estão
+  acabando", o título/descrição do Google/WhatsApp (`page.tsx`) e as telas seguintes ainda falam de
+  "secar a barriga / até 8kg em 21 dias". O nome "Quiz Volta ao Eixo" foi mantido como o Patrik mandou.
 - **07/10/2026**: Criada a página de revisão (quiz + textos editáveis + fila), montada a partir de
   `main` @ `ef4667e` (17/07, parcelamento 6x de R$ 6,92). Última mudança do `_data.ts`:
   `2844a42` (13/07, checkout Greenn via `/redirect/297430`). Fila vazia.
