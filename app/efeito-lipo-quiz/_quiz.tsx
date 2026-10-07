@@ -742,13 +742,13 @@ function IntroB({ onStart }: { onStart: () => void }) {
       </div>
       <div className="flex-1 flex flex-col items-center text-center mx-auto w-full px-5 py-8" style={{ maxWidth: 600 }}>
         <h1 className="font-display q-in mt-7" style={{ fontSize: 'clamp(29px,6.4vw,46px)', fontWeight: 800, lineHeight: 1.08, letterSpacing: '-0.03em', color: '#0d0d0d', maxWidth: 540 }}>
-          Bora secar a barriga e definir os braços juntas?
+          Você começa toda segunda e na sexta já saiu do plano?
         </h1>
         <p className="q-in" style={{ fontSize: 'clamp(16.5px,2.6vw,20px)', lineHeight: 1.5, fontWeight: 600, color: '#1a1a1a', maxWidth: 500, marginTop: 18 }}>
-          Vou te mostrar como ativar o <span style={{ color: 'var(--o)', fontWeight: 800 }}>EFEITO LIPO</span>, meu segredinho pra derreter a gordura localizada e secar o seu corpo de dentro pra fora.
+          Descubra o porquê <span style={{ color: 'var(--o)', fontWeight: 800 }}>em 2 minutos</span>.
         </p>
         <p className="q-in" style={{ fontSize: 'clamp(14px,2vw,15.5px)', lineHeight: 1.6, fontWeight: 400, color: '#5a5a5a', maxWidth: 460, marginTop: 14 }}>
-          Em apenas <span style={{ color: 'var(--o)', fontWeight: 700 }}>21 dias</span> você vai perder <span style={{ color: 'var(--o)', fontWeight: 700 }}>até 8kg</span>. Sem dieta maluca, sem academia e sem as canetinhas caras.
+          Responda ao Quiz Volta ao Eixo e descubra o seu <span style={{ color: 'var(--o)', fontWeight: 700 }}>perfil de recomeço</span> e o <span style={{ color: 'var(--o)', fontWeight: 700 }}>primeiro passo</span> para voltar, sem compensar e sem castigo.
         </p>
         <div className="q-in w-full mt-7 mb-4" style={{ maxWidth: 360, borderRadius: 22, overflow: 'hidden', boxShadow: '0 18px 44px rgba(0,0,0,.18)' }}>
           <div className="relative" style={{ aspectRatio: '1 / 1' }}>
@@ -756,8 +756,9 @@ function IntroB({ onStart }: { onStart: () => void }) {
           </div>
         </div>
         <p className="q-in mb-6" style={{ fontSize: 'clamp(14.5px,2.1vw,16.5px)', lineHeight: 1.5, color: '#2a2a2a', maxWidth: 430 }}>
-          Esse foi o meu resultado e você pode ser a próxima!{' '}
-          <span style={{ fontWeight: 800 }}>Corre pra garantir a sua vaga</span> 👇
+          ✓ Leva cerca de 2 minutos<br />
+          ✓ Sem academia e sem dieta radical<br />
+          ✓ <span style={{ fontWeight: 800 }}>Você recebe o perfil e o primeiro passo no final</span>{'\u00A0'}👇
         </p>
         <CtaButton onClick={onStart} glow size="lg">Garantir minha vaga</CtaButton>
       </div>
