@@ -14,3 +14,7 @@ Antes de trabalhar em CRM, relatórios, rotinas ou Greenn, leia `docs/CONTEXTO_C
 ## Quiz Efeito Lipo
 Antes de mexer no quiz (`app/efeito-lipo-quiz/`), leia `docs/QUIZ_REVISAO.md`: prompt de
 retomada, passo a passo de alteração, página de revisão e diário do que já foi feito.
+
+## Campanhas do quiz
+Para analisar anúncios × quiz × vendas, ou quando pedirem "status das campanhas de hoje",
+siga `docs/ANALISE_CAMPANHAS_QUIZ.md`.
