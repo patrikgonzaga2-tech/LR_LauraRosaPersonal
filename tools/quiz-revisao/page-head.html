@@ -1,0 +1,80 @@
+<title>Revisão Quiz Efeito Lipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: mesa de revisão — celular fixo à esquerda (o que a cliente vê), prancheta de copy à direita (o que a gente edita). */
+:root{
+  --bg:#F3F1EE; --panel:#FFFFFF; --ink:#1E1A17; --sub:#5F5850; --line:#E2DDD6;
+  --accent:#E46A00; --accent-ink:#FFFFFF; --accent-soft:#FDEBDB;
+  --ok:#1C873C; --ok-soft:#DDF1E3; --warn:#9A5B00; --warn-soft:#FFF1D6;
+  --device:#16130F;
+  --f-display:'Bricolage Grotesque',system-ui,sans-serif;
+  --f-body:'DM Sans',system-ui,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#171411; --panel:#211D19; --ink:#F1ECE6; --sub:#A99F94; --line:#38312A;
+  --accent:#FF8A2A; --accent-ink:#1A1007; --accent-soft:#3A2412;
+  --ok:#5BC77A; --ok-soft:#173222; --warn:#F2B54E; --warn-soft:#3A2B10; --device:#000; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171411; --panel:#211D19; --ink:#F1ECE6; --sub:#A99F94; --line:#38312A;
+  --accent:#FF8A2A; --accent-ink:#1A1007; --accent-soft:#3A2412;
+  --ok:#5BC77A; --ok-soft:#173222; --warn:#F2B54E; --warn-soft:#3A2B10; --device:#000; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:20px 48px;display:grid;gap:18px}
+header.top{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:flex-end;justify-content:space-between}
+h1{font:800 clamp(22px,3vw,30px)/1.1 var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1 span{color:var(--accent)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--sub);font-size:13px}
+.meta code{font:12px var(--f-mono);background:var(--panel);border:1px solid var(--line);padding:1px 6px;border-radius:5px;color:var(--ink)}
+.notice{font-size:13.5px;color:var(--sub);max-width:70ch;margin:0}
+.grid{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}}
+/* Coluna pública */
+.pub{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:grid;gap:10px;justify-items:center}
+@media (max-width:880px){.pub{position:static}}
+.lbl{font:600 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
+.device{width:100%;max-width:390px;aspect-ratio:390/780;background:var(--device);border-radius:38px;padding:10px;box-shadow:0 20px 40px -24px rgba(0,0,0,.45)}
+.device iframe{width:100%;height:100%;border:0;border-radius:29px;background:#F7F5F2;display:block}
+.nav{display:flex;gap:8px;align-items:center;width:100%;max-width:390px}
+.nav select{flex:1;min-width:0;font:500 14px var(--f-body);padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+button{font:600 14px var(--f-body);cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:9px 14px}
+button:hover{border-color:var(--sub)}
+button:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button.primary:disabled{opacity:.45;cursor:default}
+button.icon{padding:9px 12px}
+.hint{font-size:12.5px;color:var(--sub);text-align:center;max-width:390px;margin:0}
+/* Coluna editável */
+.edit{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;display:grid;gap:18px;min-width:0}
+.edit-head{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between}
+.edit-head h2{font:700 20px/1.25 var(--f-display);margin:0;text-wrap:balance;flex:1 1 320px}
+.tno{font:600 12px var(--f-mono);color:var(--accent)}
+.callout{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.fields{display:grid;gap:12px}
+.f{display:grid;gap:4px}
+.f label{font-size:12.5px;font-weight:700;color:var(--sub);display:flex;gap:8px;align-items:center}
+.f.sub label{padding-left:14px;font-weight:500}
+.f textarea{width:100%;resize:vertical;font:15px/1.45 var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:8px 10px;min-height:40px}
+.f.sub textarea{margin-left:14px;width:calc(100% - 14px);font-size:14px}
+.f.changed textarea{border-color:var(--accent);background:var(--accent-soft)}
+.pill{font:600 10.5px var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:99px}
+.pill.saved{background:var(--ok-soft);color:var(--ok)}
+.pill.draft{background:var(--accent-soft);color:var(--accent)}
+.orig{font-size:12.5px;color:var(--sub);margin:0}
+.orig s{opacity:.8}
+.f .undo{margin-left:auto;padding:2px 8px;font-size:12px;border-radius:7px}
+.free textarea{min-height:84px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);background:var(--panel);padding-top:8px}
+.status{font-size:13px;color:var(--sub)}
+.queue{display:grid;gap:8px}
+.queue h3{font:700 16px var(--f-display);margin:0}
+.qitem{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;padding:10px 0;border-top:1px solid var(--line);font-size:13.5px}
+.qitem .tno{padding-top:2px}
+.qitem b{font-weight:700}
+.qitem p{margin:0;overflow-wrap:anywhere}
+.qitem a{color:var(--accent);cursor:pointer;text-decoration:underline}
+.empty{color:var(--sub);font-size:13.5px;margin:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>

@@ -10,3 +10,7 @@ Vale também para textos de oferta, valores e links de checkout nas páginas.
 
 ## Contexto do comercial
 Antes de trabalhar em CRM, relatórios, rotinas ou Greenn, leia `docs/CONTEXTO_COMERCIAL.md`.
+
+## Quiz Efeito Lipo
+Antes de mexer no quiz (`app/efeito-lipo-quiz/`), leia `docs/QUIZ_REVISAO.md`: prompt de
+retomada, passo a passo de alteração, página de revisão e diário do que já foi feito.
