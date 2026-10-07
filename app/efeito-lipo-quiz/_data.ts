@@ -514,8 +514,6 @@ export const SALES = {
     ['Guia Alimentar "Sem Neura" (PDF visual)', 'Cardápio dos 21 dias, lista de compras e o que comer em cada fase. Comida de verdade, sem passar fome e sem contar caloria'],
     ['Áudios "Quebra de Sabotagem"', 'Áudios curtos para ouvir na hora em que bate a vontade de comer por ansiedade ou cansaço, e seguir no plano'],
     ['Planner de Progresso (PDF para imprimir)', 'Cronograma diário com metas, checklist de hábitos e espaço para anotar como você se sente. Você enxerga a sua evolução dia a dia'],
-    ['Protocolo Desincha Express da 1ª semana', 'Para você começar a ver diferença logo nos primeiros dias'],
-    ['Acesso ao aplicativo completo', 'Tudo organizado, do dia 1 ao dia 21'],
   ],
   bonus: [
     { nome: 'Bônus 1 — Guia do Ciclo Menstrual', de: 'R$ 297', desc: 'As quatro janelas hormonais do ciclo — como adaptar treino e alimentação a cada semana do mês para queimar gordura no ritmo certo' },
