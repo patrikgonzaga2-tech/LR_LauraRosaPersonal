@@ -107,13 +107,18 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 
 Uma linha por sessão: data, o que foi feito e o que ficou pendente. Mais recente em cima.
 
+- **07/10/2026 (4)**: Publicado (PR #4, merge `ed63cfd`): logo nova **"DE VOLTA AO EIXO"** (símbolo +
+  nome em 2 linhas, `Logo` em `_ui.tsx`) no cabeçalho de todas as telas e grande no topo da T26; saíram
+  "Desincha Express" e "aplicativo" dos entregáveis; **garantia de 7 dias** (igual à Greenn).
+  **Ainda com "Efeito Lipo":** título da T26, rodapé, perguntas e título do Google/WhatsApp
+  (`page.tsx`). Botão da T1 segue "Garantir minha vaga". Hotmart ainda é o checkout de reserva.
 - **07/10/2026 (3)**: **T26 atualizada** conforme a página de vendas: 7 entregáveis (novos: Áudios
   "Quebra de Sabotagem" e Planner de Progresso; treino virou "21 Treinos Hormonais"; guia virou "Sem
   Neura"), bônus "Guia do Ciclo Menstrual" (R$ 297) e "Anti-Pelanquinha" (R$ 497), quadro de valores
   com 7 itens somando R$ 4.535, parcelamento "12x de R$ 3,80" e logo do topo "DE VOLTA AO EIXO".
   Conferido no checkout Greenn (oferta QN7gci): até 12x, juros de 3,39% a.m. → 12x R$ 3,80 sobre R$ 37.
   Vendas desde 28/09 a R$ 29,60 = cupom EFEITOLIPO20 (preço cheio segue R$ 37).
-  **Pendente:** a T26 promete "Garantia de 21 dias", mas a oferta na Greenn está com garantia de 7 dias.
+  ~~Pendente: garantia de 21 dias na T26 × 7 dias na Greenn~~ → resolvido em 07/10 (4).
 - **07/10/2026 (2)**: **T1 com nova promessa no ar** (PR #2, merge `bd262bd` na `main`): "Você começa
   toda segunda e na sexta já saiu do plano?" + "Descubra o porquê em 2 minutos" + texto do "Quiz Volta
   ao Eixo" + 3 itens com ✓ abaixo da foto. Cores, foto, barra de vagas e botão iguais.
