@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__UMCLIQUE__umclique_get_report",
+      "mcp__UMCLIQUE__umclique_list_kanban_stages",
+      "mcp__UMCLIQUE__umclique_list_stage_contacts",
+      "mcp__UMCLIQUE__umclique_get_conversation_messages",
+      "mcp__UMCLIQUE__umclique_list_conversation_tags"
+    ]
+  }
+}
