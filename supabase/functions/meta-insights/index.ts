@@ -18,13 +18,20 @@
 // os lotes são gravados ENQUANTO avançam — nunca "tudo no fim". Se o tempo apertar,
 // paramos cedo e gravamos o que já veio (o próximo run completa o resto).
 //
-// Segredos: META_ACCESS_TOKEN (ads_read), META_AD_ACCOUNT_ID (não usado aqui,
-// mas mantido p/ referência). SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY do ambiente.
+// FILTRO POR CONTA: tracked_ad_ids guarda ids dos últimos 90 dias, inclusive os de
+// contas antigas (que o token atual não enxerga → erro code 100/subcode 33). Por
+// isso listamos os conjuntos da conta META_AD_ACCOUNT_ID e só consultamos a
+// interseção. Nada é apagado: o histórico da conta antiga permanece nas tabelas.
+//
+// Segredos: META_ACCESS_TOKEN (ads_read), META_AD_ACCOUNT_ID (conta atual; com ou
+// sem o prefixo act_). SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY do ambiente.
 // ════════════════════════════════════════════════════════════════════
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? ''
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
 const META_TOKEN = (Deno.env.get('META_ACCESS_TOKEN') ?? '').trim()
+const META_ACCOUNT_RAW = (Deno.env.get('META_AD_ACCOUNT_ID') ?? '').trim()
+const META_ACCOUNT = META_ACCOUNT_RAW.startsWith('act_') ? META_ACCOUNT_RAW : `act_${META_ACCOUNT_RAW}`
 const API = 'https://graph.facebook.com/v25.0'
 
 // Quantos conjuntos processamos ao mesmo tempo, e quando desistimos de começar
@@ -62,6 +69,9 @@ Deno.serve(async (req) => {
   if (!META_TOKEN) {
     return Response.json({ ok: false, error: 'falta META_ACCESS_TOKEN' }, { status: 500 })
   }
+  if (!META_ACCOUNT_RAW) {
+    return Response.json({ ok: false, error: 'falta META_AD_ACCOUNT_ID' }, { status: 500 })
+  }
   const t0 = Date.now()
   const days = Math.min(Math.max(Number(new URL(req.url).searchParams.get('days')) || 4, 1), 400)
   const since = spDate(days - 1)
@@ -78,6 +88,35 @@ Deno.serve(async (req) => {
     return Response.json({ ok: false, step: 'lista-ids', error: String(e) }, { status: 502 })
   }
   if (adIds.length === 0) return Response.json({ ok: true, since, until, gravadas: 0, nota: 'sem ids rastreados' })
+
+  // 1b) Conjuntos da conta ATUAL (inclui pausados/arquivados, para não perder gasto
+  //     recente). Se a listagem falhar, paramos: não voltamos a consultar todos os ids.
+  const contaIds = new Set<string>()
+  const statusTodos = encodeURIComponent(JSON.stringify([
+    'ACTIVE', 'PAUSED', 'ARCHIVED', 'CAMPAIGN_PAUSED', 'IN_PROCESS', 'WITH_ISSUES', 'PENDING_REVIEW', 'DISAPPROVED',
+  ]))
+  let proximo: string | null =
+    `${API}/${META_ACCOUNT}/adsets?fields=id&limit=500&effective_status=${statusTodos}` +
+    `&access_token=${encodeURIComponent(META_TOKEN)}`
+  try {
+    while (proximo) {
+      const res = await fetch(proximo)
+      const j = await res.json()
+      if (!res.ok || j.error) {
+        return Response.json({ ok: false, step: 'lista-conjuntos-conta', conta: META_ACCOUNT, error: j.error ?? `HTTP ${res.status}` }, { status: 502 })
+      }
+      for (const a of j.data ?? []) contaIds.add(String(a.id))
+      proximo = j.paging?.next ?? null
+    }
+  } catch (e) {
+    return Response.json({ ok: false, step: 'lista-conjuntos-conta', conta: META_ACCOUNT, error: String(e) }, { status: 502 })
+  }
+  const totalRastreados = adIds.length
+  adIds = adIds.filter((id) => contaIds.has(id))
+  const ignoradosOutraConta = totalRastreados - adIds.length
+  if (adIds.length === 0) {
+    return Response.json({ ok: true, since, until, gravadas: 0, ignorados_outra_conta: ignoradosOutraConta, nota: 'nenhum id rastreado pertence à conta atual' })
+  }
 
   // 2) Para cada id (= adset.id), 1 chamada ao /insights dele (dia a dia).
   //    Os nomes de conjunto/campanha vêm como campos do próprio insights.
@@ -219,7 +258,9 @@ Deno.serve(async (req) => {
     ok: falhasGravacao.length === 0,
     since,
     until,
+    conta: META_ACCOUNT,
     conjuntos: adIds.length,
+    ignorados_outra_conta: ignoradosOutraConta,
     processados,
     pulados,
     gravadas,
