@@ -574,7 +574,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
       </header>
 
       <div className="mx-auto px-5 py-8" style={{ maxWidth: 600 }}>
-        <div className="text-center"><Logo eixo /></div>
+        <div className="text-center"><Logo size="lg" /></div>
 
         {/* Resultado personalizado */}
         <h1 className="font-display text-center mt-5" style={{ fontSize: 'clamp(25px,5.4vw,38px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
@@ -661,8 +661,8 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
           <div className="mx-auto mb-3 grid place-items-center rounded-full" style={{ width: 52, height: 52, background: 'var(--gd)', color: '#fff' }}>
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M9 12l2 2 4-4" /></svg>
           </div>
-          <h3 className="font-display" style={{ fontSize: 20, fontWeight: 800, color: 'var(--ink)' }}>Garantia de 21 dias</h3>
-          <p style={{ fontSize: 14, color: 'var(--sub)', lineHeight: 1.6, marginTop: 8 }}>Aplique o protocolo completo. Se depois das três fases você não tiver visto nenhuma mudança — é só entrar em contato e devolvemos 100% do seu investimento. Sem perguntas, sem burocracia.</p>
+          <h3 className="font-display" style={{ fontSize: 20, fontWeight: 800, color: 'var(--ink)' }}>Garantia de 7 dias</h3>
+          <p style={{ fontSize: 14, color: 'var(--sub)', lineHeight: 1.6, marginTop: 8 }}>Comece o protocolo hoje. Se em até 7 dias você sentir que não é pra você, é só entrar em contato e devolvemos 100% do seu investimento. Sem perguntas, sem burocracia.</p>
           <p className="font-display" style={{ fontSize: 14.5, fontWeight: 700, color: 'var(--ink)', marginTop: 10 }}>A responsabilidade é toda minha. O risco é zero para você.</p>
         </div>
 

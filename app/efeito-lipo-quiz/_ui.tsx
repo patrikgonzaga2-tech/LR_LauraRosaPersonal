@@ -50,19 +50,23 @@ const Check = ({ s = 16 }: { s?: number }) => (
 )
 
 // ── Marca / chrome ──────────────────────────────────────────────────
-// `eixo`: mesma logo com o nome "DE VOLTA AO EIXO" (usada no topo da oferta, T26).
-export function Logo({ light, eixo }: { light?: boolean; eixo?: boolean }) {
-  if (eixo) {
-    return (
-      <div className="font-display inline-flex items-baseline" style={{ fontWeight: 800, letterSpacing: '-0.02em', fontSize: 17, color: light ? '#fff' : 'var(--ink)' }}>
-        DE VOLTA AO&nbsp;<span style={{ color: 'var(--o)' }}>EIXO</span>
-      </div>
-    )
-  }
+// Logo "DE VOLTA AO EIXO": símbolo (seta circular laranja voltando para o eixo
+// verde) + nome em duas linhas. `size="lg"` no topo da oferta (T26).
+export function Logo({ light, size = 'sm' }: { light?: boolean; size?: 'sm' | 'lg'; eixo?: boolean }) {
+  const k = size === 'lg' ? 1.35 : 1
+  const ink = light ? '#fff' : 'var(--ink)'
   return (
-    <div className="font-display inline-flex items-baseline" style={{ fontWeight: 800, letterSpacing: '-0.02em', fontSize: 17, color: light ? '#fff' : 'var(--ink)' }}>
-      Efeito<span style={{ color: 'var(--o)' }}>Lipo</span>
-      <span style={{ fontSize: 10, fontWeight: 700, marginLeft: 3, color: light ? 'rgba(255,255,255,.6)' : 'var(--mute)' }}>21</span>
+    <div className="inline-flex items-center flex-shrink-0" style={{ gap: 6 * k }} aria-label="De Volta ao Eixo" role="img">
+      <svg width={26 * k} height={26 * k} viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M21.5 9.2A9.2 9.2 0 1 0 22 15.5" stroke="var(--o)" strokeWidth="2.6" strokeLinecap="round" />
+        <path d="M18.4 8.6l3.5.9.7-3.6" stroke="var(--o)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M13 3.5v19" stroke={light ? '#fff' : 'var(--g)'} strokeWidth="2.6" strokeLinecap="round" />
+        <circle cx="13" cy="13" r="2.6" fill={light ? '#fff' : 'var(--g)'} />
+      </svg>
+      <span className="font-display flex flex-col items-start text-left" style={{ lineHeight: 1, color: ink }}>
+        <span style={{ fontSize: 7.5 * k, fontWeight: 700, letterSpacing: '.2em', opacity: light ? 0.8 : 0.62 }}>DE VOLTA AO</span>
+        <span style={{ fontSize: 17 * k, fontWeight: 800, letterSpacing: '.08em', marginTop: 1.5 * k }}>EI<span style={{ color: 'var(--o)' }}>XO</span></span>
+      </span>
     </div>
   )
 }
