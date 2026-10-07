@@ -509,14 +509,16 @@ export const SALES = {
     { img: 'thais', alt: 'Thais, 34 anos' },
   ] as { img: ImgKey; alt: string; tag?: string }[],
   entregaveis: [
-    ['Protocolo completo dos 21 dias', 'As três fases passo a passo: Limpeza, Ativação Metabólica e Queima Total'],
-    ['Treinos específicos para barriga e braços', 'Feitos para a rotina real. 15 a 30 minutos, em casa, sem equipamento'],
-    ['Guia de alimentação anti-inflamatória', 'O que comer, em quais horários e como potencializar cada fase. Sem passar fome, sem contar caloria'],
+    ['Plano "Efeito Lipo": passo a passo para secar a barriga', 'O protocolo completo dos 21 dias nas três fases (Limpeza, Ativação Metabólica e Queima Total) para desinflamar o corpo e eliminar o inchaço. Sem passar fome e sem canetinha'],
+    ['Protocolo de treino para queimar a gordura da barriga e ganhar músculo', 'Aulas em vídeo de 15 minutos, com ficha escrita. Em casa, sem equipamento, feitas para a rotina real'],
+    ['Guia alimentar "Sem Fome" (PDF visual)', 'Cardápio dos 21 dias, lista de compras e o que comer em cada fase. Comida de verdade, sem contar caloria'],
+    ['Áudios "Gatilhos de Sabotagem"', 'Áudios curtos para ouvir na hora em que bate a vontade de comer por ansiedade ou cansaço, e seguir no plano'],
+    ['Planner de Progresso (PDF para imprimir)', 'Cronograma diário com metas, checklist de hábitos e espaço para anotar como você se sente. Você enxerga a sua evolução dia a dia'],
     ['Protocolo Desincha Express da 1ª semana', 'Para você começar a ver diferença logo nos primeiros dias'],
     ['Acesso ao aplicativo completo', 'Tudo organizado, do dia 1 ao dia 21'],
   ],
   bonus: [
-    { nome: 'Bônus 1 — Queima Hormonal', de: 'R$ 197', desc: 'As quatro janelas hormonais do ciclo — como adaptar treino e alimentação a cada semana do mês para queimar gordura no ritmo certo' },
+    { nome: 'Bônus 1 — Queima Hormonal: guia do ciclo menstrual', de: 'R$ 197', desc: 'As quatro janelas hormonais do ciclo — como adaptar treino e alimentação a cada semana do mês para queimar gordura no ritmo certo' },
     { nome: 'Bônus 2 — Protocolo Anti-Pelanquinha', de: 'R$ 147', desc: 'Como estimular colágeno e elastina enquanto você perde gordura — para a pele acompanhar o resultado e ficar firme' },
   ],
   stack: [

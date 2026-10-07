@@ -574,7 +574,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
       </header>
 
       <div className="mx-auto px-5 py-8" style={{ maxWidth: 600 }}>
-        <div className="text-center"><Logo /></div>
+        <div className="text-center"><Logo eixo /></div>
 
         {/* Resultado personalizado */}
         <h1 className="font-display text-center mt-5" style={{ fontSize: 'clamp(25px,5.4vw,38px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
