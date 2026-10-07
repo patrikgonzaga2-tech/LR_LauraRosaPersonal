@@ -50,7 +50,15 @@ const Check = ({ s = 16 }: { s?: number }) => (
 )
 
 // ── Marca / chrome ──────────────────────────────────────────────────
-export function Logo({ light }: { light?: boolean }) {
+// `eixo`: mesma logo com o nome "DE VOLTA AO EIXO" (usada no topo da oferta, T26).
+export function Logo({ light, eixo }: { light?: boolean; eixo?: boolean }) {
+  if (eixo) {
+    return (
+      <div className="font-display inline-flex items-baseline" style={{ fontWeight: 800, letterSpacing: '-0.02em', fontSize: 17, color: light ? '#fff' : 'var(--ink)' }}>
+        DE VOLTA AO&nbsp;<span style={{ color: 'var(--o)' }}>EIXO</span>
+      </div>
+    )
+  }
   return (
     <div className="font-display inline-flex items-baseline" style={{ fontWeight: 800, letterSpacing: '-0.02em', fontSize: 17, color: light ? '#fff' : 'var(--ink)' }}>
       Efeito<span style={{ color: 'var(--o)' }}>Lipo</span>

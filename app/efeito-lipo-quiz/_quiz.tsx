@@ -559,10 +559,10 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
         {SALES.stack.map(([n, v], i) => (
           <li key={i} className="flex justify-between" style={{ fontSize: 14.5, color: 'var(--ink)' }}><span>{n}</span><span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>{v}</span></li>
         ))}
-        <li className="flex justify-between pt-2" style={{ borderTop: '1px solid rgba(0,0,0,.1)', fontSize: 14.5, fontWeight: 700 }}><span>Total real</span><span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 641</span></li>
+        <li className="flex justify-between pt-2" style={{ borderTop: '1px solid rgba(0,0,0,.1)', fontSize: 14.5, fontWeight: 700 }}><span>Total real</span><span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span></li>
         <li className="flex justify-between items-baseline pt-2 font-display"><span style={{ fontSize: 16, fontWeight: 800 }}>Hoje</span><span style={{ fontSize: 30, fontWeight: 800, color: 'var(--o)' }}>R$ 37</span></li>
       </ul>
-      <p className="text-center" style={{ fontSize: 13, color: 'var(--sub)', marginTop: 6 }}>ou 6x de R$ 6,92</p>
+      <p className="text-center" style={{ fontSize: 13, color: 'var(--sub)', marginTop: 6 }}>ou 12x de R$ 3,80</p>
     </div>
   )
 
@@ -574,7 +574,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
       </header>
 
       <div className="mx-auto px-5 py-8" style={{ maxWidth: 600 }}>
-        <div className="text-center"><Logo /></div>
+        <div className="text-center"><Logo eixo /></div>
 
         {/* Resultado personalizado */}
         <h1 className="font-display text-center mt-5" style={{ fontSize: 'clamp(25px,5.4vw,38px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
@@ -668,7 +668,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
 
         {/* CTA final */}
         <div className="text-center mt-9">
-          <p className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>Protocolo Efeito Lipo 21 <span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 297</span> → <span style={{ color: 'var(--o)' }}>R$ 37 à vista</span></p>
+          <p className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>Protocolo Efeito Lipo 21 <span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span> → <span style={{ color: 'var(--o)' }}>R$ 37 à vista</span></p>
           <div className="mt-4"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow variant="green" dataLabel="final">Garantir minha vaga agora</CtaButton></a></div>
           <p style={{ fontSize: 12, color: 'var(--mute)', marginTop: 12, lineHeight: 1.6 }}>🔒 Pagamento 100% seguro · Acesso imediato após confirmação · Pix ou cartão</p>
         </div>
