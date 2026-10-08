@@ -1,6 +1,8 @@
 {
   "_como_usar": "Lugares do quiz onde ainda aparece 'Efeito Lipo'. tipo: trocar (texto do quiz), metodo (pode ficar como nome do método), oferta (texto de oferta, regra do CLAUDE.md), google (título/descrição do link). O botão 'Pedir troca' do painel manda o item para a fila de pedidos.",
-  "itens": [
+  "aplicado": "Opção A aplicada na v7 (08/10 18h32, PR #14): as 17 trocas estão no ar. \"Efeito Lipo\" ficou só como nome do método (T3 e entregável 1).",
+  "itens": [],
+  "itens_aplicados": [
     {"id": "m1", "tela": 3, "onde": "História da Laura, último parágrafo", "arquivo": "_data.ts · LAURA_PARAGRAFOS", "tipo": "metodo",
      "hoje": "Eu chamei isso de Efeito Lipo — quando o seu corpo para de reter e entra em estado de queima de dentro pra fora. E foi por isso que eu criei o protocolo que você está prestes a receber.",
      "sugestao": "Eu chamei isso de Efeito Lipo — quando o seu corpo para de reter e entra em estado de queima de dentro pra fora. E foi com ele que eu montei o roteiro De Volta ao Eixo que você está prestes a receber."},

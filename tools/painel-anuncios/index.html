@@ -915,7 +915,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
     <div>
       <div class="lbl">Marca</div>
       <h2>Levar o produto para o "De Volta ao Eixo"</h2>
-      <p>A logo e a promessa já são "De Volta ao Eixo", mas o nome "Efeito Lipo" ainda aparece em <b id="m-count"></b> lugares do quiz. Primeiro decida como a marca fica. Depois peça as trocas uma a uma ou todas de uma vez, e elas vão para a fila de pedidos lá embaixo.</p>
+      <p><b>Feito na v7 (08/10, 18h32, PR #14):</b> opção A escolhida e as 17 trocas no ar. "De Volta ao Eixo" é o nome no quiz inteiro, na oferta e no link do Google/WhatsApp; "Efeito Lipo" ficou só como nome do método (história da Laura na T3 e entregável 1 da T26). Preço, valores e link de compra iguais. Lugares que ainda faltam: <b id="m-count"></b>.</p>
     </div>
   </div>
   <div class="decide-brand" data-item="marca-estrategia">
@@ -2303,7 +2303,7 @@ window.irPara = (id) => abrir('qz-' + id)
   const DATA = {
   "_como_usar": "Cada vez que uma mudança do quiz entra na main, acrescente uma versão NO FIM (data e hora em que foi ao ar, commit do merge, o que mudou, motivo e sugestão) e rode bash tools/quiz-revisao/build.sh. Os números em 'metricas' são a foto tirada no momento; o painel atualiza ao vivo pelo botão 'Atualizar números'.",
   "regua_t1": 32,
-  "medido_em": "2026-10-08T17:18:00-03:00",
+  "medido_em": "2026-10-08T18:32:00-03:00",
   "versoes": [
     {
       "id": "v0",
@@ -2407,66 +2407,31 @@ window.irPara = (id) => abrir('qz-' + id)
         "A foto de antes e depois (grande) vira a foto da Laura (menor), abaixo do botão."
       ],
       "motivo": "A conta do painel de anúncios mostrava 84% parando na T1, com o botão fora da primeira tela do celular. A foto de antes e depois não combinava com os anúncios novos. Obs.: essa conta incluía 27 cliques de revisão do Meta (coluna da direita); só com pessoas reais, a v4 passava 42%.",
-      "sugestao": "Manter (decidido em 08/10). Reavaliar em 11/10 com umas 30 visitas reais. Tirar a coluna da direita da campanha \"08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D\" para não poluir a conta.",
-      "metricas": {"visitas": 5, "reais": 2, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
+      "sugestao": "Ficou no ar de 16h23 a 18h32 de 08/10 (substituída pela v7, só troca de nomes; T1 igual). Reavaliar a T1 em 11/10 com umas 30 visitas reais, somando v6 e v7. Tirar a coluna da direita da campanha \"08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D\" para não poluir a conta.",
+      "metricas": {"visitas": 11, "reais": 5, "passou_t1": 2, "resultado": 1, "comprar": 1, "vendas": 0, "receita": 0}
+    },
+    {
+      "id": "v7",
+      "quando": "2026-10-08T18:32:00-03:00",
+      "commit": "dfbfcd4",
+      "pr": "14",
+      "titulo": "Marca \"De Volta ao Eixo\" no quiz inteiro (Efeito Lipo só como método)",
+      "mudou": [
+        "T3, T6, T9, T13, T15, T16, T17, T20, T24 e T25: \"Efeito Lipo\" / \"Protocolo Efeito Lipo\" viram \"De Volta ao Eixo\" / \"roteiro De Volta ao Eixo\". Na T3, \"Efeito Lipo\" continua como nome do método.",
+        "T26: \"Antes e depois de voltar ao eixo\", entregável 1 \"Roteiro De Volta ao Eixo: o passo a passo dos 21 dias (método Efeito Lipo)\", 1ª linha do quadro \"Roteiro De Volta ao Eixo (21 dias)\", linha do botão final e rodapé.",
+        "Título e descrição do Google/WhatsApp: \"Quiz De Volta ao Eixo — descubra seu perfil de recomeço\", sem \"até 8kg\".",
+        "Preço, valores, parcelamento, garantia e links de checkout iguais."
+      ],
+      "motivo": "A cliente lia dois nomes no mesmo funil: anúncio e T1 falam de \"De Volta ao Eixo\" e o resto do quiz de \"Efeito Lipo\". Patrik escolheu a opção A da aba Marca e aprovou as 17 trocas em 08/10.",
+      "sugestao": "Publicada a pedido do Patrik antes de 11/10: a conta de 11/10 deve separar v6 (16h23–18h32) e v7 (desde 18h32). Pendente: T25 ainda fala \"até 8kg\" nos marcos e os botões dizem \"protocolo\".",
+      "metricas": {"visitas": 0, "reais": 0, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
     }
   ]
 };
   const MARCA = {
-  "_como_usar": "Lugares do quiz onde ainda aparece 'Efeito Lipo'. tipo: trocar (texto do quiz), metodo (pode ficar como nome do método), oferta (texto de oferta, regra do CLAUDE.md), google (título/descrição do link). O botão 'Pedir troca' do painel manda o item para a fila de pedidos.",
-  "itens": [
-    {"id": "m1", "tela": 3, "onde": "História da Laura, último parágrafo", "arquivo": "_data.ts · LAURA_PARAGRAFOS", "tipo": "metodo",
-     "hoje": "Eu chamei isso de Efeito Lipo — quando o seu corpo para de reter e entra em estado de queima de dentro pra fora. E foi por isso que eu criei o protocolo que você está prestes a receber.",
-     "sugestao": "Eu chamei isso de Efeito Lipo — quando o seu corpo para de reter e entra em estado de queima de dentro pra fora. E foi com ele que eu montei o roteiro De Volta ao Eixo que você está prestes a receber."},
-    {"id": "m2", "tela": 6, "onde": "Subtítulo de \"Como é a sua rotina hoje?\"", "arquivo": "_data.ts · rotina.sub", "tipo": "trocar",
-     "hoje": "O Efeito Lipo foi criado para funcionar na rotina real, não na ideal. 80% das mulheres fizeram o protocolo com rotina corrida, filhos, trabalho e casa.",
-     "sugestao": "O De Volta ao Eixo foi criado para a rotina real, não a ideal. 80% das mulheres fizeram o roteiro com rotina corrida, filhos, trabalho e casa."},
-    {"id": "m3", "tela": 9, "onde": "Prova social, frase de cima", "arquivo": "_quiz.tsx · Prova", "tipo": "trocar",
-     "hoje": "Mais de 5.000 mulheres já ativaram o Efeito Lipo e viram o corpo transformar…",
-     "sugestao": "Mais de 5.000 mulheres já voltaram ao eixo com a Laura e viram o corpo responder…"},
-    {"id": "m4", "tela": 13, "onde": "Subtítulo de \"Em que dia da semana fica mais difícil…\"", "arquivo": "_data.ts · dia-dificil.sub", "tipo": "trocar",
-     "hoje": "Saber quando você cede ajuda a criar estratégias preventivas. O Efeito Lipo tem abordagem específica para cada momento crítico.",
-     "sugestao": "Saber quando você cede ajuda a se preparar antes. O roteiro De Volta ao Eixo tem um plano para cada dia difícil."},
-    {"id": "m5", "tela": 15, "onde": "Ciclo da semana, frase da virada", "arquivo": "_data.ts · INSIGHT.bom", "tipo": "trocar",
-     "hoje": "… O Efeito Lipo 21D propõe começar com uma rotina de treinos em casa e foco em desinchar — sem dieta maluca e sem exigir perfeição.",
-     "sugestao": "… O De Volta ao Eixo propõe começar com uma rotina de treinos em casa e foco em desinchar — sem dieta maluca e sem exigir perfeição."},
-    {"id": "m6", "tela": 16, "onde": "Tela de carregamento 1", "arquivo": "_data.ts · loading-1.body", "tipo": "trocar",
-     "hoje": "… para montar o seu Protocolo Efeito Lipo personalizado.",
-     "sugestao": "… para montar o seu roteiro De Volta ao Eixo personalizado."},
-    {"id": "m7", "tela": 17, "onde": "Subtítulo de \"Qual é o seu maior medo…\"", "arquivo": "_data.ts · medo.sub", "tipo": "trocar",
-     "hoje": "Seus medos são válidos. O Efeito Lipo foi criado justamente para eliminar cada um deles.",
-     "sugestao": "Seus medos são válidos. O De Volta ao Eixo foi pensado justamente para cada um deles."},
-    {"id": "m8", "tela": 20, "onde": "Subtítulo de \"Quanto tempo você consegue dedicar…\"", "arquivo": "_data.ts · tempo-dia.sub", "tipo": "trocar",
-     "hoje": "O Protocolo do Efeito Lipo foi criado para funcionar em qualquer janela de tempo — inclusive a menor.",
-     "sugestao": "O roteiro De Volta ao Eixo foi criado para caber em qualquer janela de tempo — inclusive a menor."},
-    {"id": "m9", "tela": 24, "onde": "Tela de carregamento 2, título", "arquivo": "_data.ts · loading-2.title", "tipo": "trocar",
-     "hoje": "Montando o seu Protocolo Efeito Lipo…",
-     "sugestao": "Montando o seu roteiro De Volta ao Eixo…"},
-    {"id": "m10", "tela": 25, "onde": "Resultado, título", "arquivo": "_quiz.tsx · Result", "tipo": "trocar",
-     "hoje": "Seu Protocolo Efeito Lipo está pronto!",
-     "sugestao": "Seu roteiro De Volta ao Eixo está pronto!"},
-    {"id": "m11", "tela": 25, "onde": "Resultado, frase do gráfico", "arquivo": "_quiz.tsx · Result", "tipo": "trocar",
-     "hoje": "Probabilidade de resultado com o Efeito Lipo, baseada em mulheres com perfil similar ao seu.",
-     "sugestao": "Probabilidade de resultado com o De Volta ao Eixo, baseada em mulheres com perfil parecido com o seu."},
-    {"id": "m12", "tela": 26, "onde": "Oferta, título da seção de antes e depois", "arquivo": "_quiz.tsx · Sales", "tipo": "oferta",
-     "hoje": "Antes e depois do Efeito Lipo",
-     "sugestao": "Antes e depois de voltar ao eixo"},
-    {"id": "m13", "tela": 26, "onde": "Oferta, entregável 1", "arquivo": "_data.ts · SALES.entregaveis", "tipo": "oferta",
-     "hoje": "Plano \"Efeito Lipo\": passo a passo para secar a barriga",
-     "sugestao": "Roteiro De Volta ao Eixo: o passo a passo dos 21 dias (método Efeito Lipo)"},
-    {"id": "m14", "tela": 26, "onde": "Oferta, primeira linha do quadro de valores", "arquivo": "_data.ts · SALES.stack", "tipo": "oferta",
-     "hoje": "Efeito Lipo 21 — R$ 1.500",
-     "sugestao": "Roteiro De Volta ao Eixo (21 dias) — R$ 1.500"},
-    {"id": "m15", "tela": 26, "onde": "Oferta, linha do botão final", "arquivo": "_quiz.tsx · Sales", "tipo": "oferta",
-     "hoje": "Protocolo Efeito Lipo 21 R$ 4.535 → R$ 37 à vista",
-     "sugestao": "Roteiro De Volta ao Eixo R$ 4.535 → R$ 37 à vista"},
-    {"id": "m16", "tela": 26, "onde": "Rodapé", "arquivo": "_quiz.tsx · Sales", "tipo": "trocar",
-     "hoje": "Efeito Lipo 21, por Laüra Rosa.",
-     "sugestao": "De Volta ao Eixo, por Laüra Rosa."},
-    {"id": "m17", "tela": 0, "onde": "Título e descrição do link (Google e WhatsApp)", "arquivo": "page.tsx · metadata", "tipo": "google",
-     "hoje": "Avaliação gratuita — Efeito Lipo 21 / \"…descubra como ativar o Efeito Lipo e queimar até 8kg em 21 dias…\"",
-     "sugestao": "Quiz De Volta ao Eixo — descubra seu perfil de recomeço / \"Em 2 minutos, descubra por que você sai do plano e qual é o seu primeiro passo para voltar.\""}
-  ]
+ "_como_usar": "Lugares do quiz onde ainda aparece 'Efeito Lipo'. tipo: trocar (texto do quiz), metodo (pode ficar como nome do método), oferta (texto de oferta, regra do CLAUDE.md), google (título/descrição do link). O botão 'Pedir troca' do painel manda o item para a fila de pedidos.",
+ "aplicado": "Opção A aplicada na v7 (08/10 18h32, PR #14): as 17 trocas estão no ar. \"Efeito Lipo\" ficou só como nome do método (T3 e entregável 1).",
+ "itens": []
 };
   const $ = id => document.getElementById(id);
   const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e };
