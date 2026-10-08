@@ -231,7 +231,7 @@ export const STEPS: Step[] = [
   {
     kind: 'single', id: 'rotina', progress: 25, layout: 'plain', cols: 1,
     headline: 'Como é a sua rotina hoje?',
-    sub: 'O Efeito Lipo foi criado para funcionar na rotina real, não na ideal. 80% das mulheres fizeram o protocolo com rotina corrida, filhos, trabalho e casa.',
+    sub: 'O De Volta ao Eixo foi criado para a rotina real, não a ideal. 80% das mulheres fizeram o roteiro com rotina corrida, filhos, trabalho e casa.',
     options: [
       { id: 'corrida', emoji: '🏃‍♀️', label: 'Super corrida, mal tenho tempo pra mim', sub: 'Trabalho, filho, casa… o dia acaba antes de eu perceber' },
       { id: 'equilibrada', emoji: '⚖️', label: 'Equilibrada mas sem sobra', sub: 'Consigo me organizar mas não tenho tempo livre' },
@@ -314,7 +314,7 @@ export const STEPS: Step[] = [
   {
     kind: 'single', id: 'dia-dificil', progress: 60, layout: 'chips', cols: 2,
     headline: 'Em que dia da semana fica mais difícil manter sua rotina?',
-    sub: 'Saber quando você cede ajuda a criar estratégias preventivas. O Efeito Lipo tem abordagem específica para cada momento crítico.',
+    sub: 'Saber quando você cede ajuda a se preparar antes. O roteiro De Volta ao Eixo tem um plano para cada dia difícil.',
     options: [
       { id: 'segunda', label: 'Segunda', emoji: '📅', tint: '#F57100' },
       { id: 'terca', label: 'Terça', emoji: '📅', tint: '#F57100' },
@@ -346,7 +346,7 @@ export const STEPS: Step[] = [
   {
     kind: 'loading', id: 'loading-1', progress: 70,
     title: 'Analisando suas respostas…',
-    body: 'Aguarde enquanto o sistema cruza seus dados com o banco de mais de 5.000 transformações reais para montar o seu Protocolo Efeito Lipo personalizado.',
+    body: 'Aguarde enquanto o sistema cruza seus dados com o banco de mais de 5.000 transformações reais para montar o seu roteiro De Volta ao Eixo personalizado.',
     ticks: ['Verificando seu perfil metabólico…', 'Identificando seus pontos de travamento…', 'Calculando seu potencial de resultado…'],
   },
 
@@ -354,7 +354,7 @@ export const STEPS: Step[] = [
   {
     kind: 'single', id: 'medo', progress: 72, layout: 'plain', cols: 1,
     headline: 'Qual é o seu maior medo em relação a emagrecer?',
-    sub: 'Seus medos são válidos. O Efeito Lipo foi criado justamente para eliminar cada um deles.',
+    sub: 'Seus medos são válidos. O De Volta ao Eixo foi pensado justamente para cada um deles.',
     options: [
       { id: 'fracasso', emoji: '😰', label: 'Medo de não conseguir de novo', sub: 'Já fracassei tantas vezes que não acredito mais' },
       { id: 'tempo', emoji: '⏰', label: 'Medo de não ter tempo', sub: 'Minha rotina não deixa espaço pra mais nada' },
@@ -397,7 +397,7 @@ export const STEPS: Step[] = [
   {
     kind: 'single', id: 'tempo-dia', progress: 83, layout: 'plain', cols: 1,
     headline: 'Quanto tempo você consegue dedicar ao seu corpo por dia?',
-    sub: 'O Protocolo do Efeito Lipo foi criado para funcionar em qualquer janela de tempo — inclusive a menor.',
+    sub: 'O roteiro De Volta ao Eixo foi criado para caber em qualquer janela de tempo — inclusive a menor.',
     options: [
       { id: '10-15', emoji: '⚡', label: '10 a 15 minutos', sub: 'Meu tempo é curtíssimo' },
       { id: '15-20', emoji: '🕐', label: '15 a 20 minutos', sub: 'Consigo separar um tempinho' },
@@ -439,7 +439,7 @@ export const STEPS: Step[] = [
   // T24
   {
     kind: 'loading', id: 'loading-2', progress: 93,
-    title: 'Montando o seu Protocolo Efeito Lipo…',
+    title: 'Montando o seu roteiro De Volta ao Eixo…',
     body: 'Quase lá. Estamos usando suas respostas para personalizar as três fases do protocolo — Limpeza, Ativação Metabólica e Queima Total — de acordo com o seu perfil.',
     ticks: ['Calculando sua fase de limpeza ideal…', 'Ajustando a ativação metabólica pro seu ritmo…', 'Estimando seu potencial de resultado em 21 dias…'],
   },
@@ -459,7 +459,7 @@ export const LAURA_PARAGRAFOS = [
   'E quanto mais eu me esforçava, pior eu ficava.',
   'Foi quando eu descobri que o problema era a inflamação travando o meu metabolismo. Quando eu mudei o método, 8 quilos foram embora em 23 dias.',
   'Depois de validar comigo mesma e ajudar mais de 5.000 seguidoras, eu decidi ajudar mais mulheres a terem o mesmo resultado.',
-  'Eu chamei isso de Efeito Lipo — quando o seu corpo para de reter e entra em estado de queima de dentro pra fora. E foi por isso que eu criei o protocolo que você está prestes a receber.',
+  'Eu chamei isso de Efeito Lipo — quando o seu corpo para de reter e entra em estado de queima de dentro pra fora. E foi com ele que eu montei o roteiro De Volta ao Eixo que você está prestes a receber.',
 ]
 
 export const PROVA_GRID: { img: ImgKey; alt: string }[] = [
@@ -478,7 +478,7 @@ export const INSIGHT = {
     'SEXTA — Saí do combinado. Parece que perdi a semana.',
     'FIM DE SEMANA — Depois eu compenso e recomeço.',
   ],
-  bom: 'Quando o plano depende de fazer tudo perfeitamente, qualquer imprevisto pode parecer motivo para desistir. O Efeito Lipo 21D propõe começar com uma rotina de treinos em casa e foco em desinchar — sem dieta maluca e sem exigir perfeição.',
+  bom: 'Quando o plano depende de fazer tudo perfeitamente, qualquer imprevisto pode parecer motivo para desistir. O De Volta ao Eixo propõe começar com uma rotina de treinos em casa e foco em desinchar — sem dieta maluca e sem exigir perfeição.',
   fecho: '',
   options: [
     { id: 'faz-sentido', emoji: '✅', label: 'Faz sentido — nunca tinha pensado assim' },
@@ -539,7 +539,7 @@ export const SALES = {
     { img: 'thais', alt: 'Thais, 34 anos' },
   ] as { img: ImgKey; alt: string; tag?: string }[],
   entregaveis: [
-    ['Plano "Efeito Lipo": passo a passo para secar a barriga', 'O protocolo completo dos 21 dias nas três fases (Limpeza, Ativação Metabólica e Queima Total) para desinflamar o corpo e eliminar o inchaço. Sem passar fome e sem canetinha'],
+    ['Roteiro De Volta ao Eixo: o passo a passo dos 21 dias (método Efeito Lipo)', 'O protocolo completo dos 21 dias nas três fases (Limpeza, Ativação Metabólica e Queima Total) para desinflamar o corpo e eliminar o inchaço. Sem passar fome e sem canetinha'],
     ['21 Treinos Hormonais para queimar a gordura da barriga e ganhar músculo', 'Aulas em vídeo de 15 minutos, com ficha escrita. Em casa, sem equipamento, feitas para a rotina real'],
     ['Guia Alimentar "Sem Neura" (PDF visual)', 'Cardápio dos 21 dias, lista de compras e o que comer em cada fase. Comida de verdade, sem passar fome e sem contar caloria'],
     ['Áudios "Quebra de Sabotagem"', 'Áudios curtos para ouvir na hora em que bate a vontade de comer por ansiedade ou cansaço, e seguir no plano'],
@@ -550,7 +550,7 @@ export const SALES = {
     { nome: 'Bônus 2 — Protocolo Anti-Pelanquinha', de: 'R$ 497', desc: 'Como estimular colágeno e elastina enquanto você perde gordura — para a pele acompanhar o resultado e ficar firme' },
   ],
   stack: [
-    ['Efeito Lipo 21', 'R$ 1.500'],
+    ['Roteiro De Volta ao Eixo (21 dias)', 'R$ 1.500'],
     ['21 Treinos Hormonais', 'R$ 1.250'],
     ['Áudios "Quebra de Sabotagem"', 'R$ 497'],
     ['Planner de Progresso', 'R$ 197'],

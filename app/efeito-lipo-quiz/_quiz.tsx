@@ -286,7 +286,7 @@ function Prova({ onNext }: { onNext: () => void }) {
         ))}
       </div>
       <p className="text-center font-display" style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink)', margin: '22px auto 0', maxWidth: 420, lineHeight: 1.4 }}>
-        Mais de <span style={{ color: 'var(--o)' }}>5.000 mulheres</span> já ativaram o Efeito Lipo e viram o corpo transformar em menos de um mês.
+        Mais de <span style={{ color: 'var(--o)' }}>5.000 mulheres</span> já voltaram ao eixo com a Laura e viram o corpo responder em menos de um mês.
       </p>
       <div className="mt-7"><CtaButton full onClick={onNext}>Continuar</CtaButton></div>
     </div>
@@ -450,14 +450,14 @@ function Result({ perfil, answers, onNext, onReady }: { perfil: InnerProps['perf
             <p style={{ fontSize: 14.5, lineHeight: 1.5, color: 'var(--ink)', marginTop: 4 }}>{recomeco.passo}</p>
           </div>
           <h2 className="font-display mt-3" style={{ fontSize: 'clamp(23px,5vw,32px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
-            Seu Protocolo Efeito Lipo<br /><span style={{ color: 'var(--o)' }}>está pronto!</span>
+            Seu roteiro De Volta ao Eixo<br /><span style={{ color: 'var(--o)' }}>está pronto!</span>
           </h2>
           <p style={{ fontSize: 14, color: 'var(--sub)', marginTop: 8 }}>Com base no seu perfil, calculamos o seu potencial de resultado nos 21 dias:</p>
         </div>
 
         <Gauge value={94} />
         <p className="text-center" style={{ fontSize: 12.5, color: 'var(--mute)', maxWidth: 320, margin: '8px auto 0', lineHeight: 1.45 }}>
-          Probabilidade de resultado com o Efeito Lipo, baseada em mulheres com perfil similar ao seu.
+          Probabilidade de resultado com o De Volta ao Eixo, baseada em mulheres com perfil parecido com o seu.
         </p>
 
         {perfil.hasPeso && (
@@ -603,7 +603,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
         <div className="mt-7"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow dataLabel="topo">Quero meu protocolo agora</CtaButton></a></div>
 
         {/* Antes / Depois */}
-        <SectionTitle>Antes e depois do Efeito Lipo</SectionTitle>
+        <SectionTitle>Antes e depois de voltar ao eixo</SectionTitle>
         <div className="space-y-2.5">
           {SALES.beforeAfter.map(([a, b], i) => (
             <div key={i} className="grid grid-cols-2 gap-2.5">
@@ -682,13 +682,13 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
 
         {/* CTA final */}
         <div className="text-center mt-9">
-          <p className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>Protocolo Efeito Lipo 21 <span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span> → <span style={{ color: 'var(--o)' }}>R$ 37 à vista</span></p>
+          <p className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>Roteiro De Volta ao Eixo <span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span> → <span style={{ color: 'var(--o)' }}>R$ 37 à vista</span></p>
           <div className="mt-4"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow variant="green" dataLabel="final">Quero começar meu roteiro de 21 dias</CtaButton></a></div>
           <p style={{ fontSize: 12, color: 'var(--mute)', marginTop: 12, lineHeight: 1.6 }}>🔒 Pagamento 100% seguro · Acesso imediato após confirmação · Pix ou cartão</p>
         </div>
 
         <footer className="text-center mt-10 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,.08)' }}>
-          <p style={{ fontSize: 11.5, color: 'var(--mute)', lineHeight: 1.7 }}>Copyright © 2026, todos os direitos reservados.<br />Efeito Lipo 21, por Laüra Rosa.</p>
+          <p style={{ fontSize: 11.5, color: 'var(--mute)', lineHeight: 1.7 }}>Copyright © 2026, todos os direitos reservados.<br />De Volta ao Eixo, por Laüra Rosa.</p>
         </footer>
       </div>
     </div>
