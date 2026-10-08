@@ -1,0 +1,44 @@
+{
+  "id": "criativo-03",
+  "titulo": "Minha academia hoje",
+  "tema": "Treinar em casa",
+  "status": "rascunho",
+  "aprovado_por": null,
+  "aprovado_em": null,
+  "cta": "Saiba mais",
+  "destino": "https://www.laurarosapersonal.com/efeito-lipo-quiz",
+  "foto": "Laura-Arrumada-hero.jpg",
+  "duracao_alvo_s": [
+    25,
+    30
+  ],
+  "observacao_foto": "PRECISA de foto nova: Laura na sala, roupa de treino, tapete aparecendo. A foto atual (estúdio) não combina com este roteiro.",
+  "blocos": [
+    {
+      "fala": "Essa é a minha academia hoje: o espaço de um tapete na sala.",
+      "texto_tela": "Minha academia hoje",
+      "enquadramento": "aberto"
+    },
+    {
+      "fala": "Sem deslocamento, sem fila de aparelho, sem trânsito. E não precisa de nenhum equipamento.",
+      "texto_tela": "Em casa · sem equipamento",
+      "enquadramento": "medio"
+    },
+    {
+      "fala": "No Desafio Efeito Lipo vinte e um são vinte e um treinos em vídeo, de quinze minutos cada, pensados pra rotina real.",
+      "texto_tela": "21 treinos de 15 min",
+      "enquadramento": "close"
+    },
+    {
+      "fala": "E não é só treino: tem um guia alimentar com cardápio e lista de compras pra cada fase.",
+      "texto_tela": "Treino + guia alimentar",
+      "enquadramento": "medio"
+    },
+    {
+      "fala": "Dá pra fazer cedo, antes de todo mundo acordar, ou à noite, depois que a casa acalma. Toca em Saiba mais, responde o quiz e descobre o seu perfil de recomeço.",
+      "texto_tela": "Descubra seu perfil no quiz",
+      "enquadramento": "close"
+    }
+  ],
+  "legenda_anuncio": "Um tapete e 15 minutos. É assim que os treinos do Desafio Efeito Lipo 21 acontecem: na sua casa, sem equipamento, no horário que couber no seu dia. 🏠\n\nTambém tem guia alimentar com cardápio e lista de compras pra cada fase.\n\nToca em “Saiba mais”, responde o quiz e descobre o seu perfil de recomeço."
+}

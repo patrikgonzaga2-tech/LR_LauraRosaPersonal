@@ -1,0 +1,45 @@
+{
+  "id": "criativo-05",
+  "titulo": "Em 30 segundos",
+  "tema": "Apresentação direta e valor de R$ 37",
+  "status": "rascunho",
+  "aprovado_por": null,
+  "aprovado_em": null,
+  "cta": "Saiba mais",
+  "destino": "https://www.laurarosapersonal.com/efeito-lipo-quiz",
+  "foto": "Laura-Arrumada-hero.jpg",
+  "duracao_alvo_s": [
+    32,
+    40
+  ],
+  "observacao_foto": "Fundo limpo e claro, roupa nas cores da marca. Contém PREÇO e GARANTIA: exige aprovação explícita do Patrik.",
+  "contem_oferta": true,
+  "blocos": [
+    {
+      "fala": "Vou te contar em trinta segundos o que é o Desafio Efeito Lipo vinte e um e quanto custa.",
+      "texto_tela": "Efeito Lipo 21 em 30 segundos",
+      "enquadramento": "close"
+    },
+    {
+      "fala": "São vinte e um dias em três fases, com vinte e um treinos em casa, de quinze minutos, sem equipamento.",
+      "texto_tela": "21 treinos em casa de 15 min",
+      "enquadramento": "medio"
+    },
+    {
+      "fala": "Tem guia alimentar com cardápio e lista de compras, áudios pra hora que bate a vontade de comer por ansiedade, um planner pra acompanhar cada dia e ainda dois bônus.",
+      "texto_tela": "Guia alimentar · áudios · planner · 2 bônus",
+      "enquadramento": "aberto"
+    },
+    {
+      "fala": "O valor é trinta e sete reais à vista, ou em até doze vezes. E se em até sete dias você sentir que não é pra você, devolvemos o seu dinheiro.",
+      "texto_tela": "R$ 37 à vista ou 12x de R$ 3,80",
+      "enquadramento": "close"
+    },
+    {
+      "fala": "Toca em Saiba mais, responde o quiz e descobre o seu perfil de recomeço.",
+      "texto_tela": "Descubra seu perfil no quiz",
+      "enquadramento": "medio"
+    }
+  ],
+  "legenda_anuncio": "O que é o Desafio Efeito Lipo 21? 👇\n✔ 21 dias em 3 fases\n✔ 21 treinos em casa de 15 min, sem equipamento\n✔ Guia alimentar com cardápio e lista de compras\n✔ Áudios, planner de progresso + 2 bônus\n\nR$ 37 à vista (ou 12x de R$ 3,80), Pix ou cartão. Garantia de 7 dias. Toca em “Saiba mais”, responde o quiz e descobre o seu perfil de recomeço."
+}

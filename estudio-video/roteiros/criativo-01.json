@@ -1,0 +1,49 @@
+{
+  "id": "criativo-01",
+  "titulo": "Rotina real",
+  "tema": "Falta de tempo e rotina corrida",
+  "status": "rascunho",
+  "aprovado_por": null,
+  "aprovado_em": null,
+  "cta": "Saiba mais",
+  "destino": "https://www.laurarosapersonal.com/efeito-lipo-quiz",
+  "foto": "Laura-Arrumada-hero.jpg",
+  "duracao_alvo_s": [
+    30,
+    35
+  ],
+  "observacao_foto": "Ideal: foto na cozinha ou sala, roupa de ficar em casa.",
+  "blocos": [
+    {
+      "fala": "Uma hora por dia pra treinar? Na rotina real, quase ninguém tem.",
+      "texto_tela": "1 hora por dia pra treinar?",
+      "enquadramento": "close"
+    },
+    {
+      "fala": "É trabalho, casa, filho, mensagem… e o cuidado com o corpo vai sempre pra segunda-feira.",
+      "texto_tela": "A rotina real é corrida",
+      "enquadramento": "medio"
+    },
+    {
+      "fala": "Eu sou a Laura, educadora física, e montei o Desafio Efeito Lipo vinte e um pensando nessa rotina.",
+      "texto_tela": "Desafio Efeito Lipo 21",
+      "enquadramento": "aberto"
+    },
+    {
+      "fala": "São vinte e um dias, com treinos em casa de quinze minutos, sem equipamento, e um guia alimentar com o que comer em cada fase.",
+      "texto_tela": "Treinos em casa de 15 min",
+      "enquadramento": "medio"
+    },
+    {
+      "fala": "Não é sobre achar um tempo que não existe. É sobre usar bem o tempinho que já existe.",
+      "texto_tela": "Use o tempinho que já existe",
+      "enquadramento": "close"
+    },
+    {
+      "fala": "Toca em Saiba mais, responde o quiz e descobre o seu perfil de recomeço.",
+      "texto_tela": "Descubra seu perfil no quiz",
+      "enquadramento": "medio"
+    }
+  ],
+  "legenda_anuncio": "Nem todo dia sobra 1 hora livre. Às vezes sobram 15 minutos — e dá pra começar por aí. 🧡\n\nNo Desafio Efeito Lipo 21 os treinos são em casa, de 15 minutos, sem equipamento, e você tem um guia alimentar com o que comer em cada fase.\n\nToca em “Saiba mais”, responde o quiz e descobre o seu perfil de recomeço."
+}
