@@ -117,12 +117,23 @@ const ROTINAS = [
   { nome: 'Relatório no grupo Vendas Aline 8h', oque: 'Manda 1 mensagem no grupo "Vendas Aline" com o dia anterior e o total do mês (sem nomes nem telefones).' },
 ]
 
+// Tema escuro (só nesta página; o login segue o padrão do /painel).
+const C = {
+  bg: '#121110',
+  card: '#1C1B19',
+  line: 'rgba(255,255,255,.08)',
+  ink: '#F1EEE9',
+  sub: '#BDB7AE',
+  mute: '#8D877E',
+  o: '#FF8A26',
+}
+
 const STATUS: Record<Status, { txt: string; bg: string; fg: string }> = {
-  ok: { txt: 'No ar', bg: '#E6F3EA', fg: '#004811' },
-  senha: { txt: 'Com senha', bg: '#FFF0E2', fg: '#A04600' },
-  privado: { txt: 'Login', bg: '#EFEDEA', fg: '#555' },
-  verificar: { txt: 'Verificar', bg: '#FDF2DE', fg: '#7A4F00' },
-  parado: { txt: 'Atenção', bg: '#FBE9E6', fg: '#9B2C20' },
+  ok: { txt: 'No ar', bg: '#15301F', fg: '#86DCA2' },
+  senha: { txt: 'Com senha', bg: '#3A2614', fg: '#FFB070' },
+  privado: { txt: 'Login', bg: '#2A2826', fg: '#BDB7AE' },
+  verificar: { txt: 'Verificar', bg: '#3A2F17', fg: '#E6B24F' },
+  parado: { txt: 'Atenção', bg: '#3B1D1A', fg: '#F07B6E' },
 }
 
 function Pill({ s }: { s: Status }) {
@@ -144,19 +155,19 @@ export default async function PainelOficialPage() {
   const total = GRUPOS.reduce((n, g) => n + g.itens.length, 0)
 
   return (
-    <main className="min-h-[100dvh]" style={{ background: 'var(--pale)', color: 'var(--ink)' }}>
+    <main className="min-h-[100dvh]" style={{ background: C.bg, color: C.ink, colorScheme: 'dark' }}>
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '28px 16px 64px', display: 'flex', flexDirection: 'column', gap: 36 }}>
         <header style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--o)' }}>Laura Rosa · Comunidade Corpo Feliz</span>
+          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: C.o }}>Laura Rosa · Comunidade Corpo Feliz</span>
           <h1 className="font-display" style={{ fontSize: 'clamp(28px,4.5vw,40px)', fontWeight: 800, lineHeight: 1.05, margin: 0 }}>Painel oficial Corpo Feliz</h1>
-          <p style={{ fontSize: 15, color: 'var(--sub)', maxWidth: '70ch', margin: 0 }}>
+          <p style={{ fontSize: 15, color: C.sub, maxWidth: '70ch', margin: 0 }}>
             Todos os sites, painéis, dashboards, planilhas e ferramentas da operação num só lugar ({total} links). Atualizado em {ATUALIZADO}.
           </p>
           <nav style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 6 }}>
             {GRUPOS.map((g, i) => (
-              <a key={g.titulo} href={`#g${i}`} style={{ fontSize: 13, fontWeight: 600, padding: '6px 12px', borderRadius: 999, background: '#fff', border: '1px solid rgba(0,0,0,.08)', color: 'var(--ink)', textDecoration: 'none' }}>{g.titulo}</a>
+              <a key={g.titulo} href={`#g${i}`} style={{ fontSize: 13, fontWeight: 600, padding: '6px 12px', borderRadius: 999, background: C.card, border: `1px solid ${C.line}`, color: C.ink, textDecoration: 'none' }}>{g.titulo}</a>
             ))}
-            <a href="#rotinas" style={{ fontSize: 13, fontWeight: 600, padding: '6px 12px', borderRadius: 999, background: '#fff', border: '1px solid rgba(0,0,0,.08)', color: 'var(--ink)', textDecoration: 'none' }}>Rotinas</a>
+            <a href="#rotinas" style={{ fontSize: 13, fontWeight: 600, padding: '6px 12px', borderRadius: 999, background: C.card, border: `1px solid ${C.line}`, color: C.ink, textDecoration: 'none' }}>Rotinas</a>
           </nav>
         </header>
 
@@ -164,7 +175,7 @@ export default async function PainelOficialPage() {
           <section key={g.titulo} id={`g${i}`} style={{ display: 'flex', flexDirection: 'column', gap: 12, scrollMarginTop: 16 }}>
             <div>
               <h2 className="font-display" style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>{g.titulo}</h2>
-              {g.sub && <p style={{ fontSize: 13.5, color: 'var(--mute)', margin: '2px 0 0' }}>{g.sub}</p>}
+              {g.sub && <p style={{ fontSize: 13.5, color: C.mute, margin: '2px 0 0' }}>{g.sub}</p>}
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(300px,100%),1fr))', gap: 12 }}>
               {g.itens.map((it) => (
@@ -173,15 +184,15 @@ export default async function PainelOficialPage() {
                   href={it.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ display: 'flex', flexDirection: 'column', gap: 6, background: '#fff', border: '1px solid rgba(0,0,0,.07)', borderRadius: 16, padding: '14px 16px', textDecoration: 'none', color: 'inherit', boxShadow: '0 4px 16px rgba(0,0,0,.03)', minWidth: 0 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: 6, background: C.card, border: `1px solid ${C.line}`, borderRadius: 16, padding: '14px 16px', textDecoration: 'none', color: 'inherit', minWidth: 0 }}
                 >
                   <span style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
                     <b className="font-display" style={{ fontSize: 16, fontWeight: 800, lineHeight: 1.25 }}>{it.nome}</b>
                     {it.status && <Pill s={it.status} />}
                   </span>
-                  <span style={{ fontSize: 13.5, color: 'var(--sub)', lineHeight: 1.5 }}>{it.oque}</span>
-                  {it.obs && <span style={{ fontSize: 12.5, color: 'var(--mute)' }}>{it.obs}</span>}
-                  <span style={{ fontSize: 12.5, color: 'var(--o)', fontWeight: 600, overflowWrap: 'anywhere', marginTop: 'auto' }}>{curto(it.url)}</span>
+                  <span style={{ fontSize: 13.5, color: C.sub, lineHeight: 1.5 }}>{it.oque}</span>
+                  {it.obs && <span style={{ fontSize: 12.5, color: C.mute }}>{it.obs}</span>}
+                  <span style={{ fontSize: 12.5, color: C.o, fontWeight: 600, overflowWrap: 'anywhere', marginTop: 'auto' }}>{curto(it.url)}</span>
                 </a>
               ))}
             </div>
@@ -191,19 +202,19 @@ export default async function PainelOficialPage() {
         <section id="rotinas" style={{ display: 'flex', flexDirection: 'column', gap: 12, scrollMarginTop: 16 }}>
           <div>
             <h2 className="font-display" style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>Rotinas automáticas</h2>
-            <p style={{ fontSize: 13.5, color: 'var(--mute)', margin: '2px 0 0' }}>Rodam sozinhas no Claude (Routines). Instruções na tabela rotina_instrucoes do Supabase do CRM.</p>
+            <p style={{ fontSize: 13.5, color: C.mute, margin: '2px 0 0' }}>Rodam sozinhas no Claude (Routines). Instruções na tabela rotina_instrucoes do Supabase do CRM.</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(300px,100%),1fr))', gap: 12 }}>
             {ROTINAS.map((r) => (
-              <div key={r.nome} style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)', borderRadius: 16, padding: '14px 16px' }}>
+              <div key={r.nome} style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: 16, padding: '14px 16px' }}>
                 <b className="font-display" style={{ fontSize: 16, fontWeight: 800 }}>{r.nome}</b>
-                <p style={{ fontSize: 13.5, color: 'var(--sub)', margin: '6px 0 0', lineHeight: 1.5 }}>{r.oque}</p>
+                <p style={{ fontSize: 13.5, color: C.sub, margin: '6px 0 0', lineHeight: 1.5 }}>{r.oque}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <footer style={{ fontSize: 12.5, color: 'var(--mute)', borderTop: '1px solid rgba(0,0,0,.08)', paddingTop: 14 }}>
+        <footer style={{ fontSize: 12.5, color: C.mute, borderTop: `1px solid ${C.line}`, paddingTop: 14 }}>
           Página com senha e fora do Google. Os links do Claude, das planilhas e das ferramentas pedem login na conta de cada serviço.
           Para atualizar esta lista, peça ao Claude: &quot;atualiza o painel oficial&quot;.
         </footer>
