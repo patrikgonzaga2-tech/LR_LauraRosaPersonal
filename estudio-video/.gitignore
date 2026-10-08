@@ -1,0 +1,7 @@
+# O repositório é PÚBLICO.
+# Áudio da voz da Laura, autorização assinada, música e vídeos gerados NUNCA vão pro git.
+# (Fotos de anúncio ficam em fotos/, que é versionada — ver fotos/LEIA-ME.md.)
+material/**
+!material/LEIA-ME.md
+saida/
+.env

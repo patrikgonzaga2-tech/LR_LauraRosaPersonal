@@ -1,0 +1,49 @@
+{
+  "id": "criativo-02",
+  "titulo": "Dia 4",
+  "tema": "Dificuldade de manter constância",
+  "status": "rascunho",
+  "aprovado_por": null,
+  "aprovado_em": null,
+  "cta": "Saiba mais",
+  "destino": "https://www.laurarosapersonal.com/efeito-lipo-quiz",
+  "foto": "Laura-Arrumada-hero.jpg",
+  "duracao_alvo_s": [
+    35,
+    40
+  ],
+  "observacao_foto": "Ideal: sentada no sofá, blusa básica, cabelo solto.",
+  "blocos": [
+    {
+      "fala": "O difícil quase nunca é o primeiro dia. É o quarto.",
+      "texto_tela": "O difícil é o dia 4",
+      "enquadramento": "close"
+    },
+    {
+      "fala": "No primeiro dia a gente tá animada. Lá pelo quarto bate o cansaço, a rotina aperta e vem a dúvida: o que eu faço hoje mesmo? E aí para.",
+      "texto_tela": "Cansaço + rotina = a gente para",
+      "enquadramento": "medio"
+    },
+    {
+      "fala": "Uma coisa que ajuda muito é não precisar decidir tudo sozinha. No Desafio Efeito Lipo vinte e um fica tudo organizado no aplicativo, do dia um ao dia vinte e um, em três fases: Limpeza, Ativação Metabólica e Queima Total.",
+      "texto_tela": "Limpeza · Ativação · Queima Total",
+      "enquadramento": "aberto"
+    },
+    {
+      "fala": "Os treinos são curtinhos, em casa, e tem um guia de alimentação junto.",
+      "texto_tela": "Treinos curtos + guia de alimentação",
+      "enquadramento": "medio"
+    },
+    {
+      "fala": "Não precisa ser perfeito. Precisa ser possível de continuar.",
+      "texto_tela": "Precisa ser possível",
+      "enquadramento": "close"
+    },
+    {
+      "fala": "Quer ver como funciona? Toca em Saiba mais.",
+      "texto_tela": "Toque em Saiba mais",
+      "enquadramento": "medio"
+    }
+  ],
+  "legenda_anuncio": "Começar é fácil. Continuar é que pega, né? 😅\n\nNo Desafio Efeito Lipo 21 tudo fica organizado no app, do dia 1 ao dia 21, em 3 fases — com treinos curtos em casa e guia de alimentação. Menos decisão, mais constância.\n\nToca em “Saiba mais” e conhece o desafio."
+}

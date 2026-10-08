@@ -1,0 +1,49 @@
+{
+  "id": "criativo-04",
+  "titulo": "Um passo de cada vez",
+  "tema": "Começar com passos possíveis, sem radicalismo",
+  "status": "rascunho",
+  "aprovado_por": null,
+  "aprovado_em": null,
+  "cta": "Saiba mais",
+  "destino": "https://www.laurarosapersonal.com/efeito-lipo-quiz",
+  "foto": "Laura-Arrumada-hero.jpg",
+  "duracao_alvo_s": [
+    40,
+    45
+  ],
+  "observacao_foto": "A foto atual (sentada, sorrindo) serve para o teste. Para a versão final, prefira boca fechada e expressão neutra-simpática.",
+  "blocos": [
+    {
+      "fala": "Eu já cortei tudo que mandaram cortar. E não foi isso que funcionou.",
+      "texto_tela": "Eu já cortei tudo…",
+      "enquadramento": "close"
+    },
+    {
+      "fala": "Teve uma época em que eu ia pra academia todo dia, pesava cada grama de comida, cortava tudo… e quanto mais eu me cobrava, mais difícil ficava.",
+      "texto_tela": "Tudo de uma vez não funcionou",
+      "enquadramento": "medio"
+    },
+    {
+      "fala": "O que mudou pra mim foi parar de tentar fazer tudo de uma vez e começar a seguir uma ordem.",
+      "texto_tela": "Seguir uma ordem",
+      "enquadramento": "close"
+    },
+    {
+      "fala": "É assim que funciona o Desafio Efeito Lipo vinte e um: vinte e um dias em três fases, com treinos curtos em casa e um guia de alimentação sem contar caloria. Um passo de cada vez.",
+      "texto_tela": "21 dias · 3 fases · em casa",
+      "enquadramento": "aberto"
+    },
+    {
+      "fala": "Sem radicalismo, sem se matar no treino. Passos que cabem na vida real.",
+      "texto_tela": "Um passo de cada vez",
+      "enquadramento": "medio"
+    },
+    {
+      "fala": "Se você quer começar desse jeito, toca em Saiba mais.",
+      "texto_tela": "Toque em Saiba mais",
+      "enquadramento": "close"
+    }
+  ],
+  "legenda_anuncio": "Por muito tempo eu achei que cuidar do corpo era cortar tudo e treinar até cansar. Não foi isso que me ajudou. 🌱\n\nNo Desafio Efeito Lipo 21 a ideia é outra: 21 dias em 3 fases, com treinos curtos em casa e guia de alimentação sem contar caloria. Um passo de cada vez.\n\nToca em “Saiba mais” pra conhecer."
+}
