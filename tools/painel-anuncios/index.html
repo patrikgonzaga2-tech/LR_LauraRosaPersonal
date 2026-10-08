@@ -45,16 +45,28 @@ a.b{font:700 13.5px var(--body);border-radius:10px;border:1px solid var(--line);
 a.b.pri{background:var(--o);border-color:var(--o);color:#000}
 main{flex:1;min-width:0;padding-inline:28px;padding-block:24px 64px}
 .inner{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+/* Menu: no computador fica na lateral; no celular vira uma gaveta aberta pelo botão ☰ (nada rolando de lado no topo). */
+.gaveta{display:flex;flex-direction:column;flex:1;min-height:0;overflow-y:auto}
+.menu-btn,.aba-atual,.gaveta-top,.veu{display:none}
 @media (max-width:860px){
   .app{display:block}
-  .app>aside{width:auto;height:auto;position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
-  .brand{padding:12px 16px 6px;font-size:17px}
-  .brand small,.navlbl,.side-foot{display:none}
-  .side-links{display:flex;gap:6px;padding:0 12px 8px;overflow-x:auto}
-  .side-links a{padding:5px 10px;font-size:12.5px;white-space:nowrap}
-  nav{flex-direction:row;overflow-x:auto;padding:4px 12px 10px;gap:4px}
+  .app>aside{width:auto;height:auto;position:sticky;top:env(safe-area-inset-top,0px);z-index:30;flex-direction:row;align-items:center;gap:10px;padding:8px 12px}
+  .brand{padding:0;font-size:16px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brand small{display:none}
+  .aba-atual{display:block;font:700 12.5px var(--body);color:#FFC53D;letter-spacing:0;overflow:hidden;text-overflow:ellipsis}
+  .menu-btn{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;width:44px;height:44px;flex-shrink:0;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);cursor:pointer;padding:0}
+  .menu-btn i{display:block;width:20px;height:2px;border-radius:2px;background:#fff}
+  .menu-btn:focus-visible,.menu-fechar:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .gaveta{position:fixed;top:0;left:0;bottom:0;width:min(86vw,320px);z-index:40;background:var(--gd);padding:calc(env(safe-area-inset-top,0px) + 8px) 0 calc(env(safe-area-inset-bottom,0px) + 12px);box-shadow:8px 0 30px rgba(0,0,0,.3);transform:translateX(-105%);visibility:hidden;transition:transform .22s ease,visibility 0s linear .22s;overscroll-behavior:contain}
+  .gaveta-top{display:flex;align-items:center;justify-content:space-between;padding:4px 12px 4px 22px;color:#fff;font:800 17px var(--display)}
+  .menu-fechar{all:unset;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;border-radius:10px;font-size:20px;color:#fff}
+  .menu-aberto .gaveta{transform:none;visibility:visible;transition:transform .22s ease}
+  .menu-aberto .veu{display:block;position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.45)}
+  body.menu-aberto{overflow:hidden}
+  nav button{padding:12px 14px;font-size:15px}
   main{padding-inline:16px}
 }
+@media (max-width:860px) and (prefers-reduced-motion:reduce){.gaveta,.menu-aberto .gaveta{transition:none}}
 .pagehead{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:flex-end;justify-content:space-between}
 .pagehead p{color:var(--sub);font-size:14px;max-width:70ch}
 .tab[hidden]{display:none!important}
@@ -272,6 +284,20 @@ tr.lead-det td{background:#FFFBF6;text-align:left}
 .ob-form input,.ob-form select{font:500 15px var(--body);border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--pale);color:var(--ink);width:100%;min-width:0}
 .ob-form .full{grid-column:1/-1}
 .ob-form[hidden]{display:none}
+.ob-custos{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0;display:grid;gap:10px;min-width:0}
+.ob-custos legend{font:800 14px var(--display);padding:0 6px;color:var(--ink)}
+.custos-l{display:grid;gap:8px}
+.custo{display:grid;grid-template-columns:minmax(0,1fr) 130px 44px;gap:8px;align-items:center}
+.custo button{font:700 16px var(--body);height:42px;border-radius:10px;border:1px solid var(--line);background:var(--wh);color:var(--sub);cursor:pointer}
+.custo button:hover{border-color:var(--bad);color:var(--bad)}
+@media (max-width:420px){.custo{grid-template-columns:minmax(0,1fr) 104px 44px}}
+.ob-dre{display:grid;gap:4px;background:var(--pale);border-radius:12px;padding:12px 14px;font-size:14px}
+.ob-dre div{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.ob-dre div span:first-child{color:var(--sub);min-width:0}
+.ob-dre div b{white-space:nowrap}
+.ob-dre .sub{padding-left:14px;font-size:13px}
+.ob-dre .tot{border-top:1px solid var(--line);padding-top:6px;margin-top:2px;font-size:15.5px}
+.ob-aviso{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:700}
 /* clicou e não comprou */
 .rc-cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:980px){.rc-cmp{grid-template-columns:1fr}}
@@ -516,7 +542,11 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
 <div class="toast" id="toast" role="status" hidden></div>
 <div class="app">
   <aside>
-    <div class="brand">Painel de <span>Anúncios</span><small>Quiz De Volta ao Eixo · Meta</small></div>
+    <button type="button" class="menu-btn" id="menu-btn" aria-label="Abrir o menu" aria-expanded="false" aria-controls="gaveta"><i></i><i></i><i></i></button>
+    <div class="brand">Painel de <span>Anúncios</span><small>Quiz De Volta ao Eixo · Meta</small><b class="aba-atual" id="aba-atual"></b></div>
+    <div class="veu" id="veu"></div>
+    <div class="gaveta" id="gaveta">
+    <div class="gaveta-top"><span>Menu</span><button type="button" class="menu-fechar" id="menu-fechar" aria-label="Fechar o menu">✕</button></div>
     <nav role="tablist" aria-label="Seções do painel">
       <div class="navlbl">Hoje</div>
       <button role="tab" data-tab="objetivo" aria-selected="false">Meta do painel <span class="badge" id="nb-obj">–</span></button>
@@ -544,6 +574,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
       <a href="https://www.laurarosapersonal.com/efeito-lipo-quiz" target="_blank" rel="noopener">Quiz no ar <span aria-hidden="true">↗</span></a>
     </div>
     <div class="side-foot"><span>Análise automática: <b>todo dia às 7h</b></span><span>Números do Meta: <b>a cada 1 hora</b></span><span>Mudanças no Meta: <b>só com sua aprovação</b></span></div>
+    </div>
   </aside>
 
   <main><div class="inner">
@@ -554,11 +585,17 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
       <div id="ob-main"><div class="empty">Carregando a meta…</div></div>
       <form class="card ob-form" id="ob-form" hidden>
         <h3 class="full">Definir a meta</h3>
-        <label>Tipo de meta<select id="ob-tipo"><option value="lucro">Lucro (líquido − anúncios)</option><option value="faturamento">Faturamento (bruto)</option><option value="vendas">Número de vendas</option></select></label>
+        <label>Tipo de meta<select id="ob-tipo"><option value="lucro">Lucro (líquido − anúncios − outros custos)</option><option value="faturamento">Faturamento (bruto)</option><option value="vendas">Número de vendas</option></select></label>
         <label><span id="ob-valor-l">Valor da meta (R$)</span><input id="ob-valor" type="number" min="1" step="1" inputmode="numeric" required placeholder="100000"></label>
         <label>Prazo (dias)<input id="ob-dias" type="number" min="1" max="365" step="1" value="30" required></label>
         <label>Começa em<input id="ob-ini" type="date" required></label>
         <label class="full">O que entra na conta<select id="ob-escopo"><option value="lowticket">Low ticket: Efeito Lipo + order bumps, Greenn + Hotmart, todas as origens (sem a Comunidade)</option><option value="marca">Negócio todo (todos os produtos, Hotmart + Greenn)</option><option value="efeito">Só o Efeito Lipo vindo do quiz</option></select></label>
+        <fieldset class="full ob-custos" id="ob-custos-box">
+          <legend>Outros custos da empresa (além do Meta)</legend>
+          <p class="muted">Comercial, planilha, IA, WhatsApp… Coloque quanto já foi gasto em cada um no período da meta, até hoje. Esses valores não sobem sozinhos: você atualiza toda semana e eu tiro do lucro.</p>
+          <div class="custos-l" id="ob-custos"></div>
+          <div class="row"><button class="b" type="button" id="ob-custo-add">+ Adicionar custo</button><b id="ob-custos-tot">Total: R$ 0</b></div>
+        </fieldset>
         <label class="full">Frase da meta (opcional)<input id="ob-texto" type="text" maxlength="140" placeholder="Ex.: bater 100 mil de lucro em 30 dias"></label>
         <div class="full row" style="justify-content:flex-end"><span class="muted" id="ob-form-st"></span><button class="b" type="button" id="ob-cancel">Cancelar</button><button class="b pri" type="submit">Salvar meta</button></div>
       </form>
@@ -1011,11 +1048,28 @@ function abrir(t, foco) {
   if (!TABS.includes(t)) t = 'resumo'
   document.querySelectorAll('nav [role="tab"]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === t)))
   for (const x of TABS) $('tab-' + x).hidden = x !== t
+  const bt = document.querySelector('nav [data-tab="' + t + '"]'); $('aba-atual').textContent = bt ? bt.firstChild.textContent.trim() : ''
   try { localStorage.setItem('painel_tab', t) } catch {}
   window.scrollTo({ top: 0 })
   if (foco) setTimeout(() => { const f = $(foco); if (f) { f.focus(); f.setSelectionRange && f.setSelectionRange(f.value.length, f.value.length) } }, 50)
 }
-document.querySelectorAll('nav [role="tab"]').forEach((b) => b.addEventListener('click', () => abrir(b.dataset.tab)))
+// ── Menu do celular (☰): as abas abrem numa gaveta à esquerda ──────
+const CELULAR = window.matchMedia('(max-width:860px)')
+function menu(aberto) {
+  const era = document.body.classList.contains('menu-aberto')
+  document.body.classList.toggle('menu-aberto', aberto)
+  $('menu-btn').setAttribute('aria-expanded', String(aberto))
+  $('gaveta').inert = CELULAR.matches && !aberto
+  if (aberto) (document.querySelector('nav [aria-selected="true"]') || $('menu-fechar')).focus()
+  else if (era) $('menu-btn').focus()
+}
+$('menu-btn').addEventListener('click', () => menu(true))
+$('menu-fechar').addEventListener('click', () => menu(false))
+$('veu').addEventListener('click', () => menu(false))
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.body.classList.contains('menu-aberto')) menu(false) })
+CELULAR.addEventListener('change', () => menu(false))
+menu(false)
+document.querySelectorAll('nav [role="tab"]').forEach((b) => b.addEventListener('click', () => { abrir(b.dataset.tab); if (CELULAR.matches) menu(false) }))
 document.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => abrir(b.dataset.go)))
 ;(() => { let t = (location.hash || '').slice(1); if (t === 'conversar') t = 'aprovar'; if (!TABS.includes(t)) { try { t = localStorage.getItem('painel_tab') || 'resumo' } catch { t = 'resumo' } } abrir(t) })()
 
@@ -1845,24 +1899,32 @@ function watchObj() {
     OBJD = { tudo: pega('tudo'), d7: pega('d7'), em: new Date() }; renderObj()
   }, { refetchInterval: HORA })
 }
+// Outros custos da empresa (comercial, planilha, IA, WhatsApp…): o Patrik digita quanto já foi gasto no período
+// da meta e atualiza toda semana. Não crescem sozinhos; entram inteiros no lucro final.
+const SEMANA = 7 * 86400000
+const custosDe = (o) => (Array.isArray(o && o.custos) ? o.custos : []).filter((c) => c && Number(c.valor) > 0)
+const custosTot = (o) => custosDe(o).reduce((a, c) => a + Number(c.valor), 0)
+const custosVelhos = (o) => !o || !o.custos_em || Date.now() - new Date(o.custos_em).getTime() > SEMANA
 function calcObj() {
   const o = OBJ, J = objJanela(o), t = OBJD.tudo, s = OBJD.d7
-  const lucro = t.liquido - t.gasto, m = t.receita > 0 ? t.liquido / t.receita : null, a = t.receita > 0 ? t.gasto / t.receita : null
-  const sobra = m != null ? m - a : null   // quanto de cada R$ 1 faturado vira lucro
+  const custos = custosTot(o), lucroAds = t.liquido - t.gasto, lucro = lucroAds - custos
+  const m = t.receita > 0 ? t.liquido / t.receita : null, a = t.receita > 0 ? t.gasto / t.receita : null
+  const sobra = m != null ? m - a : null   // quanto de cada R$ 1 faturado vira lucro (antes dos outros custos)
   const ticket = t.vendas > 0 ? t.receita / t.vendas : null
   const atual = { lucro, faturamento: t.receita, vendas: t.vendas }[o.tipo]
   const alvo = Number(o.valor)
   let fatAlvo = null, lucroAlvo = null, vendasAlvo = null
-  if (o.tipo === 'lucro') { lucroAlvo = alvo; fatAlvo = sobra > 0 ? alvo / sobra : null }
-  if (o.tipo === 'faturamento') { fatAlvo = alvo; lucroAlvo = sobra != null ? alvo * sobra : null }
-  if (o.tipo === 'vendas') { vendasAlvo = alvo; fatAlvo = ticket ? alvo * ticket : null; lucroAlvo = fatAlvo != null && sobra != null ? fatAlvo * sobra : null }
+  if (o.tipo === 'lucro') { lucroAlvo = alvo; fatAlvo = sobra > 0 ? (alvo + custos) / sobra : null }
+  if (o.tipo === 'faturamento') { fatAlvo = alvo; lucroAlvo = sobra != null ? alvo * sobra - custos : null }
+  if (o.tipo === 'vendas') { vendasAlvo = alvo; fatAlvo = ticket ? alvo * ticket : null; lucroAlvo = fatAlvo != null && sobra != null ? fatAlvo * sobra - custos : null }
   if (vendasAlvo == null && fatAlvo != null && ticket) vendasAlvo = fatAlvo / ticket
   const pctMeta = atual / alvo, pctTempo = J.passados / J.tot
   const falta = Math.max(0, alvo - atual), porDia = J.resta > 0.01 ? falta / J.resta : falta
-  const atual7 = { lucro: s.liquido - s.gasto, faturamento: s.receita, vendas: s.vendas }[o.tipo], ritmo7 = J.d7 > 0.5 ? atual7 / J.d7 : null
+  const custos7 = J.passados > 0 ? custos * Math.min(1, J.d7 / J.passados) : 0
+  const atual7 = { lucro: s.liquido - s.gasto - custos7, faturamento: s.receita, vendas: s.vendas }[o.tipo], ritmo7 = J.d7 > 0.5 ? atual7 / J.d7 : null
   const projecao = J.passados >= 1 ? atual / J.passados * J.tot : null
   const liqVenda = t.vendas > 0 ? t.liquido / t.vendas : null, custoVenda = t.vendas > 0 ? t.gasto / t.vendas : null
-  return { J, t, s, lucro, m, a, sobra, ticket, atual, alvo, fatAlvo, lucroAlvo, vendasAlvo, pctMeta, pctTempo, falta, porDia, ritmo7, projecao, liqVenda, custoVenda }
+  return { J, t, s, custos, lucroAds, lucro, m, a, sobra, ticket, atual, alvo, fatAlvo, lucroAlvo, vendasAlvo, pctMeta, pctTempo, falta, porDia, ritmo7, projecao, liqVenda, custoVenda }
 }
 function estadoObj(c) {
   if (c.pctMeta >= 1) return ['ok', 'Meta batida']
@@ -1888,7 +1950,12 @@ function contaRapida(c) {
     itens.push(['Lucro por venda', 'Cada venda deixa ' + brl(c.liqVenda) + ' líquido (ticket ' + brl(c.ticket) + ') e custa ' + brl(c.custoVenda) + ' de anúncio: sobra ' + brl(lv) + ' por venda.',
       lv <= 0 ? 'Hoje cada venda dá prejuízo. Antes de pôr mais verba, o custo por venda tem que ficar abaixo de ' + brl(c.liqVenda) + ' (régua do quiz: R$ 37), ou o ticket tem que subir (order bump/upsell, com a sua aprovação).' : 'Para a meta, faltam cerca de ' + int0(o.tipo === 'vendas' ? c.falta : (o.tipo === 'lucro' ? c.falta / lv : c.falta / c.ticket)) + ' vendas (' + int0((o.tipo === 'vendas' ? c.falta : (o.tipo === 'lucro' ? c.falta / lv : c.falta / c.ticket)) / Math.max(1, c.J.resta)) + ' por dia).'])
   } else itens.push(['Lucro por venda', 'Ainda não há venda no período da meta.', 'Assim que entrar a primeira, eu calculo quanto cada venda deixa de lucro e quantas faltam.'])
-  if (c.sobra != null) itens.push(['Margem', 'De cada R$ 100 faturados, ' + brl0(c.m * 100) + ' caem na conta e ' + brl0(c.a * 100) + ' vão para anúncio: lucro de ' + brl0(c.sobra * 100) + '.',
+  if (c.custos > 0) {
+    const lv = c.t.vendas > 0 ? c.liqVenda - c.custoVenda : null
+    itens.push(['Outros custos', 'Comercial, ferramentas e o resto somam ' + brl0(c.custos) + ' até agora e já saíram do lucro (' + brl0(c.lucroAds) + ' antes deles → ' + brl0(c.lucro) + ' depois).',
+      lv > 0 ? 'Só para pagar esses custos são ' + int0(Math.ceil(c.custos / lv)) + ' vendas no lucro por venda de hoje.' : 'Enquanto a venda não der lucro depois do anúncio, esses custos não se pagam.'])
+  }
+  if (c.sobra != null) itens.push(['Margem', 'De cada R$ 100 faturados, ' + brl0(c.m * 100) + ' caem na conta e ' + brl0(c.a * 100) + ' vão para anúncio: sobram ' + brl0(c.sobra * 100) + ' antes dos outros custos.',
     c.sobra > 0 ? 'Com essa margem, a meta pede ' + (c.fatAlvo ? brl0(c.fatAlvo) + ' de faturamento' : '–') + (c.vendasAlvo ? ' (≈ ' + int0(c.vendasAlvo) + ' vendas no ticket de hoje).' : '.') : 'Com a margem de hoje a conta não fecha: mais faturamento aumenta o prejuízo. Primeiro baixar o custo do anúncio ou subir o ticket.'])
   return itens
 }
@@ -1898,6 +1965,7 @@ function renderObj() {
   const form = $('ob-form')
   if (!objOk(OBJ) || obEdit) {
     form.hidden = false
+    if (!$('ob-custos').children.length) { for (const n of CUSTOS_PADRAO) $('ob-custos').append(linhaCusto(n, '')); somaCustos() }
     if (!objOk(OBJ)) box.append(el('div', { class: 'empty' }, 'Ainda não tem meta. Preencha abaixo, por exemplo: Lucro · R$ 100.000 · 30 dias. A meta vale para o painel todo e para a análise das 7h.'))
   } else form.hidden = true
   renderObStrip(); renderObChat()
@@ -1907,9 +1975,10 @@ function renderObj() {
   const fimTxt = new Date(J.fim.getTime() - 1).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit' })
   const iniTxt = new Date(o.inicio + 'T12:00:00-03:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
   const hero = el('div', { class: 'card ob-hero' },
-    el('div', { class: 'row' }, el('span', { class: 'k' }, 'Meta · ' + (ESCOPO_OBJ[o.escopo] || ESCOPO_OBJ.marca)), el('button', { class: 'b', type: 'button', onclick: () => editarObj() }, 'Editar meta')),
+    el('div', { class: 'row' }, el('span', { class: 'k' }, 'Meta · ' + (ESCOPO_OBJ[o.escopo] || ESCOPO_OBJ.marca)), el('div', { class: 'btns' }, el('button', { class: 'b', type: 'button', onclick: () => editarObj('custos') }, 'Atualizar custos'), el('button', { class: 'b', type: 'button', onclick: () => editarObj() }, 'Editar meta'))),
     el('h3', {}, titulo),
     el('span', { class: 'muted' }, iniTxt + ' a ' + fimTxt + ' · ' + (J.comecou ? 'dia ' + Math.max(1, Math.ceil(J.passados)) + ' de ' + J.tot + ' · faltam ' + Math.ceil(J.resta) + ' dias' : 'começa em ' + iniTxt)))
+  if (custosVelhos(o)) hero.append(el('div', { class: 'ob-aviso' }, el('span', {}, o.custos_em ? 'Os outros custos foram atualizados em ' + fmtD(o.custos_em) + ', há mais de 7 dias. Atualize para o lucro ficar certo.' : 'Coloque os outros custos da empresa (comercial, planilha, IA, WhatsApp…) para o lucro ficar certo.'), el('button', { class: 'b pri', type: 'button', onclick: () => editarObj('custos') }, 'Atualizar custos')))
   box.append(hero)
   if (!J.comecou) { $('ob-at').textContent = 'começa em ' + iniTxt; $('ob-conta').textContent = ''; return }
   if (!OBJD) { hero.append(el('p', { class: 'muted' }, mcp ? 'Lendo vendas e gasto…' : 'Os números aparecem para quem tem os conectores do Supabase.')); return }
@@ -1922,7 +1991,7 @@ function renderObj() {
     obBarra('Prazo', c.J.passados, c.J.tot, (v) => Math.ceil(v) + ' dias', 't', null),
     el('div', { class: 'tiles' },
       el('div', { class: 'tile o' }, el('span', { class: 'k' }, 'Faturamento'), el('span', { class: 'v' }, brl0(c.t.receita)), el('span', { class: 's' }, c.fatAlvo ? pctN(c.t.receita / c.fatAlvo) + ' de ' + brl0(c.fatAlvo) + (o.tipo === 'faturamento' ? '' : ' (necessário)') : 'bruto, antes das taxas')),
-      el('div', { class: 'tile ' + (c.lucro >= 0 ? 'g' : '') }, el('span', { class: 'k' }, 'Lucro'), el('span', { class: 'v', style: c.lucro < 0 ? 'color:var(--bad)' : '' }, brl0(c.lucro)), el('span', { class: 's' }, c.lucroAlvo ? pctN(c.lucro / c.lucroAlvo) + ' de ' + brl0(c.lucroAlvo) + (o.tipo === 'lucro' ? '' : ' (esperado)') : 'líquido − anúncios')),
+      el('div', { class: 'tile ' + (c.lucro >= 0 ? 'g' : '') }, el('span', { class: 'k' }, 'Lucro final'), el('span', { class: 'v', style: c.lucro < 0 ? 'color:var(--bad)' : '' }, brl0(c.lucro)), el('span', { class: 's' }, c.lucroAlvo ? pctN(c.lucro / c.lucroAlvo) + ' de ' + brl0(c.lucroAlvo) + (o.tipo === 'lucro' ? '' : ' (esperado)') : 'líquido − anúncios − outros custos')),
       el('div', { class: 'tile' }, el('span', { class: 'k' }, 'Gasto em anúncios'), el('span', { class: 'v' }, brl0(c.t.gasto)), el('span', { class: 's' }, c.t.receita > 0 ? 'ROAS ' + (c.t.receita / Math.max(1, c.t.gasto)).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) : 'conta inteira do Meta')),
       el('div', { class: 'tile gd' }, el('span', { class: 'k' }, 'Vendas (itens)'), el('span', { class: 'v' }, int0(c.t.vendas)), el('span', { class: 's' }, c.vendasAlvo ? pctN(c.t.vendas / c.vendasAlvo) + ' de ' + int0(c.vendasAlvo) + (o.tipo === 'vendas' ? '' : ' (≈ necessárias)') : (c.ticket ? 'ticket ' + brl(c.ticket) : '–'))),
       el('div', { class: 'tile' }, el('span', { class: 'k' }, 'Se continuar assim'), el('span', { class: 'v' }, c.projecao != null ? (o.tipo === 'vendas' ? int0(c.projecao) : brl0(c.projecao)) : '–'), el('span', { class: 's' }, c.projecao != null ? pctN(c.projecao / c.alvo) + ' da meta no fim do prazo' : 'precisa de 1 dia de dados'))))
@@ -1935,8 +2004,19 @@ function renderObj() {
       el('div', { class: 'tile g' }, el('span', { class: 'k' }, 'Hotmart'), el('span', { class: 'v' }, int0(t.v_ht)), el('span', { class: 's' }, brl0(t.r_ht))),
       el('div', { class: 'tile' }, el('span', { class: 'k' }, 'Custo por venda de anúncio'), el('span', { class: 'v' }, t.v_ad ? brl0(t.gasto / t.v_ad) : '–'), el('span', { class: 's' }, 'gasto no Meta ÷ vendas de anúncio'))))
   }
+  // A conta do lucro, linha por linha
+  const linha = (txt, v, cls) => el('div', { class: cls || '' }, el('span', {}, txt), el('b', { style: v < 0 && cls === 'tot' ? 'color:var(--bad)' : '' }, (v < 0 ? '− ' : '') + brl(Math.abs(v))))
+  const taxas = c.t.receita - c.t.liquido, lista = custosDe(o)
+  hero.append(el('div', { class: 'ob-dre', 'aria-label': 'A conta do lucro' },
+    el('span', { class: 'k' }, 'A conta do lucro'),
+    linha('Faturamento (bruto)', c.t.receita),
+    linha('Taxas da Hotmart e da Greenn', -taxas),
+    linha('Anúncios no Meta', -c.t.gasto),
+    linha('Outros custos da empresa' + (o.custos_em ? ' · atualizado em ' + fmtD(o.custos_em) : ''), -c.custos),
+    ...lista.map((x) => linha(x.nome || 'Outro custo', -Number(x.valor), 'sub')),
+    linha('Lucro final', c.lucro, 'tot')))
   const conta = $('ob-conta'); conta.textContent = ''
-  conta.append(el('div', { class: 'card' }, el('h4', {}, 'A conta de hoje'), el('dl', {}, ...contaRapida(c).flatMap(([k, a, b]) => [el('dt', {}, k), el('dd', {}, a + ' ' + b)])), el('span', { class: 'muted', style: 'font-size:12.5px' }, 'Lucro = líquido (depois das taxas da Hotmart/Greenn) − gasto no Meta, igual aos painéis do site. Atualiza de hora em hora.')))
+  conta.append(el('div', { class: 'card' }, el('h4', {}, 'A conta de hoje'), el('dl', {}, ...contaRapida(c).flatMap(([k, a, b]) => [el('dt', {}, k), el('dd', {}, a + ' ' + b)])), el('span', { class: 'muted', style: 'font-size:12.5px' }, 'Lucro final = líquido (depois das taxas da Hotmart/Greenn) − gasto no Meta − outros custos que você digita na meta. Vendas e Meta atualizam de hora em hora; os outros custos, quando você atualiza.')))
 }
 function renderObStrip() {
   const t = $('r-obj-t'), m = $('r-obj-m'), nb = $('nb-obj'); if (!t) return
@@ -1947,13 +2027,37 @@ function renderObStrip() {
   const c = calcObj(), est = estadoObj(c)
   nb.textContent = pctN(c.pctMeta); nb.classList.toggle('hot', est[0] === 'no')
   m.append(obBarra(pctN(c.pctMeta) + ' da meta · ' + pctN(c.pctTempo) + ' do prazo', c.atual, c.alvo, OBJ.tipo === 'vendas' ? int0 : brl0, c.pctMeta >= c.pctTempo ? 'g' : '', c.pctTempo), el('span', { class: 'pill ' + est[0], style: 'justify-self:start' }, est[1]))
+  if (custosVelhos(OBJ)) m.append(el('span', { class: 'pill wait', style: 'justify-self:start' }, 'Atualize os outros custos'))
 }
-function editarObj() {
-  obEdit = true
+// Linhas de custo do formulário
+const CUSTOS_PADRAO = ['Comercial', 'Planilha', 'IA', 'WhatsApp']
+let custosMexeu = false
+const numBR = (v) => { const s = String(v == null ? '' : v).trim(); if (!s) return 0; const n = Number(s.includes(',') ? s.replace(/\./g, '').replace(',', '.') : s); return isFinite(n) && n > 0 ? Math.round(n * 100) / 100 : 0 }
+function linhaCusto(nome, valor) {
+  const n = el('input', { type: 'text', maxlength: '40', placeholder: 'Nome (ex.: Comercial)', 'aria-label': 'Nome do custo', autocomplete: 'off' })
+  const v = el('input', { type: 'text', inputmode: 'decimal', placeholder: 'R$ 0,00', 'aria-label': 'Valor gasto' + (nome ? ' com ' + nome : '') })
+  n.value = nome || ''; v.value = valor ? String(valor).replace('.', ',') : ''
+  const rm = el('button', { type: 'button', 'aria-label': 'Remover este custo', title: 'Remover', onclick: () => { row.remove(); custosMexeu = true; somaCustos() } }, '✕')
+  const row = el('div', { class: 'custo' }, n, v, rm)
+  for (const i of [n, v]) i.addEventListener('input', () => { custosMexeu = true; somaCustos() })
+  return row
+}
+function lerCustos() { return [...$('ob-custos').querySelectorAll('.custo')].map((r) => { const [n, v] = r.querySelectorAll('input'); return { nome: n.value.trim() || 'Outro custo', valor: numBR(v.value) } }).filter((c) => c.valor > 0) }
+function somaCustos() { $('ob-custos-tot').textContent = 'Total: ' + brl(lerCustos().reduce((a, c) => a + c.valor, 0)) }
+$('ob-custo-add').addEventListener('click', () => { const r = linhaCusto('', ''); $('ob-custos').append(r); r.querySelector('input').focus() })
+function editarObj(foco) {
+  obEdit = true; custosMexeu = false
   const o = objOk(OBJ) ? OBJ : { tipo: 'lucro', valor: '', dias: 30, inicio: diaBR(0).slice(0, 8) + '01', escopo: 'lowticket', texto: '' }
   $('ob-tipo').value = o.tipo; $('ob-valor').value = o.valor; $('ob-dias').value = o.dias; $('ob-ini').value = o.inicio; $('ob-escopo').value = o.escopo || 'lowticket'; $('ob-texto').value = o.texto || ''
   $('ob-valor-l').textContent = o.tipo === 'vendas' ? 'Quantas vendas' : 'Valor da meta (R$)'
-  renderObj(); $('ob-valor').focus()
+  const box = $('ob-custos'); box.textContent = ''
+  const salvos = custosDe(o)
+  if (salvos.length) for (const c of salvos) box.append(linhaCusto(c.nome, c.valor))
+  else for (const n of CUSTOS_PADRAO) box.append(linhaCusto(n, ''))
+  somaCustos()
+  renderObj()
+  if (foco === 'custos') { $('ob-custos-box').scrollIntoView({ behavior: 'smooth', block: 'start' }); const v = box.querySelector('.custo input[inputmode]'); if (v) setTimeout(() => v.focus({ preventScroll: true }), 300) }
+  else $('ob-valor').focus()
 }
 $('ob-tipo').addEventListener('change', (e) => { $('ob-valor-l').textContent = e.target.value === 'vendas' ? 'Quantas vendas' : 'Valor da meta (R$)' })
 $('ob-cancel').addEventListener('click', () => { obEdit = false; renderObj() })
@@ -1962,8 +2066,12 @@ $('ob-form').addEventListener('submit', async (ev) => {
   const o = { tipo: $('ob-tipo').value, valor: Math.round(Number($('ob-valor').value)), dias: Math.round(Number($('ob-dias').value)), inicio: $('ob-ini').value, escopo: $('ob-escopo').value, texto: $('ob-texto').value.trim() }
   if (!objOk(o)) { st.textContent = 'Confira o valor, o prazo (1 a 365 dias) e a data.'; return }
   if (!db) { st.textContent = 'Entre na sua conta para salvar.'; return }
+  const agora = new Date().toISOString(), custos = lerCustos()
+  // "atualizado em" dos custos só muda quando você mexe neles (ou eles mudam), não a cada vez que a meta é salva.
+  const antes = JSON.stringify(custosDe(OBJ).map((c) => [c.nome, Number(c.valor)])), depois = JSON.stringify(custos.map((c) => [c.nome, c.valor]))
+  const custos_em = custosMexeu || antes !== depois ? agora : (OBJ && OBJ.custos_em) || null
   st.textContent = 'Salvando…'
-  try { await db.doc('config/meta').set({ ...o, atualizado_em: new Date().toISOString(), por: me || '' }); st.textContent = ''; obEdit = false; toast('Meta salva. Eu acompanho daqui pra frente.') }
+  try { await db.doc('config/meta').set({ ...o, custos, custos_em, atualizado_em: agora, por: me || '' }); st.textContent = ''; obEdit = false; custosMexeu = false; toast('Meta salva. Outros custos: ' + brl(custos.reduce((a, c) => a + c.valor, 0)) + '.') }
   catch (e) { st.textContent = e && e.code === 'not_granted' ? 'Você só pode ver esta página.' : 'Não consegui salvar. Tente de novo.' }
 })
 function renderObPlano(v) {
@@ -2003,7 +2111,7 @@ $('ob-chat-t').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.
 $('ob-chips').querySelectorAll('button').forEach((b) => b.addEventListener('click', (e) => enviarObj(b.textContent.trim(), e.currentTarget)))
 $('ob-pedir').addEventListener('click', (e) => {
   if (!objOk(OBJ)) { editarObj(); return }
-  let est = ''; try { if (OBJD && !OBJD.erro) { const c = calcObj(); est = ' Hoje: ' + pctN(c.pctMeta) + ' da meta com ' + pctN(c.pctTempo) + ' do prazo; faturamento ' + brl0(c.t.receita) + ', lucro ' + brl0(c.lucro) + ', ' + int0(c.t.vendas) + ' vendas.' } } catch {}
+  let est = ''; try { if (OBJD && !OBJD.erro) { const c = calcObj(); est = ' Hoje: ' + pctN(c.pctMeta) + ' da meta com ' + pctN(c.pctTempo) + ' do prazo; faturamento ' + brl0(c.t.receita) + ', anúncios ' + brl0(c.t.gasto) + ', outros custos ' + brl0(c.custos) + ', lucro final ' + brl0(c.lucro) + ', ' + int0(c.t.vendas) + ' vendas.' } } catch {}
   enviarObj('Monte o plano para bater a meta "' + (OBJ.texto || valorObj(OBJ, OBJ.valor) + ' ' + TIPO_OBJ[OBJ.tipo] + ' em ' + OBJ.dias + ' dias') + '".' + est + ' Diga o que fazer, por quê, como e o impacto esperado, e deixe as mudanças como propostas para eu aprovar.', e.currentTarget)
 })
 
