@@ -118,6 +118,14 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 
 Uma linha por sessão: data, o que foi feito e o que ficou pendente. Mais recente em cima.
 
+- **08/10/2026 (7), 17h40**: Painel ganhou o cartão **"Última venda pelo quiz"** (aba Como estamos): mostra a
+  versão que vendeu por último e, ao clicar, o quiz inteiro que a cliente fez (resposta de cada tela, tempo
+  por tela, % da versão que chegou a cada tela e % que respondeu igual) + linha do tempo até o pagamento.
+  Liga venda ↔ sessão por `vendas.tracking_xcod = quiz_sessions.xcod` (sessão com checkout mais perto
+  da venda e mesmo conjunto). Foto em `metricas/ultima_venda`. Última aprovada: **08/10 11h40, v4**,
+  R$ 29,60 Pix, anúncio "A SEGUNDA-SEXTA · FEED"; a cliente já tinha feito o quiz 2x em agosto.
+  Às 17h22 (v6) entrou uma compra **aguardando pagamento** (R$ 29,60 + bump R$ 37). Corrigido o erro do
+  botão "Atualizar números" (a resposta do Supabase cita a tag de dados antes dos dados).
 - **08/10/2026 (6), 17h15**: Patrik decidiu **manter a v6** (botão no topo + foto da Laura) e reavaliar em
   11/10. O painel virou **Ajuste do Quiz**, com abas, cores do Painel Volta ao Eixo, 7 versões (v0 original
   → v6) com data, hora, motivo, sugestão e números, comparador A/B, seção de Marca (17 lugares com "Efeito

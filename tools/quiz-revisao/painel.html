@@ -87,6 +87,40 @@
 .opt.rec{background:var(--o-soft);color:var(--ink);border:1px solid var(--o)}
 .opt button{justify-self:start;padding:6px 12px;font-size:13px}
 .opt button.on{outline:2px solid var(--accent);outline-offset:1px}
+/* Última venda + jornada da cliente */
+.uv{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid rgba(0,0,0,.07);border-left:5px solid var(--g);border-radius:14px;padding:14px 16px;width:100%}
+.uv:hover{box-shadow:0 6px 20px rgba(0,0,0,.07)}
+.uv:focus-visible{outline:2px solid var(--o);outline-offset:2px}
+.uv .k{font:700 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--gd)}
+.uv .t{font:800 18px/1.25 var(--f-display);color:var(--ink)}
+.uv .s{font-size:13.5px;color:var(--sub)}
+.uv .go{font:700 13.5px var(--f-body);color:var(--od);white-space:nowrap}
+.uv-tent{font-size:13px;color:var(--warn);background:var(--warn-soft);border-radius:10px;padding:8px 12px}
+.uv-det{display:grid;gap:16px;border-top:1px solid var(--line);padding-top:16px}
+.uv-pills{display:flex;flex-wrap:wrap;gap:6px}
+.uv-pills span{font-size:12.5px;background:var(--bg);border-radius:99px;padding:4px 10px;color:var(--sub)}
+.uv-pills b{color:var(--ink)}
+.uv-grid{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.uv-grid{grid-template-columns:minmax(0,1fr)}}
+.uv-phone{position:sticky;top:12px;display:grid;gap:8px;justify-items:center}
+.uv-phone .device{max-width:330px}
+.uv-phone .cap{font:700 12px var(--f-body);color:var(--sub);text-align:center}
+.uv-list{display:grid;gap:4px;min-width:0}
+.uv-row{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:44px minmax(0,1fr) 110px;gap:4px 10px;align-items:center;padding:8px 10px;border-radius:10px;font-size:13.5px;width:100%}
+.uv-row:hover,.uv-row:focus-visible{background:var(--bg)}
+.uv-row.on{background:var(--o-soft)}
+.uv-row .n{font:700 12px var(--f-body);color:var(--od)}
+.uv-row .q{min-width:0;color:var(--ink)}
+.uv-row .q small{display:block;color:var(--sub);font-size:12.5px}
+.uv-row .a{display:block;color:var(--gd);font-weight:700}
+.uv-row .pc{display:grid;gap:3px;justify-items:end;font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+.uv-row .tr{width:100%;height:6px;border-radius:3px;background:var(--bg);position:relative;overflow:hidden}
+.uv-row .tr i{position:absolute;left:0;top:0;bottom:0;background:var(--g);border-radius:0 3px 3px 0}
+.uv-row.skip .q{color:var(--sub)}
+.uv-time{display:grid;gap:4px;font-size:13px}
+.uv-time div{display:grid;grid-template-columns:70px 64px minmax(0,1fr);gap:8px;color:var(--sub)}
+.uv-time b{color:var(--ink);font-weight:700}
+.uv-time .t{font-variant-numeric:tabular-nums}
 </style>
 
 <!-- 1 · Como estamos -->
@@ -100,6 +134,23 @@
     <div class="row">
       <button class="primary" id="k-refresh" hidden>Atualizar números agora</button>
       <span class="msg" id="k-msg"></span>
+    </div>
+  </div>
+  <button type="button" class="uv" id="uv" aria-expanded="false" aria-controls="uv-det" hidden>
+    <div style="display:grid;gap:3px;min-width:0"><span class="k">Última venda pelo quiz</span><span class="t" id="uv-t"></span><span class="s" id="uv-s"></span></div>
+    <span class="go" id="uv-go">Ver o quiz que ela fez ▸</span>
+  </button>
+  <div class="uv-tent" id="uv-tent" hidden></div>
+  <div class="uv-det" id="uv-det" hidden>
+    <div class="uv-pills" id="uv-pills"></div>
+    <div class="uv-grid">
+      <div class="uv-phone"><div class="device"><iframe id="uv-f" title="Tela do quiz que ela viu"></iframe></div><span class="cap" id="uv-cap"></span></div>
+      <div style="display:grid;gap:14px;min-width:0">
+        <div><div class="lbl" style="margin-bottom:6px">Todo o quiz que ela passou · clique numa tela para ver</div>
+          <p style="font-size:12.5px;margin-bottom:6px">À direita de cada tela: quantas pessoas da mesma versão chegaram até ali, e quantas deram a mesma resposta que ela.</p>
+          <div class="uv-list" id="uv-list"></div></div>
+        <div><div class="lbl" style="margin-bottom:6px">Linha do tempo</div><div class="uv-time" id="uv-time"></div></div>
+      </div>
     </div>
   </div>
   <div class="tiles" id="k-tiles"></div>
@@ -354,11 +405,15 @@ select v.id, count(s.id) visitas, count(s.id) filter (where s.meta and s.reais) 
  coalesce(max(vd.n),0) vendas, coalesce(max(vd.receita),0) receita
 from v left join s on s.vid=v.id left join e on e.session_id=s.id left join vd on vd.vid=v.id group by v.id order by v.id`;
   }
+  // A resposta do Supabase cita a tag <untrusted-data-…> numa frase antes dos dados;
+  // por isso pegamos o trecho entre a ÚLTIMA tag de abertura e a de fechamento.
   function lerLinhas(payload) {
-    const txt = typeof payload === 'string' ? payload : (payload && (payload.result || payload.text)) || '';
-    const m = String(txt).match(/<untrusted-data-[^>]*>\s*([\s\S]*?)\s*<\/untrusted-data/);
-    const rows = JSON.parse(m ? m[1] : txt);
-    if (!Array.isArray(rows)) throw new Error('formato');
+    const txt = String(typeof payload === 'string' ? payload : (payload && (payload.result || payload.text)) || '');
+    const fim = txt.lastIndexOf('</untrusted-data');
+    let bruto = txt;
+    if (fim > -1) { const ini = txt.lastIndexOf('<untrusted-data', fim); bruto = txt.slice(txt.indexOf('>', ini) + 1, fim) }
+    const rows = JSON.parse(bruto.trim());
+    if (!Array.isArray(rows)) throw Object.assign(new Error('a resposta não veio em formato de lista'), { code: 'formato' });
     return rows;
   }
   function aplicar(rows, em) {
@@ -379,8 +434,9 @@ from v left join s on s.vid=v.id left join e on e.session_id=s.id left join vd o
       try {
         const res = await mcp.callTool('Supabase', 'execute_sql', { project_id: 'fjlbvoephhextnxemygf', query: sqlMetricas() }, { cache: false });
         const em = new Date().toISOString();
-        if (aplicar(lerLinhas(res.payload), em)) { say('Atualizado agora.'); if (adb) adb.collection('metricas').doc('ultima').set({ em, rows: JSON.stringify(Object.entries(M).map(([id, x]) => ({ id, ...x }))) }).catch(() => {}) }
+        if (aplicar(lerLinhas(res.payload), em)) { say('Números atualizados. Buscando a última venda…'); if (adb) adb.collection('metricas').doc('ultima').set({ em, rows: JSON.stringify(Object.entries(M).map(([id, x]) => ({ id, ...x }))) }).catch(() => {}) }
         else say('O Supabase respondeu, mas sem as versões esperadas.', true);
+        try { await atualizarVenda(mcp, em); say('Atualizado agora.') } catch (e2) { say('Números atualizados; a última venda não (' + ((e2 && (e2.code || e2.message)) || 'erro') + ').', true) }
       } catch (e) {
         const code = e && e.code;
         if (code === 'server_not_connected') say('Conecte o Supabase em Configurações do claude.ai → Conectores para atualizar daqui.', true);
@@ -390,12 +446,126 @@ from v left join s on s.vid=v.id left join e on e.session_id=s.id left join vd o
         else if (code === 'selection_required') say('Escolha qual conexão do Supabase usar no aviso do claude.ai e tente de novo.', true);
         else if (e && e.retryable && !tentou) { tentou = true; say('O Supabase demorou. Tentando de novo…'); setTimeout(() => { btn.disabled = false; btn.click() }, (e.retryAfterMs || 1500) + Math.random() * 1000); return }
         else if (code === 'tool_error') say('A consulta falhou no Supabase: ' + (e.message || 'erro sem detalhe') + '. Me avise no chat.', true);
-        else say('Não consegui atualizar agora (' + (code || 'erro') + '). Os números abaixo são de ' + fmtQuando(medidoEm) + '.', true);
+        else say('Não consegui atualizar agora (' + (code || (e && e.message) || 'erro') + '). Os números abaixo são de ' + fmtQuando(medidoEm) + '.', true);
       }
       btn.disabled = false;
     };
   }
 
+
+  // ── Última venda: qual versão vendeu e o caminho da cliente ─────
+  const OK_ST = "array['approved','paid','%aprovad%','complete%']";
+  const REAIS = "('Facebook_Right_Column','Others','{{placement}}','an','audience_network')";
+  const SQL_VENDA = `with vq as (select coalesce(approved_date,order_date,received_at) t, price::numeric price, status, offer_code, tracking_xcod xc, tracking_src src, payment_method pm, installments parc
+  from vendas where tracking_sck='efeito-lipo-quiz' and coalesce(approved_date,order_date,received_at) <= now()),
+ok as (select * from vq where status ilike any(${OK_ST})), ap as (select * from ok order by t desc limit 1),
+itens as (select ok.offer_code, ok.price from ok, ap where ok.xc is not distinct from ap.xc and abs(extract(epoch from ok.t-ap.t))<900),
+tent as (select * from vq where t > (select t from ap) and not (status ilike any(${OK_ST})) order by t desc limit 1),
+tent_itens as (select coalesce(sum(vq.price),0) total, count(*) n from vq, tent where vq.xc is not distinct from tent.xc and abs(extract(epoch from vq.t-tent.t))<900),
+s as (select q.* from quiz_sessions q, ap where q.xcod = ap.xc order by (q.checkout_at is null), (q.utm_term is distinct from ap.src), abs(extract(epoch from coalesce(q.checkout_at,q.created_at)-ap.t)) limit 1),
+ev as (select e.created_at, e.event, e.step_index, e.step_id, e.answer from quiz_events e, s where e.session_id = s.id),
+antes as (select count(*) n, min(q.created_at) primeira from quiz_sessions q, ap, s where q.xcod = ap.xc and q.id <> s.id and q.created_at < s.created_at)
+select json_build_object('venda', (select json_build_object('t', t, 'price', price, 'status', status, 'offer', offer_code, 'pm', pm, 'parc', parc) from ap),
+ 'itens', (select json_agg(json_build_object('offer', offer_code, 'price', price)) from itens),
+ 'tentativa', (select json_build_object('t', t, 'status', status, 'pm', pm, 'total', (select total from tent_itens), 'n', (select n from tent_itens)) from tent),
+ 'sessao', (select json_build_object('criada', created_at, 'checkout', checkout_at, 'reached', reached_index, 'medium', utm_medium, 'campanha', utm_campaign, 'anuncio', utm_content, 'conjunto', utm_term, 'answers', answers) from s),
+ 'eventos', (select json_agg(json_build_object('t', created_at, 'e', event, 'i', step_index, 'id', step_id, 'a', answer) order by created_at) from ev),
+ 'antes', (select json_build_object('n', n, 'primeira', primeira) from antes)) j`;
+  const janela = vid => { const i = V.findIndex(v => v.id === vid); return [V[i].medir_desde || V[i].quando, V[i + 1] ? V[i + 1].quando : null] };
+  function sqlPercent(vid, answers) {
+    const [ini, fim] = janela(vid);
+    const ans = JSON.stringify(Object.fromEntries(Object.entries(answers || {}).filter(([k]) => k !== 'peso' && k !== 'altura'))).replace(/'/g, "''");
+    return `with w as (select q.id, q.answers, q.reached_index,
+   exists(select 1 from quiz_events e where e.session_id=q.id and e.event='start') st,
+   exists(select 1 from quiz_events e where e.session_id=q.id and e.event='checkout') ck
+  from quiz_sessions q where q.created_at >= '${ini}' and q.created_at < ${fim ? `'${fim}'` : 'now()'} and coalesce(q.utm_medium,'') not in ${REAIS}),
+her as (select key, value from jsonb_each('${ans}'::jsonb)),
+f as (select k, count(*) filter (where w.reached_index >= k) n from w, generate_series(0,25) k group by k)
+select json_build_object('total', (select count(*) from w), 'passou_t1', (select count(*) from w where st or reached_index>0), 'checkout', (select count(*) from w where ck),
+ 'funil', (select json_agg(json_build_object('k',k,'n',n) order by k) from f),
+ 'respostas', (select json_agg(json_build_object('id', key, 'resp', resp, 'iguais', iguais)) from (select her.key, count(*) filter (where w.answers ? her.key) resp,
+   count(*) filter (where w.answers->her.key = her.value or (jsonb_typeof(her.value)='array' and w.answers->her.key @> her.value)) iguais from her cross join w group by her.key) r)) j`;
+  }
+  const versaoEm = iso => { const t = new Date(iso); let r = V[0]; V.forEach(v => { if (new Date(v.quando) <= t) r = v }); return r };
+  const dec = x => { try { return decodeURIComponent(String(x || '').replace(/\+/g, ' ')) } catch { return String(x || '').replace(/\+/g, ' ') } };
+  const hora = iso => new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' });
+  const STATUS = { WAITING_PAYMENT: 'aguardando pagamento', BILLET_PRINTED: 'boleto gerado', APPROVED: 'aprovada', PAID: 'paga', REFUSED: 'recusada', DELAYED: 'atrasada' };
+  let UV = null, uvTela = 0;
+
+  async function atualizarVenda(mcp, em) {
+    const r1 = lerLinhas((await mcp.callTool('Supabase', 'execute_sql', { project_id: 'fjlbvoephhextnxemygf', query: SQL_VENDA }, { cache: false })).payload)[0].j;
+    if (!r1 || !r1.venda) return;
+    const ver = versaoEm(r1.venda.t).id;
+    const r2 = lerLinhas((await mcp.callTool('Supabase', 'execute_sql', { project_id: 'fjlbvoephhextnxemygf', query: sqlPercent(ver, r1.sessao && r1.sessao.answers) }, { cache: false })).payload)[0].j;
+    UV = { em, versao: ver, j1: r1, j2: r2 }; renderVenda();
+    if (adb) adb.collection('metricas').doc('ultima_venda').set({ em, versao: ver, j1: JSON.stringify(r1), j2: JSON.stringify(r2) }).catch(() => {});
+  }
+
+  function rotuloResposta(tela, id, a) {
+    const vals = Array.isArray(a) ? a : [a];
+    return vals.map(x => { const f = tela && tela.fields.find(f => f.k === `${id}.opt.${x}.label` || f.k === `${id}.opt.${x}`); return f ? f.v : String(x) }).join(' + ');
+  }
+  function renderVenda() {
+    if (!UV || !UV.j1 || !UV.j1.venda) return;
+    const { j1, j2 } = UV, vd = j1.venda, ses = j1.sessao || {}, ver = V.find(v => v.id === UV.versao) || versaoEm(vd.t);
+    const total = (j1.itens || []).reduce((a, i) => a + Number(i.price || 0), 0) || Number(vd.price);
+    $('uv').hidden = false;
+    $('uv-t').textContent = `${nome(ver)} · ${fmtQuando(vd.t)} · ${brl(total)}`;
+    $('uv-s').textContent = `${STATUS[vd.status] || vd.status} no ${vd.pm === 'PIX' ? 'Pix' : vd.pm === 'CREDIT_CARD' ? 'cartão' + (vd.parc > 1 ? ` em ${vd.parc}x` : '') : (vd.pm || '–')}` + (ses.medium ? ` · ${dec(ses.medium).replace(/_/g, ' ')}` : '') + (ses.anuncio ? ` · anúncio "${dec(ses.anuncio)}"` : '') + `. Números de ${fmtQuando(UV.em)}.`;
+    const tt = j1.tentativa;
+    $('uv-tent').hidden = !tt;
+    if (tt) $('uv-tent').textContent = `Depois dela: ${fmtQuando(tt.t)} entrou uma compra ${STATUS[tt.status] || tt.status} (${brl(tt.total)}${tt.n > 1 ? `, ${tt.n} itens com order bump` : ''}) na ${versaoEm(tt.t).id}. Ainda não conta como venda.`;
+    // detalhes
+    const pills = $('uv-pills'); pills.textContent = '';
+    const pill = (k, v) => { const sp = el('span'); sp.append(k + ': '); sp.append(el('b', null, v)); pills.append(sp) };
+    const ini = ses.criada ? new Date(ses.criada) : null, ck = ses.checkout ? new Date(ses.checkout) : null;
+    pill('Versão', `${ver.id} (${fmtQuando(ver.quando)})`);
+    if (ini && ck) { const sgs = Math.round((ck - ini) / 1000); pill('Tempo no quiz até comprar', `${Math.floor(sgs / 60)}min ${sgs % 60}s`) }
+    if (ses.campanha) pill('Campanha', dec(ses.campanha));
+    if (ses.conjunto) pill('Conjunto', ses.conjunto);
+    if (j1.itens) pill('Itens', j1.itens.map(i => `${i.offer} ${brl(i.price)}`).join(' + '));
+    if (j1.antes && j1.antes.n) pill('Já tinha feito o quiz', `${j1.antes.n}x, a 1ª em ${fmtQuando(j1.antes.primeira)}`);
+    if (j2) pill('Na versão', `${j2.total} visitas · ${pct(j2.passou_t1, j2.total)}% passaram da T1 · ${j2.checkout} clicaram comprar`);
+    // telas
+    const steps = new Map((j1.eventos || []).filter(e => e.e === 'step').map((e, idx, arr) => [e.i, e]));
+    const evs = j1.eventos || [], respPct = new Map(((j2 && j2.respostas) || []).map(r => [r.id, r]));
+    const tot = j2 ? j2.total : 0, fun = j2 ? j2.funil : [];
+    const alcance = i => !tot ? null : i === 0 ? 100 : i === 1 ? pct(j2.passou_t1, tot) : pct((fun[i - 1] || {}).n || 0, tot);
+    const list = $('uv-list'); list.textContent = '';
+    const ultima = Math.min(telas().length - 1, 25);
+    telas().slice(0, ultima + 1).forEach((tela, i) => {
+      const ev = steps.get(i), ans = ses.answers ? ses.answers[tela.id] : undefined;
+      const row = el('button', 'uv-row' + (i === uvTela ? ' on' : '')); row.type = 'button';
+      row.append(el('span', 'n', 'T' + (i + 1)));
+      const tit = tela.kind === 'intro' ? 'Tela de abertura' : tela.title; const q = el('span', 'q'); q.append(tit.length > 70 ? tit.slice(0, 68) + '…' : tit);
+      if (ans != null && ans !== '') { const a = el('span', 'a', (tela.kind === 'input' ? `${ans} ${tela.id === 'altura' ? 'cm' : 'kg'}` : rotuloResposta(tela, tela.id, ans))); q.append(a) }
+      else if (i === 0) q.append(el('small', null, ev ? '' : 'Clicou em "Quero descobrir meu perfil"'))
+      else if (tela.kind === 'sales') q.append(el('small', null, ses.checkout ? `Clicou em comprar às ${hora(ses.checkout)}` : ''));
+      else if (tela.kind === 'result') q.append(el('small', null, 'Viu o perfil de recomeço'));
+      else q.append(el('small', null, 'Tela sem pergunta'));
+      if (ev) { const prev = evs[evs.indexOf(ev) - 1]; if (prev) q.append(el('small', null, `${Math.round((new Date(ev.t) - new Date(prev.t)) / 1000)}s nesta tela`)) }
+      const pc = el('span', 'pc'); const al = alcance(i), rp = respPct.get(tela.id);
+      if (al != null) { const tr = el('span', 'tr'); const b = el('i'); b.style.width = al + '%'; tr.append(b); pc.append(el('span', null, `${al}% chegaram`), tr) }
+      if (rp && rp.resp) pc.append(el('span', null, `${pct(rp.iguais, rp.resp)}% igual a ela`));
+      row.append(q, pc);
+      row.title = (al != null ? `${al}% das ${tot} visitas da ${ver.id} chegaram até esta tela.` : '') + (rp && rp.resp ? ` ${rp.iguais} de ${rp.resp} que responderam escolheram o mesmo que ela.` : '');
+      row.onclick = () => { uvTela = i; mostrarTela(ver.id); list.querySelectorAll('.uv-row').forEach((r, k) => r.classList.toggle('on', k === i)) };
+      list.append(row);
+    });
+    mostrarTela(ver.id);
+    // linha do tempo
+    const LBL = { pageview: 'Abriu o quiz', start: 'Clicou no botão da T1', complete: 'Chegou ao resultado', checkout: 'Clicou em comprar' };
+    const tl = $('uv-time'); tl.textContent = '';
+    const t0 = evs.length ? new Date(evs[0].t) : null;
+    const linha = (t, txt) => { const d = el('div'); d.append(el('span', 't', hora(t)), el('span', 't', t0 ? '+' + Math.round((new Date(t) - t0) / 1000) + 's' : ''), el('b', null, txt)); tl.append(d) };
+    evs.forEach(e => linha(e.t, e.e === 'step' ? `Respondeu a T${e.i + 1}: ${rotuloResposta(telas()[e.i], e.id, e.a)}` : (LBL[e.e] || e.e)));
+    linha(vd.t, `Pagou: ${brl(total)} (${STATUS[vd.status] || vd.status})`);
+  }
+  function mostrarTela(vid) {
+    $('uv-f').src = `v/${vid}/quiz.html?step=${uvTela}`;
+    const t = telas()[uvTela], tt = t ? (t.kind === 'intro' ? 'Tela de abertura' : t.title) : ''; $('uv-cap').textContent = `${vid} · T${uvTela + 1}${tt ? ' · ' + (tt.length > 40 ? tt.slice(0, 38) + '…' : tt) : ''}`;
+  }
+  $('uv').onclick = () => { const det = $('uv-det'), abrir = det.hidden; det.hidden = !abrir; $('uv').setAttribute('aria-expanded', String(abrir)); $('uv-go').textContent = abrir ? 'Fechar ▾' : 'Ver o quiz que ela fez ▸'; if (abrir) renderVenda() };
   // ── Início ───────────────────────────────────────────────────────
   renderEstamos(); renderVersoes(); renderMarca();
   const start = () => { montarComparador() };
@@ -409,6 +579,7 @@ from v left join s on s.vid=v.id left join e on e.session_id=s.id left join vd o
     if (!adb) return;
     adb.collection('aprovacoes').onSnapshot(snap => { decisoes.clear(); snap.docs.forEach(d => { const v = d.data(); if (v) decisoes.set(d.id, v) }); pintarDecisoes(); pintarEstrategia() }, () => {});
     adb.collection('pedidos').onSnapshot(snap => { pedidosMarca.clear(); snap.docs.forEach(d => { const v = d.data(); if (v && String(v.key || '').startsWith('marca.')) pedidosMarca.add(v.key.slice(6)) }); renderMarca() }, () => {});
+    adb.doc('metricas/ultima_venda').onSnapshot(sn => { const v = sn.exists ? sn.data() : null; if (!v) return; if (UV && UV.em && new Date(UV.em) >= new Date(v.em)) return; try { UV = { em: v.em, versao: v.versao, j1: JSON.parse(v.j1), j2: JSON.parse(v.j2) }; renderVenda() } catch {} }, () => {});
     adb.doc('metricas/ultima').onSnapshot(s => { const v = s.exists ? s.data() : null; if (v && v.em && new Date(v.em) > new Date(medidoEm)) { try { aplicar(JSON.parse(v.rows), v.em) } catch {} } }, () => {});
   })();
 })();
