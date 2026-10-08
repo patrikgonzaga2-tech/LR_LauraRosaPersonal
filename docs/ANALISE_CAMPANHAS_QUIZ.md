@@ -171,9 +171,79 @@ da régua, o que aponta para anúncio e T1 desalinhados. O meio do quiz e o chec
 dão para julgar (amostra de 1 clique em comprar); na régua estavam bons (80% de quem passa da T1
 chega ao resultado; 20% de quem clica compra).
 
+### 3.2 Padrão para subir campanhas (definido pelo Patrik em 08/10/2026)
+
+"Sempre que te pedir pra subir campanhas, aquele é o padrão." Modelo: campanha
+`PTK - 08/10 - CONV - QUIZ VOLTA AO EIXO - CRIATIVOS A-D` (120252038480090200).
+
+- **Campanha**: Vendas (OUTCOME_SALES), nome `PTK - DD/MM - CONV - QUIZ ... - CRIATIVOS X-Y`.
+  **Orçamento no conjunto (ABO), R$ 20/dia por conjunto** — nunca orçamento na campanha.
+- **Pixel/evento** (atualizado em 08/10, sugestão s1 aprovada no painel): pixel da **LP**
+  (28090278990632923), evento **"Compra Realizada"**, que é onde o checkout Greenn do quiz
+  (QN7gci) avisa as compras. O pixel oficial (944444744178548) recebeu só 2 compras em 7 dias.
+  O Meta não deixa trocar o pixel de um conjunto publicado: para mudar, recriar o conjunto.
+  Nome do conjunto termina em `· PIXEL LP`.
+- **Público**: Brasil, mulheres, 18–65 como sugestão, Advantage+ público ligado. Nome do
+  conjunto `... · MULHERES 25-55 · IG + FB`. Lance automático (menor custo), conversão no site.
+- **Conjuntos**:
+  - FEED: IG feed + Explorar + FB feed, só celular → peças 4:5 (1080×1350).
+  - STORIES E REELS: posicionamentos Advantage+ **menos Audience Network e coluna direita**
+    (sugestão s4 aprovada em 08/10) → peças 9:16 (e vídeo).
+  - Criativos novos: 1 conjunto novo de +R$ 20 por lote, com as versões feed e stories de cada peça.
+- **Anúncio**: nome `LETRA NOME · FEED|STORIES|REELS`; CTA Saiba mais; página Corpo Feliz +
+  IG laurarosapersonal; link do quiz com UTMs
+  `utm_source=FB&utm_campaign={{campaign.name}}&utm_medium={{placement}}&utm_term={{adset.id}}&utm_content={{ad.name}}`.
+- Sem antes e depois (regra do Meta). Subir só criativos aprovados no painel.
+- Conjunto com post que já vendeu: usar o próprio post (mantém curtidas e comentários) e
+  dar nome curto ao anúncio (`POST 3 PILARES · 7896`), nunca só o número do post.
+
+### 3.3 Verificação de pixel e UTMs (08/10/2026)
+
+Painel: https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN (seção "Verificação de pixel e UTMs").
+
+| Onde | Pixel da LP (o da campanha) | Pixel oficial |
+|---|---|---|
+| Quiz (www.laurarosapersonal.com, via GTM-KFQ56MZ7) | **parou em 06/10 ~13h** (disparava no endereço sem www) | dispara desde 06/10 |
+| Checkout Greenn, oferta QN7gci | configurado: visita, checkout, carrinho e Compra no pagamento, com API de conversões | fraco: só via GTM; 2 compras em 7 dias |
+| Campanha 08/10 | otimiza aqui ("Compra Realizada") | – |
+
+- **UTMs ok**: 100% das sessões do Meta chegam com `utm_source=FB`, id do conjunto, nome do
+  anúncio e posicionamento. O link do quiz cai na QN7gci levando as UTMs e o webhook grava
+  conjunto e xcod.
+- **GTM (só o Patrik tem acesso)**: tagmanager.google.com → GTM-KFQ56MZ7 → Tags → tag do pixel
+  28090278990632923 → Acionamento. Provável: "Page Hostname igual a laurarosapersonal.com".
+  Trocar por "Page Hostname **contém** laurarosapersonal.com" (ou All Pages); despausar se
+  estiver pausada → Visualizar com o www → Enviar → Publicar. Conferir depois no Gerenciador de
+  Eventos (`ads_get_dataset_stats` do pixel com `aggregation=host`: tem que aparecer
+  `www.laurarosapersonal.com`).
+- **fbclid não vai para o checkout**: o quiz manda para a Greenn só `utm_source`, `utm_term` e
+  `utm_content` (`checkoutHrefFor` em `app/efeito-lipo-quiz/_data.ts`). Sem o `fbclid` na URL,
+  o pixel da LP na Greenn não cria o cookie de clique (`_fbc`) e a "Compra Realizada" só se liga
+  ao anúncio por e-mail/telefone. Proposta de passar o `fbclid` aguardando o Patrik (regra D).
+- O token da API de conversões do pixel da LP aparece no código da página da Greenn (é como a
+  Greenn funciona). Se surgirem compras estranhas no pixel, gerar token novo e trocar na Greenn.
+- "Compra Realizada" pode somar outros produtos Greenn no mesmo pixel (Comunidade). Para custo
+  real por venda do quiz, sempre cruzar com as vendas da QN7gci.
+
 ---
 
 ## 4. Diário
+
+- **08/10/2026 (3), 09h30**: Conferido o estado (só leitura). Meta: 4 conjuntos `· PIXEL LP`
+  ativos (FEED, STORIES E REELS, E-F-G, POST VENCEDOR; R$ 20 cada), **R$ 0 gastos até 09h30**;
+  "B CICLO · FEED" ainda em análise; os conjuntos antigos com o pixel oficial pausados. Quiz
+  hoje: só 3 sessões reais (conjunto ABERTO da 03/10, madrugada; 1 chegou ao resultado) e 27
+  cliques "Facebook_Right_Column" da revisão do Meta. Vendas QN7gci hoje: 0. **Pixel da LP
+  continua sem eventos de laurarosapersonal.com desde 06/10 ~13h** (nem com www): GTM ainda não
+  corrigido. Achado novo: o `fbclid` não é repassado ao checkout (seção 3.3), proposta aguardando
+  o Patrik. Seções 3.2 e 3.3 atualizadas com o que estava só no painel (pixel LP, sem Audience
+  Network). Próximo: ler os conjuntos em 10/10 (~R$ 40 cada).
+- **08/10/2026 (2)**: Patrik ajustou a campanha nova no Power Editor (pixel oficial + Compra,
+  conjuntos recriados, stories com Advantage+ posicionamentos) e ativou. A pedido dele:
+  orçamento passou de R$ 60 na campanha para **R$ 20 por conjunto**; criado o conjunto
+  `E-F-G · MULHERES 25-55 · IG + FB` (120252039299230200, R$ 20, mesmo padrão do conjunto de stories)
+  com 6 anúncios (E, F, G em feed e stories); tudo ativado. Total: 3 conjuntos × R$ 20 = R$ 60/dia.
+  Padrão registrado na seção 3.2.
 
 - **08/10/2026**: Com aprovação do Patrik, **tirados Audience Network e coluna direita** do
   conjunto ABERTO 120251969455150200 (campanha 03/10 → quiz). Ficaram: Facebook (feed, stories,
