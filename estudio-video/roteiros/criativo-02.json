@@ -25,13 +25,13 @@
       "enquadramento": "medio"
     },
     {
-      "fala": "Uma coisa que ajuda muito é não precisar decidir tudo sozinha. No Desafio Efeito Lipo vinte e um fica tudo organizado no aplicativo, do dia um ao dia vinte e um, em três fases: Limpeza, Ativação Metabólica e Queima Total.",
+      "fala": "Uma coisa que ajuda muito é não precisar decidir tudo sozinha. No Desafio Efeito Lipo vinte e um você segue um roteiro de vinte e um dias, em três fases: Limpeza, Ativação Metabólica e Queima Total.",
       "texto_tela": "Limpeza · Ativação · Queima Total",
       "enquadramento": "aberto"
     },
     {
-      "fala": "Os treinos são curtinhos, em casa, e tem um guia de alimentação junto.",
-      "texto_tela": "Treinos curtos + guia de alimentação",
+      "fala": "Os treinos são curtinhos, em casa, e tem um planner pra você marcar cada dia e enxergar a sua evolução.",
+      "texto_tela": "Treinos curtos + planner diário",
       "enquadramento": "medio"
     },
     {
@@ -40,10 +40,10 @@
       "enquadramento": "close"
     },
     {
-      "fala": "Quer ver como funciona? Toca em Saiba mais.",
-      "texto_tela": "Toque em Saiba mais",
+      "fala": "Quer começar? Toca em Saiba mais, responde o quiz e descobre o seu perfil de recomeço.",
+      "texto_tela": "Descubra seu perfil no quiz",
       "enquadramento": "medio"
     }
   ],
-  "legenda_anuncio": "Começar é fácil. Continuar é que pega, né? 😅\n\nNo Desafio Efeito Lipo 21 tudo fica organizado no app, do dia 1 ao dia 21, em 3 fases — com treinos curtos em casa e guia de alimentação. Menos decisão, mais constância.\n\nToca em “Saiba mais” e conhece o desafio."
+  "legenda_anuncio": "Começar é fácil. Continuar é que pega, né? 😅\n\nNo Desafio Efeito Lipo 21 você segue um roteiro de 21 dias em 3 fases, com treinos curtos em casa e um planner pra marcar cada dia. Menos decisão, mais constância.\n\nToca em “Saiba mais”, responde o quiz e descobre o seu perfil de recomeço."
 }

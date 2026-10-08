@@ -30,8 +30,8 @@
       "enquadramento": "aberto"
     },
     {
-      "fala": "São vinte e um dias, com treinos em casa a partir de quinze minutos, sem equipamento, e um guia de alimentação pra te orientar no que comer.",
-      "texto_tela": "Treinos em casa a partir de 15 min",
+      "fala": "São vinte e um dias, com treinos em casa de quinze minutos, sem equipamento, e um guia alimentar com o que comer em cada fase.",
+      "texto_tela": "Treinos em casa de 15 min",
       "enquadramento": "medio"
     },
     {
@@ -40,10 +40,10 @@
       "enquadramento": "close"
     },
     {
-      "fala": "Toca em Saiba mais, responde umas perguntinhas sobre a sua rotina e vê como o desafio funciona.",
-      "texto_tela": "Toque em Saiba mais",
+      "fala": "Toca em Saiba mais, responde o quiz e descobre o seu perfil de recomeço.",
+      "texto_tela": "Descubra seu perfil no quiz",
       "enquadramento": "medio"
     }
   ],
-  "legenda_anuncio": "Nem todo dia sobra 1 hora livre. Às vezes sobram 15 minutos — e dá pra começar por aí. 🧡\n\nNo Desafio Efeito Lipo 21 os treinos são em casa, sem equipamento, e você tem um guia de alimentação pra te orientar nos 21 dias.\n\nToca em “Saiba mais”, responde umas perguntas rápidas sobre a sua rotina e conhece o desafio."
+  "legenda_anuncio": "Nem todo dia sobra 1 hora livre. Às vezes sobram 15 minutos — e dá pra começar por aí. 🧡\n\nNo Desafio Efeito Lipo 21 os treinos são em casa, de 15 minutos, sem equipamento, e você tem um guia alimentar com o que comer em cada fase.\n\nToca em “Saiba mais”, responde o quiz e descobre o seu perfil de recomeço."
 }

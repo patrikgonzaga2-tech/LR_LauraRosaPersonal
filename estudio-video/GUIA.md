@@ -257,7 +257,7 @@ Quer mudar algo na prévia? Escreva, por exemplo: `No criativo-04, troca o ganch
 - **Subir no Meta Ads**: `Suba o final.mp4 do criativo-04 no Meta Ads como anúncio PAUSADO no conjunto X, com a legenda do roteiro e destino o quiz.` Nada é ativado sem você.
 - **Cuidados com o Meta**:
   - O Meta pode marcar conteúdo realista feito com IA. Confira as regras de divulgação de IA do Meta na hora de subir.
-  - A página do quiz usa "até 8kg", antes e depois e um contador de vagas. Isso aumenta o risco de reprovação, e quem vem de um anúncio suave pode estranhar.
+  - A página do quiz ainda fala em "perder até 8kg" (tela de resultado e introdução) e mostra antes e depois. Isso aumenta o risco de reprovação, e quem vem de um anúncio suave pode estranhar.
 
 ---
 

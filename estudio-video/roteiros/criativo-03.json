@@ -25,20 +25,20 @@
       "enquadramento": "medio"
     },
     {
-      "fala": "No Desafio Efeito Lipo vinte e um os treinos são feitos em casa, a partir de quinze minutos, pensados pra rotina real.",
-      "texto_tela": "Treinos a partir de 15 min",
+      "fala": "No Desafio Efeito Lipo vinte e um são vinte e um treinos em vídeo, de quinze minutos cada, pensados pra rotina real.",
+      "texto_tela": "21 treinos de 15 min",
       "enquadramento": "close"
     },
     {
-      "fala": "E não é só treino: tem um guia de alimentação pra te orientar no que comer em cada fase.",
-      "texto_tela": "Treino + guia de alimentação",
+      "fala": "E não é só treino: tem um guia alimentar com cardápio e lista de compras pra cada fase.",
+      "texto_tela": "Treino + guia alimentar",
       "enquadramento": "medio"
     },
     {
-      "fala": "Dá pra fazer cedo, antes de todo mundo acordar, ou à noite, depois que a casa acalma. Toca em Saiba mais pra conhecer o desafio.",
-      "texto_tela": "Toque em Saiba mais",
+      "fala": "Dá pra fazer cedo, antes de todo mundo acordar, ou à noite, depois que a casa acalma. Toca em Saiba mais, responde o quiz e descobre o seu perfil de recomeço.",
+      "texto_tela": "Descubra seu perfil no quiz",
       "enquadramento": "close"
     }
   ],
-  "legenda_anuncio": "Um tapete e uns 15 minutos. É assim que os treinos do Desafio Efeito Lipo 21 acontecem: na sua casa, sem equipamento, no horário que couber no seu dia. 🏠\n\nTambém tem guia de alimentação pra acompanhar cada fase.\n\nToca em “Saiba mais” pra ver como funciona."
+  "legenda_anuncio": "Um tapete e 15 minutos. É assim que os treinos do Desafio Efeito Lipo 21 acontecem: na sua casa, sem equipamento, no horário que couber no seu dia. 🏠\n\nTambém tem guia alimentar com cardápio e lista de compras pra cada fase.\n\nToca em “Saiba mais”, responde o quiz e descobre o seu perfil de recomeço."
 }

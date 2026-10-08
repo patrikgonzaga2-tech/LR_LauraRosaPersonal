@@ -30,7 +30,7 @@
       "enquadramento": "close"
     },
     {
-      "fala": "É assim que funciona o Desafio Efeito Lipo vinte e um: vinte e um dias em três fases, com treinos curtos em casa e um guia de alimentação sem contar caloria. Um passo de cada vez.",
+      "fala": "É assim que funciona o Desafio Efeito Lipo vinte e um: vinte e um dias em três fases, com treinos de quinze minutos em casa e um guia alimentar sem contar caloria. Um passo de cada vez.",
       "texto_tela": "21 dias · 3 fases · em casa",
       "enquadramento": "aberto"
     },
@@ -40,10 +40,10 @@
       "enquadramento": "medio"
     },
     {
-      "fala": "Se você quer começar desse jeito, toca em Saiba mais.",
-      "texto_tela": "Toque em Saiba mais",
+      "fala": "Se você quer começar desse jeito, toca em Saiba mais e descobre o seu perfil de recomeço.",
+      "texto_tela": "Descubra seu perfil no quiz",
       "enquadramento": "close"
     }
   ],
-  "legenda_anuncio": "Por muito tempo eu achei que cuidar do corpo era cortar tudo e treinar até cansar. Não foi isso que me ajudou. 🌱\n\nNo Desafio Efeito Lipo 21 a ideia é outra: 21 dias em 3 fases, com treinos curtos em casa e guia de alimentação sem contar caloria. Um passo de cada vez.\n\nToca em “Saiba mais” pra conhecer."
+  "legenda_anuncio": "Por muito tempo eu achei que cuidar do corpo era cortar tudo e treinar até cansar. Não foi isso que me ajudou. 🌱\n\nNo Desafio Efeito Lipo 21 a ideia é outra: 21 dias em 3 fases, com treinos de 15 minutos em casa e guia alimentar sem contar caloria. Um passo de cada vez.\n\nToca em “Saiba mais”, responde o quiz e descobre o seu perfil de recomeço."
 }
