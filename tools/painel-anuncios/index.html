@@ -558,7 +558,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
         <label><span id="ob-valor-l">Valor da meta (R$)</span><input id="ob-valor" type="number" min="1" step="1" inputmode="numeric" required placeholder="100000"></label>
         <label>Prazo (dias)<input id="ob-dias" type="number" min="1" max="365" step="1" value="30" required></label>
         <label>Começa em<input id="ob-ini" type="date" required></label>
-        <label class="full">O que entra na conta<select id="ob-escopo"><option value="marca">Negócio todo (todos os produtos, Hotmart + Greenn)</option><option value="efeito">Só o Efeito Lipo (Hotmart + Greenn do quiz)</option></select></label>
+        <label class="full">O que entra na conta<select id="ob-escopo"><option value="lowticket">Low ticket: Efeito Lipo + order bumps, Greenn + Hotmart, todas as origens (sem a Comunidade)</option><option value="marca">Negócio todo (todos os produtos, Hotmart + Greenn)</option><option value="efeito">Só o Efeito Lipo vindo do quiz</option></select></label>
         <label class="full">Frase da meta (opcional)<input id="ob-texto" type="text" maxlength="140" placeholder="Ex.: bater 100 mil de lucro em 30 dias"></label>
         <div class="full row" style="justify-content:flex-end"><span class="muted" id="ob-form-st"></span><button class="b" type="button" id="ob-cancel">Cancelar</button><button class="b pri" type="submit">Salvar meta</button></div>
       </form>
@@ -1809,7 +1809,7 @@ document.querySelectorAll('#q-orig button').forEach((b) => b.addEventListener('c
 // Lucro = líquido (após taxas dos gateways) − gasto no Meta, igual aos painéis do site (funil_resumo / marca_resumo).
 let OBJ = null, OBJD = null, obUnsub = null, obEdit = false
 const TIPO_OBJ = { lucro: 'de lucro', faturamento: 'de faturamento', vendas: 'vendas' }
-const ESCOPO_OBJ = { marca: 'Negócio todo (todos os produtos)', efeito: 'Só o Efeito Lipo (Hotmart + Greenn do quiz)' }
+const ESCOPO_OBJ = { lowticket: 'Low ticket (Efeito Lipo + order bumps), todas as origens', marca: 'Negócio todo (todos os produtos)', efeito: 'Só o Efeito Lipo vindo do quiz' }
 const brl0 = (n) => 'R$ ' + Math.round(Number(n) || 0).toLocaleString('pt-BR')
 const int0 = (n) => Math.round(Number(n) || 0).toLocaleString('pt-BR')
 const pctN = (x) => (x == null || !isFinite(x)) ? '–' : Math.round(x * 100).toLocaleString('pt-BR') + '%'
@@ -1823,6 +1823,12 @@ function objJanela(o) {
 function qObj(o) {
   const ini = `('${o.inicio}'::date::timestamp at time zone 'America/Sao_Paulo')`, fim = `least(now(), ${ini} + interval '${Math.round(Number(o.dias))} days')`
   const ini7 = `greatest(${ini}, ${fim} - interval '7 days')`
+  // Low ticket: tudo que não é Comunidade, Greenn + Hotmart, qualquer origem; "anúncio" = sck do Meta (FB|…) ou quiz com id de conjunto.
+  const lt = (a, b, tag) => `with v as (select distinct on (coalesce(transaction,hotmart_event_id)) * from vendas where received_at >= ${a} and received_at < ${b} order by coalesce(transaction,hotmart_event_id), received_at desc),
+lt as (select *, (coalesce(tracking_sck,'') like 'FB|%' or (tracking_sck='efeito-lipo-quiz' and coalesce(tracking_src,'') ~ '^[0-9]{12,}$')) ad from v where status in ('APPROVED','COMPLETED') and coalesce(product_name,'') not ilike '%comunidade%')
+select '${tag}' p, (select spend from funil_resumo(${a}, ${b})) gasto, count(*) vendas, coalesce(sum(price),0) receita, coalesce(sum(producer_value),0) liquido,
+ count(*) filter (where ad) v_ad, coalesce(sum(price) filter (where ad),0) r_ad, count(*) filter (where gateway='greenn') v_gr, coalesce(sum(price) filter (where gateway='greenn'),0) r_gr, count(*) filter (where gateway='hotmart') v_ht, coalesce(sum(price) filter (where gateway='hotmart'),0) r_ht from lt`
+  if (o.escopo === 'lowticket') return lt(ini, fim, 'tudo') + ' union all ' + lt(ini7, fim, 'd7')
   const um = (a, b, tag) => o.escopo === 'efeito'
     ? `select '${tag}' p, spend gasto, vendas_real vendas, receita_real receita, liquido_real liquido from funil_resumo(${a}, ${b}, false, null, 'efeito-lipo-quiz')`
     : `select '${tag}' p, (select spend from funil_resumo(${a}, ${b})) gasto, (select sum(vendas) from marca_resumo(${a}, ${b})) vendas, (select sum(receita) from marca_resumo(${a}, ${b})) receita, (select sum(liquido) from marca_resumo(${a}, ${b})) liquido`
@@ -1835,7 +1841,7 @@ function watchObj() {
   obUnsub = mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: qObj(OBJ) }, (ev) => {
     if (ev.type === 'error') { OBJD = { erro: ERRS[ev.error.code] || 'não consegui ler as vendas agora' }; renderObj(); return }
     const rows = parseRows(ev.result.payload); if (!rows) return
-    const pega = (t) => { const r = rows.find((x) => x.p === t) || {}; return { gasto: N(r.gasto), vendas: N(r.vendas), receita: N(r.receita), liquido: N(r.liquido) } }
+    const pega = (t) => { const r = rows.find((x) => x.p === t) || {}; return { gasto: N(r.gasto), vendas: N(r.vendas), receita: N(r.receita), liquido: N(r.liquido), v_ad: r.v_ad == null ? null : N(r.v_ad), r_ad: N(r.r_ad), v_gr: N(r.v_gr), r_gr: N(r.r_gr), v_ht: N(r.v_ht), r_ht: N(r.r_ht) } }
     OBJD = { tudo: pega('tudo'), d7: pega('d7'), em: new Date() }; renderObj()
   }, { refetchInterval: HORA })
 }
@@ -1898,10 +1904,10 @@ function renderObj() {
   if (!objOk(OBJ)) { $('ob-at').textContent = 'sem meta'; $('ob-conta').textContent = ''; return }
   const o = OBJ, J = objJanela(o)
   const titulo = o.texto || ('Bater ' + valorObj(o, o.valor) + ' ' + (o.tipo === 'vendas' ? '' : TIPO_OBJ[o.tipo]) + ' em ' + o.dias + ' dias').replace(/\s+/g, ' ')
-  const fimTxt = J.fim.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit' })
+  const fimTxt = new Date(J.fim.getTime() - 1).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit' })
   const iniTxt = new Date(o.inicio + 'T12:00:00-03:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
   const hero = el('div', { class: 'card ob-hero' },
-    el('div', { class: 'row' }, el('span', { class: 'k' }, 'Meta · ' + ESCOPO_OBJ[o.escopo || 'marca']), el('button', { class: 'b', type: 'button', onclick: () => editarObj() }, 'Editar meta')),
+    el('div', { class: 'row' }, el('span', { class: 'k' }, 'Meta · ' + (ESCOPO_OBJ[o.escopo] || ESCOPO_OBJ.marca)), el('button', { class: 'b', type: 'button', onclick: () => editarObj() }, 'Editar meta')),
     el('h3', {}, titulo),
     el('span', { class: 'muted' }, iniTxt + ' a ' + fimTxt + ' · ' + (J.comecou ? 'dia ' + Math.max(1, Math.ceil(J.passados)) + ' de ' + J.tot + ' · faltam ' + Math.ceil(J.resta) + ' dias' : 'começa em ' + iniTxt)))
   box.append(hero)
@@ -1918,8 +1924,17 @@ function renderObj() {
       el('div', { class: 'tile o' }, el('span', { class: 'k' }, 'Faturamento'), el('span', { class: 'v' }, brl0(c.t.receita)), el('span', { class: 's' }, c.fatAlvo ? pctN(c.t.receita / c.fatAlvo) + ' de ' + brl0(c.fatAlvo) + (o.tipo === 'faturamento' ? '' : ' (necessário)') : 'bruto, antes das taxas')),
       el('div', { class: 'tile ' + (c.lucro >= 0 ? 'g' : '') }, el('span', { class: 'k' }, 'Lucro'), el('span', { class: 'v', style: c.lucro < 0 ? 'color:var(--bad)' : '' }, brl0(c.lucro)), el('span', { class: 's' }, c.lucroAlvo ? pctN(c.lucro / c.lucroAlvo) + ' de ' + brl0(c.lucroAlvo) + (o.tipo === 'lucro' ? '' : ' (esperado)') : 'líquido − anúncios')),
       el('div', { class: 'tile' }, el('span', { class: 'k' }, 'Gasto em anúncios'), el('span', { class: 'v' }, brl0(c.t.gasto)), el('span', { class: 's' }, c.t.receita > 0 ? 'ROAS ' + (c.t.receita / Math.max(1, c.t.gasto)).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) : 'conta inteira do Meta')),
-      el('div', { class: 'tile gd' }, el('span', { class: 'k' }, 'Vendas'), el('span', { class: 'v' }, int0(c.t.vendas)), el('span', { class: 's' }, c.vendasAlvo ? pctN(c.t.vendas / c.vendasAlvo) + ' de ' + int0(c.vendasAlvo) + (o.tipo === 'vendas' ? '' : ' (≈ necessárias)') : (c.ticket ? 'ticket ' + brl(c.ticket) : '–'))),
+      el('div', { class: 'tile gd' }, el('span', { class: 'k' }, 'Vendas (itens)'), el('span', { class: 'v' }, int0(c.t.vendas)), el('span', { class: 's' }, c.vendasAlvo ? pctN(c.t.vendas / c.vendasAlvo) + ' de ' + int0(c.vendasAlvo) + (o.tipo === 'vendas' ? '' : ' (≈ necessárias)') : (c.ticket ? 'ticket ' + brl(c.ticket) : '–'))),
       el('div', { class: 'tile' }, el('span', { class: 'k' }, 'Se continuar assim'), el('span', { class: 'v' }, c.projecao != null ? (o.tipo === 'vendas' ? int0(c.projecao) : brl0(c.projecao)) : '–'), el('span', { class: 's' }, c.projecao != null ? pctN(c.projecao / c.alvo) + ' da meta no fim do prazo' : 'precisa de 1 dia de dados'))))
+  if (c.t.v_ad != null) {
+    const t = c.t, out = t.vendas - t.v_ad
+    hero.append(el('div', { class: 'tiles' },
+      el('div', { class: 'tile o' }, el('span', { class: 'k' }, 'Vindo de anúncio'), el('span', { class: 'v' }, int0(t.v_ad)), el('span', { class: 's' }, brl0(t.r_ad) + ' · ' + pctN(t.receita ? t.r_ad / t.receita : null) + ' do faturamento')),
+      el('div', { class: 'tile' }, el('span', { class: 'k' }, 'Outras origens'), el('span', { class: 'v' }, int0(out)), el('span', { class: 's' }, brl0(t.receita - t.r_ad) + ' · página da Hotmart, app, orgânico')),
+      el('div', { class: 'tile g' }, el('span', { class: 'k' }, 'Greenn'), el('span', { class: 'v' }, int0(t.v_gr)), el('span', { class: 's' }, brl0(t.r_gr))),
+      el('div', { class: 'tile g' }, el('span', { class: 'k' }, 'Hotmart'), el('span', { class: 'v' }, int0(t.v_ht)), el('span', { class: 's' }, brl0(t.r_ht))),
+      el('div', { class: 'tile' }, el('span', { class: 'k' }, 'Custo por venda de anúncio'), el('span', { class: 'v' }, t.v_ad ? brl0(t.gasto / t.v_ad) : '–'), el('span', { class: 's' }, 'gasto no Meta ÷ vendas de anúncio'))))
+  }
   const conta = $('ob-conta'); conta.textContent = ''
   conta.append(el('div', { class: 'card' }, el('h4', {}, 'A conta de hoje'), el('dl', {}, ...contaRapida(c).flatMap(([k, a, b]) => [el('dt', {}, k), el('dd', {}, a + ' ' + b)])), el('span', { class: 'muted', style: 'font-size:12.5px' }, 'Lucro = líquido (depois das taxas da Hotmart/Greenn) − gasto no Meta, igual aos painéis do site. Atualiza de hora em hora.')))
 }
@@ -1935,8 +1950,8 @@ function renderObStrip() {
 }
 function editarObj() {
   obEdit = true
-  const o = objOk(OBJ) ? OBJ : { tipo: 'lucro', valor: '', dias: 30, inicio: diaBR(0), escopo: 'marca', texto: '' }
-  $('ob-tipo').value = o.tipo; $('ob-valor').value = o.valor; $('ob-dias').value = o.dias; $('ob-ini').value = o.inicio; $('ob-escopo').value = o.escopo || 'marca'; $('ob-texto').value = o.texto || ''
+  const o = objOk(OBJ) ? OBJ : { tipo: 'lucro', valor: '', dias: 30, inicio: diaBR(0).slice(0, 8) + '01', escopo: 'lowticket', texto: '' }
+  $('ob-tipo').value = o.tipo; $('ob-valor').value = o.valor; $('ob-dias').value = o.dias; $('ob-ini').value = o.inicio; $('ob-escopo').value = o.escopo || 'lowticket'; $('ob-texto').value = o.texto || ''
   $('ob-valor-l').textContent = o.tipo === 'vendas' ? 'Quantas vendas' : 'Valor da meta (R$)'
   renderObj(); $('ob-valor').focus()
 }
