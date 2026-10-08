@@ -9,10 +9,10 @@
   "destino": "https://www.laurarosapersonal.com/efeito-lipo-quiz",
   "foto": "Laura-Arrumada-hero.jpg",
   "duracao_alvo_s": [
-    28,
-    35
+    32,
+    40
   ],
-  "observacao_foto": "Fundo limpo e claro, roupa nas cores da marca. Contém PREÇO: exige aprovação explícita do Patrik.",
+  "observacao_foto": "Fundo limpo e claro, roupa nas cores da marca. Contém PREÇO e GARANTIA: exige aprovação explícita do Patrik.",
   "contem_oferta": true,
   "blocos": [
     {
@@ -21,25 +21,25 @@
       "enquadramento": "close"
     },
     {
-      "fala": "São vinte e um dias, divididos em três fases. Treinos em casa, a partir de quinze minutos, sem equipamento.",
-      "texto_tela": "21 dias · treinos em casa a partir de 15 min",
+      "fala": "São vinte e um dias em três fases, com vinte e um treinos em casa, de quinze minutos, sem equipamento.",
+      "texto_tela": "21 treinos em casa de 15 min",
       "enquadramento": "medio"
     },
     {
-      "fala": "Um guia de alimentação, com o que comer em cada fase. Tudo organizado num aplicativo, do dia um ao dia vinte e um, e ainda vem com dois bônus.",
-      "texto_tela": "Guia de alimentação · app + 2 bônus",
+      "fala": "Tem guia alimentar com cardápio e lista de compras, áudios pra hora que bate a vontade de comer por ansiedade, um planner pra acompanhar cada dia e ainda dois bônus.",
+      "texto_tela": "Guia alimentar · áudios · planner · 2 bônus",
       "enquadramento": "aberto"
     },
     {
-      "fala": "O valor é trinta e sete reais à vista, ou parcelado em até seis vezes. Pix ou cartão, e o acesso chega logo depois da confirmação.",
-      "texto_tela": "R$ 37 à vista ou 6x de R$ 6,92",
+      "fala": "O valor é trinta e sete reais à vista, ou em até doze vezes. E se em até sete dias você sentir que não é pra você, devolvemos o seu dinheiro.",
+      "texto_tela": "R$ 37 à vista ou 12x de R$ 3,80",
       "enquadramento": "close"
     },
     {
-      "fala": "Toca em Saiba mais: você responde umas perguntas rápidas sobre a sua rotina e vê todos os detalhes.",
-      "texto_tela": "Toque em Saiba mais",
+      "fala": "Toca em Saiba mais, responde o quiz e descobre o seu perfil de recomeço.",
+      "texto_tela": "Descubra seu perfil no quiz",
       "enquadramento": "medio"
     }
   ],
-  "legenda_anuncio": "O que é o Desafio Efeito Lipo 21? 👇\n✔ 21 dias em 3 fases\n✔ Treinos em casa a partir de 15 min, sem equipamento\n✔ Guia de alimentação\n✔ App do dia 1 ao 21 + 2 bônus\n\nR$ 37 à vista (ou 6x de R$ 6,92), Pix ou cartão. Toca em “Saiba mais” pra ver os detalhes."
+  "legenda_anuncio": "O que é o Desafio Efeito Lipo 21? 👇\n✔ 21 dias em 3 fases\n✔ 21 treinos em casa de 15 min, sem equipamento\n✔ Guia alimentar com cardápio e lista de compras\n✔ Áudios, planner de progresso + 2 bônus\n\nR$ 37 à vista (ou 12x de R$ 3,80), Pix ou cartão. Garantia de 7 dias. Toca em “Saiba mais”, responde o quiz e descobre o seu perfil de recomeço."
 }
