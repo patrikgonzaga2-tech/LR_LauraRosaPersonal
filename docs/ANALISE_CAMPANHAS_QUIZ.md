@@ -191,8 +191,22 @@ chega ao resultado; 20% de quem clica compra).
     (sugestão s4 aprovada em 08/10) → peças 9:16 (e vídeo).
   - Criativos novos: 1 conjunto novo de +R$ 20 por lote, com as versões feed e stories de cada peça.
 - **Anúncio**: nome `LETRA NOME · FEED|STORIES|REELS`; CTA Saiba mais; página Corpo Feliz +
-  IG laurarosapersonal; link do quiz com UTMs
-  `utm_source=FB&utm_campaign={{campaign.name}}&utm_medium={{placement}}&utm_term={{adset.id}}&utm_content={{ad.name}}`.
+  IG laurarosapersonal; link do quiz com as UTMs **exatamente nesta ordem** (Patrik, 08/10):
+  `https://www.laurarosapersonal.com/efeito-lipo-quiz?utm_source=FB&utm_medium={{placement}}&utm_campaign={{campaign.name}}&utm_content={{ad.name}}&utm_term={{adset.id}}`.
+  A ferramenta do Meta não tem o campo "Parâmetros de URL": as UTMs vão no próprio link.
+- **Anunciante (obrigatório, Patrik 08/10)**: todo conjunto novo com beneficiário e pagador
+  **CORPO FELIZ LTDA** (`dsa_beneficiary` e `dsa_payor` = "CORPO FELIZ LTDA" no ads_create_ad_set
+  ou logo depois com ads_update_entity, antes de ativar).
+- **Localização (erro #1870194)**: o Meta removeu as opções "pessoas que moram" e "pessoas que
+  estiveram" separadas. Criar conjunto com `geo_locations: {"countries":["BR"],"location_types":["home","recent"]}`
+  ("moram ou estiveram recentemente"). Conjunto criado pela API sem isso fica com
+  `["frequently_in","home"]` e dá o erro. Corrigir num conjunto ativo pausa o conjunto
+  (o Meta força): reativar logo depois.
+- **Complemento do navegador do WhatsApp (obrigatório, Patrik 08/10)**: todo anúncio com o botão
+  do WhatsApp do número final **0948** no navegador. A ferramenta do Meta não tem esse campo:
+  depois de criar o anúncio, o Patrik (ou quem estiver no Gerenciador) liga em Anúncio →
+  Destino → Destinos personalizados → Editar → aba "Complementos do navegador" → ativar →
+  WhatsApp → número final 0948. Avisar na mensagem final quais anúncios novos precisam disso.
 - Sem antes e depois (regra do Meta). Subir só criativos aprovados no painel.
 - Conjunto com post que já vendeu: usar o próprio post (mantém curtidas e comentários) e
   dar nome curto ao anúncio (`POST 3 PILARES · 7896`), nunca só o número do post.
@@ -229,6 +243,13 @@ Painel: https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN (seção "Verificaçã
 
 ## 4. Diário
 
+- **08/10/2026 (9), noite**: Regras novas do Patrik para todo anúncio (seção 3.2): anunciante
+  CORPO FELIZ LTDA, UTMs na ordem exata, complemento do WhatsApp final 0948 e localização sem
+  as opções antigas. Corrigida a localização (erro #1870194) dos conjuntos FEED, STORIES E REELS,
+  E-F-G, POST VENCEDOR (`· PIXEL LP`) e RMKT, e gravado CORPO FELIZ LTDA nos 7 conjuntos ativos.
+  O Meta pausou os conjuntos na edição; todos reativados (o "STORIES E REELS · ... — Cópia",
+  120252039206240200, com ok do Patrik às 21h). UTMs conferidas no
+  Supabase: H e I chegam com campanha, posicionamento, anúncio e conjunto preenchidos.
 - **08/10/2026 (3), 09h30**: Conferido o estado (só leitura). Meta: 4 conjuntos `· PIXEL LP`
   ativos (FEED, STORIES E REELS, E-F-G, POST VENCEDOR; R$ 20 cada), **R$ 0 gastos até 09h30**;
   "B CICLO · FEED" ainda em análise; os conjuntos antigos com o pixel oficial pausados. Quiz

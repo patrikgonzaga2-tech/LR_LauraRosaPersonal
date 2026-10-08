@@ -58,7 +58,7 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
 | `chat/<id>` | canal (campanha, criativo, quiz), conversa, alvo_id, alvo_nivel (campanha, conjunto, anúncio), alvo_nome, papel (patrik, claude), texto, em, respondido, proposta_id |
 | `config/chat` | id da conversa atual por assunto |
 | `criativos_analise/<id do anúncio>` | nome, conjunto, campanha, status_meta, thumb, periodos {ontem,d7,d15,d30,d90}, veredito, acao, motivo, como, proposta_id |
-| `config/meta` | tipo (lucro, faturamento, vendas), valor, dias, inicio (AAAA-MM-DD), escopo (marca, efeito), texto |
+| `config/meta` | tipo (lucro, faturamento, vendas), valor, dias, inicio (AAAA-MM-DD), escopo (lowticket, marca, efeito), texto, custos [{nome, valor}] (outros custos da empresa no período, já acumulados até hoje), custos_em (quando o Patrik atualizou os custos) |
 | `meta_plano/atual` | em, resumo, pct_meta, pct_prazo, falta_por_dia, acoes [{titulo, porque, como, impacto, proposta_id}] |
 | `recuperacao/atual` | em, resumo, numeros, motivos [{motivo, dado}], acoes [{tipo (anuncio, mudanca, rmkt, campanha, automacao), titulo, porque, como, proposta_id}] |
 | `criativos`, `sugestoes` | aprovações antigas (antes de 08/10) |
@@ -71,6 +71,12 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
 - Conta Meta 1094091162588572. Régua: custo por venda até R$ 37; T1 32%; clicar comprar 18,7% das sessões.
 
 ## Diário
+- **08/10/2026 (4), 18h05**: **menu ☰ no celular** (até 860 px as abas abrem numa gaveta à esquerda; nada de faixa rolando de lado)
+  e **outros custos da empresa** na Meta do painel: em "Editar meta" / "Atualizar custos" o Patrik digita quanto já gastou no
+  período com comercial, planilha, IA, WhatsApp etc. (`config/meta.custos`). Lucro final = líquido − Meta − outros custos; a
+  meta de lucro, o "se continuar assim" e o quadro "A conta do lucro" usam o lucro final. Custos com mais de 7 dias (`custos_em`)
+  mostram aviso amarelo. Lembrete toda segunda 8h54 (push + e-mail): rotina "Lembrete semanal: custos da Meta do painel"
+  (`trig_01TYKiqQTyPK34dP1UgKVmeH`). Obs.: `config/meta.escopo` estava "marca" (negócio todo) com o texto "apenas low ticket".
 - **08/10/2026 (3)**: abas **Meta do painel** e **Clicou e não comprou**; a rotina das 7h passou a escrever o plano da
   meta e o plano de recuperação. Hoje (desde o quiz novo): 4 clicaram em comprar, 1 comprou, 3 saíram do checkout sem
   preencher.
