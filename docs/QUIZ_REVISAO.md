@@ -1,8 +1,12 @@
 # Quiz Efeito Lipo — revisão e alterações
 
 Página pública: https://www.laurarosapersonal.com/efeito-lipo-quiz
-Painel **Ajuste do Quiz** (números por versão, histórico de versões, comparador, marca, edição de textos e fila de pedidos):
-**https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ** (privada do Patrik; compartilhar pelo menu Share)
+Revisão do quiz (como está, versões, comparar, marca, editar textos + fila de pedidos): **dentro do Painel de
+anúncios**, grupo "Ajuste do quiz" do menu — **https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN**.
+Desde 08/10/2026 (noite) o antigo https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ só mostra um aviso apontando
+para o painel; não publique mais nada nele. Fila de pedidos (`pedidos`), decisões (`aprovacoes`) e números
+(`metricas`) ficam no banco do painel. Fonte da página: `tools/painel-anuncios/index.html` (as telas do quiz,
+`window.SCREENS`, e os dados de versões, `DATA.versoes`, estão dentro dela).
 
 ---
 
@@ -42,23 +46,27 @@ ONDE ESTAMOS (08/10/2026, 17h40):
   frente, "Efeito Lipo" só como nome do método); 17 lugares ainda dizem "Efeito Lipo";
   tirar a coluna da direita da campanha "08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D".
 
-PAINEL "AJUSTE DO QUIZ" (https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ):
-- Abas: Como estamos (números da versão no ar, gráfico por versão, botão "Atualizar números
+AJUSTE DO QUIZ = grupo "Ajuste do quiz" do PAINEL DE ANÚNCIOS
+(https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN). A página antiga 1CpgLoG6JcvucRM21TPfiQ só tem
+um aviso apontando para lá: não publique mais nada nela.
+- Telas: Como está o quiz (números da versão no ar, gráfico por versão, botão "Atualizar números
   agora", cartão "Última venda pelo quiz" com o caminho completo da cliente), Versões (um cartão
-  por versão com data, hora, o que mudou, motivo, sugestão e decisão), Comparar (2 versões lado
-  a lado), Marca e Editar textos (fila de pedidos).
-- Fonte: tools/quiz-revisao/ (versoes.json, marca.json, painel.html); build com
-  `bash tools/quiz-revisao/build.sh`; republicar no MESMO link (ler a versão no ar antes, porque
-  outras sessões também mexem nele). Decisões ficam na coleção "aprovacoes"; pedidos em "pedidos".
-- REGRA: toda mudança do quiz que for ao ar ganha uma versão nova no fim de versoes.json
-  (data e hora de Brasília, commit do merge, PR, o que mudou, motivo e sugestão).
+  por versão com data, hora, o que mudou, motivo, sugestão e decisão), Comparar versões, Marca e
+  Editar textos (fila de pedidos). Junto com o resto do painel de anúncios (Meta, Otimizar,
+  Clicou e não comprou, Criativos…).
+- Fonte: tools/painel-anuncios/index.html (versões em DATA.versoes, telas em window.SCREENS).
+  As cópias do quiz de cada versão (v/<id>/quiz.*) saem de `bash tools/quiz-revisao/build.sh`.
+  Sempre ler a versão publicada antes de republicar: outras sessões também mexem no painel.
+  Decisões na coleção "aprovacoes", pedidos em "pedidos", números em "metricas".
+- REGRA: toda mudança do quiz que for ao ar ganha uma versão nova em DATA.versoes (data e hora de
+  Brasília, commit do merge, PR, o que mudou, motivo e sugestão).
 
 PRIMEIRO, SEM ALTERAR NADA:
 1. Pelo Diário de docs/QUIZ_REVISAO.md e docs/ANALISE_CAMPANHAS_QUIZ.md, me diga em até 6 linhas
    onde paramos e o que está pendente.
 2. Veja no git o que mudou em app/efeito-lipo-quiz/ e no painel desde a última entrada do Diário.
-3. Leia no painel as coleções "aprovacoes" e "pedidos" e me diga o que eu decidi ou pedi e
-   ainda não foi aplicado.
+3. Leia no Painel de anúncios as coleções "aprovacoes" e "pedidos" e me diga o que eu decidi ou
+   pedi e ainda não foi aplicado.
 4. Rode o "status das campanhas de hoje".
 Depois espere eu dizer o que fazer.
 ```
@@ -83,12 +91,14 @@ Depois espere eu dizer o que fazer.
 1. Lê o pedido e mostra **antes → depois** (arquivo e trecho).
 2. Espera o "pode fazer".
 3. Edita o código numa branch `claude/...`.
-4. Roda `bash tools/quiz-revisao/build.sh` e republica a página de revisão **no mesmo link**.
+4. Roda `bash tools/quiz-revisao/build.sh` (cópias do quiz) e atualiza o grupo "Ajuste do quiz" do
+   Painel de anúncios (`tools/painel-anuncios/index.html`), lendo a versão publicada antes.
 5. Você confere no celular da esquerda.
 6. Com o seu ok: commit + push na branch e Pull Request para a `main`.
 7. Depois do merge na `main` o site é atualizado. Confira o link público.
 8. O Claude marca os pedidos como `aplicado` na fila e escreve uma linha no Diário (seção 5).
-9. **Toda versão nova ganha um cartão no painel:** acrescentar no fim de `tools/quiz-revisao/versoes.json`
+9. **Toda versão nova ganha um cartão no painel:** acrescentar no fim de `DATA.versoes` (Painel de
+   anúncios) e de `tools/quiz-revisao/versoes.json`
    a versão com data e hora em que foi ao ar (horário de Brasília), commit do merge, PR, o que mudou,
    motivo e sugestão, e rodar o build. Atualizar também a sugestão da versão anterior, se mudou.
 
@@ -155,6 +165,7 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 
 Uma linha por sessão: data, o que foi feito e o que ficou pendente. Mais recente em cima.
 
+- **08/10/2026 (8), 17h45**: a página "Ajuste do Quiz" foi juntada ao Painel de anúncios (grupo "Ajuste do quiz": Como está o quiz, Versões, Comparar versões, Marca, Editar textos, com a "Última venda pelo quiz"). Arquivos do quiz (quiz.html/js/css, images/, v/v0…v6/) copiados para o painel; v/vN/quiz.html usa `<base href="../../">` para as fotos carregarem. Decisões migradas. Para nova versão: acrescente em `DATA.versoes` no `tools/painel-anuncios/index.html`, publique `v/<id>/quiz.*` e republique o painel.
 - **08/10/2026 (7), 17h40**: Painel ganhou o cartão **"Última venda pelo quiz"** (aba Como estamos): mostra a
   versão que vendeu por último e, ao clicar, o quiz inteiro que a cliente fez (resposta de cada tela, tempo
   por tela, % da versão que chegou a cada tela e % que respondeu igual) + linha do tempo até o pagamento.

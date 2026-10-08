@@ -7,6 +7,12 @@ Decisões do Patrik (08/10/2026): o painel fica só no claude.ai; análise 1x ao
 o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprovar o roteiro) e textos de post.
 
 ## O que a página faz
+- **Ajuste do quiz** (grupo do menu): Sugestão quiz, Como está o quiz, Versões, Comparar versões, Marca e Editar
+  textos (antes era a página 1CpgLoG6JcvucRM21TPfiQ). Estilos escopados em `.qz`; dados em `aprovacoes`, `pedidos`,
+  `metricas`. Fonte: `tools/painel-anuncios/index.html`.
+- **Clicou e não comprou**: botão "Já chamei ✓" grava só o id da sessão em `recuperacao_feitos/<id>`; o número no
+  menu conta quem gerou Pix/boleto e ainda não foi chamado. O número de "Otimizar" conta só conversas de
+  campanha/conjunto/anúncio sem resposta.
 - **Meta do painel** (primeira aba, e faixa no topo do Resumo): o Patrik grava a meta em `config/meta`
   (lucro, faturamento ou vendas; valor; prazo em dias; início; escopo "negócio todo" ou "só Efeito Lipo").
   A página mostra % da meta × % do prazo, faturamento, lucro, gasto, vendas, projeção no fim do prazo e "a conta de
