@@ -107,6 +107,15 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 
 Uma linha por sessão: data, o que foi feito e o que ficou pendente. Mais recente em cima.
 
+- **08/10/2026 (5)**: Painel de revisão ganhou o bloco **"T1 antes × agora"** (dois celulares lado a lado,
+  versão anterior = `be87247`, atual = `73c16ae`) com motivo, dados e botões de decisão (coleção
+  `aprovacoes`, doc `t1-botao-foto`). Saiu o bloco "Para aprovar" (os 2 itens já aprovados e aplicados).
+  **Achado:** a conta que motivou subir o botão (57 visitas, 84% parando na T1) incluía 27 cliques da
+  **coluna da direita do Facebook** (revisão do Meta) e 6 "Others". Só com feed/stories, a T1 anterior
+  passava **42%** (10 de 24), acima da régua de 32%. Depois da mudança: 5 visitas (2 coluna direita,
+  1 prévia `{{placement}}`, 2 reais), 0 passaram. Pouco dado: decidir em 11/10 com ~30 visitas reais e
+  tirar a coluna da direita também da campanha "08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D".
+  Para refazer uma comparação: `COMPARAR=<commit> bash tools/quiz-revisao/build.sh` (texto em `comparar.html`).
 - **08/10/2026 (4)**: Proposta aprovada no painel de anúncios (T1): botão "Quero descobrir meu perfil" subiu para logo abaixo do título e de "Descubra o porquê em 2 minutos"; o parágrafo longo saiu; a foto de antes e depois foi trocada pela foto da Laura (menor, abaixo do botão); as 3 linhas de ✓ ficaram depois da foto. Sem mudança de preço, oferta ou checkout. PR aberto, aguardando "publicar".
 - **08/10/2026 (3)**: Patrik aprovou pelos botões da página de revisão (coleção `aprovacoes`): (1) regra dos perfis da T25 confirmada, e a anotação "aguardando aprovação" saiu do `_data.ts`; (2) frase abaixo do título da T26 trocada para "Com base nas suas respostas, você vai receber um roteiro de 21 dias para voltar ao eixo — treinos em casa, sem dieta maluca, sem passar fome e sem as canetinhas caras." (igual para todas, sem citar peso nem "até 8kg"). Aba Quiz do painel passou a contar só desde 08/10 08:10 (PR #9).
 - **08/10/2026 (2)**: Patrik aprovou tudo ("aprovo tudo, pode publicar"): regra dos perfis da T25, título da T15 e as 7 linhas da T26 — título "Seu roteiro de 21 dias para voltar ao eixo", faixa Semana 1 Limpeza · Semana 2 Ativação Metabólica · Semana 3 Queima Total, quadro antes/depois com 3 linhas (recomeço, deslize, treino que cabe na rotina; a linha da inflamação saiu) e botão final "Quero começar meu roteiro de 21 dias". Preço, bônus, garantia, cronômetro e links iguais. Publicado via PR para a `main`.

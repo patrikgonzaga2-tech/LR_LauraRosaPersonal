@@ -10,26 +10,44 @@ export NODE_PATH="$PWD/node_modules"  # os arquivos do quiz acham o react daqui
 rm -rf out && mkdir -p out/images
 
 # 1) JS do quiz (React + componentes do app, next/image trocado por <img>)
-./node_modules/.bin/esbuild entry.jsx --bundle --minify --format=iife --jsx=automatic \
-  --alias:@quiz="$QUIZ" --alias:next/image="$PWD/image.jsx" \
-  --define:process.env.NODE_ENV='"production"' --log-level=warning --outfile=out/quiz.js
-# Caminho das imagens: "/images/<nome com acento>" -> "images/<nome-sem-acento>"
-python3 - out/quiz.js <<'PY'
+bundle_js() {  # $1 = pasta do quiz, $2 = arquivo de saída, $3 = prefixo das imagens
+  ./node_modules/.bin/esbuild entry.jsx --bundle --minify --format=iife --jsx=automatic \
+    --alias:@quiz="$1" --alias:next/image="$PWD/image.jsx" \
+    --define:process.env.NODE_ENV='"production"' --log-level=warning --outfile="$2"
+  # Caminho das imagens: "/images/<nome com acento>" -> "<prefixo>images/<nome-sem-acento>"
+  python3 - "$2" "$3" <<'PY'
 import re,sys
-p=sys.argv[1];s=open(p).read()
+p,pre=sys.argv[1],sys.argv[2];s=open(p).read()
 s,n=re.subn(r"`/images/\$\{encodeURIComponent\((\w+)\)\}`",
-  r'"images/"+\1.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^A-Za-z0-9.]+/g,"-")',s)
+  lambda m:'"'+pre+'images/"+'+m.group(1)+'.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^A-Za-z0-9.]+/g,"-")',s)
 if n!=1: sys.exit(f"ERRO: esperava 1 caminho de imagem no bundle, achei {n}. O enc() de _data.ts mudou?")
 open(p,'w').write(s)
 PY
+}
+bundle_js "$QUIZ" out/quiz.js ""
 
 # 2) CSS (Tailwind lendo as classes do quiz + globals.css do site)
-{ echo "@import 'tailwindcss' source(none);"; echo "@source \"$QUIZ\";"
-  sed -n '2,$p' "$ROOT/app/globals.css"
-  echo "html:root{--font-display:'Bricolage Grotesque',system-ui,sans-serif;--font-body:'DM Sans',system-ui,sans-serif}"; } > out/.quiz.in.css
-./node_modules/.bin/tailwindcss -i out/.quiz.in.css -o out/quiz.css --minify 2>/dev/null
-rm out/.quiz.in.css
+build_css() {  # $1 = pasta do quiz, $2 = arquivo de saída
+  { echo "@import 'tailwindcss' source(none);"; echo "@source \"$1\";"
+    sed -n '2,$p' "$ROOT/app/globals.css"
+    echo "html:root{--font-display:'Bricolage Grotesque',system-ui,sans-serif;--font-body:'DM Sans',system-ui,sans-serif}"; } > out/.quiz.in.css
+  ./node_modules/.bin/tailwindcss -i out/.quiz.in.css -o "$2" --minify 2>/dev/null
+  rm out/.quiz.in.css
+}
+build_css "$QUIZ" out/quiz.css
 cp quiz.html out/quiz.html
+
+# 2b) Comparação (opcional): COMPARAR=<commit> monta essa versão em out/anterior/,
+#     para o bloco "antes × agora" do painel (texto em comparar.html).
+if [ -n "${COMPARAR:-}" ]; then
+  mkdir -p out/.ant-src out/anterior
+  git -C "$ROOT" archive "$COMPARAR" app/efeito-lipo-quiz | tar -x -C out/.ant-src
+  bundle_js "$PWD/out/.ant-src/app/efeito-lipo-quiz" out/anterior/quiz.js "../"
+  build_css "$PWD/out/.ant-src/app/efeito-lipo-quiz" out/anterior/quiz.css
+  cp quiz.html out/anterior/quiz.html
+  rm -rf out/.ant-src
+  ANTERIOR="$(git -C "$ROOT" log -1 --date=format:%d/%m/%Y --format='%h de %ad' "$COMPARAR")"
+fi
 
 # 3) Imagens usadas pelo quiz (renomeadas sem acento/espaço)
 python3 - "$QUIZ/_data.ts" "$ROOT/public/images" out/images <<'PY'
@@ -47,11 +65,15 @@ BR="$(git rev-parse --abbrev-ref HEAD)"
 VERSAO="$BR · $(git log -1 --date=format:%d/%m/%Y --format='%h de %ad' -- "$QUIZ")"
 COPY="$(git log -1 --date=format:%d/%m/%Y --format='%h de %ad' -- "$QUIZ/_data.ts")"
 [ -z "$(git status --porcelain -- "$QUIZ")" ] || VERSAO="$VERSAO + edições não commitadas"
-python3 - "$VERSAO" "$COPY" <<'PY'
+ANTERIOR="${ANTERIOR:-}" python3 - "$VERSAO" "$COPY" <<'PY'
 import sys
 v,c=sys.argv[1:]
 scr=open('out/.screens.json').read().strip().replace('</','<\\/')
 body=open('page-body.html').read().replace('__SCREENS__',scr).replace('__VERSAO__',v).replace('__COPY__',c)
+import os
+ant=os.environ.get('ANTERIOR','')
+cmp=open('comparar.html').read().replace('__ANTERIOR__',ant).replace('__VERSAO__',v) if ant else ''
+body=body.replace('<!--COMPARAR-->',cmp)
 open('out/index.html','w').write(open('page-head.html').read()+body)
 PY
 rm out/.screens.json
@@ -60,5 +82,6 @@ rm out/.screens.json
 python3 -c "
 import os,json;m={f:f for f in ['quiz.html','quiz.js','quiz.css']}
 m.update({'images/'+f:'images/'+f for f in sorted(os.listdir('out/images'))})
+if os.path.isdir('out/anterior'): m.update({'anterior/'+f:'anterior/'+f for f in os.listdir('out/anterior')})
 json.dump(m,open('out/files.json','w'))"
 echo "OK: $(du -sh out | cut -f1) em tools/quiz-revisao/out  |  versão: $VERSAO  |  copy: $COPY"
