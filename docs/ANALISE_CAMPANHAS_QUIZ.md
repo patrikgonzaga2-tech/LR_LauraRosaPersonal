@@ -175,6 +175,12 @@ chega ao resultado; 20% de quem clica compra).
 
 ## 4. Diário
 
+- **08/10/2026**: Com aprovação do Patrik, **tirados Audience Network e coluna direita** do
+  conjunto ABERTO 120251969455150200 (campanha 03/10 → quiz). Ficaram: Facebook (feed, stories,
+  reels, marketplace, vídeo in-stream, busca, perfil, notificações), Instagram (todos), WhatsApp
+  Status e Threads. Público, idade (18–65, BR), Advantage+ e orçamento iguais. O Meta pausou o
+  conjunto ao salvar; foi reativado em seguida (ACTIVE). Conferir em 09/10 se as sessões do quiz
+  pararam de vir com `utm_medium=an` e se a taxa de "passou da T1" subiu.
 - **07/10/2026 (2)**: Rodado o "status de hoje" + diagnóstico (seção 3.1). Gasto hoje R$ 47,48
   (03/10 quiz R$ 20,20; 01/10 WhatsApp R$ 27,28). Quiz: 36 sessões Meta → 3 passaram da T1 →
   1 clicou comprar → 0 vendas. Greenn hoje: 0 Efeito Lipo; 4 Comunidade Anual aprovadas
