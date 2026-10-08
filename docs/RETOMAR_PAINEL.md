@@ -49,8 +49,16 @@ proposta fica "erro" com "Bloqueado na rotina" e a sessão principal sobe.
 **Meta Ads**: conta 1094091162588572 · página Corpo Feliz 103726576029315 · IG 17841402314302518 · pixel da LP
 28090278990632923 (venda = evento personalizado "Compra Realizada"; checkout = "Início do Checkout") ·
 `client_conversation_id` = Lr8PainelAds2026Ok7Q · link dos anúncios:
-`https://www.laurarosapersonal.com/efeito-lipo-quiz?utm_source=FB&utm_campaign={{campaign.name}}&utm_medium={{placement}}&utm_term={{adset.id}}&utm_content={{ad.name}}`.
+`https://www.laurarosapersonal.com/efeito-lipo-quiz?utm_source=FB&utm_medium={{placement}}&utm_campaign={{campaign.name}}&utm_content={{ad.name}}&utm_term={{adset.id}}`.
 Imagens para o Meta só por link público (raw.githubusercontent.com da branch).
+
+**Regras fixas para subir no Meta** (Patrik, 08/10; detalhes em docs/ANALISE_CAMPANHAS_QUIZ.md 3.2):
+1. Anunciante: beneficiário e pagador **CORPO FELIZ LTDA** em todo conjunto (`dsa_beneficiary`/`dsa_payor`).
+2. Localização: `geo_locations {"countries":["BR"],"location_types":["home","recent"]}` (sem isso dá o erro #1870194).
+3. UTMs exatamente: `utm_source=FB&utm_medium={{placement}}&utm_campaign={{campaign.name}}&utm_content={{ad.name}}&utm_term={{adset.id}}`.
+4. Complemento do navegador do WhatsApp, número final 0948, em todo anúncio. A API não tem esse campo:
+   ligar no Gerenciador (Anúncio → Destino → Destinos personalizados → Editar → Complementos do navegador → WhatsApp).
+5. Editar conjunto ativo faz o Meta pausar o conjunto: reativar logo depois e conferir.
 
 **Subiu hoje (08/10)**
 - Criativo H "Recomeçar não é voltar do zero": anúncios 120252045444650200 (feed) e 120252045446350200
@@ -64,6 +72,9 @@ todas as origens, sem a Comunidade), 01/10 a 31/10. Em 08/10: 10 itens vendidos,
 6 de anúncio, gasto no Meta R$ 350 → lucro −R$ 118.
 
 **Pendências**
+- Conjunto "STORIES E REELS · MULHERES 25-55 · IG + FB — Cópia" (120252039206240200) ficou pausado em 08/10 à
+  noite (o Meta pausou ao gravar CORPO FELIZ LTDA e a reativação foi barrada): reativar com o ok do Patrik.
+- Ligar o complemento do WhatsApp (0948) nos anúncios ativos, no Gerenciador.
 - 11/10: conferir T1 v6 (manter ou voltar), criativo H e remarketing.
 - IA de recuperação (`docs/IA_RECUPERACAO_FAQ.md`): confirmar acesso de 60 dias, faixa de idade e se a área de
   membros tem Guia Alimentar, Áudios e Planner (a oferta promete).
