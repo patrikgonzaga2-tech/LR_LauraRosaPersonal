@@ -585,7 +585,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
 
         {/* Resultado personalizado */}
         <h1 className="font-display text-center mt-5" style={{ fontSize: 'clamp(25px,5.4vw,38px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
-          Seu Protocolo Efeito Lipo<br /><span style={{ color: 'var(--o)' }}>21 dias está pronto!</span>
+          Seu roteiro de 21 dias<br /><span style={{ color: 'var(--o)' }}>para voltar ao eixo</span>
         </h1>
         <p className="text-center" style={{ fontSize: 15.5, lineHeight: 1.6, color: 'var(--sub)', maxWidth: 480, margin: '14px auto 0' }}>
           {perfil.hasPeso
@@ -593,6 +593,15 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
             : <>Com base no seu perfil, você vai receber tudo que precisa para perder até 8kg em 21 dias — sem academia, sem passar fome e sem as canetinhas caras.</>}
         </p>
 
+        {/* As 3 semanas do roteiro */}
+        <div className="grid grid-cols-3 gap-2 mx-auto mt-6" style={{ maxWidth: 420 }}>
+          {SALES.semanas.map(([sem, fase]) => (
+            <div key={sem} className="rounded-xl p-3 text-center" style={{ background: 'rgba(245,113,0,.06)', border: '1px solid rgba(245,113,0,.2)' }}>
+              <div className="font-display" style={{ fontSize: 13, fontWeight: 800, color: 'var(--od)' }}>{sem}</div>
+              <div style={{ fontSize: 12.5, lineHeight: 1.35, color: 'var(--ink)', marginTop: 2 }}>{fase}</div>
+            </div>
+          ))}
+        </div>
         <div className="mt-7"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow dataLabel="topo">Quero meu protocolo agora</CtaButton></a></div>
 
         {/* Antes / Depois */}
@@ -676,7 +685,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
         {/* CTA final */}
         <div className="text-center mt-9">
           <p className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>Protocolo Efeito Lipo 21 <span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span> → <span style={{ color: 'var(--o)' }}>R$ 37 à vista</span></p>
-          <div className="mt-4"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow variant="green" dataLabel="final">Garantir minha vaga agora</CtaButton></a></div>
+          <div className="mt-4"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow variant="green" dataLabel="final">Quero começar meu roteiro de 21 dias</CtaButton></a></div>
           <p style={{ fontSize: 12, color: 'var(--mute)', marginTop: 12, lineHeight: 1.6 }}>🔒 Pagamento 100% seguro · Acesso imediato após confirmação · Pix ou cartão</p>
         </div>
 

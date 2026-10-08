@@ -521,10 +521,14 @@ export const RESULT_MARCOS = [
 
 export const SALES = {
   beforeAfter: [
-    ['Barriga inchada que não sai de jeito nenhum', 'Barriga seca e desinchada'],
-    ['Treina, se esforça — e a balança não move', 'O mesmo esforço começa a gerar resultado real'],
-    ['Acorda cansada e retendo líquido', 'Corpo leve, roupas mais largas desde a 1ª semana'],
-    ['Sente que o problema é falta de força de vontade', 'Entende que era a inflamação — e resolve a causa'],
+    ['Começa na segunda e para na sexta', 'Segue um roteiro de 21 dias que cabe na sua semana'],
+    ['Um deslize vira "já estraguei"', 'Um dia difícil é só um dia, e você retoma no próximo passo'],
+    ['Treino longo que não cabe na rotina', 'Treinos em casa para encaixar na rotina que você tem'],
+  ],
+  semanas: [
+    ['Semana 1', 'Limpeza'],
+    ['Semana 2', 'Ativação Metabólica'],
+    ['Semana 3', 'Queima Total'],
   ],
   gallery: [
     { img: 'priscila', alt: 'Priscila — resultado em 7 dias', tag: '7 dias' },
