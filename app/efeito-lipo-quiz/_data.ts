@@ -176,7 +176,7 @@ export type Step =
   | { kind: 'laura'; id: 'laura'; progress: number }
   | { kind: 'prova'; id: 'prova'; progress: number }
   | { kind: 'insight'; id: 'insight'; progress: number }
-  | { kind: 'loading'; id: string; progress: number; title: string; body: string; ticks: string[]; bg: ImgKey; carousel?: { caption: string; images: ImgKey[] } }
+  | { kind: 'loading'; id: string; progress: number; title: string; body: string; ticks: string[]; bg?: ImgKey; carousel?: { caption: string; images: ImgKey[] } }
   | { kind: 'input'; id: 'altura' | 'peso'; progress: number; headline: string; sub: string; placeholder: string; unit: string; min: number; max: number }
   | { kind: 'result'; id: 'result'; progress: number }
   | { kind: 'sales'; id: 'sales'; progress: number }
@@ -216,14 +216,14 @@ export const STEPS: Step[] = [
 
   // T5
   {
-    kind: 'single', id: 'tempo-tentando', progress: 20, layout: 'plain', cols: 1,
-    headline: 'Há quanto tempo você está tentando emagrecer?',
+    kind: 'single', id: 'recomecos', progress: 20, layout: 'chips', cols: 2,
+    headline: 'Quantas vezes você já recomeçou?',
     sub: 'Seja sincera. Essa resposta é fundamental para entendermos onde o seu metabolismo está travado.',
     options: [
-      { id: 'recente', emoji: '⏰', label: 'Comecei a tentar recentemente', sub: 'Menos de 6 meses' },
-      { id: 'algum', emoji: '📅', label: 'Faz algum tempo', sub: 'Entre 6 meses e 2 anos' },
-      { id: 'muito', emoji: '⏳', label: 'Faz muito tempo', sub: 'Mais de 3 anos tentando' },
-      { id: 'tudo', emoji: '🔄', label: 'Já tentei absolutamente tudo', sub: 'E nada funcionou de verdade' },
+      { id: '1-2', label: 'Uma ou duas vezes', emoji: '🌱', tint: '#1C873C' },
+      { id: 'varias', label: 'Várias vezes', emoji: '🔁', tint: '#F57100' },
+      { id: 'perdi-conta', label: 'Já perdi a conta', emoji: '🔄', tint: '#C54E00' },
+      { id: 'comecando', label: 'Ainda estou tentando começar', emoji: '✨', tint: '#004811' },
     ],
   },
 
@@ -312,14 +312,17 @@ export const STEPS: Step[] = [
 
   // T13
   {
-    kind: 'single', id: 'periodo', progress: 60, layout: 'plain', cols: 1,
-    headline: 'Em qual período do dia você mais perde o controle?',
+    kind: 'single', id: 'dia-dificil', progress: 60, layout: 'chips', cols: 2,
+    headline: 'Em que dia da semana fica mais difícil manter sua rotina?',
     sub: 'Saber quando você cede ajuda a criar estratégias preventivas. O Efeito Lipo tem abordagem específica para cada momento crítico.',
     options: [
-      { id: 'manha', emoji: '☀️', label: 'Manhã', sub: 'Pulo o café ou como demais no lanche' },
-      { id: 'tarde', emoji: '🌤️', label: 'Tarde', sub: 'Entre o almoço e o jantar é onde eu desando' },
-      { id: 'noite', emoji: '🌙', label: 'Noite', sub: 'Depois do jantar não paro de beliscar' },
-      { id: 'dia-todo', emoji: '🎡', label: 'O dia inteiro', sub: 'Belisco sem parar em todos os períodos' },
+      { id: 'segunda', label: 'Segunda', emoji: '📅', tint: '#F57100' },
+      { id: 'terca', label: 'Terça', emoji: '📅', tint: '#F57100' },
+      { id: 'quarta', label: 'Quarta', emoji: '📅', tint: '#F57100' },
+      { id: 'quinta', label: 'Quinta', emoji: '📅', tint: '#F57100' },
+      { id: 'sexta', label: 'Sexta', emoji: '📅', tint: '#F57100' },
+      { id: 'fim-de-semana', label: 'Fim de semana', emoji: '🛋️', tint: '#1C873C' },
+      { id: 'sem-dia', label: 'Não tem um dia fixo', emoji: '🔀', tint: '#004811' },
     ],
   },
 
@@ -341,11 +344,10 @@ export const STEPS: Step[] = [
 
   // T16
   {
-    kind: 'loading', id: 'loading-1', progress: 70, bg: 'priscila',
+    kind: 'loading', id: 'loading-1', progress: 70,
     title: 'Analisando suas respostas…',
     body: 'Aguarde enquanto o sistema cruza seus dados com o banco de mais de 5.000 transformações reais para montar o seu Protocolo Efeito Lipo personalizado.',
     ticks: ['Verificando seu perfil metabólico…', 'Identificando seus pontos de travamento…', 'Calculando seu potencial de resultado…'],
-    carousel: { caption: 'Meu próprio resultado com o Efeito Lipo', images: ['antesDepois', 'heroResult'] },
   },
 
   // T17
@@ -436,7 +438,7 @@ export const STEPS: Step[] = [
 
   // T24
   {
-    kind: 'loading', id: 'loading-2', progress: 93, bg: 'suhene',
+    kind: 'loading', id: 'loading-2', progress: 93,
     title: 'Montando o seu Protocolo Efeito Lipo…',
     body: 'Quase lá. Estamos usando suas respostas para personalizar as três fases do protocolo — Limpeza, Ativação Metabólica e Queima Total — de acordo com o seu perfil.',
     ticks: ['Calculando sua fase de limpeza ideal…', 'Ajustando a ativação metabólica pro seu ritmo…', 'Estimando seu potencial de resultado em 21 dias…'],
@@ -468,22 +470,46 @@ export const PROVA_GRID: { img: ImgKey; alt: string }[] = [
 ]
 
 export const INSIGHT = {
-  headline:
-    'Você sabia que 90% das mulheres que não conseguem emagrecer têm o metabolismo travado pela inflamação — e não por falta de disciplina?',
-  intro: 'A maioria das mulheres passa anos fazendo isso:',
+  headline: 'Talvez você se reconheça neste ciclo',
+  intro: '',
   ruins: [
-    'Cortando calorias — e o corpo entra em modo de sobrevivência e retém mais',
-    'Treinando pesado — sem antes desligar o botão da inflamação',
-    'Tomando suplemento — sem tratar a causa raiz',
-    'Usando canetinha — perde peso, para de usar, volta tudo em 12 meses',
+    'SEGUNDA — Agora vai. Vou fazer tudo certinho.',
+    'QUARTA — A rotina apertou e já ficou difícil manter o ritmo.',
+    'SEXTA — Saí do combinado. Parece que perdi a semana.',
+    'FIM DE SEMANA — Depois eu compenso e recomeço.',
   ],
-  bom: 'O Efeito Lipo funciona diferente: desinchar primeiro. Ativar o metabolismo depois. Queimar no piloto automático por último.',
-  fecho: 'Essa ordem muda tudo.',
+  bom: 'Quando o plano depende de fazer tudo perfeitamente, qualquer imprevisto pode parecer motivo para desistir. O Efeito Lipo 21D propõe começar com uma rotina de treinos em casa e foco em desinchar — sem dieta maluca e sem exigir perfeição.',
+  fecho: '',
   options: [
     { id: 'faz-sentido', emoji: '✅', label: 'Faz sentido — nunca tinha pensado assim' },
     { id: 'novidade', emoji: '💡', label: 'É novidade pra mim — quero entender melhor' },
   ],
 }
+
+// ── T25 — Perfil de recomeço ────────────────────────────────────────
+// REGRA PROPOSTA (aguardando aprovação do Patrik): o perfil é escolhido pelas
+// respostas, conferindo de cima para baixo. O dia da T13 NÃO entra na regra.
+//  1. Emocional  — sabotador (T12) = ansiedade ou noite
+//  2. Sem Tempo  — rotina (T6) = corrida ou casa, ou tempo por dia (T20) = 10–15 min
+//  3. Tudo ou Nada — alimentação (T11) = exagero ou dieta
+//  4. Cansada de Recomeçar — todas as outras
+export type PerfilRecomeco = 'emocional' | 'sem-tempo' | 'tudo-ou-nada' | 'cansada'
+
+export const PERFIS: Record<PerfilRecomeco, { nome: string; passo: string }> = {
+  'emocional': { nome: 'A Emocional', passo: 'Um passo possível, sem transformar um dia difícil em desistência.' },
+  'sem-tempo': { nome: 'A Sem Tempo', passo: 'Treinos em casa para encaixar na rotina que você tem.' },
+  'tudo-ou-nada': { nome: 'A Tudo ou Nada', passo: 'Consistência possível vale mais do que perfeição.' },
+  'cansada': { nome: 'A Cansada de Recomeçar', passo: 'Você não precisa esperar segunda-feira para dar o próximo passo.' },
+}
+
+export function perfilRecomeco(a: Record<string, string | string[]>): PerfilRecomeco {
+  if (a['sabotador'] === 'ansiedade' || a['sabotador'] === 'noite') return 'emocional'
+  if (a['rotina'] === 'corrida' || a['rotina'] === 'casa' || a['tempo-dia'] === '10-15') return 'sem-tempo'
+  if (a['alimentacao'] === 'exagero' || a['alimentacao'] === 'dieta') return 'tudo-ou-nada'
+  return 'cansada'
+}
+
+export const ROTEIRO_21 = 'Um roteiro de 21 dias — não uma promessa de resultado.'
 
 export const RESULT_MARCOS = [
   { dia: 'Dia 01', fase: 'Ponto de partida', txt: 'Corpo inflamado — antes da limpeza', y: 8 },

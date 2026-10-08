@@ -2,7 +2,7 @@ import Script from 'next/script'
 import QuizApp from './_quiz'
 
 export const metadata = {
-  title: 'Avaliação gratuita — Efeito Lipo 21',
+  title: 'Descubra seu perfil de recomeço + plano em casa',
   description:
     'Faça a avaliação gratuita e descubra como ativar o Efeito Lipo e queimar até 8kg em 21 dias — sem academia e sem canetinhas caras.',
   openGraph: {
