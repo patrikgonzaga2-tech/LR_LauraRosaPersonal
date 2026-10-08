@@ -1,18 +1,30 @@
-<div class="wrap">
+<div class="app">
+  <aside>
+    <div class="brand">Ajuste do <span>Quiz</span><small>De Volta ao Eixo · versões e textos</small></div>
+    <nav role="tablist" aria-label="Seções do painel">
+      <div class="navlbl">Acompanhar</div>
+      <button role="tab" data-tab="estamos" aria-selected="true">Como estamos</button>
+      <button role="tab" data-tab="versoes" aria-selected="false">Versões <span class="badge" id="nb-versoes">–</span></button>
+      <button role="tab" data-tab="comparar" aria-selected="false">Comparar</button>
+      <div class="navlbl">Ajustar</div>
+      <button role="tab" data-tab="marca" aria-selected="false">Marca <span class="badge" id="nb-marca">–</span></button>
+      <button role="tab" data-tab="editar" aria-selected="false">Editar textos <span class="badge" id="nb-fila">0</span></button>
+    </nav>
+    <div class="side-foot"><span>Quiz no ar: <b>__VERSAO__</b></span><span>Copy: <b>__COPY__</b></span><span>Mudanças no site: <b>só com sua aprovação</b></span></div>
+  </aside>
+  <main><div class="inner wrap">
   <header class="top">
     <div style="display:grid;gap:6px">
       <div class="lbl">laurarosapersonal.com/efeito-lipo-quiz</div>
-      <h1>Quiz Efeito Lipo <span>em revisão</span></h1>
-    </div>
-    <div class="meta">
-      <span>Versão: <code>__VERSAO__</code></span>
-      <span>Copy (<code>_data.ts</code>): <code>__COPY__</code></span>
+      <h1>Ajuste do Quiz <span>De Volta ao Eixo</span></h1>
     </div>
   </header>
-  <p class="notice">À esquerda, o quiz como a cliente vê, montado a partir do código mais recente. Navegue pelas telas, responda e vá até a oferta. À direita, os textos da mesma tela: edite o que quiser mudar e clique em <b>Salvar pedidos</b>. O Claude lê a fila, aplica no código e publica quando você pedir. Esta cópia não grava respostas no banco, não dispara pixel e o botão de compra só mostra o link do checkout.</p>
+  <p class="notice">Aqui a gente acompanha o quiz versão por versão: como está indo, o que mudou em cada versão e por quê, e o que vem depois. As cópias do quiz neste painel não gravam respostas no banco, não disparam pixel e o botão de compra só mostra o link do checkout.</p>
 
-<!--COMPARAR-->
+<!--PAINEL-->
 
+  <section class="tab" id="editar" data-tab="editar" hidden style="display:grid;gap:18px">
+  <div style="display:grid;gap:6px"><div class="lbl">Editar</div><h2 style="font:800 clamp(19px,2.4vw,24px)/1.2 var(--f-display);margin:0">Textos do quiz no ar e fila de pedidos</h2><p class="notice">À esquerda, o quiz no ar. À direita, os textos da mesma tela: edite e clique em Salvar pedidos. Eu leio a fila, aplico no código e publico quando você pedir.</p></div>
   <div class="grid">
     <section class="pub" aria-label="Versão pública">
       <div class="lbl">Público</div>
@@ -48,6 +60,8 @@
       </div>
     </section>
   </div>
+  </section>
+  </div></main>
 </div>
 <script>
 const SCREENS = __SCREENS__;
@@ -170,6 +184,7 @@ function renderQueue() {
   const q = $('queue'); q.textContent = '';
   const items = [...saved.values()].sort((a, b) => a.tela - b.tela || String(a.key).localeCompare(b.key));
   $('qcount').textContent = items.length ? `${items.length}` : '';
+  const nb = document.getElementById('nb-fila'); if (nb) nb.textContent = items.filter(d => d.status !== 'aplicado').length;
   if (!items.length) { const p = document.createElement('p'); p.className = 'empty'; p.textContent = 'Nenhum pedido salvo ainda. Edite um texto e clique em Salvar pedidos.'; q.appendChild(p); return }
   items.forEach(d => {
     const row = document.createElement('div'); row.className = 'qitem';
@@ -185,6 +200,23 @@ function renderQueue() {
   });
 }
 
+
+// ── Abas ─────────────────────────────────────────────────────────
+(function () {
+  const btns = [...document.querySelectorAll('.app nav [data-tab]')];
+  const show = (id, scroll) => {
+    if (!btns.some(b => b.dataset.tab === id)) id = 'estamos';
+    btns.forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === id)));
+    document.querySelectorAll('section.tab').forEach(t => { t.hidden = t.dataset.tab !== id });
+    try { localStorage.setItem('ajuste_tab', id) } catch {}
+    if (scroll) window.scrollTo({ top: 0 });
+  };
+  window.irPara = show;
+  btns.forEach(b => b.onclick = () => show(b.dataset.tab, true));
+  let first = (location.hash || '').slice(1);
+  if (!first) { try { first = localStorage.getItem('ajuste_tab') || '' } catch {} }
+  show(first || 'estamos');
+})();
 renderSelect(); go(cur);
 (async () => {
   const c = window.claude;

@@ -1,7 +1,7 @@
 # Quiz Efeito Lipo — revisão e alterações
 
 Página pública: https://www.laurarosapersonal.com/efeito-lipo-quiz
-Página de revisão (quiz funcionando + textos editáveis + fila de pedidos):
+Painel **Ajuste do Quiz** (números por versão, histórico de versões, comparador, marca, edição de textos e fila de pedidos):
 **https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ** (privada do Patrik; compartilhar pelo menu Share)
 
 ---
@@ -51,6 +51,9 @@ Não altere nada ainda. Espere eu dizer o que fazer.
 6. Com o seu ok: commit + push na branch e Pull Request para a `main`.
 7. Depois do merge na `main` o site é atualizado. Confira o link público.
 8. O Claude marca os pedidos como `aplicado` na fila e escreve uma linha no Diário (seção 5).
+9. **Toda versão nova ganha um cartão no painel:** acrescentar no fim de `tools/quiz-revisao/versoes.json`
+   a versão com data e hora em que foi ao ar (horário de Brasília), commit do merge, PR, o que mudou,
+   motivo e sugestão, e rodar o build. Atualizar também a sugestão da versão anterior, se mudou.
 
 ### D. Regra de pagamento (CLAUDE.md)
 Preço, parcelamento, texto de oferta, order bump, upsell e links de checkout (Greenn/Hotmart):
@@ -84,6 +87,14 @@ As chaves da fila de pedidos apontam para o lugar no `_data.ts`:
 
 Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build do site.
 
+- Abas do painel: **Como estamos** (números da versão no ar × melhor versão anterior, gráfico de quem passa
+  da T1 por versão, botão "Atualizar números agora", que consulta o Supabase com o conector do Patrik),
+  **Versões** (um cartão por versão, com decisão salva em `aprovacoes/ver-<id>`), **Comparar** (duas
+  versões quaisquer lado a lado, montadas do commit de cada uma), **Marca** (onde ainda aparece "Efeito
+  Lipo", com `marca.json`; "Pedir troca" manda para a fila) e **Editar textos** (fila `pedidos`).
+  Cores iguais às do Painel Volta ao Eixo (tema claro único).
+- "Visitas reais" = sessões vindas do Meta sem coluna da direita (revisão do Meta), "Others", prévias
+  `{{placement}}` e Audience Network. A última foto dos números fica em `metricas/ultima`.
 - `bash tools/quiz-revisao/build.sh`: monta `tools/quiz-revisao/out/` a partir do código atual
   do quiz (instala as dependências na primeira vez). O cabeçalho da página mostra a branch e o
   commit usados.
@@ -91,7 +102,7 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 - Republicar no mesmo link: Artifact publish com `url` = link acima,
   `file_path` = `tools/quiz-revisao/out/index.html`, `root` = `tools/quiz-revisao/out`,
   `files` = conteúdo de `out/files.json` (as imagens só precisam ir quando mudarem).
-  Não passe `capabilities`: a página já tem `db` + `user` e isso se mantém.
+  Não passe `capabilities`: a página já tem `db` + `user` + `mcp` (Supabase `execute_sql`) e isso se mantém.
 - Fila: `ArtifactData list` na coleção `pedidos`. Cada doc tem `key`, `tela`, `campo`,
   `original`, `proposto`, `status` (`pendente` → `aplicado`). Depois de aplicar, use
   `update` com `{status: "aplicado"}` (passe o `if_version` lido).
@@ -107,6 +118,10 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 
 Uma linha por sessão: data, o que foi feito e o que ficou pendente. Mais recente em cima.
 
+- **08/10/2026 (6), 17h15**: Patrik decidiu **manter a v6** (botão no topo + foto da Laura) e reavaliar em
+  11/10. O painel virou **Ajuste do Quiz**, com abas, cores do Painel Volta ao Eixo, 7 versões (v0 original
+  → v6) com data, hora, motivo, sugestão e números, comparador A/B, seção de Marca (17 lugares com "Efeito
+  Lipo", 3 opções de estratégia, recomendação A) e números ao vivo pelo Supabase. Saiu o bloco "antes × agora".
 - **08/10/2026 (5)**: Painel de revisão ganhou o bloco **"T1 antes × agora"** (dois celulares lado a lado,
   versão anterior = `be87247`, atual = `73c16ae`) com motivo, dados e botões de decisão (coleção
   `aprovacoes`, doc `t1-botao-foto`). Saiu o bloco "Para aprovar" (os 2 itens já aprovados e aplicados).

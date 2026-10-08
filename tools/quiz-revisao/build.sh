@@ -37,17 +37,16 @@ build_css() {  # $1 = pasta do quiz, $2 = arquivo de saída
 build_css "$QUIZ" out/quiz.css
 cp quiz.html out/quiz.html
 
-# 2b) Comparação (opcional): COMPARAR=<commit> monta essa versão em out/anterior/,
-#     para o bloco "antes × agora" do painel (texto em comparar.html).
-if [ -n "${COMPARAR:-}" ]; then
-  mkdir -p out/.ant-src out/anterior
-  git -C "$ROOT" archive "$COMPARAR" app/efeito-lipo-quiz | tar -x -C out/.ant-src
-  bundle_js "$PWD/out/.ant-src/app/efeito-lipo-quiz" out/anterior/quiz.js "../"
-  build_css "$PWD/out/.ant-src/app/efeito-lipo-quiz" out/anterior/quiz.css
-  cp quiz.html out/anterior/quiz.html
-  rm -rf out/.ant-src
-  ANTERIOR="$(git -C "$ROOT" log -1 --date=format:%d/%m/%Y --format='%h de %ad' "$COMPARAR")"
-fi
+# 2b) Versões do histórico (versoes.json): cada uma montada do seu commit em out/v/<id>/,
+#     para o comparador e os cartões do painel.
+python3 -c "import json;[print(v['id'],v['commit']) for v in json.load(open('versoes.json'))['versoes']]" | while read -r vid vcommit; do
+  mkdir -p "out/.src-$vid" "out/v/$vid"
+  git -C "$ROOT" archive "$vcommit" app/efeito-lipo-quiz | tar -x -C "out/.src-$vid"
+  bundle_js "$PWD/out/.src-$vid/app/efeito-lipo-quiz" "out/v/$vid/quiz.js" "../../"
+  build_css "$PWD/out/.src-$vid/app/efeito-lipo-quiz" "out/v/$vid/quiz.css"
+  cp quiz.html "out/v/$vid/quiz.html"
+  rm -rf "out/.src-$vid"
+done
 
 # 3) Imagens usadas pelo quiz (renomeadas sem acento/espaço)
 python3 - "$QUIZ/_data.ts" "$ROOT/public/images" out/images <<'PY'
@@ -65,15 +64,14 @@ BR="$(git rev-parse --abbrev-ref HEAD)"
 VERSAO="$BR · $(git log -1 --date=format:%d/%m/%Y --format='%h de %ad' -- "$QUIZ")"
 COPY="$(git log -1 --date=format:%d/%m/%Y --format='%h de %ad' -- "$QUIZ/_data.ts")"
 [ -z "$(git status --porcelain -- "$QUIZ")" ] || VERSAO="$VERSAO + edições não commitadas"
-ANTERIOR="${ANTERIOR:-}" python3 - "$VERSAO" "$COPY" <<'PY'
+python3 - "$VERSAO" "$COPY" <<'PY'
 import sys
 v,c=sys.argv[1:]
 scr=open('out/.screens.json').read().strip().replace('</','<\\/')
 body=open('page-body.html').read().replace('__SCREENS__',scr).replace('__VERSAO__',v).replace('__COPY__',c)
-import os
-ant=os.environ.get('ANTERIOR','')
-cmp=open('comparar.html').read().replace('__ANTERIOR__',ant).replace('__VERSAO__',v) if ant else ''
-body=body.replace('<!--COMPARAR-->',cmp)
+esc=lambda t: t.strip().replace('</','<\\/')
+painel=open('painel.html').read().replace('__VERSOES__',esc(open('versoes.json').read())).replace('__MARCA__',esc(open('marca.json').read()))
+body=body.replace('<!--PAINEL-->',painel)
 open('out/index.html','w').write(open('page-head.html').read()+body)
 PY
 rm out/.screens.json
@@ -82,6 +80,6 @@ rm out/.screens.json
 python3 -c "
 import os,json;m={f:f for f in ['quiz.html','quiz.js','quiz.css']}
 m.update({'images/'+f:'images/'+f for f in sorted(os.listdir('out/images'))})
-if os.path.isdir('out/anterior'): m.update({'anterior/'+f:'anterior/'+f for f in os.listdir('out/anterior')})
+m.update({f'v/{d}/{f}':f'v/{d}/{f}' for d in sorted(os.listdir('out/v')) for f in sorted(os.listdir(f'out/v/{d}'))})
 json.dump(m,open('out/files.json','w'))"
 echo "OK: $(du -sh out | cut -f1) em tools/quiz-revisao/out  |  versão: $VERSAO  |  copy: $COPY"
