@@ -588,9 +588,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
           Seu roteiro de 21 dias<br /><span style={{ color: 'var(--o)' }}>para voltar ao eixo</span>
         </h1>
         <p className="text-center" style={{ fontSize: 15.5, lineHeight: 1.6, color: 'var(--sub)', maxWidth: 480, margin: '14px auto 0' }}>
-          {perfil.hasPeso
-            ? <>Com base no seu perfil, você vai receber tudo para sair dos <strong>{perfil.peso}kg</strong> rumo aos <strong style={{ color: 'var(--g)' }}>~{perfil.meta}kg</strong> em 21 dias — sem academia, sem passar fome e sem as canetinhas caras.</>
-            : <>Com base no seu perfil, você vai receber tudo que precisa para perder até 8kg em 21 dias — sem academia, sem passar fome e sem as canetinhas caras.</>}
+          Com base nas suas respostas, você vai receber um roteiro de 21 dias para voltar ao eixo — treinos em casa, sem dieta maluca, sem passar fome e sem as canetinhas caras.
         </p>
 
         {/* As 3 semanas do roteiro */}

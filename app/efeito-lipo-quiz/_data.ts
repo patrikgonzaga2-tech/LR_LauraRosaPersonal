@@ -487,7 +487,7 @@ export const INSIGHT = {
 }
 
 // ── T25 — Perfil de recomeço ────────────────────────────────────────
-// REGRA PROPOSTA (aguardando aprovação do Patrik): o perfil é escolhido pelas
+// Regra aprovada pelo Patrik em 08/10/2026: o perfil é escolhido pelas
 // respostas, conferindo de cima para baixo. O dia da T13 NÃO entra na regra.
 //  1. Emocional  — sabotador (T12) = ansiedade ou noite
 //  2. Sem Tempo  — rotina (T6) = corrida ou casa, ou tempo por dia (T20) = 10–15 min
