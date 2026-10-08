@@ -35,7 +35,7 @@ function stepLabel(s: Step): string {
     case 'intro': return 'Início'
     case 'laura': return 'Apresentação Laüra'
     case 'prova': return 'Prova social'
-    case 'insight': return 'Insight inflamação'
+    case 'insight': return 'Ciclo do recomeço'
     case 'loading': return 'Carregando'
     case 'input': return s.headline
     case 'result': return 'Resultado'
@@ -98,16 +98,17 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const untilIso = until
   let periodLabel = basePeriodLabel
 
-  // ── Reinício da medição ───────────────────────────────────────────
-  // A contagem da 1ª tela foi corrigida (dwell alinhado ao Meta). Os dados
-  // ANTES deste marco foram coletados com a lógica antiga/inflada — ficam
-  // GUARDADOS no banco, mas o dashboard parte daqui pra refletir só a
-  // contagem nova e limpa. Nada é apagado: pra rever o histórico, basta
-  // recuar (ou remover) este marco. Piso aplicado a todos os períodos.
-  const MEASURE_SINCE = '2026-06-12T16:00:00Z' // 12/06 13h (Brasília)
+  // ── Reinício da medição: quiz novo "De Volta ao Eixo" ─────────────
+  // Em 08/10/2026 o quiz trocou duas perguntas (T5 "Há quanto tempo você está
+  // tentando emagrecer?" → "Quantas vezes você já recomeçou?" e T13 "Em qual
+  // período do dia…" → "Em que dia da semana…") e a copy das telas. A aba parte
+  // do deploy do quiz novo (PR #6, 08/10 08:10 Brasília) para não misturar as
+  // respostas do quiz antigo com as do novo. Nada é apagado: o histórico desde
+  // 12/06 continua no banco — pra rever, basta recuar este marco.
+  const MEASURE_SINCE = '2026-10-08T11:10:00Z' // 08/10 08:10 (Brasília)
   if (new Date(sinceIso) < new Date(MEASURE_SINCE)) {
     sinceIso = MEASURE_SINCE
-    if (range === 'all') periodLabel = 'desde o reinício · 12/06 13h'
+    if (range === 'all') periodLabel = 'quiz novo · desde 08/10 08:10'
   }
 
   // Busca paginada (sbSelectAll): o PostgREST corta cada resposta em 1000
@@ -200,7 +201,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   return (
     <DashboardShell active="quiz">
-      <PeriodFilter range={range} from={sp.from} to={sp.to} periodLabel={periodLabel} presets={[['hoje', 'Hoje'], ['7d', '7 dias'], ['30d', '30 dias'], ['mes', 'Mês atual'], ['all', 'Tudo']]} note={` · ${total} ${total === 1 ? 'sessão' : 'sessões'}`} />
+      <PeriodFilter range={range} from={sp.from} to={sp.to} periodLabel={periodLabel} presets={[['hoje', 'Hoje'], ['7d', '7 dias'], ['30d', '30 dias'], ['mes', 'Mês atual'], ['all', 'Quiz novo']]} note={` · ${total} ${total === 1 ? 'sessão' : 'sessões'}`} />
       <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(168px,1fr))' }}>
         <Card label="Visualizações" value={String(realPV)} sub="page views reais (Meta)" />
         <Card label="Inícios" value={String(starts)} sub={`${pct(starts, realPV)}% das visualizações`} accent="var(--gd)" />
