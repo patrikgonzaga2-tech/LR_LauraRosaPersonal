@@ -247,8 +247,8 @@ Painel: https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN (seção "Verificaçã
   CORPO FELIZ LTDA, UTMs na ordem exata, complemento do WhatsApp final 0948 e localização sem
   as opções antigas. Corrigida a localização (erro #1870194) dos conjuntos FEED, STORIES E REELS,
   E-F-G, POST VENCEDOR (`· PIXEL LP`) e RMKT, e gravado CORPO FELIZ LTDA nos 7 conjuntos ativos.
-  O Meta pausou os conjuntos na edição; todos reativados, menos "STORIES E REELS · ... — Cópia"
-  (120252039206240200), que ficou pausado esperando o ok do Patrik. UTMs conferidas no
+  O Meta pausou os conjuntos na edição; todos reativados (o "STORIES E REELS · ... — Cópia",
+  120252039206240200, com ok do Patrik às 21h). UTMs conferidas no
   Supabase: H e I chegam com campanha, posicionamento, anúncio e conjunto preenchidos.
 - **08/10/2026 (3), 09h30**: Conferido o estado (só leitura). Meta: 4 conjuntos `· PIXEL LP`
   ativos (FEED, STORIES E REELS, E-F-G, POST VENCEDOR; R$ 20 cada), **R$ 0 gastos até 09h30**;

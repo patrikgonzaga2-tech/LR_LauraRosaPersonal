@@ -18,10 +18,38 @@ Responda SEMPRE em português do Brasil, curto e claro.
 Regras: nada muda no Meta sem proposta "aprovado" no painel (aprovado = pode subir). Checkout, preço, oferta,
 order bump, upsell e links de pagamento: só mostrar antes/depois e esperar meu ok (CLAUDE.md). Supabase
 fjlbvoephhextnxemygf é só leitura. Nunca fazer merge nem deploy na main sem eu pedir.
+Quando eu disser "qual status de hj e onde paramos": leia a seção "Onde paramos" deste arquivo,
+puxe os números de hoje (Meta + Supabase) e me responda em até 8 linhas: o que está no ar, números de hoje,
+o que mudou desde a última conversa e o que está pendente.
 Depois espere eu dizer o que fazer.
 ```
 
-## Estado em 08/10/2026, 17h50 (Brasília)
+## Onde paramos (08/10/2026, 21h Brasília)
+
+**Números de 08/10** (dia em que o quiz novo entrou, 08h10): gasto no Meta R$ 59 · 70 sessões vindas do Meta
+(parte são cliques de revisão do Meta, "Right_Column") · 13 passaram da 1ª tela (19%, régua 32%) · 8 chegaram
+ao resultado · 6 clicaram em comprar · 1 venda do quiz (QN7gci) · 2 itens low ticket no dia, R$ 66,60.
+Mês (low ticket, até 08/10): 10 itens, R$ 260 bruto, R$ 232 líquido, lucro −R$ 118 contra meta de R$ 10 mil.
+
+**No ar (7 conjuntos ativos, R$ 20/dia cada, RMKT R$ 15)**: FEED · PIXEL LP, STORIES E REELS · PIXEL LP,
+E-F-G · PIXEL LP (com criativo H), POST VENCEDOR · PIXEL LP, FEED (pixel oficial), STORIES E REELS — Cópia
+(pixel oficial) e RMKT · CHECKOUT SEM COMPRA 7D (anúncios I).
+
+**Feito no fim do dia 08/10**
+- Erro de localização #1870194 corrigido nos conjuntos criados pela API (agora "moram ou estiveram recentemente").
+- CORPO FELIZ LTDA gravado como beneficiário e pagador nos 7 conjuntos ativos.
+- O Meta pausou os conjuntos na edição; todos reativados (o "— Cópia" com ok do Patrik às 21h).
+- Regras fixas do Meta salvas (abaixo, ANALISE_CAMPANHAS_QUIZ.md 3.2 e prompt da rotina).
+- FAQ da IA de recuperação reescrito (docs/IA_RECUPERACAO_FAQ.md).
+
+**Pendente**
+- Patrik: ligar o complemento do WhatsApp (final 0948) nos anúncios ativos, no Gerenciador (a API não faz).
+- Patrik: confirmar no FAQ acesso de 60 dias, faixa de idade e o que tem na área de membros.
+- 09/10 7h: primeira análise completa da rotina com o quiz novo; ver no painel (Resumo e Aprovar).
+- 11/10: decidir T1 v6 (manter ou voltar, T1 está em 19% contra 32%), criativo H e remarketing.
+
+
+## Estado em 08/10/2026, 21h (Brasília)
 
 **Links**
 - Painel de anúncios (único painel; privado do Patrik): https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN
@@ -72,8 +100,6 @@ todas as origens, sem a Comunidade), 01/10 a 31/10. Em 08/10: 10 itens vendidos,
 6 de anúncio, gasto no Meta R$ 350 → lucro −R$ 118.
 
 **Pendências**
-- Conjunto "STORIES E REELS · MULHERES 25-55 · IG + FB — Cópia" (120252039206240200) ficou pausado em 08/10 à
-  noite (o Meta pausou ao gravar CORPO FELIZ LTDA e a reativação foi barrada): reativar com o ok do Patrik.
 - Ligar o complemento do WhatsApp (0948) nos anúncios ativos, no Gerenciador.
 - 11/10: conferir T1 v6 (manter ou voltar), criativo H e remarketing.
 - IA de recuperação (`docs/IA_RECUPERACAO_FAQ.md`): confirmar acesso de 60 dias, faixa de idade e se a área de
