@@ -65,6 +65,23 @@ export function readAdId(): string | null {
   }
 }
 
+// fbclid = código do clique no anúncio do Meta. Guardado na ENTRADA (beacon do
+// page.tsx) e repassado ao checkout Greenn: lá o pixel cria o cookie de clique
+// (_fbc) e a "Compra Realizada" fica ligada ao anúncio. Mesma gaveta do utm_term.
+export const FBCLID_KEY = 'el_fbclid'
+export function readFbclid(): string | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const fromStore = sessionStorage.getItem(FBCLID_KEY)
+    if (fromStore) return fromStore
+    const fromUrl = new URLSearchParams(window.location.search).get('fbclid')
+    if (fromUrl) { try { sessionStorage.setItem(FBCLID_KEY, fromUrl) } catch {} }
+    return fromUrl
+  } catch {
+    return null
+  }
+}
+
 // Lê o xcod (id de dedup do Meta). O GTM o injeta na URL da página como `xcod`
 // — fonte mais confiável; por isso lemos da URL primeiro. Fallback: a "gaveta"
 // do navegador (localStorage/cookie user_id_purchase), caso a URL não o tenha.
@@ -103,6 +120,8 @@ export type CheckoutArm = 'hotmart' | 'greenn'
 //   utm_source=efeito-lipo-quiz → tracking_sck  (marca o funil do quiz)
 //   utm_term=<id do anúncio>    → tracking_src  (o mesmo que vai no src Hotmart)
 //   utm_content=<xcod>          → tracking_xcod (ponte de dedup com o Meta)
+//   fbclid=<clique do anúncio>  → pixel da LP na Greenn cria o _fbc (o redirect
+//                                  também preserva este parâmetro; testado 08/10)
 export const CHECKOUT_HREF_GREENN =
   'https://payfast.greenn.com.br/redirect/297430?utm_source=efeito-lipo-quiz'
 
@@ -125,11 +144,12 @@ export function pickCheckoutArm(): CheckoutArm {
 
 // Monta o link do checkout do braço, colando o rastreio fresco. Greenn usa os
 // nomes UTM; Hotmart usa src/xcod — os dois caem no lugar certo no webhook.
-export function checkoutHrefFor(arm: CheckoutArm, adId?: string | null, xcod?: string | null): string {
+export function checkoutHrefFor(arm: CheckoutArm, adId?: string | null, xcod?: string | null, fbclid?: string | null): string {
   if (arm === 'greenn') {
     const extra: string[] = []
     if (adId) extra.push(`utm_term=${encodeURIComponent(adId)}`)
     if (xcod) extra.push(`utm_content=${encodeURIComponent(xcod)}`)
+    if (fbclid) extra.push(`fbclid=${encodeURIComponent(fbclid)}`)
     return extra.length ? `${CHECKOUT_HREF_GREENN}&${extra.join('&')}` : CHECKOUT_HREF_GREENN
   }
   return checkoutHref(adId, xcod)

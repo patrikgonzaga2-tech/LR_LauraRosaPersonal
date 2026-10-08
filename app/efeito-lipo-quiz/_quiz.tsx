@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
-  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, readAdId, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
+  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
   PERFIS, perfilRecomeco, RESULT_MARCOS, ROTEIRO_21, SALES, STEPS,
 } from './_data'
 import type { ImgKey, Step } from './_data'
@@ -550,7 +550,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
   // fixo (igual no servidor, evita erro de hidratação) e, já no navegador,
   // acrescenta o src quando o anúncio trouxe o id na URL.
   const [href, setHref] = useState(CHECKOUT_HREF)
-  const buildHref = () => checkoutHrefFor(pickCheckoutArm(), readAdId(), readXcod())
+  const buildHref = () => checkoutHrefFor(pickCheckoutArm(), readAdId(), readXcod(), readFbclid())
   useEffect(() => { setHref(buildHref()) }, [])
   // No clique, remonta o link com o rastreio mais fresco (gaveta do navegador) e
   // atualiza o próprio <a> ANTES da navegação — elimina a corrida com a

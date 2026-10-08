@@ -1,7 +1,7 @@
 {
   "_como_usar": "Cada vez que uma mudança do quiz entra na main, acrescente uma versão NO FIM (data e hora em que foi ao ar, commit do merge, o que mudou, motivo e sugestão) e rode bash tools/quiz-revisao/build.sh. Os números em 'metricas' são a foto tirada no momento; o painel atualiza ao vivo pelo botão 'Atualizar números'.",
   "regua_t1": 32,
-  "medido_em": "2026-10-08T17:18:00-03:00",
+  "medido_em": "2026-10-08T18:32:00-03:00",
   "versoes": [
     {
       "id": "v0",
@@ -105,8 +105,24 @@
         "A foto de antes e depois (grande) vira a foto da Laura (menor), abaixo do botão."
       ],
       "motivo": "A conta do painel de anúncios mostrava 84% parando na T1, com o botão fora da primeira tela do celular. A foto de antes e depois não combinava com os anúncios novos. Obs.: essa conta incluía 27 cliques de revisão do Meta (coluna da direita); só com pessoas reais, a v4 passava 42%.",
-      "sugestao": "Manter (decidido em 08/10). Reavaliar em 11/10 com umas 30 visitas reais. Tirar a coluna da direita da campanha \"08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D\" para não poluir a conta.",
-      "metricas": {"visitas": 5, "reais": 2, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
+      "sugestao": "Ficou no ar de 16h23 a 18h32 de 08/10 (substituída pela v7, só troca de nomes; T1 igual). Reavaliar a T1 em 11/10 com umas 30 visitas reais, somando v6 e v7. Tirar a coluna da direita da campanha \"08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D\" para não poluir a conta.",
+      "metricas": {"visitas": 11, "reais": 5, "passou_t1": 2, "resultado": 1, "comprar": 1, "vendas": 0, "receita": 0}
+    },
+    {
+      "id": "v7",
+      "quando": "2026-10-08T18:32:00-03:00",
+      "commit": "dfbfcd4",
+      "pr": "14",
+      "titulo": "Marca \"De Volta ao Eixo\" no quiz inteiro (Efeito Lipo só como método)",
+      "mudou": [
+        "T3, T6, T9, T13, T15, T16, T17, T20, T24 e T25: \"Efeito Lipo\" / \"Protocolo Efeito Lipo\" viram \"De Volta ao Eixo\" / \"roteiro De Volta ao Eixo\". Na T3, \"Efeito Lipo\" continua como nome do método.",
+        "T26: \"Antes e depois de voltar ao eixo\", entregável 1 \"Roteiro De Volta ao Eixo: o passo a passo dos 21 dias (método Efeito Lipo)\", 1ª linha do quadro \"Roteiro De Volta ao Eixo (21 dias)\", linha do botão final e rodapé.",
+        "Título e descrição do Google/WhatsApp: \"Quiz De Volta ao Eixo — descubra seu perfil de recomeço\", sem \"até 8kg\".",
+        "Preço, valores, parcelamento, garantia e links de checkout iguais."
+      ],
+      "motivo": "A cliente lia dois nomes no mesmo funil: anúncio e T1 falam de \"De Volta ao Eixo\" e o resto do quiz de \"Efeito Lipo\". Patrik escolheu a opção A da aba Marca e aprovou as 17 trocas em 08/10.",
+      "sugestao": "Publicada a pedido do Patrik antes de 11/10: a conta de 11/10 deve separar v6 (16h23–18h32) e v7 (desde 18h32). Pendente: T25 ainda fala \"até 8kg\" nos marcos e os botões dizem \"protocolo\".",
+      "metricas": {"visitas": 0, "reais": 0, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
     }
   ]
 }
