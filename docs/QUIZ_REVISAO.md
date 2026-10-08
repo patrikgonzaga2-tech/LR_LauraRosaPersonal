@@ -11,19 +11,56 @@ Painel **Ajuste do Quiz** (números por versão, histórico de versões, compara
 Copie e cole isto no começo de qualquer sessão nova do Claude Code:
 
 ```
-Vamos continuar o trabalho no quiz Efeito Lipo (laurarosapersonal.com/efeito-lipo-quiz).
+Responda sempre em português. Vamos continuar o trabalho do quiz "De Volta ao Eixo" da
+Laura Rosa (https://www.laurarosapersonal.com/efeito-lipo-quiz) de onde paramos.
 
-1. Leia o CLAUDE.md e o docs/QUIZ_REVISAO.md. Se o doc não estiver na main, rode
-   `git fetch origin` e leia de outra branch: `git log --all --oneline -- docs/QUIZ_REVISAO.md`
-   mostra onde ele está.
-2. Pelo "Diário" no fim do doc, me diga em até 5 linhas onde paramos e o que ficou pendente.
-3. Veja no git o que mudou em app/efeito-lipo-quiz/ desde a última entrada do Diário
-   (commit e autor de cada mudança).
-4. Leia a fila de pedidos da página de revisão
-   (https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ, coleção "pedidos") e me liste os
-   que estão com status "pendente", agrupados por tela.
+LEIA ANTES DE QUALQUER COISA (todos na main):
+1. CLAUDE.md — regras: preço, checkout, oferta, garantia e links de compra só mudam com
+   aprovação do Patrik; nada de push na main nem deploy sem ele pedir; UMCLIQUE só leitura.
+2. docs/QUIZ_REVISAO.md — guia do quiz: passo a passo de alteração, mapa dos arquivos,
+   como o painel "Ajuste do Quiz" é montado e o DIÁRIO (o que foi feito, dia e hora).
+3. docs/ANALISE_CAMPANHAS_QUIZ.md — anúncios × quiz × vendas e o comando
+   "status das campanhas de hoje".
+4. docs/PAINEL_ANUNCIOS.md — painel de anúncios do Meta (rotina das 7h, propostas, aprovações).
+5. docs/CONTEXTO_COMERCIAL.md e docs/PLAYBOOK-RASTREAMENTO-E-DASHBOARD.md — CRM, rotinas,
+   bancos e como venda ↔ anúncio se ligam (utm_term = id do CONJUNTO).
 
-Não altere nada ainda. Espere eu dizer o que fazer.
+ONDE ESTAMOS (08/10/2026, 17h40):
+- Quiz no ar = v6 (desde 08/10 16h23): T1 "Você começa toda segunda e na sexta já saiu do
+  plano?", botão "Quero descobrir meu perfil" no topo, foto da Laura; copy "Volta ao Eixo" no
+  quiz inteiro; T25 com perfil de recomeço; T26 "roteiro de 21 dias", 5 entregáveis + 2 bônus,
+  quadro R$ 4.535 → R$ 37 ou 12x de R$ 3,80, garantia de 7 dias, logo "DE VOLTA AO EIXO".
+- Patrik decidiu MANTER a v6 e reavaliar em 11/10 com ~30 visitas reais (feed/stories).
+- Melhor versão medida: v4 (08/10 08h10–16h02): 42% das visitas reais passaram da T1
+  (meta 32%) e 1 venda. Última venda aprovada pelo quiz: 08/10 11h40, v4, R$ 29,60 Pix
+  (cupom EFEITOLIPO20). Às 17h22 (v6) entrou uma compra aguardando pagamento (R$ 29,60 + bump R$ 37).
+- Cuidado com os números: cliques da "coluna da direita" do Facebook (revisão do Meta),
+  "Others", prévias {{placement}} e Audience Network NÃO são visitas reais.
+- Checkout dos 3 botões da T26: https://payfast.greenn.com.br/redirect/297430?utm_source=efeito-lipo-quiz
+  (oferta QN7gci). A Hotmart ainda é checkout de reserva em casos raros (decisão pendente).
+- Pendências: escolher a estratégia de marca no painel (recomendação A: "De Volta ao Eixo" na
+  frente, "Efeito Lipo" só como nome do método); 17 lugares ainda dizem "Efeito Lipo";
+  tirar a coluna da direita da campanha "08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D".
+
+PAINEL "AJUSTE DO QUIZ" (https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ):
+- Abas: Como estamos (números da versão no ar, gráfico por versão, botão "Atualizar números
+  agora", cartão "Última venda pelo quiz" com o caminho completo da cliente), Versões (um cartão
+  por versão com data, hora, o que mudou, motivo, sugestão e decisão), Comparar (2 versões lado
+  a lado), Marca e Editar textos (fila de pedidos).
+- Fonte: tools/quiz-revisao/ (versoes.json, marca.json, painel.html); build com
+  `bash tools/quiz-revisao/build.sh`; republicar no MESMO link (ler a versão no ar antes, porque
+  outras sessões também mexem nele). Decisões ficam na coleção "aprovacoes"; pedidos em "pedidos".
+- REGRA: toda mudança do quiz que for ao ar ganha uma versão nova no fim de versoes.json
+  (data e hora de Brasília, commit do merge, PR, o que mudou, motivo e sugestão).
+
+PRIMEIRO, SEM ALTERAR NADA:
+1. Pelo Diário de docs/QUIZ_REVISAO.md e docs/ANALISE_CAMPANHAS_QUIZ.md, me diga em até 6 linhas
+   onde paramos e o que está pendente.
+2. Veja no git o que mudou em app/efeito-lipo-quiz/ e no painel desde a última entrada do Diário.
+3. Leia no painel as coleções "aprovacoes" e "pedidos" e me diga o que eu decidi ou pedi e
+   ainda não foi aplicado.
+4. Rode o "status das campanhas de hoje".
+Depois espere eu dizer o que fazer.
 ```
 
 ---
