@@ -1,8 +1,12 @@
 # Quiz Efeito Lipo — revisão e alterações
 
 Página pública: https://www.laurarosapersonal.com/efeito-lipo-quiz
-Painel **Ajuste do Quiz** (números por versão, histórico de versões, comparador, marca, edição de textos e fila de pedidos):
-**https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ** (privada do Patrik; compartilhar pelo menu Share)
+Revisão do quiz (como está, versões, comparar, marca, editar textos + fila de pedidos): **dentro do Painel de
+anúncios**, grupo "Ajuste do quiz" do menu — **https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN**.
+Desde 08/10/2026 (noite) o antigo https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ só mostra um aviso apontando
+para o painel; não publique mais nada nele. Fila de pedidos (`pedidos`), decisões (`aprovacoes`) e números
+(`metricas`) ficam no banco do painel. Fonte da página: `tools/painel-anuncios/index.html` (as telas do quiz,
+`window.SCREENS`, e os dados de versões, `DATA.versoes`, estão dentro dela).
 
 ---
 
@@ -19,8 +23,8 @@ Vamos continuar o trabalho no quiz Efeito Lipo (laurarosapersonal.com/efeito-lip
 2. Pelo "Diário" no fim do doc, me diga em até 5 linhas onde paramos e o que ficou pendente.
 3. Veja no git o que mudou em app/efeito-lipo-quiz/ desde a última entrada do Diário
    (commit e autor de cada mudança).
-4. Leia a fila de pedidos da página de revisão
-   (https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ, coleção "pedidos") e me liste os
+4. Leia a fila de pedidos do Painel de anúncios
+   (https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN, coleção "pedidos") e me liste os
    que estão com status "pendente", agrupados por tela.
 
 Não altere nada ainda. Espere eu dizer o que fazer.
@@ -118,6 +122,7 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 
 Uma linha por sessão: data, o que foi feito e o que ficou pendente. Mais recente em cima.
 
+- **08/10/2026 (8), 17h45**: a página "Ajuste do Quiz" foi juntada ao Painel de anúncios (grupo "Ajuste do quiz": Como está o quiz, Versões, Comparar versões, Marca, Editar textos, com a "Última venda pelo quiz"). Arquivos do quiz (quiz.html/js/css, images/, v/v0…v6/) copiados para o painel; v/vN/quiz.html usa `<base href="../../">` para as fotos carregarem. Decisões migradas. Para nova versão: acrescente em `DATA.versoes` no `tools/painel-anuncios/index.html`, publique `v/<id>/quiz.*` e republique o painel.
 - **08/10/2026 (7), 17h40**: Painel ganhou o cartão **"Última venda pelo quiz"** (aba Como estamos): mostra a
   versão que vendeu por último e, ao clicar, o quiz inteiro que a cliente fez (resposta de cada tela, tempo
   por tela, % da versão que chegou a cada tela e % que respondeu igual) + linha do tempo até o pagamento.
