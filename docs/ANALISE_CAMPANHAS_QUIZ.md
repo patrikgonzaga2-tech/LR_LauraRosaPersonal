@@ -233,7 +233,7 @@ Painel: https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN (seção "Verificaçã
 - **fbclid não vai para o checkout**: o quiz manda para a Greenn só `utm_source`, `utm_term` e
   `utm_content` (`checkoutHrefFor` em `app/efeito-lipo-quiz/_data.ts`). Sem o `fbclid` na URL,
   o pixel da LP na Greenn não cria o cookie de clique (`_fbc`) e a "Compra Realizada" só se liga
-  ao anúncio por e-mail/telefone. Proposta de passar o `fbclid` aguardando o Patrik (regra D).
+  ao anúncio por e-mail/telefone. **Resolvido em 08/10 18h53 (PR #15):** o quiz passou a mandar o `fbclid` para a Greenn, e o redirect o preserva.
 - O token da API de conversões do pixel da LP aparece no código da página da Greenn (é como a
   Greenn funciona). Se surgirem compras estranhas no pixel, gerar token novo e trocar na Greenn.
 - "Compra Realizada" pode somar outros produtos Greenn no mesmo pixel (Comunidade). Para custo

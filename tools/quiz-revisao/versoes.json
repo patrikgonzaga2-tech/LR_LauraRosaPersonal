@@ -118,7 +118,8 @@
         "T3, T6, T9, T13, T15, T16, T17, T20, T24 e T25: \"Efeito Lipo\" / \"Protocolo Efeito Lipo\" viram \"De Volta ao Eixo\" / \"roteiro De Volta ao Eixo\". Na T3, \"Efeito Lipo\" continua como nome do método.",
         "T26: \"Antes e depois de voltar ao eixo\", entregável 1 \"Roteiro De Volta ao Eixo: o passo a passo dos 21 dias (método Efeito Lipo)\", 1ª linha do quadro \"Roteiro De Volta ao Eixo (21 dias)\", linha do botão final e rodapé.",
         "Título e descrição do Google/WhatsApp: \"Quiz De Volta ao Eixo — descubra seu perfil de recomeço\", sem \"até 8kg\".",
-        "Preço, valores, parcelamento, garantia e links de checkout iguais."
+        "Preço, valores, parcelamento, garantia e links de checkout iguais.",
+        "Às 18h53 (PR #15, merge cd27aed), sem mudar nenhuma tela: o botão de compra passou a levar o fbclid do anúncio para a Greenn, para o pixel ligar a compra ao anúncio."
       ],
       "motivo": "A cliente lia dois nomes no mesmo funil: anúncio e T1 falam de \"De Volta ao Eixo\" e o resto do quiz de \"Efeito Lipo\". Patrik escolheu a opção A da aba Marca e aprovou as 17 trocas em 08/10.",
       "sugestao": "Publicada a pedido do Patrik antes de 11/10: a conta de 11/10 deve separar v6 (16h23–18h32) e v7 (desde 18h32). Pendente: T25 ainda fala \"até 8kg\" nos marcos e os botões dizem \"protocolo\".",
