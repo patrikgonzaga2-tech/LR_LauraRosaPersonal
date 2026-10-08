@@ -1,8 +1,12 @@
 # Quiz Efeito Lipo — revisão e alterações
 
 Página pública: https://www.laurarosapersonal.com/efeito-lipo-quiz
-Página de revisão (quiz funcionando + textos editáveis + fila de pedidos):
-**https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ** (privada do Patrik; compartilhar pelo menu Share)
+Revisão do quiz (como está, versões, comparar, marca, editar textos + fila de pedidos): **dentro do Painel de
+anúncios**, grupo "Ajuste do quiz" do menu — **https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN**.
+Desde 08/10/2026 (noite) o antigo https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ só mostra um aviso apontando
+para o painel; não publique mais nada nele. Fila de pedidos (`pedidos`), decisões (`aprovacoes`) e números
+(`metricas`) ficam no banco do painel. Fonte da página: `tools/painel-anuncios/index.html` (as telas do quiz,
+`window.SCREENS`, e os dados de versões, `DATA.versoes`, estão dentro dela).
 
 ---
 
@@ -11,19 +15,60 @@ Página de revisão (quiz funcionando + textos editáveis + fila de pedidos):
 Copie e cole isto no começo de qualquer sessão nova do Claude Code:
 
 ```
-Vamos continuar o trabalho no quiz Efeito Lipo (laurarosapersonal.com/efeito-lipo-quiz).
+Responda sempre em português. Vamos continuar o trabalho do quiz "De Volta ao Eixo" da
+Laura Rosa (https://www.laurarosapersonal.com/efeito-lipo-quiz) de onde paramos.
 
-1. Leia o CLAUDE.md e o docs/QUIZ_REVISAO.md. Se o doc não estiver na main, rode
-   `git fetch origin` e leia de outra branch: `git log --all --oneline -- docs/QUIZ_REVISAO.md`
-   mostra onde ele está.
-2. Pelo "Diário" no fim do doc, me diga em até 5 linhas onde paramos e o que ficou pendente.
-3. Veja no git o que mudou em app/efeito-lipo-quiz/ desde a última entrada do Diário
-   (commit e autor de cada mudança).
-4. Leia a fila de pedidos da página de revisão
-   (https://claude.ai/artifact/1CpgLoG6JcvucRM21TPfiQ, coleção "pedidos") e me liste os
-   que estão com status "pendente", agrupados por tela.
+LEIA ANTES DE QUALQUER COISA (todos na main):
+1. CLAUDE.md — regras: preço, checkout, oferta, garantia e links de compra só mudam com
+   aprovação do Patrik; nada de push na main nem deploy sem ele pedir; UMCLIQUE só leitura.
+2. docs/QUIZ_REVISAO.md — guia do quiz: passo a passo de alteração, mapa dos arquivos,
+   como o painel "Ajuste do Quiz" é montado e o DIÁRIO (o que foi feito, dia e hora).
+3. docs/ANALISE_CAMPANHAS_QUIZ.md — anúncios × quiz × vendas e o comando
+   "status das campanhas de hoje".
+4. docs/PAINEL_ANUNCIOS.md — painel de anúncios do Meta (rotina das 7h, propostas, aprovações).
+5. docs/CONTEXTO_COMERCIAL.md e docs/PLAYBOOK-RASTREAMENTO-E-DASHBOARD.md — CRM, rotinas,
+   bancos e como venda ↔ anúncio se ligam (utm_term = id do CONJUNTO).
 
-Não altere nada ainda. Espere eu dizer o que fazer.
+ONDE ESTAMOS (08/10/2026, 17h40):
+- Quiz no ar = v6 (desde 08/10 16h23): T1 "Você começa toda segunda e na sexta já saiu do
+  plano?", botão "Quero descobrir meu perfil" no topo, foto da Laura; copy "Volta ao Eixo" no
+  quiz inteiro; T25 com perfil de recomeço; T26 "roteiro de 21 dias", 5 entregáveis + 2 bônus,
+  quadro R$ 4.535 → R$ 37 ou 12x de R$ 3,80, garantia de 7 dias, logo "DE VOLTA AO EIXO".
+- Patrik decidiu MANTER a v6 e reavaliar em 11/10 com ~30 visitas reais (feed/stories).
+- Melhor versão medida: v4 (08/10 08h10–16h02): 42% das visitas reais passaram da T1
+  (meta 32%) e 1 venda. Última venda aprovada pelo quiz: 08/10 11h40, v4, R$ 29,60 Pix
+  (cupom EFEITOLIPO20). Às 17h22 (v6) entrou uma compra aguardando pagamento (R$ 29,60 + bump R$ 37).
+- Cuidado com os números: cliques da "coluna da direita" do Facebook (revisão do Meta),
+  "Others", prévias {{placement}} e Audience Network NÃO são visitas reais.
+- Checkout dos 3 botões da T26: https://payfast.greenn.com.br/redirect/297430?utm_source=efeito-lipo-quiz
+  (oferta QN7gci). A Hotmart ainda é checkout de reserva em casos raros (decisão pendente).
+- Pendências: escolher a estratégia de marca no painel (recomendação A: "De Volta ao Eixo" na
+  frente, "Efeito Lipo" só como nome do método); 17 lugares ainda dizem "Efeito Lipo";
+  tirar a coluna da direita da campanha "08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D".
+
+AJUSTE DO QUIZ = grupo "Ajuste do quiz" do PAINEL DE ANÚNCIOS
+(https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN). A página antiga 1CpgLoG6JcvucRM21TPfiQ só tem
+um aviso apontando para lá: não publique mais nada nela.
+- Telas: Como está o quiz (números da versão no ar, gráfico por versão, botão "Atualizar números
+  agora", cartão "Última venda pelo quiz" com o caminho completo da cliente), Versões (um cartão
+  por versão com data, hora, o que mudou, motivo, sugestão e decisão), Comparar versões, Marca e
+  Editar textos (fila de pedidos). Junto com o resto do painel de anúncios (Meta, Otimizar,
+  Clicou e não comprou, Criativos…).
+- Fonte: tools/painel-anuncios/index.html (versões em DATA.versoes, telas em window.SCREENS).
+  As cópias do quiz de cada versão (v/<id>/quiz.*) saem de `bash tools/quiz-revisao/build.sh`.
+  Sempre ler a versão publicada antes de republicar: outras sessões também mexem no painel.
+  Decisões na coleção "aprovacoes", pedidos em "pedidos", números em "metricas".
+- REGRA: toda mudança do quiz que for ao ar ganha uma versão nova em DATA.versoes (data e hora de
+  Brasília, commit do merge, PR, o que mudou, motivo e sugestão).
+
+PRIMEIRO, SEM ALTERAR NADA:
+1. Pelo Diário de docs/QUIZ_REVISAO.md e docs/ANALISE_CAMPANHAS_QUIZ.md, me diga em até 6 linhas
+   onde paramos e o que está pendente.
+2. Veja no git o que mudou em app/efeito-lipo-quiz/ e no painel desde a última entrada do Diário.
+3. Leia no Painel de anúncios as coleções "aprovacoes" e "pedidos" e me diga o que eu decidi ou
+   pedi e ainda não foi aplicado.
+4. Rode o "status das campanhas de hoje".
+Depois espere eu dizer o que fazer.
 ```
 
 ---
@@ -46,11 +91,16 @@ Não altere nada ainda. Espere eu dizer o que fazer.
 1. Lê o pedido e mostra **antes → depois** (arquivo e trecho).
 2. Espera o "pode fazer".
 3. Edita o código numa branch `claude/...`.
-4. Roda `bash tools/quiz-revisao/build.sh` e republica a página de revisão **no mesmo link**.
+4. Roda `bash tools/quiz-revisao/build.sh` (cópias do quiz) e atualiza o grupo "Ajuste do quiz" do
+   Painel de anúncios (`tools/painel-anuncios/index.html`), lendo a versão publicada antes.
 5. Você confere no celular da esquerda.
 6. Com o seu ok: commit + push na branch e Pull Request para a `main`.
 7. Depois do merge na `main` o site é atualizado. Confira o link público.
 8. O Claude marca os pedidos como `aplicado` na fila e escreve uma linha no Diário (seção 5).
+9. **Toda versão nova ganha um cartão no painel:** acrescentar no fim de `DATA.versoes` (Painel de
+   anúncios) e de `tools/quiz-revisao/versoes.json`
+   a versão com data e hora em que foi ao ar (horário de Brasília), commit do merge, PR, o que mudou,
+   motivo e sugestão, e rodar o build. Atualizar também a sugestão da versão anterior, se mudou.
 
 ### D. Regra de pagamento (CLAUDE.md)
 Preço, parcelamento, texto de oferta, order bump, upsell e links de checkout (Greenn/Hotmart):
@@ -84,6 +134,14 @@ As chaves da fila de pedidos apontam para o lugar no `_data.ts`:
 
 Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build do site.
 
+- Abas do painel: **Como estamos** (números da versão no ar × melhor versão anterior, gráfico de quem passa
+  da T1 por versão, botão "Atualizar números agora", que consulta o Supabase com o conector do Patrik),
+  **Versões** (um cartão por versão, com decisão salva em `aprovacoes/ver-<id>`), **Comparar** (duas
+  versões quaisquer lado a lado, montadas do commit de cada uma), **Marca** (onde ainda aparece "Efeito
+  Lipo", com `marca.json`; "Pedir troca" manda para a fila) e **Editar textos** (fila `pedidos`).
+  Cores iguais às do Painel Volta ao Eixo (tema claro único).
+- "Visitas reais" = sessões vindas do Meta sem coluna da direita (revisão do Meta), "Others", prévias
+  `{{placement}}` e Audience Network. A última foto dos números fica em `metricas/ultima`.
 - `bash tools/quiz-revisao/build.sh`: monta `tools/quiz-revisao/out/` a partir do código atual
   do quiz (instala as dependências na primeira vez). O cabeçalho da página mostra a branch e o
   commit usados.
@@ -91,7 +149,7 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 - Republicar no mesmo link: Artifact publish com `url` = link acima,
   `file_path` = `tools/quiz-revisao/out/index.html`, `root` = `tools/quiz-revisao/out`,
   `files` = conteúdo de `out/files.json` (as imagens só precisam ir quando mudarem).
-  Não passe `capabilities`: a página já tem `db` + `user` e isso se mantém.
+  Não passe `capabilities`: a página já tem `db` + `user` + `mcp` (Supabase `execute_sql`) e isso se mantém.
 - Fila: `ArtifactData list` na coleção `pedidos`. Cada doc tem `key`, `tela`, `campo`,
   `original`, `proposto`, `status` (`pendente` → `aplicado`). Depois de aplicar, use
   `update` com `{status: "aplicado"}` (passe o `if_version` lido).
@@ -107,6 +165,28 @@ Pasta `tools/quiz-revisao/`: tem dependências próprias e não entra no build d
 
 Uma linha por sessão: data, o que foi feito e o que ficou pendente. Mais recente em cima.
 
+- **08/10/2026 (8), 17h45**: a página "Ajuste do Quiz" foi juntada ao Painel de anúncios (grupo "Ajuste do quiz": Como está o quiz, Versões, Comparar versões, Marca, Editar textos, com a "Última venda pelo quiz"). Arquivos do quiz (quiz.html/js/css, images/, v/v0…v6/) copiados para o painel; v/vN/quiz.html usa `<base href="../../">` para as fotos carregarem. Decisões migradas. Para nova versão: acrescente em `DATA.versoes` no `tools/painel-anuncios/index.html`, publique `v/<id>/quiz.*` e republique o painel.
+- **08/10/2026 (7), 17h40**: Painel ganhou o cartão **"Última venda pelo quiz"** (aba Como estamos): mostra a
+  versão que vendeu por último e, ao clicar, o quiz inteiro que a cliente fez (resposta de cada tela, tempo
+  por tela, % da versão que chegou a cada tela e % que respondeu igual) + linha do tempo até o pagamento.
+  Liga venda ↔ sessão por `vendas.tracking_xcod = quiz_sessions.xcod` (sessão com checkout mais perto
+  da venda e mesmo conjunto). Foto em `metricas/ultima_venda`. Última aprovada: **08/10 11h40, v4**,
+  R$ 29,60 Pix, anúncio "A SEGUNDA-SEXTA · FEED"; a cliente já tinha feito o quiz 2x em agosto.
+  Às 17h22 (v6) entrou uma compra **aguardando pagamento** (R$ 29,60 + bump R$ 37). Corrigido o erro do
+  botão "Atualizar números" (a resposta do Supabase cita a tag de dados antes dos dados).
+- **08/10/2026 (6), 17h15**: Patrik decidiu **manter a v6** (botão no topo + foto da Laura) e reavaliar em
+  11/10. O painel virou **Ajuste do Quiz**, com abas, cores do Painel Volta ao Eixo, 7 versões (v0 original
+  → v6) com data, hora, motivo, sugestão e números, comparador A/B, seção de Marca (17 lugares com "Efeito
+  Lipo", 3 opções de estratégia, recomendação A) e números ao vivo pelo Supabase. Saiu o bloco "antes × agora".
+- **08/10/2026 (5)**: Painel de revisão ganhou o bloco **"T1 antes × agora"** (dois celulares lado a lado,
+  versão anterior = `be87247`, atual = `73c16ae`) com motivo, dados e botões de decisão (coleção
+  `aprovacoes`, doc `t1-botao-foto`). Saiu o bloco "Para aprovar" (os 2 itens já aprovados e aplicados).
+  **Achado:** a conta que motivou subir o botão (57 visitas, 84% parando na T1) incluía 27 cliques da
+  **coluna da direita do Facebook** (revisão do Meta) e 6 "Others". Só com feed/stories, a T1 anterior
+  passava **42%** (10 de 24), acima da régua de 32%. Depois da mudança: 5 visitas (2 coluna direita,
+  1 prévia `{{placement}}`, 2 reais), 0 passaram. Pouco dado: decidir em 11/10 com ~30 visitas reais e
+  tirar a coluna da direita também da campanha "08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D".
+  Para refazer uma comparação: `COMPARAR=<commit> bash tools/quiz-revisao/build.sh` (texto em `comparar.html`).
 - **08/10/2026 (4)**: Proposta aprovada no painel de anúncios (T1): botão "Quero descobrir meu perfil" subiu para logo abaixo do título e de "Descubra o porquê em 2 minutos"; o parágrafo longo saiu; a foto de antes e depois foi trocada pela foto da Laura (menor, abaixo do botão); as 3 linhas de ✓ ficaram depois da foto. Sem mudança de preço, oferta ou checkout. PR aberto, aguardando "publicar".
 - **08/10/2026 (3)**: Patrik aprovou pelos botões da página de revisão (coleção `aprovacoes`): (1) regra dos perfis da T25 confirmada, e a anotação "aguardando aprovação" saiu do `_data.ts`; (2) frase abaixo do título da T26 trocada para "Com base nas suas respostas, você vai receber um roteiro de 21 dias para voltar ao eixo — treinos em casa, sem dieta maluca, sem passar fome e sem as canetinhas caras." (igual para todas, sem citar peso nem "até 8kg"). Aba Quiz do painel passou a contar só desde 08/10 08:10 (PR #9).
 - **08/10/2026 (2)**: Patrik aprovou tudo ("aprovo tudo, pode publicar"): regra dos perfis da T25, título da T15 e as 7 linhas da T26 — título "Seu roteiro de 21 dias para voltar ao eixo", faixa Semana 1 Limpeza · Semana 2 Ativação Metabólica · Semana 3 Queima Total, quadro antes/depois com 3 linhas (recomeço, deslize, treino que cabe na rotina; a linha da inflamação saiu) e botão final "Quero começar meu roteiro de 21 dias". Preço, bônus, garantia, cronômetro e links iguais. Publicado via PR para a `main`.

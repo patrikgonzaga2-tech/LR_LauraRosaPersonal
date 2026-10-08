@@ -1,0 +1,112 @@
+{
+  "_como_usar": "Cada vez que uma mudança do quiz entra na main, acrescente uma versão NO FIM (data e hora em que foi ao ar, commit do merge, o que mudou, motivo e sugestão) e rode bash tools/quiz-revisao/build.sh. Os números em 'metricas' são a foto tirada no momento; o painel atualiza ao vivo pelo botão 'Atualizar números'.",
+  "regua_t1": 32,
+  "medido_em": "2026-10-08T17:18:00-03:00",
+  "versoes": [
+    {
+      "id": "v0",
+      "quando": "2026-07-17T19:39:00-03:00",
+      "medir_desde": "2026-09-30T20:12:00-03:00",
+      "commit": "5ff697d",
+      "pr": "",
+      "titulo": "Efeito Lipo original",
+      "mudou": [
+        "Versão de partida: promessa \"Bora secar a barriga e definir os braços juntas?\".",
+        "Logo Efeito Lipo 21, foto de antes e depois, contador de vagas e botão \"Garantir minha vaga\".",
+        "Oferta: 5 entregáveis + 2 bônus, total R$ 641, 6x de R$ 6,92, garantia de 21 dias."
+      ],
+      "motivo": "Funil que rodava desde julho. Medido só nos 7 dias antes da primeira troca, para comparar com o que veio depois.",
+      "sugestao": "Fica como base de comparação. Nos 7 dias antes da troca, 20% das visitas reais passavam da T1 (3 de 15) e houve 1 venda pelo quiz. A promessa nova já passa mais gente da T1, então não recomendo voltar.",
+      "metricas": {"visitas": 42, "reais": 15, "passou_t1": 3, "resultado": 2, "comprar": 1, "vendas": 1, "receita": 8.19}
+    },
+    {
+      "id": "v1",
+      "quando": "2026-10-07T20:12:00-03:00",
+      "commit": "bd262bd",
+      "pr": "2",
+      "titulo": "T1 com a promessa nova",
+      "mudou": [
+        "T1: \"Você começa toda segunda e na sexta já saiu do plano?\" + \"Descubra o porquê em 2 minutos\".",
+        "Texto do \"Quiz Volta ao Eixo\" (perfil de recomeço e primeiro passo) e 3 linhas com ✓ abaixo da foto.",
+        "Cores, foto, contador de vagas e botão iguais."
+      ],
+      "motivo": "Testar a promessa de recomeço (\"Volta ao Eixo\") no lugar de \"secar barriga e braços\". Texto enviado pelo Patrik.",
+      "sugestao": "Ficou no ar só 16 minutos antes da próxima versão. Os números dela aparecem somados na v3.",
+      "metricas": {"visitas": 1, "reais": 0, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
+    },
+    {
+      "id": "v2",
+      "quando": "2026-10-07T20:28:00-03:00",
+      "commit": "fee5001",
+      "pr": "3",
+      "titulo": "Oferta igual à página de vendas",
+      "mudou": [
+        "T26: 7 entregáveis com os nomes da página de vendas (21 Treinos Hormonais, Áudios \"Quebra de Sabotagem\", Planner de Progresso, Guia \"Sem Neura\").",
+        "Bônus Guia do Ciclo Menstrual (R$ 297) e Anti-Pelanquinha (R$ 497); quadro de valores R$ 4.535.",
+        "Parcelamento \"12x de R$ 3,80\" e logo \"DE VOLTA AO EIXO\" no topo da oferta."
+      ],
+      "motivo": "Alinhar a oferta do quiz com a página de vendas. O 12x de R$ 3,80 foi conferido no checkout Greenn (oferta QN7gci, juros de 3,39% a.m. sobre R$ 37).",
+      "sugestao": "Sempre que mudar preço ou juros na Greenn, conferir se o \"12x de R$ 3,80\" ainda bate.",
+      "metricas": {"visitas": 0, "reais": 0, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
+    },
+    {
+      "id": "v3",
+      "quando": "2026-10-07T20:34:00-03:00",
+      "commit": "ed63cfd",
+      "pr": "4",
+      "titulo": "Logo De Volta ao Eixo e garantia de 7 dias",
+      "mudou": [
+        "Logo \"DE VOLTA AO EIXO\" (símbolo + nome) no cabeçalho de todas as telas.",
+        "Saem \"Desincha Express\" e \"aplicativo\" dos entregáveis.",
+        "Garantia de 7 dias, com o texto falando em 7 dias."
+      ],
+      "motivo": "Marca nova no quiz e garantia igual à da oferta na Greenn, que é de 7 dias.",
+      "sugestao": "A logo já está em todas as telas, mas o nome \"Efeito Lipo\" ainda aparece nos textos. Veja a seção Marca.",
+      "metricas": {"visitas": 6, "reais": 4, "passou_t1": 2, "resultado": 2, "comprar": 2, "vendas": 0, "receita": 0}
+    },
+    {
+      "id": "v4",
+      "quando": "2026-10-08T08:10:00-03:00",
+      "commit": "c0858da",
+      "pr": "6",
+      "titulo": "Copy Volta ao Eixo no quiz inteiro",
+      "mudou": [
+        "T1: faixa \"2 minutos · gratuito · perfil na hora\" (sai o contador de vagas) e botão \"Quero descobrir meu perfil\".",
+        "Perguntas novas: T5 \"Quantas vezes você já recomeçou?\" e T13 \"Em que dia da semana fica mais difícil…\"; T15 vira o ciclo da semana.",
+        "T25 com o perfil de recomeço e \"Seu primeiro passo, hoje\"; T26 vira \"Seu roteiro de 21 dias para voltar ao eixo\"."
+      ],
+      "motivo": "Auditoria de copy: a T1 falava de recomeço, mas o resto do quiz prometia quilos e falava de Efeito Lipo. A ideia foi contar uma história só, do começo ao fim.",
+      "sugestao": "Melhor versão medida até agora: 42% das visitas reais passaram da T1 (10 de 24), acima da meta de 32%, e saiu 1 venda (R$ 29,60 com cupom). Use como referência para as próximas.",
+      "metricas": {"visitas": 62, "reais": 24, "passou_t1": 10, "resultado": 6, "comprar": 4, "vendas": 1, "receita": 29.6}
+    },
+    {
+      "id": "v5",
+      "quando": "2026-10-08T16:02:00-03:00",
+      "commit": "68d1777",
+      "pr": "10",
+      "titulo": "Oferta sem promessa de quilos",
+      "mudou": [
+        "T26: a frase abaixo do título vira \"um roteiro de 21 dias para voltar ao eixo\", igual para todas, sem citar peso nem \"até 8kg\".",
+        "T25: regra dos perfis de recomeço confirmada."
+      ],
+      "motivo": "A T25 dizia \"um roteiro, não uma promessa de resultado\", e a T26 prometia quilos logo em seguida.",
+      "sugestao": "Ficou 21 minutos sozinha no ar, sem visitas. Medir junto com a v6.",
+      "metricas": {"visitas": 0, "reais": 0, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
+    },
+    {
+      "id": "v6",
+      "quando": "2026-10-08T16:23:00-03:00",
+      "commit": "4880925",
+      "pr": "12",
+      "titulo": "T1 com o botão no topo e a foto da Laura",
+      "mudou": [
+        "O botão \"Quero descobrir meu perfil\" sobe para logo abaixo do título.",
+        "Sai o parágrafo \"Responda ao Quiz Volta ao Eixo…\".",
+        "A foto de antes e depois (grande) vira a foto da Laura (menor), abaixo do botão."
+      ],
+      "motivo": "A conta do painel de anúncios mostrava 84% parando na T1, com o botão fora da primeira tela do celular. A foto de antes e depois não combinava com os anúncios novos. Obs.: essa conta incluía 27 cliques de revisão do Meta (coluna da direita); só com pessoas reais, a v4 passava 42%.",
+      "sugestao": "Manter (decidido em 08/10). Reavaliar em 11/10 com umas 30 visitas reais. Tirar a coluna da direita da campanha \"08/10 · QUIZ VOLTA AO EIXO · CRIATIVOS A-D\" para não poluir a conta.",
+      "metricas": {"visitas": 5, "reais": 2, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
+    }
+  ]
+}

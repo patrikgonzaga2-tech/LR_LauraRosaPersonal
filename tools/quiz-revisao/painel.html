@@ -1,0 +1,586 @@
+<style>
+/* Painel de ajuste: números da versão no ar, histórico de versões, comparador A/B e marca. */
+.pn{background:var(--panel);border:1px solid rgba(0,0,0,.07);box-shadow:0 4px 16px rgba(0,0,0,.04);border-radius:16px;padding:20px;display:grid;gap:18px;min-width:0}
+.pn h2{font:800 clamp(19px,2.4vw,24px)/1.2 var(--f-display);margin:0;text-wrap:balance}
+.pn p{margin:0;font-size:14px;color:var(--sub);max-width:76ch}
+.pn-head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;justify-content:space-between}
+.pn-head > div{display:grid;gap:6px;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.msg{font-size:13px;color:var(--sub)}
+.msg.err{color:var(--warn)}
+/* Indicadores */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--bg);border-radius:12px;padding:12px 14px;display:grid;gap:2px;min-width:0}
+.tile .k{font:600 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sub)}
+.tile .v{font:800 30px/1.1 var(--f-display);font-variant-numeric:tabular-nums;color:var(--gd)}
+.tile .d{font-size:12.5px;color:var(--sub)}
+.tile .d b{color:var(--ink)}
+.state{display:inline-flex;gap:6px;align-items:center;font:600 11px var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:99px}
+.state.ok{background:var(--ok-soft);color:var(--ok)}
+.state.low{background:var(--warn-soft);color:var(--warn)}
+.state.na{background:var(--bg);color:var(--sub)}
+/* Gráfico: % que passou da T1 por versão */
+.chart{display:grid;gap:6px;position:relative}
+.bar{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr) 84px;gap:10px;align-items:center;font-size:13px;cursor:pointer;border-radius:8px;padding:2px 4px}
+.bar:hover,.bar:focus-visible{background:var(--bg)}
+.bar .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.bar .tr{position:relative;height:14px;background:var(--bg);border-radius:4px}
+.bar .fl{position:absolute;left:0;top:0;bottom:0;background:var(--o);border-radius:0 4px 4px 0;min-width:2px}
+.bar .meta{position:absolute;top:-3px;bottom:-3px;width:0;border-left:2px dashed var(--sub)}
+.bar .vl{text-align:right;font-variant-numeric:tabular-nums;color:var(--sub)}
+.bar.none .fl{display:none}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--sub)}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:3px;background:var(--accent);vertical-align:middle;margin-right:6px}
+.legend i.m{background:none;border-left:2px dashed var(--sub);width:2px;border-radius:0}
+@media (max-width:560px){.bar{grid-template-columns:minmax(0,96px) minmax(0,1fr) 76px}}
+/* Versões */
+.vlist{display:grid;gap:12px}
+.vcard{border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;min-width:0;background:var(--panel)}
+.vcard.live{border-color:var(--o);box-shadow:0 0 0 1px var(--o) inset}
+.vcard{border-left:5px solid var(--line)}
+.vcard.live{border-left-color:var(--o)}
+.vcard h3{font:700 17px/1.3 var(--f-display);margin:0}
+.vtop{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.vtop .when{font:700 12.5px var(--f-body);color:var(--od)}
+.vtop .ref{font:12px var(--f-mono);color:var(--sub)}
+.vtop a{color:var(--sub)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.vbox{background:var(--bg);border-radius:10px;padding:10px 12px;display:grid;align-content:start;gap:6px;min-width:0;font-size:13.5px;color:var(--sub)}
+.vbox .k{font:600 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sub)}
+.vbox ul{margin:0;padding-left:16px;display:grid;gap:4px}
+.vbox.sug{background:var(--g-soft);color:var(--ink)}
+.vnums{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
+.vnums b{color:var(--ink)}
+.vdec{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.vdec button{padding:7px 12px;font-size:13px}
+.vdec button.on{outline:2px solid var(--accent);outline-offset:1px}
+.vdec textarea{flex:1 1 100%;width:100%;font:13.5px/1.45 var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:7px 10px;min-height:38px;resize:vertical}
+.more{justify-self:start}
+/* Comparador */
+.cmp-ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.cmp-ctl label{display:grid;gap:4px;font:600 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sub);min-width:0;flex:1 1 200px}
+.cmp-ctl select{font:500 14px var(--f-body);padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);min-width:0;width:100%;text-transform:none;letter-spacing:0}
+.phones{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;justify-items:center}
+.phone{display:grid;gap:8px;justify-items:center;width:100%;max-width:360px;margin:0}
+.phone .device{max-width:360px}
+.phone figcaption{font:600 11px/1.4 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sub);text-align:center}
+.phone.b figcaption{color:var(--od)}
+/* Marca */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{padding:5px 11px;font-size:12.5px;border-radius:99px}
+.chips button.on{background:var(--gd);border-color:var(--gd);color:#fff}
+.mlist{display:grid;gap:8px}
+.mitem{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;padding:12px 0;border-top:1px solid var(--line);font-size:13.5px}
+.mitem .tno{padding-top:2px}
+.mitem .t{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.mitem .t b{font-weight:700}
+.mitem s{color:var(--sub)}
+.mitem .sug{color:var(--ink)}
+.mitem .act{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px}
+.mitem .act button{padding:5px 10px;font-size:12.5px}
+.tag{font:600 10px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:99px;background:var(--bg);color:var(--sub)}
+.tag.oferta{background:var(--warn-soft);color:var(--warn)}
+.tag.metodo{background:var(--ok-soft);color:var(--ok)}
+.decide-brand{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.opt{background:var(--bg);border-radius:12px;padding:12px 14px;display:grid;gap:6px;font-size:13.5px;color:var(--sub)}
+.opt b{color:var(--ink);font:700 15px var(--f-display)}
+.opt.rec{background:var(--o-soft);color:var(--ink);border:1px solid var(--o)}
+.opt button{justify-self:start;padding:6px 12px;font-size:13px}
+.opt button.on{outline:2px solid var(--accent);outline-offset:1px}
+/* Última venda + jornada da cliente */
+.uv{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid rgba(0,0,0,.07);border-left:5px solid var(--g);border-radius:14px;padding:14px 16px;width:100%}
+.uv:hover{box-shadow:0 6px 20px rgba(0,0,0,.07)}
+.uv:focus-visible{outline:2px solid var(--o);outline-offset:2px}
+.uv .k{font:700 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--gd)}
+.uv .t{font:800 18px/1.25 var(--f-display);color:var(--ink)}
+.uv .s{font-size:13.5px;color:var(--sub)}
+.uv .go{font:700 13.5px var(--f-body);color:var(--od);white-space:nowrap}
+.uv-tent{font-size:13px;color:var(--warn);background:var(--warn-soft);border-radius:10px;padding:8px 12px}
+.uv-det{display:grid;gap:16px;border-top:1px solid var(--line);padding-top:16px}
+.uv-pills{display:flex;flex-wrap:wrap;gap:6px}
+.uv-pills span{font-size:12.5px;background:var(--bg);border-radius:99px;padding:4px 10px;color:var(--sub)}
+.uv-pills b{color:var(--ink)}
+.uv-grid{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.uv-grid{grid-template-columns:minmax(0,1fr)}}
+.uv-phone{position:sticky;top:12px;display:grid;gap:8px;justify-items:center}
+.uv-phone .device{max-width:330px}
+.uv-phone .cap{font:700 12px var(--f-body);color:var(--sub);text-align:center}
+.uv-list{display:grid;gap:4px;min-width:0}
+.uv-row{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:44px minmax(0,1fr) 110px;gap:4px 10px;align-items:center;padding:8px 10px;border-radius:10px;font-size:13.5px;width:100%}
+.uv-row:hover,.uv-row:focus-visible{background:var(--bg)}
+.uv-row.on{background:var(--o-soft)}
+.uv-row .n{font:700 12px var(--f-body);color:var(--od)}
+.uv-row .q{min-width:0;color:var(--ink)}
+.uv-row .q small{display:block;color:var(--sub);font-size:12.5px}
+.uv-row .a{display:block;color:var(--gd);font-weight:700}
+.uv-row .pc{display:grid;gap:3px;justify-items:end;font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+.uv-row .tr{width:100%;height:6px;border-radius:3px;background:var(--bg);position:relative;overflow:hidden}
+.uv-row .tr i{position:absolute;left:0;top:0;bottom:0;background:var(--g);border-radius:0 3px 3px 0}
+.uv-row.skip .q{color:var(--sub)}
+.uv-time{display:grid;gap:4px;font-size:13px}
+.uv-time div{display:grid;grid-template-columns:70px 64px minmax(0,1fr);gap:8px;color:var(--sub)}
+.uv-time b{color:var(--ink);font-weight:700}
+.uv-time .t{font-variant-numeric:tabular-nums}
+</style>
+
+<!-- 1 · Como estamos -->
+<section class="pn tab" id="estamos" data-tab="estamos" aria-label="Como estamos">
+  <div class="pn-head">
+    <div>
+      <div class="lbl">Como estamos</div>
+      <h2 id="k-title">Versão no ar</h2>
+      <p id="k-sub"></p>
+    </div>
+    <div class="row">
+      <button class="primary" id="k-refresh" hidden>Atualizar números agora</button>
+      <span class="msg" id="k-msg"></span>
+    </div>
+  </div>
+  <button type="button" class="uv" id="uv" aria-expanded="false" aria-controls="uv-det" hidden>
+    <div style="display:grid;gap:3px;min-width:0"><span class="k">Última venda pelo quiz</span><span class="t" id="uv-t"></span><span class="s" id="uv-s"></span></div>
+    <span class="go" id="uv-go">Ver o quiz que ela fez ▸</span>
+  </button>
+  <div class="uv-tent" id="uv-tent" hidden></div>
+  <div class="uv-det" id="uv-det" hidden>
+    <div class="uv-pills" id="uv-pills"></div>
+    <div class="uv-grid">
+      <div class="uv-phone"><div class="device"><iframe id="uv-f" title="Tela do quiz que ela viu"></iframe></div><span class="cap" id="uv-cap"></span></div>
+      <div style="display:grid;gap:14px;min-width:0">
+        <div><div class="lbl" style="margin-bottom:6px">Todo o quiz que ela passou · clique numa tela para ver</div>
+          <p style="font-size:12.5px;margin-bottom:6px">À direita de cada tela: quantas pessoas da mesma versão chegaram até ali, e quantas deram a mesma resposta que ela.</p>
+          <div class="uv-list" id="uv-list"></div></div>
+        <div><div class="lbl" style="margin-bottom:6px">Linha do tempo</div><div class="uv-time" id="uv-time"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="tiles" id="k-tiles"></div>
+  <div class="chart" id="k-chart" role="list" aria-label="Porcentagem de visitas reais que passaram da T1, por versão"></div>
+  <div class="legend"><span><i></i>Passaram da T1 (visitas reais do Meta)</span><span><i class="m"></i>Meta de <b id="k-regua"></b>%</span><span>Visitas reais = feed, stories e reels. Ficam de fora a coluna da direita (revisão do Meta), "Others" e prévias.</span></div>
+</section>
+
+<!-- 2 · Versões -->
+<section class="pn tab" id="versoes" data-tab="versoes" hidden aria-label="Versões">
+  <div class="pn-head">
+    <div>
+      <div class="lbl">Histórico</div>
+      <h2>Versões do quiz</h2>
+      <p>Cada mudança que vai ao ar ganha um cartão com a data e a hora em que entrou no ar, o que mudou, o motivo e a minha sugestão. Os números são de quando a versão ficou no ar. A sua decisão fica salva aqui.</p>
+    </div>
+  </div>
+  <div class="vlist" id="v-list"></div>
+  <button class="more" id="v-more" hidden></button>
+</section>
+
+<!-- 3 · Comparador -->
+<section class="pn tab" id="comparar" data-tab="comparar" hidden aria-label="Comparar versões">
+  <div class="pn-head">
+    <div>
+      <div class="lbl">Comparar</div>
+      <h2>Duas versões lado a lado</h2>
+      <p>Os dois celulares funcionam de verdade, mas não gravam respostas nem abrem o checkout. Escolha as versões e a tela.</p>
+    </div>
+  </div>
+  <div class="cmp-ctl">
+    <label>Versão A<select id="c-a"></select></label>
+    <label>Versão B<select id="c-b"></select></label>
+    <label>Tela<select id="c-t"></select></label>
+    <button id="c-swap" type="button" aria-label="Trocar A e B">⇄ Inverter</button>
+  </div>
+  <div class="phones">
+    <figure class="phone a"><div class="device"><iframe id="c-fa" title="Versão A"></iframe></div><figcaption id="c-ca"></figcaption></figure>
+    <figure class="phone b"><div class="device"><iframe id="c-fb" title="Versão B"></iframe></div><figcaption id="c-cb"></figcaption></figure>
+  </div>
+</section>
+
+<!-- 4 · Marca -->
+<section class="pn tab" id="marca" data-tab="marca" hidden aria-label="Marca De Volta ao Eixo">
+  <div class="pn-head">
+    <div>
+      <div class="lbl">Marca</div>
+      <h2>Levar o produto para o "De Volta ao Eixo"</h2>
+      <p>A logo e a promessa já são "De Volta ao Eixo", mas o nome "Efeito Lipo" ainda aparece em <b id="m-count"></b> lugares do quiz. Primeiro decida como a marca fica. Depois peça as trocas uma a uma ou todas de uma vez, e elas vão para a fila de pedidos lá embaixo.</p>
+    </div>
+  </div>
+  <div class="decide-brand" data-item="marca-estrategia">
+    <div class="opt rec"><b>A · De Volta ao Eixo na frente, Efeito Lipo como método</b><span>O quiz, a promessa e o nome do que ela compra viram "Roteiro De Volta ao Eixo (21 dias)". "Efeito Lipo" fica só na história da Laura, como o nome do método. Dá para fazer já, sem mexer no checkout nem na entrega. <b style="font:inherit">Minha recomendação para agora.</b></span><button data-v="A">Escolher A</button></div>
+    <div class="opt"><b>B · Trocar o nome do produto inteiro</b><span>Também o produto na Greenn, o e-mail de acesso e a área de membros passam a se chamar De Volta ao Eixo. Fica tudo coerente, mas mexe em checkout e entrega, então vale fazer depois que a promessa nova provar que vende.</span><button data-v="B">Escolher B</button></div>
+    <div class="opt"><b>C · Manter Efeito Lipo nos textos</b><span>"De Volta ao Eixo" fica só como logo e promessa da T1. É o mais rápido, mas a cliente lê dois nomes no mesmo funil.</span><button data-v="C">Escolher C</button></div>
+  </div>
+  <span class="msg" id="m-dec-msg"></span>
+  <div class="row">
+    <div class="chips" id="m-chips"></div>
+    <button id="m-all" type="button">Pedir todas as trocas filtradas</button>
+    <span class="msg" id="m-msg"></span>
+  </div>
+  <div class="mlist" id="m-list"></div>
+</section>
+
+<script>
+(() => {
+  const DATA = __VERSOES__;
+  const MARCA = __MARCA__;
+  const $ = id => document.getElementById(id);
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e };
+  const V = DATA.versoes, LIVE = V[V.length - 1], REGUA = DATA.regua_t1;
+  let M = Object.fromEntries(V.map(v => [v.id, v.metricas]));
+  let medidoEm = DATA.medido_em, adb = null, who = '';
+  const fmtQuando = iso => { const d = new Date(iso); return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'America/Sao_Paulo' }) + ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' }).replace(':', 'h') };
+  const pct = (a, b) => b ? Math.round(100 * a / b) : null;
+  const brl = n => 'R$ ' + Number(n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const nome = v => `${v.id} · ${v.titulo}`;
+
+  // ── 1 · Como estamos ─────────────────────────────────────────────
+  // Referência = versão anterior com mais visitas reais (comparação justa).
+  function referencia() { return V.slice(0, -1).filter(v => (M[v.id] || {}).reais >= 10).sort((a, b) => M[b.id].reais - M[a.id].reais)[0] || null }
+  function renderEstamos() {
+    $('k-title').textContent = `No ar: ${nome(LIVE)}`;
+    $('k-sub').textContent = `Desde ${fmtQuando(LIVE.quando)}. Números de ${fmtQuando(medidoEm)}.`;
+    $('k-regua').textContent = REGUA;
+    const m = M[LIVE.id] || {}, ref = referencia(), r = ref ? M[ref.id] : null;
+    const p = pct(m.passou_t1, m.reais), pr = r ? pct(r.passou_t1, r.reais) : null;
+    const tiles = [
+      ['Visitas reais', m.reais, r ? `${ref.id}: ${r.reais}` : ''],
+      ['Passaram da T1', p == null ? '–' : p + '%', (r ? `${ref.id}: ${pr}% · ` : '') + `meta ${REGUA}%`, p == null ? 'na' : p >= REGUA ? 'ok' : 'low'],
+      ['Chegaram ao resultado', m.resultado, r ? `${ref.id}: ${r.resultado}` : ''],
+      ['Clicaram comprar', m.comprar, r ? `${ref.id}: ${r.comprar}` : ''],
+      ['Vendas pelo quiz', m.vendas, (m.receita ? brl(m.receita) : 'R$ 0') + (r ? ` · ${ref.id}: ${r.vendas}` : '')],
+    ];
+    const box = $('k-tiles'); box.textContent = '';
+    tiles.forEach(([k, v, d, st]) => {
+      const t = el('div', 'tile'); t.append(el('span', 'k', k), el('span', 'v', v == null ? '0' : String(v)));
+      const dd = el('span', 'd', d); t.append(dd);
+      if (st) { const s = el('span', 'state ' + st, st === 'ok' ? '✓ acima da meta' : st === 'low' ? '▼ abaixo da meta' : '… poucos dados'); t.append(s) }
+      box.append(t);
+    });
+    if ((m.reais || 0) < 30) { const t = el('div', 'tile'); t.append(el('span', 'k', 'Leitura'), el('span', 'd', `Com ${m.reais || 0} visitas reais ainda é cedo. Dá para comparar a partir de umas 30.`)); box.append(t) }
+    // Gráfico
+    const ch = $('k-chart'); ch.textContent = '';
+    V.forEach(v => {
+      const mm = M[v.id] || {}, pp = pct(mm.passou_t1, mm.reais);
+      const b = el('div', 'bar' + (pp == null ? ' none' : '')); b.setAttribute('role', 'listitem'); b.tabIndex = 0;
+      b.title = `${nome(v)}: ${mm.passou_t1 || 0} de ${mm.reais || 0} visitas reais passaram da T1` + (pp == null ? '' : ` (${pp}%)`);
+      const tr = el('span', 'tr'); const fl = el('span', 'fl'); fl.style.width = (pp || 0) + '%'; const mt = el('span', 'meta'); mt.style.left = REGUA + '%'; tr.append(fl, mt);
+      b.append(el('span', 'nm', nome(v)), tr, el('span', 'vl', pp == null ? 'sem dados' : `${pp}% · ${mm.reais}`));
+      b.onclick = () => { mostrarTodas = true; renderVersoes(); window.irPara && window.irPara('versoes'); setTimeout(() => document.getElementById('card-' + v.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50) };
+      b.onkeydown = e => { if (e.key === 'Enter') b.onclick() };
+      ch.append(b);
+    });
+  }
+
+  // ── 2 · Versões ──────────────────────────────────────────────────
+  const decisoes = new Map();
+  let mostrarTodas = false;
+  const DEC = { manter: 'Manter', voltar: 'Voltar para a anterior', ajustar: 'Ajustar' };
+  function card(v, i) {
+    const prev = V[i - 1], mm = M[v.id] || {}, pp = pct(mm.passou_t1, mm.reais), live = v === LIVE;
+    const c = el('article', 'vcard' + (live ? ' live' : '')); c.id = 'card-' + v.id;
+    const top = el('div', 'vtop');
+    top.append(el('span', 'state ' + (live ? 'ok' : 'na'), live ? '● no ar' : 'anterior'), el('span', 'when', (i === 0 ? 'Versão de partida · ' : 'Versão editada ') + fmtQuando(v.quando)));
+    const ref = el('span', 'ref', v.id + ' · ' + v.commit); top.append(ref);
+    if (v.pr) { const a = el('a', null, 'PR #' + v.pr); a.href = 'https://github.com/patrikgonzaga2-tech/LR_LauraRosaPersonal/pull/' + v.pr; a.target = '_blank'; a.rel = 'noopener'; top.append(a) }
+    c.append(top, el('h3', null, v.titulo));
+    const g = el('div', 'vgrid');
+    const b1 = el('div', 'vbox'); b1.append(el('span', 'k', 'O que mudou')); const ul = el('ul'); v.mudou.forEach(x => ul.append(el('li', null, x))); b1.append(ul);
+    const b2 = el('div', 'vbox'); b2.append(el('span', 'k', 'Motivo'), el('span', null, v.motivo));
+    const b3 = el('div', 'vbox sug'); b3.append(el('span', 'k', 'Minha sugestão'), el('span', null, v.sugestao));
+    g.append(b1, b2, b3); c.append(g);
+    const n = el('div', 'vnums');
+    const add = (k, val) => { const s = el('span'); s.append(k + ': '); s.append(el('b', null, String(val))); n.append(s) };
+    add('Visitas reais', mm.reais || 0); add('Passaram da T1', pp == null ? '–' : `${mm.passou_t1} (${pp}%)`); add('Resultado', mm.resultado || 0); add('Clicaram comprar', mm.comprar || 0); add('Vendas', `${mm.vendas || 0}${mm.receita ? ' · ' + brl(mm.receita) : ''}`);
+    c.append(n);
+    const d = el('div', 'vdec'); d.dataset.item = 'ver-' + v.id;
+    if (prev) { const cmp = el('button', null, `Comparar com ${prev.id}`); cmp.type = 'button'; cmp.onclick = () => compararCom(prev.id, v.id); d.append(cmp) }
+    Object.entries(DEC).forEach(([k, lab]) => { if (!live && k === 'voltar') return; const bt = el('button', null, lab); bt.type = 'button'; bt.dataset.v = k; d.append(bt) });
+    const ta = el('textarea'); ta.id = 'obs-' + v.id; ta.placeholder = 'Anotação sua sobre esta versão (fica salva aqui).'; d.append(ta, el('span', 'msg'));
+    c.append(d);
+    return c;
+  }
+  function renderVersoes() {
+    const list = $('v-list'); list.textContent = '';
+    const ordem = V.map((v, i) => [v, i]).reverse();
+    (mostrarTodas ? ordem : ordem.slice(0, 3)).forEach(([v, i]) => list.append(card(v, i)));
+    const nbv = document.getElementById('nb-versoes'); if (nbv) nbv.textContent = V.length;
+    const more = $('v-more'); more.hidden = V.length <= 3; more.textContent = mostrarTodas ? 'Mostrar só as 3 últimas' : `Mostrar todas as ${V.length} versões`;
+    more.onclick = () => { mostrarTodas = !mostrarTodas; renderVersoes() };
+    pintarDecisoes(); ligarDecisoes();
+  }
+  function pintarDecisoes() {
+    document.querySelectorAll('.vdec').forEach(box => {
+      const v = decisoes.get(box.dataset.item); box.querySelectorAll('button[data-v]').forEach(b => b.classList.toggle('on', !!v && b.dataset.v === v.decisao));
+      const ta = box.querySelector('textarea'); if (v && v.obs && document.activeElement !== ta) ta.value = v.obs;
+      if (v) box.querySelector('.msg').textContent = `Decisão salva: ${DEC[v.decisao] || v.decisao}.`;
+    });
+  }
+  function ligarDecisoes() {
+    document.querySelectorAll('.vdec').forEach(box => box.querySelectorAll('button[data-v]').forEach(btn => btn.onclick = async () => {
+      const say = t => box.querySelector('.msg').textContent = t;
+      if (!adb) { say('Sem conexão nesta visualização. Responda no chat.'); return }
+      say('Salvando…');
+      try { await adb.collection('aprovacoes').doc(box.dataset.item).set({ item: box.dataset.item, decisao: btn.dataset.v, obs: box.querySelector('textarea').value.trim(), por: who || '', quando: new Date().toISOString() }); say('Salvo. Me avise no chat para eu aplicar.') }
+      catch (e) { say('Não consegui salvar. ' + (e && e.code === 'not_granted' ? 'Você só tem permissão de leitura nesta página.' : 'Tente de novo.')) }
+    }));
+  }
+
+  // ── 3 · Comparador ───────────────────────────────────────────────
+  const telas = () => (typeof SCREENS !== 'undefined' ? SCREENS : []);
+  function montarComparador() {
+    const a = $('c-a'), b = $('c-b'), t = $('c-t');
+    [a, b].forEach(s => { s.textContent = ''; V.forEach(v => { const o = el('option', null, `${nome(v)} · ${fmtQuando(v.quando)}`); o.value = v.id; s.append(o) }) });
+    t.textContent = ''; telas().forEach(s => { const o = el('option', null, `T${s.idx + 1} · ${s.title.length > 46 ? s.title.slice(0, 44) + '…' : s.title}`); o.value = s.idx; t.append(o) });
+    a.value = V[V.length - 2].id; b.value = LIVE.id; t.value = 0;
+    [a, b, t].forEach(s => s.onchange = carregar);
+    $('c-swap').onclick = () => { const x = a.value; a.value = b.value; b.value = x; carregar() };
+    carregar();
+  }
+  function carregar() {
+    const a = $('c-a').value, b = $('c-b').value, t = $('c-t').value || 0;
+    $('c-fa').src = `v/${a}/quiz.html?step=${t}`; $('c-fb').src = `v/${b}/quiz.html?step=${t}`;
+    const va = V.find(v => v.id === a), vb = V.find(v => v.id === b);
+    $('c-ca').textContent = `A · ${nome(va)} · ${fmtQuando(va.quando)}`; $('c-cb').textContent = `B · ${nome(vb)} · ${fmtQuando(vb.quando)}`;
+  }
+  function compararCom(a, b, tela) { $('c-a').value = a; $('c-b').value = b; if (tela != null) $('c-t').value = tela; carregar(); window.irPara ? window.irPara('comparar', true) : $('comparar').scrollIntoView({ behavior: 'smooth', block: 'start' }) }
+
+  // ── 4 · Marca ────────────────────────────────────────────────────
+  const TIPOS = { todos: 'Todos', trocar: 'Texto do quiz', oferta: 'Oferta (só com seu ok)', metodo: 'Nome do método', google: 'Google e WhatsApp' };
+  let filtro = 'todos';
+  const pedidosMarca = new Set();
+  function renderMarca() {
+    $('m-count').textContent = MARCA.itens.length;
+    const nbm = document.getElementById('nb-marca'); if (nbm) nbm.textContent = MARCA.itens.length - pedidosMarca.size;
+    const chips = $('m-chips'); chips.textContent = '';
+    Object.entries(TIPOS).forEach(([k, lab]) => { const n = k === 'todos' ? MARCA.itens.length : MARCA.itens.filter(i => i.tipo === k).length; if (!n) return; const b = el('button', filtro === k ? 'on' : null, `${lab} · ${n}`); b.type = 'button'; b.onclick = () => { filtro = k; renderMarca() }; chips.append(b) });
+    const list = $('m-list'); list.textContent = '';
+    MARCA.itens.filter(i => filtro === 'todos' || i.tipo === filtro).forEach(i => {
+      const r = el('div', 'mitem'); r.append(el('span', 'tno', i.tela ? 'T' + i.tela : 'Link'));
+      const body = el('div'); const t = el('div', 't'); t.append(el('b', null, i.onde), el('span', 'tag ' + i.tipo, TIPOS[i.tipo]));
+      if (pedidosMarca.has(i.id)) t.append(el('span', 'state ok', 'na fila'));
+      const h = el('div'); h.append('Hoje: '); h.append(el('s', null, i.hoje));
+      const s = el('div', 'sug'); s.append('Sugestão: ' + i.sugestao);
+      const act = el('div', 'act');
+      const pb = el('button', null, pedidosMarca.has(i.id) ? 'Pedido feito' : 'Pedir troca'); pb.type = 'button'; pb.disabled = pedidosMarca.has(i.id); pb.onclick = () => pedir([i]);
+      act.append(pb);
+      if (i.tela) { const vb = el('button', null, 'Ver na tela'); vb.type = 'button'; vb.onclick = () => compararCom(V[V.length - 2].id, LIVE.id, i.tela - 1); act.append(vb) }
+      body.append(t, h, s, act); r.append(body); list.append(r);
+    });
+    $('m-all').onclick = () => pedir(MARCA.itens.filter(i => (filtro === 'todos' || i.tipo === filtro) && !pedidosMarca.has(i.id)));
+  }
+  async function pedir(itens) {
+    const say = t => $('m-msg').textContent = t;
+    if (!adb) { say('Sem conexão nesta visualização. Peça no chat.'); return }
+    if (!itens.length) { say('Nada novo para pedir neste filtro.'); return }
+    say('Mandando para a fila…');
+    try {
+      for (const i of itens) await adb.collection('pedidos').doc('marca_' + i.id).set({ key: 'marca.' + i.id, tela: i.tela || 0, telaId: 'marca', telaTitulo: 'Marca De Volta ao Eixo', campo: `Marca · ${i.onde} (${i.arquivo})`, original: i.hoje, proposto: i.sugestao, status: 'pendente', atualizado: new Date().toISOString(), por: who || '' });
+      say(`${itens.length} pedido${itens.length > 1 ? 's' : ''} na fila. Me avise no chat para eu aplicar.`);
+    } catch (e) { say('Não consegui salvar. ' + (e && e.code === 'not_granted' ? 'Você só tem permissão de leitura nesta página.' : 'Tente de novo.')) }
+  }
+  function ligarEstrategia() {
+    const box = document.querySelector('.decide-brand');
+    box.querySelectorAll('button').forEach(b => b.onclick = async () => {
+      if (!adb) { $('m-dec-msg').textContent = 'Sem conexão nesta visualização. Responda no chat.'; return }
+      try { await adb.collection('aprovacoes').doc('marca-estrategia').set({ item: 'marca-estrategia', decisao: b.dataset.v, obs: '', por: who || '', quando: new Date().toISOString() }); $('m-dec-msg').textContent = 'Escolha salva. Me avise no chat para eu aplicar.' }
+      catch (e) { $('m-dec-msg').textContent = 'Não consegui salvar. Tente de novo.' }
+    });
+  }
+  function pintarEstrategia() {
+    const v = decisoes.get('marca-estrategia');
+    document.querySelectorAll('.decide-brand button').forEach(b => b.classList.toggle('on', !!v && b.dataset.v === v.decisao));
+    if (v) $('m-dec-msg').textContent = `Escolha salva: ${v.decisao}.`;
+  }
+
+  // ── Números ao vivo (Supabase do próprio Patrik) ────────────────
+  function sqlMetricas() {
+    const linhas = V.map((v, i) => { const ini = v.medir_desde || v.quando, fim = V[i + 1] ? `'${V[i + 1].quando}'::timestamptz` : 'now()'; return `('${v.id}','${ini}'::timestamptz,${fim})` }).join(',');
+    return `with v(id, ini, fim) as (values ${linhas}),
+s as (select v.id vid, q.id, q.reached_index, (upper(coalesce(q.utm_source,'')) in ('FB','FACEBOOK','IG','INSTAGRAM')) meta,
+  (coalesce(q.utm_medium,'') not in ('Facebook_Right_Column','Others','{{placement}}','an','audience_network')) reais
+  from v join quiz_sessions q on q.created_at >= v.ini and q.created_at < v.fim),
+e as (select session_id, bool_or(event='start') st, bool_or(event='checkout') ck from quiz_events where created_at >= (select min(ini) from v) group by 1),
+vd as (select v.id vid, count(*) n, coalesce(sum(price::numeric),0) receita from v join vendas x on coalesce(x.approved_date,x.order_date,x.received_at) >= v.ini and coalesce(x.approved_date,x.order_date,x.received_at) < v.fim
+  where x.tracking_sck='efeito-lipo-quiz' and x.status ilike any(array['%paid%','%approved%','%aprovad%','%pago%','%complete%']) group by 1)
+select v.id, count(s.id) visitas, count(s.id) filter (where s.meta and s.reais) reais,
+ count(s.id) filter (where s.meta and s.reais and (coalesce(e.st,false) or s.reached_index>0)) passou_t1,
+ count(s.id) filter (where s.meta and s.reais and s.reached_index>=24) resultado,
+ count(s.id) filter (where s.meta and s.reais and coalesce(e.ck,false)) comprar,
+ coalesce(max(vd.n),0) vendas, coalesce(max(vd.receita),0) receita
+from v left join s on s.vid=v.id left join e on e.session_id=s.id left join vd on vd.vid=v.id group by v.id order by v.id`;
+  }
+  // A resposta do Supabase cita a tag <untrusted-data-…> numa frase antes dos dados;
+  // por isso pegamos o trecho entre a ÚLTIMA tag de abertura e a de fechamento.
+  function lerLinhas(payload) {
+    const txt = String(typeof payload === 'string' ? payload : (payload && (payload.result || payload.text)) || '');
+    const fim = txt.lastIndexOf('</untrusted-data');
+    let bruto = txt;
+    if (fim > -1) { const ini = txt.lastIndexOf('<untrusted-data', fim); bruto = txt.slice(txt.indexOf('>', ini) + 1, fim) }
+    const rows = JSON.parse(bruto.trim());
+    if (!Array.isArray(rows)) throw Object.assign(new Error('a resposta não veio em formato de lista'), { code: 'formato' });
+    return rows;
+  }
+  function aplicar(rows, em) {
+    const novo = {};
+    rows.forEach(r => { if (!V.some(v => v.id === r.id)) return; novo[r.id] = { visitas: +r.visitas || 0, reais: +r.reais || 0, passou_t1: +r.passou_t1 || 0, resultado: +r.resultado || 0, comprar: +r.comprar || 0, vendas: +r.vendas || 0, receita: +r.receita || 0 } });
+    if (!Object.keys(novo).length) return false;
+    M = { ...M, ...novo }; medidoEm = em; renderEstamos(); renderVersoes(); return true;
+  }
+  async function ligarAoVivo() {
+    const c = window.claude; if (!c) return;
+    const mcp = await c.use('mcp').catch(() => null);
+    const btn = $('k-refresh'), say = (t, err) => { $('k-msg').textContent = t; $('k-msg').className = 'msg' + (err ? ' err' : '') };
+    if (!mcp) { say(`Números de ${fmtQuando(medidoEm)}. Para atualizar, peça no chat.`); return }
+    btn.hidden = false;
+    let tentou = false;
+    btn.onclick = async () => {
+      btn.disabled = true; say('Consultando o Supabase…');
+      try {
+        const res = await mcp.callTool('Supabase', 'execute_sql', { project_id: 'fjlbvoephhextnxemygf', query: sqlMetricas() }, { cache: false });
+        const em = new Date().toISOString();
+        if (aplicar(lerLinhas(res.payload), em)) { say('Números atualizados. Buscando a última venda…'); if (adb) adb.collection('metricas').doc('ultima').set({ em, rows: JSON.stringify(Object.entries(M).map(([id, x]) => ({ id, ...x }))) }).catch(() => {}) }
+        else say('O Supabase respondeu, mas sem as versões esperadas.', true);
+        try { await atualizarVenda(mcp, em); say('Atualizado agora.') } catch (e2) { say('Números atualizados; a última venda não (' + ((e2 && (e2.code || e2.message)) || 'erro') + ').', true) }
+      } catch (e) {
+        const code = e && e.code;
+        if (code === 'server_not_connected') say('Conecte o Supabase em Configurações do claude.ai → Conectores para atualizar daqui.', true);
+        else if (code === 'needs_reauth') say('Reconecte o Supabase em Configurações do claude.ai → Conectores.', true);
+        else if (code === 'not_in_manifest' || code === 'consent_required') say('Você não liberou o Supabase para esta página. Libere no menu de permissões da página e tente de novo.', true);
+        else if (code === 'approval_required') say('O Supabase pediu sua aprovação. Clique de novo e aprove.', true);
+        else if (code === 'selection_required') say('Escolha qual conexão do Supabase usar no aviso do claude.ai e tente de novo.', true);
+        else if (e && e.retryable && !tentou) { tentou = true; say('O Supabase demorou. Tentando de novo…'); setTimeout(() => { btn.disabled = false; btn.click() }, (e.retryAfterMs || 1500) + Math.random() * 1000); return }
+        else if (code === 'tool_error') say('A consulta falhou no Supabase: ' + (e.message || 'erro sem detalhe') + '. Me avise no chat.', true);
+        else say('Não consegui atualizar agora (' + (code || (e && e.message) || 'erro') + '). Os números abaixo são de ' + fmtQuando(medidoEm) + '.', true);
+      }
+      btn.disabled = false;
+    };
+  }
+
+
+  // ── Última venda: qual versão vendeu e o caminho da cliente ─────
+  const OK_ST = "array['approved','paid','%aprovad%','complete%']";
+  const REAIS = "('Facebook_Right_Column','Others','{{placement}}','an','audience_network')";
+  const SQL_VENDA = `with vq as (select coalesce(approved_date,order_date,received_at) t, price::numeric price, status, offer_code, tracking_xcod xc, tracking_src src, payment_method pm, installments parc
+  from vendas where tracking_sck='efeito-lipo-quiz' and coalesce(approved_date,order_date,received_at) <= now()),
+ok as (select * from vq where status ilike any(${OK_ST})), ap as (select * from ok order by t desc limit 1),
+itens as (select ok.offer_code, ok.price from ok, ap where ok.xc is not distinct from ap.xc and abs(extract(epoch from ok.t-ap.t))<900),
+tent as (select * from vq where t > (select t from ap) and not (status ilike any(${OK_ST})) order by t desc limit 1),
+tent_itens as (select coalesce(sum(vq.price),0) total, count(*) n from vq, tent where vq.xc is not distinct from tent.xc and abs(extract(epoch from vq.t-tent.t))<900),
+s as (select q.* from quiz_sessions q, ap where q.xcod = ap.xc order by (q.checkout_at is null), (q.utm_term is distinct from ap.src), abs(extract(epoch from coalesce(q.checkout_at,q.created_at)-ap.t)) limit 1),
+ev as (select e.created_at, e.event, e.step_index, e.step_id, e.answer from quiz_events e, s where e.session_id = s.id),
+antes as (select count(*) n, min(q.created_at) primeira from quiz_sessions q, ap, s where q.xcod = ap.xc and q.id <> s.id and q.created_at < s.created_at)
+select json_build_object('venda', (select json_build_object('t', t, 'price', price, 'status', status, 'offer', offer_code, 'pm', pm, 'parc', parc) from ap),
+ 'itens', (select json_agg(json_build_object('offer', offer_code, 'price', price)) from itens),
+ 'tentativa', (select json_build_object('t', t, 'status', status, 'pm', pm, 'total', (select total from tent_itens), 'n', (select n from tent_itens)) from tent),
+ 'sessao', (select json_build_object('criada', created_at, 'checkout', checkout_at, 'reached', reached_index, 'medium', utm_medium, 'campanha', utm_campaign, 'anuncio', utm_content, 'conjunto', utm_term, 'answers', answers) from s),
+ 'eventos', (select json_agg(json_build_object('t', created_at, 'e', event, 'i', step_index, 'id', step_id, 'a', answer) order by created_at) from ev),
+ 'antes', (select json_build_object('n', n, 'primeira', primeira) from antes)) j`;
+  const janela = vid => { const i = V.findIndex(v => v.id === vid); return [V[i].medir_desde || V[i].quando, V[i + 1] ? V[i + 1].quando : null] };
+  function sqlPercent(vid, answers) {
+    const [ini, fim] = janela(vid);
+    const ans = JSON.stringify(Object.fromEntries(Object.entries(answers || {}).filter(([k]) => k !== 'peso' && k !== 'altura'))).replace(/'/g, "''");
+    return `with w as (select q.id, q.answers, q.reached_index,
+   exists(select 1 from quiz_events e where e.session_id=q.id and e.event='start') st,
+   exists(select 1 from quiz_events e where e.session_id=q.id and e.event='checkout') ck
+  from quiz_sessions q where q.created_at >= '${ini}' and q.created_at < ${fim ? `'${fim}'` : 'now()'} and coalesce(q.utm_medium,'') not in ${REAIS}),
+her as (select key, value from jsonb_each('${ans}'::jsonb)),
+f as (select k, count(*) filter (where w.reached_index >= k) n from w, generate_series(0,25) k group by k)
+select json_build_object('total', (select count(*) from w), 'passou_t1', (select count(*) from w where st or reached_index>0), 'checkout', (select count(*) from w where ck),
+ 'funil', (select json_agg(json_build_object('k',k,'n',n) order by k) from f),
+ 'respostas', (select json_agg(json_build_object('id', key, 'resp', resp, 'iguais', iguais)) from (select her.key, count(*) filter (where w.answers ? her.key) resp,
+   count(*) filter (where w.answers->her.key = her.value or (jsonb_typeof(her.value)='array' and w.answers->her.key @> her.value)) iguais from her cross join w group by her.key) r)) j`;
+  }
+  const versaoEm = iso => { const t = new Date(iso); let r = V[0]; V.forEach(v => { if (new Date(v.quando) <= t) r = v }); return r };
+  const dec = x => { try { return decodeURIComponent(String(x || '').replace(/\+/g, ' ')) } catch { return String(x || '').replace(/\+/g, ' ') } };
+  const hora = iso => new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' });
+  const STATUS = { WAITING_PAYMENT: 'aguardando pagamento', BILLET_PRINTED: 'boleto gerado', APPROVED: 'aprovada', PAID: 'paga', REFUSED: 'recusada', DELAYED: 'atrasada' };
+  let UV = null, uvTela = 0;
+
+  async function atualizarVenda(mcp, em) {
+    const r1 = lerLinhas((await mcp.callTool('Supabase', 'execute_sql', { project_id: 'fjlbvoephhextnxemygf', query: SQL_VENDA }, { cache: false })).payload)[0].j;
+    if (!r1 || !r1.venda) return;
+    const ver = versaoEm(r1.venda.t).id;
+    const r2 = lerLinhas((await mcp.callTool('Supabase', 'execute_sql', { project_id: 'fjlbvoephhextnxemygf', query: sqlPercent(ver, r1.sessao && r1.sessao.answers) }, { cache: false })).payload)[0].j;
+    UV = { em, versao: ver, j1: r1, j2: r2 }; renderVenda();
+    if (adb) adb.collection('metricas').doc('ultima_venda').set({ em, versao: ver, j1: JSON.stringify(r1), j2: JSON.stringify(r2) }).catch(() => {});
+  }
+
+  function rotuloResposta(tela, id, a) {
+    const vals = Array.isArray(a) ? a : [a];
+    return vals.map(x => { const f = tela && tela.fields.find(f => f.k === `${id}.opt.${x}.label` || f.k === `${id}.opt.${x}`); return f ? f.v : String(x) }).join(' + ');
+  }
+  function renderVenda() {
+    if (!UV || !UV.j1 || !UV.j1.venda) return;
+    const { j1, j2 } = UV, vd = j1.venda, ses = j1.sessao || {}, ver = V.find(v => v.id === UV.versao) || versaoEm(vd.t);
+    const total = (j1.itens || []).reduce((a, i) => a + Number(i.price || 0), 0) || Number(vd.price);
+    $('uv').hidden = false;
+    $('uv-t').textContent = `${nome(ver)} · ${fmtQuando(vd.t)} · ${brl(total)}`;
+    $('uv-s').textContent = `${STATUS[vd.status] || vd.status} no ${vd.pm === 'PIX' ? 'Pix' : vd.pm === 'CREDIT_CARD' ? 'cartão' + (vd.parc > 1 ? ` em ${vd.parc}x` : '') : (vd.pm || '–')}` + (ses.medium ? ` · ${dec(ses.medium).replace(/_/g, ' ')}` : '') + (ses.anuncio ? ` · anúncio "${dec(ses.anuncio)}"` : '') + `. Números de ${fmtQuando(UV.em)}.`;
+    const tt = j1.tentativa;
+    $('uv-tent').hidden = !tt;
+    if (tt) $('uv-tent').textContent = `Depois dela: ${fmtQuando(tt.t)} entrou uma compra ${STATUS[tt.status] || tt.status} (${brl(tt.total)}${tt.n > 1 ? `, ${tt.n} itens com order bump` : ''}) na ${versaoEm(tt.t).id}. Ainda não conta como venda.`;
+    // detalhes
+    const pills = $('uv-pills'); pills.textContent = '';
+    const pill = (k, v) => { const sp = el('span'); sp.append(k + ': '); sp.append(el('b', null, v)); pills.append(sp) };
+    const ini = ses.criada ? new Date(ses.criada) : null, ck = ses.checkout ? new Date(ses.checkout) : null;
+    pill('Versão', `${ver.id} (${fmtQuando(ver.quando)})`);
+    if (ini && ck) { const sgs = Math.round((ck - ini) / 1000); pill('Tempo no quiz até comprar', `${Math.floor(sgs / 60)}min ${sgs % 60}s`) }
+    if (ses.campanha) pill('Campanha', dec(ses.campanha));
+    if (ses.conjunto) pill('Conjunto', ses.conjunto);
+    if (j1.itens) pill('Itens', j1.itens.map(i => `${i.offer} ${brl(i.price)}`).join(' + '));
+    if (j1.antes && j1.antes.n) pill('Já tinha feito o quiz', `${j1.antes.n}x, a 1ª em ${fmtQuando(j1.antes.primeira)}`);
+    if (j2) pill('Na versão', `${j2.total} visitas · ${pct(j2.passou_t1, j2.total)}% passaram da T1 · ${j2.checkout} clicaram comprar`);
+    // telas
+    const steps = new Map((j1.eventos || []).filter(e => e.e === 'step').map((e, idx, arr) => [e.i, e]));
+    const evs = j1.eventos || [], respPct = new Map(((j2 && j2.respostas) || []).map(r => [r.id, r]));
+    const tot = j2 ? j2.total : 0, fun = j2 ? j2.funil : [];
+    const alcance = i => !tot ? null : i === 0 ? 100 : i === 1 ? pct(j2.passou_t1, tot) : pct((fun[i - 1] || {}).n || 0, tot);
+    const list = $('uv-list'); list.textContent = '';
+    const ultima = Math.min(telas().length - 1, 25);
+    telas().slice(0, ultima + 1).forEach((tela, i) => {
+      const ev = steps.get(i), ans = ses.answers ? ses.answers[tela.id] : undefined;
+      const row = el('button', 'uv-row' + (i === uvTela ? ' on' : '')); row.type = 'button';
+      row.append(el('span', 'n', 'T' + (i + 1)));
+      const tit = tela.kind === 'intro' ? 'Tela de abertura' : tela.title; const q = el('span', 'q'); q.append(tit.length > 70 ? tit.slice(0, 68) + '…' : tit);
+      if (ans != null && ans !== '') { const a = el('span', 'a', (tela.kind === 'input' ? `${ans} ${tela.id === 'altura' ? 'cm' : 'kg'}` : rotuloResposta(tela, tela.id, ans))); q.append(a) }
+      else if (i === 0) q.append(el('small', null, ev ? '' : 'Clicou em "Quero descobrir meu perfil"'))
+      else if (tela.kind === 'sales') q.append(el('small', null, ses.checkout ? `Clicou em comprar às ${hora(ses.checkout)}` : ''));
+      else if (tela.kind === 'result') q.append(el('small', null, 'Viu o perfil de recomeço'));
+      else q.append(el('small', null, 'Tela sem pergunta'));
+      if (ev) { const prev = evs[evs.indexOf(ev) - 1]; if (prev) q.append(el('small', null, `${Math.round((new Date(ev.t) - new Date(prev.t)) / 1000)}s nesta tela`)) }
+      const pc = el('span', 'pc'); const al = alcance(i), rp = respPct.get(tela.id);
+      if (al != null) { const tr = el('span', 'tr'); const b = el('i'); b.style.width = al + '%'; tr.append(b); pc.append(el('span', null, `${al}% chegaram`), tr) }
+      if (rp && rp.resp) pc.append(el('span', null, `${pct(rp.iguais, rp.resp)}% igual a ela`));
+      row.append(q, pc);
+      row.title = (al != null ? `${al}% das ${tot} visitas da ${ver.id} chegaram até esta tela.` : '') + (rp && rp.resp ? ` ${rp.iguais} de ${rp.resp} que responderam escolheram o mesmo que ela.` : '');
+      row.onclick = () => { uvTela = i; mostrarTela(ver.id); list.querySelectorAll('.uv-row').forEach((r, k) => r.classList.toggle('on', k === i)) };
+      list.append(row);
+    });
+    mostrarTela(ver.id);
+    // linha do tempo
+    const LBL = { pageview: 'Abriu o quiz', start: 'Clicou no botão da T1', complete: 'Chegou ao resultado', checkout: 'Clicou em comprar' };
+    const tl = $('uv-time'); tl.textContent = '';
+    const t0 = evs.length ? new Date(evs[0].t) : null;
+    const linha = (t, txt) => { const d = el('div'); d.append(el('span', 't', hora(t)), el('span', 't', t0 ? '+' + Math.round((new Date(t) - t0) / 1000) + 's' : ''), el('b', null, txt)); tl.append(d) };
+    evs.forEach(e => linha(e.t, e.e === 'step' ? `Respondeu a T${e.i + 1}: ${rotuloResposta(telas()[e.i], e.id, e.a)}` : (LBL[e.e] || e.e)));
+    linha(vd.t, `Pagou: ${brl(total)} (${STATUS[vd.status] || vd.status})`);
+  }
+  function mostrarTela(vid) {
+    $('uv-f').src = `v/${vid}/quiz.html?step=${uvTela}`;
+    const t = telas()[uvTela], tt = t ? (t.kind === 'intro' ? 'Tela de abertura' : t.title) : ''; $('uv-cap').textContent = `${vid} · T${uvTela + 1}${tt ? ' · ' + (tt.length > 40 ? tt.slice(0, 38) + '…' : tt) : ''}`;
+  }
+  $('uv').onclick = () => { const det = $('uv-det'), abrir = det.hidden; det.hidden = !abrir; $('uv').setAttribute('aria-expanded', String(abrir)); $('uv-go').textContent = abrir ? 'Fechar ▾' : 'Ver o quiz que ela fez ▸'; if (abrir) renderVenda() };
+  // ── Início ───────────────────────────────────────────────────────
+  renderEstamos(); renderVersoes(); renderMarca();
+  const start = () => { montarComparador() };
+  if (telas().length) start(); else window.addEventListener('DOMContentLoaded', start, { once: true });
+  (async () => {
+    const c = window.claude;
+    try { adb = c ? await c.use('db') : null } catch { adb = null }
+    try { const u = c ? await c.use('user') : null; who = u ? await u.id() : '' } catch {}
+    ligarAoVivo();
+    ligarEstrategia();
+    if (!adb) return;
+    adb.collection('aprovacoes').onSnapshot(snap => { decisoes.clear(); snap.docs.forEach(d => { const v = d.data(); if (v) decisoes.set(d.id, v) }); pintarDecisoes(); pintarEstrategia() }, () => {});
+    adb.collection('pedidos').onSnapshot(snap => { pedidosMarca.clear(); snap.docs.forEach(d => { const v = d.data(); if (v && String(v.key || '').startsWith('marca.')) pedidosMarca.add(v.key.slice(6)) }); renderMarca() }, () => {});
+    adb.doc('metricas/ultima_venda').onSnapshot(sn => { const v = sn.exists ? sn.data() : null; if (!v) return; if (UV && UV.em && new Date(UV.em) >= new Date(v.em)) return; try { UV = { em: v.em, versao: v.versao, j1: JSON.parse(v.j1), j2: JSON.parse(v.j2) }; renderVenda() } catch {} }, () => {});
+    adb.doc('metricas/ultima').onSnapshot(s => { const v = s.exists ? s.data() : null; if (v && v.em && new Date(v.em) > new Date(medidoEm)) { try { aplicar(JSON.parse(v.rows), v.em) } catch {} } }, () => {});
+  })();
+})();
+</script>

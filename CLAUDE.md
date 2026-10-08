@@ -1,3 +1,6 @@
+## Idioma
+Responda sempre em português (Brasil), em todas as mensagens, inclusive nas parciais.
+
 ## Regra: pagamento e checkout exigem revisão do Patrik
 
 Antes de editar qualquer coisa relacionada a pagamento, checkout ou gateway
