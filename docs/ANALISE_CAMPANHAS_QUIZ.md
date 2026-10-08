@@ -171,9 +171,37 @@ da régua, o que aponta para anúncio e T1 desalinhados. O meio do quiz e o chec
 dão para julgar (amostra de 1 clique em comprar); na régua estavam bons (80% de quem passa da T1
 chega ao resultado; 20% de quem clica compra).
 
+### 3.2 Padrão para subir campanhas (definido pelo Patrik em 08/10/2026)
+
+"Sempre que te pedir pra subir campanhas, aquele é o padrão." Modelo: campanha
+`PTK - 08/10 - CONV - QUIZ VOLTA AO EIXO - CRIATIVOS A-D` (120252038480090200).
+
+- **Campanha**: Vendas (OUTCOME_SALES), nome `PTK - DD/MM - CONV - QUIZ ... - CRIATIVOS X-Y`.
+  **Orçamento no conjunto (ABO), R$ 20/dia por conjunto** — nunca orçamento na campanha.
+- **Pixel/evento**: `Pixel Oficial - Corpo Feliz - Laura` (944444744178548), evento padrão
+  **Compra (PURCHASE)**. Não usar o pixel da LP (28090278990632923) nem "Compra Realizada".
+- **Público**: Brasil, mulheres, 18–65 como sugestão, Advantage+ público ligado. Nome do
+  conjunto `... · MULHERES 25-55 · IG + FB`. Lance automático (menor custo), conversão no site.
+- **Conjuntos**:
+  - FEED: IG feed + Explorar + FB feed, só celular → peças 4:5 (1080×1350).
+  - STORIES E REELS: no modelo ficou com **posicionamentos Advantage+ (todos)**, incluindo
+    Audience Network, coluna direita, WhatsApp e Threads → peças 9:16 (e vídeo).
+  - Criativos novos: 1 conjunto novo de +R$ 20 por lote, com as versões feed e stories de cada peça.
+- **Anúncio**: nome `LETRA NOME · FEED|STORIES|REELS`; CTA Saiba mais; página Corpo Feliz +
+  IG laurarosapersonal; link do quiz com UTMs
+  `utm_source=FB&utm_campaign={{campaign.name}}&utm_medium={{placement}}&utm_term={{adset.id}}&utm_content={{ad.name}}`.
+- Sem antes e depois (regra do Meta). Subir só criativos aprovados no painel.
+
 ---
 
 ## 4. Diário
+
+- **08/10/2026 (2)**: Patrik ajustou a campanha nova no Power Editor (pixel oficial + Compra,
+  conjuntos recriados, stories com Advantage+ posicionamentos) e ativou. A pedido dele:
+  orçamento passou de R$ 60 na campanha para **R$ 20 por conjunto**; criado o conjunto
+  `E-F-G · MULHERES 25-55 · IG + FB` (120252039299230200, R$ 20, mesmo padrão do conjunto de stories)
+  com 6 anúncios (E, F, G em feed e stories); tudo ativado. Total: 3 conjuntos × R$ 20 = R$ 60/dia.
+  Padrão registrado na seção 3.2.
 
 - **08/10/2026**: Com aprovação do Patrik, **tirados Audience Network e coluna direita** do
   conjunto ABERTO 120251969455150200 (campanha 03/10 → quiz). Ficaram: Facebook (feed, stories,
