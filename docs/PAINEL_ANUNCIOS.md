@@ -7,6 +7,18 @@ Decisões do Patrik (08/10/2026): o painel fica só no claude.ai; análise 1x ao
 o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprovar o roteiro) e textos de post.
 
 ## O que a página faz
+- **Meta do painel** (primeira aba, e faixa no topo do Resumo): o Patrik grava a meta em `config/meta`
+  (lucro, faturamento ou vendas; valor; prazo em dias; início; escopo "negócio todo" ou "só Efeito Lipo").
+  A página mostra % da meta × % do prazo, faturamento, lucro, gasto, vendas, projeção no fim do prazo e "a conta de
+  hoje" (ritmo, lucro por venda, margem). Mesma conta dos painéis do site: lucro = líquido − gasto no Meta
+  (`marca_resumo` + `funil_resumo`, ou `funil_resumo(..., 'efeito-lipo-quiz')`). Plano do Claude em `meta_plano/atual`;
+  chat na conversa `objetivo`.
+- **Clicou e não comprou**: sessões do quiz com `checkout_clicked` desde 08/10 08:10 ligadas a `vendas` por xcod.
+  Separa comprou, Pix/boleto sem pagar (tem nome e WhatsApp) e saiu do checkout (só remarketing). Compara as respostas
+  do quiz de quem comprou × quem não comprou (perfil, medo, canetinha, recomeços, anúncio, checkout). Botão WhatsApp
+  abre uma mensagem pronta para o Patrik revisar e enviar (nada é enviado sozinho). Plano do Claude em
+  `recuperacao/atual` (remarketing, anúncio, mudança, campanha, automação); chat na conversa `recuperar`. Nome e
+  telefone só aparecem na tela (lidos ao vivo do Supabase), nunca gravados no banco do painel.
 - **Meta ao vivo**: campanhas, conjuntos e anúncios (Hoje, Ontem, 3 dias, 7 dias; 3 e 7 dias **incluem hoje**), pelo
   conector do Meta, atualizando de hora em hora enquanto a página está aberta. Filtros Ativas / Pausadas / Todas,
   busca por palavra e uma lista para cada nível (Campanha, Conjunto, Anúncio). "Ativas" = o próprio item e tudo acima
@@ -40,6 +52,9 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
 | `chat/<id>` | canal (campanha, criativo, quiz), conversa, alvo_id, alvo_nivel (campanha, conjunto, anúncio), alvo_nome, papel (patrik, claude), texto, em, respondido, proposta_id |
 | `config/chat` | id da conversa atual por assunto |
 | `criativos_analise/<id do anúncio>` | nome, conjunto, campanha, status_meta, thumb, periodos {ontem,d7,d15,d30,d90}, veredito, acao, motivo, como, proposta_id |
+| `config/meta` | tipo (lucro, faturamento, vendas), valor, dias, inicio (AAAA-MM-DD), escopo (marca, efeito), texto |
+| `meta_plano/atual` | em, resumo, pct_meta, pct_prazo, falta_por_dia, acoes [{titulo, porque, como, impacto, proposta_id}] |
+| `recuperacao/atual` | em, resumo, numeros, motivos [{motivo, dado}], acoes [{tipo (anuncio, mudanca, rmkt, campanha, automacao), titulo, porque, como, proposta_id}] |
 | `criativos`, `sugestoes` | aprovações antigas (antes de 08/10) |
 
 ## Regras
@@ -50,6 +65,9 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
 - Conta Meta 1094091162588572. Régua: custo por venda até R$ 37; T1 32%; clicar comprar 18,7% das sessões.
 
 ## Diário
+- **08/10/2026 (3)**: abas **Meta do painel** e **Clicou e não comprou**; a rotina das 7h passou a escrever o plano da
+  meta e o plano de recuperação. Hoje (desde o quiz novo): 4 clicaram em comprar, 1 comprou, 3 saíram do checkout sem
+  preencher.
 - **08/10/2026 (2)**: criativo H "Recomeçar não é voltar do zero" (feed e stories) no ar no conjunto E-F-G
   (anúncios 120252045444650200 e 120252045446350200). A rotina não conseguiu criar o anúncio (a sessão dela bloqueia
   ações que gastam dinheiro), então ele subiu pela sessão principal; a rotina agora grava "Bloqueado na rotina" quando
