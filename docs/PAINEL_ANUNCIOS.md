@@ -1,7 +1,7 @@
 # Painel de anúncios (Meta) — como funciona
 
 Painel: **https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN** (privado do Patrik; abre no claude.ai).
-Rotina: **"Painel de anúncios — análise diária e pedidos"** (`trig_01S5UnDtDd9VnVbm5fPXU6Vm`), todo dia às 7h47 (Brasília), uma sessão nova por execução.
+Rotina: **"Painel de anúncios — análise diária e pedidos"** (`trig_01S5UnDtDd9VnVbm5fPXU6Vm`), todo dia às 7h (Brasília), uma sessão nova por execução.
 
 Decisões do Patrik (08/10/2026): o painel fica só no claude.ai; análise 1x ao dia; **nada muda no Meta sem aprovação**;
 o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprovar o roteiro) e textos de post.
@@ -11,6 +11,8 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
   atualizando de hora em hora enquanto a página está aberta. Cruza com o quiz (Supabase `quiz_sessions`, por
   `utm_term` = conjunto e `utm_content` = nome do anúncio) e com as vendas da oferta QN7gci.
 - **Análise do dia**: escrita pela rotina em `analise/atual`.
+- **Aviso**: no fim de cada execução a rotina manda um resumo (push no celular; e-mail se ligado nas notificações da rotina) com os números de ontem, propostas, links de criativos novos e o link do painel.
+- **Status da rotina**: `status/rotina` mostra a última execução e se deu certo.
 - **Para aprovar**: propostas em `propostas/<id>`. Aprovar dispara a rotina com `PEDIDO: executar`.
 - **Chats** "Ajustar campanha" e "Criativo novo": mensagens em `chat/<id>`. Enviar dispara a rotina com `PEDIDO: chat`.
 - **Histórico**: propostas executadas (com data para conferir e resultado) e recusadas.
