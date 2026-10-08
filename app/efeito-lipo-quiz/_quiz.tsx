@@ -730,20 +730,19 @@ function IntroB({ onStart }: { onStart: () => void }) {
         <p className="q-in" style={{ fontSize: 'clamp(16.5px,2.6vw,20px)', lineHeight: 1.5, fontWeight: 600, color: '#1a1a1a', maxWidth: 500, marginTop: 18 }}>
           Descubra o porquê <span style={{ color: 'var(--o)', fontWeight: 800 }}>em 2 minutos</span>.
         </p>
-        <p className="q-in" style={{ fontSize: 'clamp(14px,2vw,15.5px)', lineHeight: 1.6, fontWeight: 400, color: '#5a5a5a', maxWidth: 460, marginTop: 14 }}>
-          Responda ao Quiz Volta ao Eixo e descubra o seu <span style={{ color: 'var(--o)', fontWeight: 700 }}>perfil de recomeço</span> e o <span style={{ color: 'var(--o)', fontWeight: 700 }}>primeiro passo</span> para voltar, sem compensar e sem castigo.
-        </p>
-        <div className="q-in w-full mt-7 mb-4" style={{ maxWidth: 360, borderRadius: 22, overflow: 'hidden', boxShadow: '0 18px 44px rgba(0,0,0,.18)' }}>
+        <div className="q-in mt-6">
+          <CtaButton onClick={onStart} glow size="lg">Quero descobrir meu perfil</CtaButton>
+        </div>
+        <div className="q-in w-full mt-7 mb-4" style={{ maxWidth: 240, borderRadius: 22, overflow: 'hidden', boxShadow: '0 18px 44px rgba(0,0,0,.18)' }}>
           <div className="relative" style={{ aspectRatio: '1 / 1' }}>
-            <Image src={IMG.intro} alt="Antes e depois — resultado real com o Efeito Lipo" fill sizes="(max-width: 560px) 86vw, 360px" priority className="object-cover" />
+            <Image src={IMG.laura} alt="Laura Rosa, personal trainer" fill sizes="(max-width: 560px) 60vw, 240px" priority className="object-cover" />
           </div>
         </div>
         <p className="q-in mb-6" style={{ fontSize: 'clamp(14.5px,2.1vw,16.5px)', lineHeight: 1.5, color: '#2a2a2a', maxWidth: 430 }}>
           ✓ Leva cerca de 2 minutos<br />
           ✓ Sem academia e sem dieta radical<br />
-          ✓ <span style={{ fontWeight: 800 }}>Você recebe o perfil e o primeiro passo no final</span>{'\u00A0'}👇
+          ✓ <span style={{ fontWeight: 800 }}>Você recebe o perfil e o primeiro passo no final</span>
         </p>
-        <CtaButton onClick={onStart} glow size="lg">Quero descobrir meu perfil</CtaButton>
       </div>
     </div>
   )
