@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
   CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, readAdId, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
-  RESULT_MARCOS, SALES, STEPS,
+  PERFIS, perfilRecomeco, RESULT_MARCOS, ROTEIRO_21, SALES, STEPS,
 } from './_data'
 import type { ImgKey, Step } from './_data'
 import {
@@ -188,7 +188,7 @@ function Inner(p: InnerProps) {
     case 'input':
       return <NumberInput step={step} value={(p.answers[step.id] as string) || ''} onChange={(v) => p.onInput(step.id, v)} onSubmit={p.onNext} />
     case 'result':
-      return <Result perfil={p.perfil} onNext={p.onNext} onReady={p.onResultReady} />
+      return <Result perfil={p.perfil} answers={p.answers} onNext={p.onNext} onReady={p.onResultReady} />
     default:
       return null
   }
@@ -256,7 +256,7 @@ function Photo({ img, alt, ratio = '1 / 1', priority, className }: { img: ImgKey
 function Laura({ onNext }: { onNext: () => void }) {
   return (
     <div className="flex flex-col flex-1 q-in">
-      <Heading title="Quem vai montar o seu protocolo" />
+      <Heading title="Se você já recomeçou mais vezes do que consegue contar, não precisa se culpar por isso." />
       <div className="mx-auto w-full mb-6" style={{ maxWidth: 240, borderRadius: 22, overflow: 'hidden', boxShadow: '0 14px 40px rgba(0,0,0,.16)' }}>
         <Photo img="laura" alt="Laüra Rosa" ratio="1984 / 2976" priority />
       </div>
@@ -299,7 +299,7 @@ function Insight({ onSingle }: { onSingle: (s: string, o: string) => void }) {
     <div className="flex flex-col flex-1 q-in">
       <Heading title={INSIGHT.headline} />
       <div className="rounded-2xl p-5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.08)', boxShadow: '0 6px 22px rgba(0,0,0,.05)' }}>
-        <p style={{ fontSize: 14.5, color: 'var(--sub)', marginBottom: 12 }}>{INSIGHT.intro}</p>
+        {INSIGHT.intro && <p style={{ fontSize: 14.5, color: 'var(--sub)', marginBottom: 12 }}>{INSIGHT.intro}</p>}
         <ul className="space-y-2.5 mb-3">
           {INSIGHT.ruins.map((t, i) => (
             <li key={i} className="flex gap-2.5" style={{ fontSize: 14.5, lineHeight: 1.45, color: 'var(--sub)' }}>
@@ -310,7 +310,7 @@ function Insight({ onSingle }: { onSingle: (s: string, o: string) => void }) {
         <div className="flex gap-2.5 pt-3" style={{ borderTop: '1px dashed rgba(0,0,0,.1)', fontSize: 15, lineHeight: 1.5, color: 'var(--ink)', fontWeight: 600 }}>
           <span style={{ color: 'var(--g)', fontWeight: 700, flexShrink: 0 }}>✓</span><span>{INSIGHT.bom}</span>
         </div>
-        <p className="font-display" style={{ marginTop: 12, fontWeight: 800, color: 'var(--o)', fontSize: 16 }}>{INSIGHT.fecho}</p>
+        {INSIGHT.fecho && <p className="font-display" style={{ marginTop: 12, fontWeight: 800, color: 'var(--o)', fontSize: 16 }}>{INSIGHT.fecho}</p>}
       </div>
       <div className="flex flex-col gap-3 mt-5">
         {INSIGHT.options.map((o, i) => (
@@ -353,15 +353,12 @@ function LoadingScreen({ step, onDone }: { step: Extract<Step, { kind: 'loading'
 
   return (
     <div className="relative flex flex-col flex-1 items-center justify-center text-center overflow-hidden" style={{ minHeight: '70vh' }}>
-      <div className="absolute inset-0 -z-10" style={{ opacity: 0.18 }}>
-        <Image src={IMG[step.bg]} alt="" fill sizes="100vw" className="object-cover" style={{ filter: 'blur(6px)' }} />
-      </div>
+      {step.bg && (
+        <div className="absolute inset-0 -z-10" style={{ opacity: 0.18 }}>
+          <Image src={IMG[step.bg]} alt="" fill sizes="100vw" className="object-cover" style={{ filter: 'blur(6px)' }} />
+        </div>
+      )}
       <div className="q-in" style={{ maxWidth: 440 }}>
-        {!step.carousel && (
-          <div className="mx-auto mb-6 grid place-items-center rounded-full q-floaty" style={{ width: 64, height: 64, background: 'rgba(255,255,255,.12)', border: '2px solid rgba(255,255,255,.25)' }}>
-            <span style={{ fontSize: 30 }}>⚙️</span>
-          </div>
-        )}
         <h2 className="font-display" style={{ fontSize: 'clamp(22px,5vw,30px)', fontWeight: 800, color: '#fff', lineHeight: 1.15, marginTop: step.carousel ? 4 : 0 }}>{step.title}</h2>
         <p style={{ fontSize: 14.5, lineHeight: 1.6, color: 'rgba(255,255,255,.8)', margin: '12px auto 22px' }}>{step.body}</p>
 
@@ -430,7 +427,8 @@ function NumberInput({ step, value, onChange, onSubmit }: { step: Extract<Step, 
 }
 
 // ── T25 — Resultado ─────────────────────────────────────────────────
-function Result({ perfil, onNext, onReady }: { perfil: InnerProps['perfil']; onNext: () => void; onReady: () => void }) {
+function Result({ perfil, answers, onNext, onReady }: { perfil: InnerProps['perfil']; answers: InnerProps['answers']; onNext: () => void; onReady: () => void }) {
+  const recomeco = PERFIS[perfilRecomeco(answers)]
   useEffect(() => {
     track('quiz_complete', { peso: perfil.hasPeso ? perfil.peso : undefined, meta: perfil.hasPeso ? perfil.meta : undefined })
     onReady()
@@ -443,6 +441,14 @@ function Result({ perfil, onNext, onReady }: { perfil: InnerProps['perfil']; onN
           <span className="inline-block font-display" style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--g)', background: 'rgba(28,135,60,.1)', padding: '6px 14px', borderRadius: 99 }}>
             ✓ Avaliação concluída
           </span>
+          <div className="mt-4">
+            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--mute)' }}>Seu perfil de recomeço</div>
+            <div className="font-display" style={{ fontSize: 'clamp(22px,4.8vw,28px)', fontWeight: 800, color: 'var(--o)', lineHeight: 1.15, marginTop: 4 }}>{recomeco.nome}</div>
+          </div>
+          <div className="mt-4 rounded-2xl p-4 text-left" style={{ background: 'rgba(28,135,60,.08)', border: '1.5px dashed var(--g)' }}>
+            <div className="font-display" style={{ fontSize: 14, fontWeight: 800, color: 'var(--g)' }}>Seu primeiro passo, hoje</div>
+            <p style={{ fontSize: 14.5, lineHeight: 1.5, color: 'var(--ink)', marginTop: 4 }}>{recomeco.passo}</p>
+          </div>
           <h2 className="font-display mt-3" style={{ fontSize: 'clamp(23px,5vw,32px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
             Seu Protocolo Efeito Lipo<br /><span style={{ color: 'var(--o)' }}>está pronto!</span>
           </h2>
@@ -468,7 +474,8 @@ function Result({ perfil, onNext, onReady }: { perfil: InnerProps['perfil']; onN
           </div>
         )}
 
-        <h3 className="font-display text-center mt-7 mb-4" style={{ fontSize: 17, fontWeight: 800, color: 'var(--ink)' }}>Sua jornada de transformação</h3>
+        <h3 className="font-display text-center mt-7" style={{ fontSize: 17, fontWeight: 800, color: 'var(--ink)' }}>Sua jornada de transformação</h3>
+        <p className="text-center mb-4" style={{ fontSize: 12.5, color: 'var(--mute)', marginTop: 4 }}>{ROTEIRO_21}</p>
         <Chart />
 
         <div className="mt-5 space-y-3">
@@ -578,7 +585,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
 
         {/* Resultado personalizado */}
         <h1 className="font-display text-center mt-5" style={{ fontSize: 'clamp(25px,5.4vw,38px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
-          Seu Protocolo Efeito Lipo<br /><span style={{ color: 'var(--o)' }}>21 dias está pronto!</span>
+          Seu roteiro de 21 dias<br /><span style={{ color: 'var(--o)' }}>para voltar ao eixo</span>
         </h1>
         <p className="text-center" style={{ fontSize: 15.5, lineHeight: 1.6, color: 'var(--sub)', maxWidth: 480, margin: '14px auto 0' }}>
           {perfil.hasPeso
@@ -586,6 +593,15 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
             : <>Com base no seu perfil, você vai receber tudo que precisa para perder até 8kg em 21 dias — sem academia, sem passar fome e sem as canetinhas caras.</>}
         </p>
 
+        {/* As 3 semanas do roteiro */}
+        <div className="grid grid-cols-3 gap-2 mx-auto mt-6" style={{ maxWidth: 420 }}>
+          {SALES.semanas.map(([sem, fase]) => (
+            <div key={sem} className="rounded-xl p-3 text-center" style={{ background: 'rgba(245,113,0,.06)', border: '1px solid rgba(245,113,0,.2)' }}>
+              <div className="font-display" style={{ fontSize: 13, fontWeight: 800, color: 'var(--od)' }}>{sem}</div>
+              <div style={{ fontSize: 12.5, lineHeight: 1.35, color: 'var(--ink)', marginTop: 2 }}>{fase}</div>
+            </div>
+          ))}
+        </div>
         <div className="mt-7"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow dataLabel="topo">Quero meu protocolo agora</CtaButton></a></div>
 
         {/* Antes / Depois */}
@@ -669,7 +685,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
         {/* CTA final */}
         <div className="text-center mt-9">
           <p className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>Protocolo Efeito Lipo 21 <span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span> → <span style={{ color: 'var(--o)' }}>R$ 37 à vista</span></p>
-          <div className="mt-4"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow variant="green" dataLabel="final">Garantir minha vaga agora</CtaButton></a></div>
+          <div className="mt-4"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow variant="green" dataLabel="final">Quero começar meu roteiro de 21 dias</CtaButton></a></div>
           <p style={{ fontSize: 12, color: 'var(--mute)', marginTop: 12, lineHeight: 1.6 }}>🔒 Pagamento 100% seguro · Acesso imediato após confirmação · Pix ou cartão</p>
         </div>
 
@@ -686,31 +702,6 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 // ── T1 — Intro ──────────────────────────────────────────────────────
-// Contador de escassez: começa em 42, cai 3 vagas/s, trava em 9 e nunca
-// sobe. Guardado por sessão (sessionStorage) pra não "rejuvenescer" se a
-// pessoa voltar pra tela.
-function useVagas() {
-  const START = 42, FLOOR = 9, STEP = 3
-  const [vagas, setVagas] = useState(START)
-  useEffect(() => {
-    let atual = START
-    try {
-      const salvo = sessionStorage.getItem('el_vagas')
-      if (salvo != null) atual = Math.max(FLOOR, Math.min(START, parseInt(salvo, 10) || START))
-    } catch {}
-    setVagas(atual)
-    if (atual <= FLOOR) return
-    const id = setInterval(() => {
-      atual = Math.max(FLOOR, atual - STEP)
-      setVagas(atual)
-      try { sessionStorage.setItem('el_vagas', String(atual)) } catch {}
-      if (atual <= FLOOR) clearInterval(id)
-    }, 2000)
-    return () => clearInterval(id)
-  }, [])
-  return vagas
-}
-
 // ── 1ª tela ─────────────────────────────────────────────────────────
 // O teste A/B terminou (19/06/2026): a variante B converteu melhor e é a
 // única no ar. A IntroA (controle original) fica ARQUIVADA logo abaixo,
@@ -725,18 +716,12 @@ function Intro({ onStart }: { onStart: () => void }) {
 }
 
 function IntroB({ onStart }: { onStart: () => void }) {
-  const vagas = useVagas()
   return (
     <div className="min-h-[100dvh] flex flex-col" style={{ background: '#fff' }}>
       <div className="w-full px-4 py-2" style={{ background: 'var(--g)', color: '#fff' }}>
         <div className="flex items-center justify-center gap-x-2.5 gap-y-1 flex-wrap" style={{ maxWidth: 600, margin: '0 auto' }}>
           <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: '.01em' }}>
-            As vagas do desafio estão acabando
-          </span>
-          <span className="inline-flex items-center gap-1.5" style={{ background: 'rgba(0,0,0,.28)', borderRadius: 999, padding: '4px 11px 4px 9px', lineHeight: 1 }}>
-            <span className="animate-pulse" style={{ width: 8, height: 8, borderRadius: 999, background: '#FF4848', display: 'inline-block', boxShadow: '0 0 6px #FF4848' }} />
-            <span style={{ fontSize: 11.5, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.04em', opacity: .9 }}>restam</span>
-            <span style={{ fontSize: 19, fontWeight: 800, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>{vagas}</span>
+            2 minutos · gratuito · perfil na hora
           </span>
         </div>
       </div>
@@ -760,7 +745,7 @@ function IntroB({ onStart }: { onStart: () => void }) {
           ✓ Sem academia e sem dieta radical<br />
           ✓ <span style={{ fontWeight: 800 }}>Você recebe o perfil e o primeiro passo no final</span>{'\u00A0'}👇
         </p>
-        <CtaButton onClick={onStart} glow size="lg">Garantir minha vaga</CtaButton>
+        <CtaButton onClick={onStart} glow size="lg">Quero descobrir meu perfil</CtaButton>
       </div>
     </div>
   )
