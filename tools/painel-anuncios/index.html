@@ -2070,7 +2070,7 @@ const TESTES = [
     arms: [['G-A', 'A · tela atual (v7)'], ['G-B', 'B · título de recomeço']],
     base: 'visitas', pos: 'comecou', cols: [['Visitas', 'visitas', null], ['Começaram', 'comecou', 'visitas'], ['Chegaram ao resultado', 'resultado', 'visitas'], ['Clicaram comprar', 'comprar', 'visitas']],
     sql: (d) => `select coalesce(intro_ab,'') braco, count(*) visitas, count(*) filter (where status<>'pageview') comecou, count(*) filter (where reached_index>=24) resultado, count(*) filter (where checkout_clicked) comprar from quiz_sessions where intro_ab in ('G-A','G-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
-    links: [{ rot: 'Ver versão A (tela atual)', url: 'v/v8/t1-a.html' }, { rot: 'Ver versão B (título de recomeço)', url: 'v/v8/t1-b.html' }] },
+    links: [{ rot: 'Ver versão A (tela atual)', frame: 'v/v8/t1-a.html' }, { rot: 'Ver versão B (título de recomeço)', frame: 'v/v8/t1-b.html' }] },
   { id: 'T2', nome: 'Preço do Efeito Lipo (teste B)', status: 'no ar desde 09/10 15h28', desde: '2026-10-09T15:28:00-03:00',
     arms: [['greenn', 'A · R$ 37 (QN7gci)'], ['greenn-B', 'B · R$ 47 (gLO7Gm)']],
     base: 'clicks', pos: 'vendas', cols: [['Clicaram comprar', 'clicks', null], ['Venderam', 'vendas', 'clicks']],
@@ -2133,9 +2133,19 @@ function renderTestes() {
     card.append(el('p', { style: 'margin:0', class: 'muted' }, menor < TESTE_MIN
       ? 'Ainda sem resposta: ' + menor + ' de ' + TESTE_MIN + ' no braço menor. Quem está na frente hoje: ' + lider.nome + '.'
       : 'Vencendo: ' + lider.nome + ', com ' + Math.round(chanceLider * 100) + '% de chance de ser a melhor.' + (chanceLider >= 0.95 ? ' Já dá para decidir.' : ' Ainda não é certeza (decide a partir de 95%).')))
-    card.append(el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap' }, ...t.links.map((l) => l.tab
-      ? el('button', { class: 'b pri', type: 'button', onclick: () => abrir(l.tab) }, l.rot)
-      : el('a', { class: 'b pri', href: l.url, target: '_blank', rel: 'noopener' }, l.rot + ' ↗'))))
+    // Versões internas do painel (v/…) abrem num celular aqui dentro: o claude.ai bloqueia abrir esses arquivos em aba nova.
+    const prev = el('div', { hidden: '', style: 'justify-self:center;width:100%;max-width:360px;aspect-ratio:390/780;background:#16130F;border-radius:34px;padding:9px' })
+    const verFrame = (url, btn) => {
+      const aberto = !prev.hidden && prev.dataset.url === url
+      prev.replaceChildren(); prev.hidden = aberto; prev.dataset.url = aberto ? '' : url
+      card.querySelectorAll('button[data-frame]').forEach((b) => b.setAttribute('aria-pressed', String(!aberto && b === btn)))
+      if (!aberto) prev.append(el('iframe', { src: url, title: 'Prévia da versão', style: 'width:100%;height:100%;border:0;border-radius:26px;background:#F7F5F2;display:block' }))
+    }
+    card.append(el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap' }, ...t.links.map((l) => l.frame
+      ? el('button', { class: 'b pri', type: 'button', 'data-frame': l.frame, 'aria-pressed': 'false', onclick: (e) => verFrame(l.frame, e.currentTarget) }, l.rot)
+      : l.tab
+        ? el('button', { class: 'b pri', type: 'button', onclick: () => abrir(l.tab) }, l.rot)
+        : el('a', { class: 'b pri', href: l.url, target: '_blank', rel: 'noopener' }, l.rot + ' ↗'))), prev)
   }
   const at = $('testes-at'); if (at) at.textContent = 'Atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 }
