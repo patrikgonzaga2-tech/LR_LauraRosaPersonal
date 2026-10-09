@@ -233,7 +233,7 @@ Painel: https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN (seção "Verificaçã
 - **fbclid não vai para o checkout**: o quiz manda para a Greenn só `utm_source`, `utm_term` e
   `utm_content` (`checkoutHrefFor` em `app/efeito-lipo-quiz/_data.ts`). Sem o `fbclid` na URL,
   o pixel da LP na Greenn não cria o cookie de clique (`_fbc`) e a "Compra Realizada" só se liga
-  ao anúncio por e-mail/telefone. Proposta de passar o `fbclid` aguardando o Patrik (regra D).
+  ao anúncio por e-mail/telefone. **Resolvido em 08/10 18h53 (PR #15):** o quiz passou a mandar o `fbclid` para a Greenn, e o redirect o preserva.
 - O token da API de conversões do pixel da LP aparece no código da página da Greenn (é como a
   Greenn funciona). Se surgirem compras estranhas no pixel, gerar token novo e trocar na Greenn.
 - "Compra Realizada" pode somar outros produtos Greenn no mesmo pixel (Comunidade). Para custo
@@ -243,6 +243,7 @@ Painel: https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN (seção "Verificaçã
 
 ## 4. Diário
 
+- **09/10/2026 (1)**: Conferida a coluna da direita na campanha 08/10 (120252038480090200): os 4 conjuntos ativos `· PIXEL LP` (FEED, STORIES E REELS, E-F-G, POST VENCEDOR) **já não têm coluna da direita nem Audience Network**. Nada alterado no Meta. Os cliques "Facebook_Right_Column" que aparecem no quiz são da revisão de anúncios novos pelo Meta, não de posicionamento pago: continuar tirando da conta de "visitas reais". Os conjuntos antigos com pixel oficial (FEED · MULHERES e STORIES — Cópia) e o E-F-G antigo estão **pausados pelo Patrik** (decisão: deixar pausados); o STORIES — Cópia e o E-F-G antigo ainda têm coluna da direita e Audience Network, se um dia forem religados é preciso tirar antes.
 - **08/10/2026 (9), noite**: Regras novas do Patrik para todo anúncio (seção 3.2): anunciante
   CORPO FELIZ LTDA, UTMs na ordem exata, complemento do WhatsApp final 0948 e localização sem
   as opções antigas. Corrigida a localização (erro #1870194) dos conjuntos FEED, STORIES E REELS,

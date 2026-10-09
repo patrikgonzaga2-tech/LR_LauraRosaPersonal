@@ -221,7 +221,8 @@ tr.det td{background:#FFFBF6;text-align:left}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:50;background:var(--gd);color:#fff;font-weight:700;font-size:14px;padding:11px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:calc(100% - 32px)}
 /* sugestão quiz */
 .qfunil{display:grid;gap:5px}
-.qrow{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1.3fr) 92px;gap:10px;align-items:center;font-size:13px}
+.qrow{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1.3fr) 128px;gap:10px;align-items:center;font-size:13px}
+.qrow .pc{color:var(--sub);font-weight:600}
 .qrow .n{color:var(--mute);font-variant-numeric:tabular-nums}
 .qrow .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .qrow .track{height:16px;border-radius:99px;background:rgba(0,0,0,.06);overflow:hidden}
@@ -229,7 +230,7 @@ tr.det td{background:#FFFBF6;text-align:left}
 .qrow.perda .fill{background:var(--bad)}
 .qrow b{text-align:right;font-variant-numeric:tabular-nums}
 .qrow .drop{font-size:11px;color:var(--bad);font-weight:700}
-@media (max-width:640px){.qrow{grid-template-columns:28px minmax(0,1fr) 80px}.qrow .track{grid-column:2/4}}
+@media (max-width:640px){.qrow{grid-template-columns:28px minmax(0,1fr) 118px}.qrow .track{grid-column:2/4}}
 .qperfis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .qperfis div{background:var(--pale);border-radius:12px;padding:12px;display:grid;gap:2px;min-width:0}
 .qperfis b{font-family:var(--display);font-size:24px}
@@ -237,6 +238,7 @@ tr.det td{background:#FFFBF6;text-align:left}
 .qresp{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr));gap:12px}
 .qresp .card{display:grid;gap:6px;padding:14px 16px}
 .qresp h4{margin:0;font:800 14px/1.3 var(--display)}
+.qresp .card.sem{background:var(--pale);box-shadow:none;align-content:start}
 .rbar{display:grid;grid-template-columns:minmax(0,1fr) 60px;gap:8px;font-size:12.5px;align-items:center}
 .rbar .lab{position:relative;padding:3px 6px;border-radius:6px;overflow:hidden;z-index:0}
 .rbar .lab i{position:absolute;inset:0 auto 0 0;background:var(--o-soft);z-index:-1}
@@ -299,14 +301,71 @@ tr.lead-det td{background:#FFFBF6;text-align:left}
 .ob-dre .tot{border-top:1px solid var(--line);padding-top:6px;margin-top:2px;font-size:15.5px}
 .ob-aviso{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:700}
 /* clicou e não comprou */
+.rc-sec{display:grid;gap:12px;scroll-margin-top:76px}
+.datas{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.datas[hidden]{display:none}
+.datas label{display:flex;gap:6px;align-items:center;font-size:13.5px;color:var(--sub);font-weight:700}
+.datas input{font:500 14px var(--body);border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:var(--wh);color:var(--ink);min-width:0}
+.rc-top{display:grid;gap:12px}
+.rc-frase{font:800 19px/1.3 var(--display);letter-spacing:-.01em}
+.rc-frase em{font-style:normal;color:var(--od)}
+.rc-barra{display:flex;gap:2px;height:18px;border-radius:99px;overflow:hidden;background:var(--pale)}
+.rc-barra i{display:block;height:100%;min-width:6px}
+.rc-leg{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--sub)}
+.rc-leg span{display:inline-flex;align-items:center;gap:6px}
+.rc-leg b{color:var(--ink);font-variant-numeric:tabular-nums}
+.cor{display:inline-block;width:11px;height:11px;border-radius:3px;flex-shrink:0}
+.c-comprou{background:var(--g)} .c-pix{background:#E0A100} .c-saiu{background:#D9897F}
+.rc-acoes{display:grid;gap:10px}
+.rc-acao{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:14px 16px;border-left:5px solid var(--line)}
+.rc-acao .num{grid-row:span 2;align-self:start;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:800 14px var(--display);background:var(--pale);color:var(--sub)}
+.rc-acao h4{font:800 16px/1.3 var(--display);margin:0}
+.rc-acao p{font-size:14px;color:var(--sub);grid-column:2}
+.rc-acao .btns{grid-column:3;grid-row:1/span 2;justify-content:flex-end}
+.rc-acao.urg{border-left-color:#E0A100;background:#FFFBF0}
+.rc-acao.urg .num{background:#E0A100;color:#000}
+.rc-acao.ok{border-left-color:var(--g)}
+.rc-acao.ok .num{background:var(--g);color:#fff}
+.rc-acao.info{border-left-color:var(--line);background:var(--pale);box-shadow:none}
+@media (max-width:640px){.rc-acao{grid-template-columns:30px minmax(0,1fr)}.rc-acao .btns{grid-column:2;grid-row:auto;justify-content:flex-start;margin-top:6px}}
+.seg .ct{font-weight:800;opacity:.75;margin-left:2px}
+.rc-t tr.feito td{opacity:.6}
+.rc-det{padding:0}
+.rc-det summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px}
+.rc-det summary::-webkit-details-marker{display:none}
+.rc-sum{display:grid;gap:2px}
+.rc-sum b{font:800 16px var(--display)}
+.rc-abrir{font:700 13.5px var(--body);color:var(--od);white-space:nowrap}
+.rc-det[open] .rc-abrir{font-size:0}
+.rc-det[open] .rc-abrir::after{content:"Fechar ▴";font-size:13.5px}
+#rc-motivos{display:grid;gap:14px;padding:0 20px 20px}
+.rc-ajuda{background:var(--pale);border-radius:12px;padding:12px 14px;font-size:14px;display:grid;gap:4px}
 .rc-cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:980px){.rc-cmp{grid-template-columns:1fr}}
-.rc-cmp .card{display:grid;gap:8px}
-.rc-cmp .card h4{font-size:15px}
-.rc-l{display:grid;grid-template-columns:minmax(0,1fr) 54px 54px;gap:4px 10px;font-size:13.5px;align-items:center}
-.rc-l .h{font-size:11.5px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.04em}
-.rc-l .n{text-align:right;font-variant-numeric:tabular-nums}
-.rc-l .n.hi{color:var(--bad);font-weight:700}
+.rc-cmp .q{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:8px;min-width:0}
+.rc-cmp h4{font-size:15px;margin:0}
+.rc-cmp .leit{font-size:13.5px;color:var(--ink);background:var(--o-soft);border-radius:8px;padding:6px 9px}
+.rc-l{display:grid;grid-template-columns:minmax(0,1fr) 92px 92px;gap:6px 10px;font-size:13.5px;align-items:center}
+.rc-l .h{font-size:11.5px;font-weight:700;color:var(--sub);text-align:right;line-height:1.25}
+.rc-l .n{display:grid;gap:3px;justify-items:end;font-variant-numeric:tabular-nums;color:var(--sub)}
+.rc-l .n b{color:var(--ink)}
+.rc-l .n i{display:block;width:100%;height:5px;border-radius:3px;background:var(--pale);position:relative;overflow:hidden}
+.rc-l .n i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:#D9897F;border-radius:3px}
+.rc-l .n.sim i::after{background:var(--g)}
+.rc-l .n.top b{color:var(--bad)}
+@media (max-width:420px){.rc-l{grid-template-columns:minmax(0,1fr) 74px 74px}}
+@media (max-width:700px){
+  .rc-t{min-width:0}
+  .rc-t thead{display:none}
+  .rc-t tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .rc-t td{border:0;padding:0;text-align:left}
+  .rc-t td.q-quando{grid-column:2;grid-row:1;font-size:12.5px;color:var(--mute)}
+  .rc-t td.q-pessoa{grid-column:1;grid-row:1;font-weight:700}
+  .rc-t td.q-sit,.rc-t td.q-perfil,.rc-t td.q-origem,.rc-t td.q-acao{grid-column:1/-1;font-size:13.5px}
+  .rc-t td.q-acao{margin-top:6px}
+  .rc-t tr.lead-det{display:block;padding:0}
+  .rc-t tr.lead-det td{display:block;padding:10px 14px}
+}
 .wa{font:700 12px var(--body);border-radius:8px;border:1px solid var(--g);background:var(--g-soft);color:var(--gd);padding:4px 9px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
 .wa:hover{background:var(--g);color:#fff}
 
@@ -537,6 +596,85 @@ tr.lead-det td{background:#FFFBF6;text-align:left}
 .ccard .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
 ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;max-width:84ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* referência + roteiros da Laura */
+.rf{display:grid;gap:22px}
+.rf-head{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.rf-head p{color:var(--sub);font-size:14px}
+.rf-bt{display:grid;gap:6px;justify-items:end}
+@media (max-width:600px){.rf-bt{justify-items:start}}
+.rf-go{all:unset;cursor:pointer;background:var(--o);color:#000;font:800 15px var(--body);letter-spacing:.04em;border-radius:12px;padding:13px 20px;display:inline-flex;gap:10px;align-items:center;box-shadow:0 4px 14px rgba(245,113,0,.3)}
+.rf-go:focus-visible{outline:2px solid var(--gd);outline-offset:2px}
+.rf-go[aria-disabled="true"]{opacity:.55;cursor:default}
+.rf-st{font-size:13px;color:var(--mute)}
+.rf-resumo{border-left:5px solid var(--o);display:grid;gap:8px}
+.rf-resumo ol{margin:0;padding-left:20px;display:grid;gap:4px;font-size:14.5px}
+.rf h3 small{font:600 13px var(--body);color:var(--mute);margin-left:6px;letter-spacing:0}
+.rf-sec{display:grid;gap:10px}
+.rf-sec>.lead{color:var(--sub);font-size:14px;max-width:84ch}
+.rf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:12px}
+.rf-c{background:var(--wh);border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0}
+.rf-c .t{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.rf-c .rf-n{font:800 20px var(--display);font-variant-numeric:tabular-nums}
+.rf-c .rf-n i{font:600 12.5px var(--body);font-style:normal;color:var(--mute)}
+.rf-c q{font-size:14px;color:var(--ink);overflow-wrap:anywhere}
+.rf-c .why{font-size:13.5px;color:var(--gd);background:var(--g-soft);border-radius:9px;padding:7px 10px}
+.rf-c .idea{font-size:13.5px;background:var(--o-soft);border-radius:9px;padding:7px 10px}
+.rf-c .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.rf-c .acts a,.rf-c .acts button{all:unset;cursor:pointer;font-weight:700;font-size:13px;border-radius:9px;padding:7px 12px;border:1px solid var(--line);background:var(--wh);color:var(--ink)}
+.rf-c .acts a:focus-visible,.rf-c .acts button:focus-visible{outline:2px solid var(--o);outline-offset:2px}
+.rf-c .acts .dl{background:var(--gd);border-color:var(--gd);color:#fff}
+.rf-c .acts .ap{background:var(--o);border-color:var(--o);color:#000}
+.rf-c .acts [aria-disabled="true"]{opacity:.5;cursor:default}
+.rf-thumb{position:relative;border-radius:10px;overflow:hidden;background:var(--pale);aspect-ratio:4/5}
+.rf-thumb img,.rf-thumb video{width:100%;height:100%;object-fit:cover;display:block}
+.rf-thumb .ty{position:absolute;left:8px;top:8px;background:rgba(0,0,0,.72);color:#fff;font-size:11.5px;font-weight:700;border-radius:99px;padding:3px 9px}
+.rf-thumb.vazio{aspect-ratio:auto;min-height:130px;display:grid;place-items:center;grid-template-columns:minmax(0,1fr);text-align:center;color:var(--sub);font-size:13px;padding:16px;border:2px dashed var(--line);background:var(--wh)}
+.rf-thumb.vazio b{display:block;font-size:28px;margin-bottom:4px}
+.rf-padrao{background:var(--o-soft);border-radius:14px;padding:14px 16px;display:grid;gap:6px}
+.rf-padrao>b{color:var(--od)}
+.rf-padrao ul{margin:0;padding-left:18px;display:grid;gap:3px;font-size:14px}
+.rf-padrao .obs{font-size:13.5px;color:var(--sub)}
+.rf-c .pg{font-weight:800}
+.rf-c .mt{font-size:12.5px;color:var(--mute)}
+.rf-c textarea{min-height:60px}
+.rf-need li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;list-style:none}
+.rf-need ul{padding-left:0}
+.rf-old summary{cursor:pointer;font-weight:700;padding:4px 0}
+.rf-old[open] summary{margin-bottom:10px}
+.rt-como{display:grid;gap:10px}
+.rt-como ul{margin:0;padding-left:18px;display:grid;gap:3px;font-size:14px}
+.rt-lista{display:grid;gap:16px}
+.rt{display:grid;gap:12px;border-left:5px solid var(--o)}
+.rt.gravado{border-left-color:var(--g)}
+.rt.ajuste{border-left-color:#E0A100}
+.rt-top{display:flex;gap:12px;align-items:flex-start}
+.rt-top .num{flex-shrink:0;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:800 16px var(--display);background:var(--o);color:#000}
+.rt.gravado .rt-top .num{background:var(--g);color:#fff}
+.rt-top h3{font-size:19px}
+.rt-top .t{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.rt-why{font-size:14px;background:var(--g-soft);color:var(--ink);border-radius:10px;padding:9px 12px}
+.rt-why b{color:var(--gd)}
+.rt-cols{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:900px){.rt-cols{grid-template-columns:minmax(0,1fr)}}
+.rt-cenas{display:grid;gap:8px}
+.rt-cena{display:grid;grid-template-columns:62px minmax(0,1fr);gap:4px 10px;background:var(--pale);border-radius:10px;padding:9px 11px;font-size:13.5px}
+.rt-cena .tm{font:800 12.5px var(--body);color:var(--od);grid-row:span 3}
+.rt-cena .faz{color:var(--sub)}
+.rt-cena .fala{font-weight:700;color:var(--ink)}
+.rt-cena .tela{font-size:12.5px;color:var(--sub)}
+.rt-cena .tela b{color:var(--ink);background:#FFF;border:1px solid var(--line);border-radius:6px;padding:0 5px;font-weight:700}
+.rt-texto{background:#FFFDF9;border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:10px}
+.rt-texto .k{color:var(--od)}
+.rt-texto .fala{font-size:17px;line-height:1.55;display:grid;gap:6px}
+.rt-texto .leg{font-size:13.5px;color:var(--sub);white-space:pre-wrap;border-top:1px solid var(--line);padding-top:8px}
+.rt-info{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--sub)}
+.rt-info b{color:var(--ink)}
+.rt-ref{font-size:14px;background:var(--o-soft);border-radius:10px;padding:9px 12px;display:grid;gap:4px}
+.rt-ref b{color:var(--od)}
+.rt-ref q{color:var(--ink)}
+.rt-ref-a{font-weight:700;white-space:nowrap}
+.rt-cuidado{font-size:13.5px;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:8px 12px}
+.rt .btns .b{display:inline-flex;align-items:center;gap:6px}
 </style>
 
 <div class="toast" id="toast" role="status" hidden></div>
@@ -568,6 +706,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
       <button role="tab" data-tab="historico" aria-selected="false">Histórico</button>
       <button role="tab" data-tab="criativos" aria-selected="false">Criativos</button>
       <button role="tab" data-tab="referencia" aria-selected="false">Referência</button>
+      <button role="tab" data-tab="roteiros" aria-selected="false">Roteiros da Laura <span class="badge" id="nb-rot">0</span></button>
     </nav>
     <div class="side-links" aria-label="Painéis ligados">
       <div class="navlbl" style="padding:6px 0 2px">Ligados</div>
@@ -618,6 +757,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
     <!-- RESUMO -->
     <section class="tab" id="tab-resumo" role="tabpanel">
       <div class="pagehead"><div style="display:grid;gap:4px"><h2>Resumo de hoje</h2><p>O que aconteceu, o que espera você e o que o Claude está fazendo.</p></div><span class="pill n" id="m-at-r">carregando…</span></div>
+      <div class="rc-sec"><h3>O que fazer hoje</h3><div class="rc-acoes" id="hoje-acoes"><div class="empty">Carregando…</div></div></div>
       <button type="button" class="card objstrip" id="r-obj" data-go="objetivo"><div style="display:grid;gap:2px"><span class="k">Meta do painel</span><span class="t" id="r-obj-t">Defina a meta do painel →</span></div><div class="mini" id="r-obj-m"><span class="muted">Ex.: bater 100 mil de lucro em 30 dias. Eu acompanho em % e sugiro como chegar lá.</span></div></button>
       <div class="card status" id="rot"><span class="dot" id="rot-dot"></span><div style="display:grid;gap:2px;min-width:0"><b id="rot-t">Rotina do Claude</b><span class="muted" id="rot-m">Ainda não rodou. A primeira análise automática é amanhã às 7h.</span></div></div>
       <div class="tiles">
@@ -628,7 +768,6 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
         <div class="tile g"><span class="k">Vendas</span><span class="v" id="r-v">–</span><span class="s" id="r-v-s">custo por venda: –</span></div>
       </div>
       <div class="card an" id="an-box"><div class="row"><h3>Análise do Claude</h3><span class="pill n" id="an-at">aguardando</span></div><p class="muted">A primeira análise chega amanhã às 7h. Para pedir uma agora, use a aba Aprovar e conversar.</p></div>
-      <div class="card row" id="r-aprovar"><div style="display:grid;gap:2px"><h3 id="r-aprovar-t">Nada esperando você</h3><span class="muted">Propostas de ajuste e criativos novos aparecem em "Para aprovar".</span></div><button class="b pri" type="button" data-go="aprovar">Ver propostas</button></div>
     </section>
 
     <!-- APROVADOS -->
@@ -719,20 +858,20 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
       </div>
       <h3>Campanhas</h3>
       <div class="tbl"><table id="t-camps">
-        <thead><tr><th class="sort" data-k="name">Campanha</th><th class="sort" data-k="budget">Verba/dia</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="cliques">Cliques</th><th class="sort" data-k="lp">View page</th><th class="sort" data-k="sessoes">Quiz</th><th class="sort" data-k="res">Última etapa</th><th class="sort" data-k="comprar">Clicou comprar</th><th class="l">Otimiza</th></tr></thead>
-        <tbody id="m-camps"><tr><td colspan="9" class="l muted">Carregando do Meta…</td></tr></tbody>
+        <thead><tr><th class="sort" data-k="name">Campanha</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="sessoes">Começaram o quiz</th><th class="sort" data-k="comprar">Clicaram comprar</th><th class="sort" data-k="vendas">Vendas</th><th class="sort" data-k="cpv">Custo por venda</th><th class="l">Sinal</th></tr></thead>
+        <tbody id="m-camps"><tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr></tbody>
       </table></div>
       <h3>Conjuntos</h3>
       <div class="tbl"><table id="t-sets">
-        <thead><tr><th class="sort" data-k="name">Conjunto</th><th class="sort" data-k="budget">Verba/dia</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="cliques">Cliques</th><th class="sort" data-k="lp">View page</th><th class="sort" data-k="sessoes">Quiz</th><th class="sort" data-k="res">Última etapa</th><th class="sort" data-k="comprar">Clicou comprar</th><th class="l">Otimiza</th></tr></thead>
-        <tbody id="m-sets"><tr><td colspan="9" class="l muted">Carregando do Meta…</td></tr></tbody>
+        <thead><tr><th class="sort" data-k="name">Conjunto</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="sessoes">Começaram o quiz</th><th class="sort" data-k="comprar">Clicaram comprar</th><th class="sort" data-k="vendas">Vendas</th><th class="sort" data-k="cpv">Custo por venda</th><th class="l">Sinal</th></tr></thead>
+        <tbody id="m-sets"><tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr></tbody>
       </table></div>
       <h3>Anúncios</h3>
       <div class="tbl"><table id="t-ads">
-        <thead><tr><th class="sort" data-k="name">Anúncio</th><th class="sort" data-k="ctr">CTR</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="cliques">Cliques</th><th class="sort" data-k="lp">View page</th><th class="sort" data-k="sessoes">Quiz</th><th class="sort" data-k="res">Última etapa</th><th class="sort" data-k="comprar">Clicou comprar</th><th class="l">Otimiza</th></tr></thead>
-        <tbody id="m-ads"><tr><td colspan="9" class="l muted">Carregando do Meta…</td></tr></tbody>
+        <thead><tr><th class="sort" data-k="name">Anúncio</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="sessoes">Começaram o quiz</th><th class="sort" data-k="comprar">Clicaram comprar</th><th class="sort" data-k="vendas">Vendas</th><th class="sort" data-k="cpv">Custo por venda</th><th class="l">Sinal</th></tr></thead>
+        <tbody id="m-ads"><tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr></tbody>
       </table></div>
-      <p class="muted"><b>View page</b>: páginas do quiz que carregaram (Meta). <b>Quiz</b>: sessões que começaram no quiz vindas daquele anúncio. <b>Última etapa</b>: chegaram ao resultado (perfil). <b>Clicou comprar</b>: clicaram no botão de compra. Vendas são da oferta do quiz na Greenn (QN7gci). "3 dias" e "7 dias" incluem hoje. <b>Ativas</b>: só o que está rodando de verdade (campanha, conjunto e anúncio ligados). Clique em <b>Com problema</b> ou <b>Reprovado</b> para ver o motivo e pedir a correção. Alerta vermelho: R$ 40 ou mais gastos sem ninguém clicar em comprar.</p>
+      <p class="muted"><b>Sinal</b> (régua: custo por venda até R$ 37): <b>Escalar</b> = 3 ou mais vendas dentro da régua · <b>Vendendo</b> = já vendeu dentro da régua · <b>Caro</b> = vendeu, mas acima de R$ 37 · <b>Pausar?</b> = R$ 40 ou mais gastos e ninguém clicou em comprar · <b>Pouco dado</b> = menos de R$ 10 gastos. <b>Vendas</b>: oferta do quiz na Greenn (QN7gci), ligadas ao conjunto e ao anúncio de onde a pessoa veio. Toque numa linha para ver o caminho inteiro (cliques → página → quiz → comprar). "3 dias" e "7 dias" incluem hoje. <b>Ativas</b> = campanha, conjunto e anúncio ligados.</p>
       <div class="state" id="m-err" hidden></div>
     </section>
 
@@ -809,13 +948,23 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
 
     <!-- CLICOU E NÃO COMPROU -->
     <section class="tab" id="tab-recuperar" role="tabpanel" hidden>
-      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Clicou em comprar e não comprou</h2><p>Quem chegou no botão de compra e parou. Eu cruzo com as respostas do quiz para descobrir por quê e sugiro como trazer de volta: anúncio, mudança, remarketing ou automação de recuperação.</p></div><span class="pill n" id="rc-at">carregando…</span></div>
-      <div class="filtros card"><div class="seg" role="group" aria-label="Período" id="rc-per"><button type="button" data-p="today" aria-pressed="false">Hoje</button><button type="button" data-p="last_7d" aria-pressed="false">7 dias</button><button type="button" data-p="novo" aria-pressed="true">Desde o quiz novo</button></div><span class="muted">Todas as origens (anúncio, Instagram, WhatsApp). Quiz novo desde 08/10 08:10.</span></div>
-      <div class="tiles" id="rc-tiles"></div>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Clicou em comprar e não comprou</h2><p>Quem chegou no botão de compra e parou. Aqui você vê o que fazer agora, quem chamar e o que as respostas do quiz dizem.</p></div><span class="pill n" id="rc-at">carregando…</span></div>
+      <div class="seg" role="group" aria-label="Período" id="rc-per"><button type="button" data-p="today" aria-pressed="false">Hoje</button><button type="button" data-p="last_7d" aria-pressed="false">7 dias</button><button type="button" data-p="novo" aria-pressed="true">Desde o quiz novo (08/10)</button><button type="button" data-p="datas" aria-pressed="false">Escolher datas</button></div>
+      <div class="datas" id="rc-datas" hidden><label>De <input type="date" id="rc-de"></label><label>até <input type="date" id="rc-ate"></label><button class="b pri" type="button" id="rc-datas-ok">Aplicar</button><span class="muted" id="rc-datas-st"></span></div>
+      <div class="card rc-top" id="rc-top"><span class="muted">Carregando…</span></div>
+      <div class="rc-sec"><h3>O que fazer agora</h3><div class="rc-acoes" id="rc-acoes"></div></div>
+      <div class="rc-sec" id="rc-pessoas-box">
+        <div class="row"><h3>Pessoas</h3><div class="seg" role="group" aria-label="Mostrar" id="rc-sit"></div></div>
+        <div class="tbl"><table class="rc-t"><thead><tr><th class="l">Quando</th><th class="l">Pessoa</th><th class="l">Situação</th><th class="l">Perfil e maior medo</th><th class="l">Veio de</th><th class="l">O que fazer</th></tr></thead><tbody id="rc-pessoas"><tr><td colspan="6" class="l muted">Carregando…</td></tr></tbody></table></div>
+        <p class="muted">O botão <b>WhatsApp</b> abre a mensagem pronta para você revisar e enviar (nada sai sozinho). Depois toque em <b>Já chamei ✓</b>. Toque na linha para ver todas as respostas do quiz da pessoa.</p>
+      </div>
+      <details class="card rc-det" id="rc-det">
+        <summary><span class="rc-sum"><b>Por que não compram?</b><span class="muted" id="rc-det-s">Respostas do quiz de quem comprou × quem não comprou</span></span><span class="rc-abrir" aria-hidden="true">Ver ▾</span></summary>
+        <div id="rc-motivos"></div>
+      </details>
       <div class="ob-grid">
         <div class="ob-sug">
-          <div class="row"><h3>Por que não compraram</h3><button class="b pri" type="button" id="rc-pedir">Pedir plano de recuperação ao Claude</button></div>
-          <div id="rc-motivos"></div>
+          <div class="row"><h3>Plano de recuperação</h3><button class="b pri" type="button" id="rc-pedir">Pedir plano ao Claude</button></div>
           <div id="rc-plano"></div>
         </div>
         <aside class="card chat" aria-label="Conversa sobre recuperação">
@@ -826,10 +975,6 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
           <form id="rc-chat-form"><textarea id="rc-chat-t" rows="2" placeholder="Pergunte sobre quem não comprou… (Ctrl+Enter envia)" aria-label="Mensagem sobre recuperação"></textarea><button class="b pri" type="submit">Enviar</button></form>
         </aside>
       </div>
-      <h3>Pessoas</h3>
-      <div class="filtros card"><div class="seg" role="group" aria-label="Situação" id="rc-sit"><button type="button" data-s="nao" aria-pressed="true">Não compraram</button><button type="button" data-s="pix" aria-pressed="false">Pix/boleto sem pagar</button><button type="button" data-s="saiu" aria-pressed="false">Saíram do checkout</button><button type="button" data-s="todas" aria-pressed="false">Todas</button></div></div>
-      <div class="tbl"><table><thead><tr><th class="l">Quando</th><th class="l">Pessoa</th><th class="l">Situação</th><th class="l">Perfil</th><th class="l">Maior medo</th><th class="l">Anúncio</th><th class="l">Checkout</th><th class="l">Recuperar</th></tr></thead><tbody id="rc-pessoas"><tr><td colspan="8" class="l muted">Carregando…</td></tr></tbody></table></div>
-      <p class="muted"><b>Pix/boleto sem pagar</b>: preencheu o checkout e gerou o pagamento, mas não pagou (temos nome e WhatsApp). <b>Saiu do checkout</b>: clicou em comprar e saiu sem preencher (só dá para alcançar por remarketing no Meta). O botão WhatsApp abre uma mensagem pronta para você revisar e enviar; nada é enviado sozinho. Depois clique em <b>Já chamei ✓</b>: o número no menu conta só quem ainda falta chamar. Clique na linha para ver as respostas do quiz.</p>
       <div class="state" id="rc-err" hidden></div>
     </section>
 
@@ -982,16 +1127,18 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
           <button type="button" data-p="today" aria-pressed="false">Hoje</button>
           <button type="button" data-p="last_7d" aria-pressed="false">7 dias</button>
           <button type="button" data-p="novo" aria-pressed="true">Desde o quiz novo (08/10)</button>
+          <button type="button" data-p="datas" aria-pressed="false">Escolher datas</button>
         </div>
         <div class="seg" role="group" aria-label="Origem" id="q-orig">
           <button type="button" data-o="fb" aria-pressed="true">Só anúncios do Meta</button>
           <button type="button" data-o="todas" aria-pressed="false">Todas as origens</button>
         </div>
       </div>
+      <div class="datas" id="q-datas" hidden><label>De <input type="date" id="q-de"></label><label>até <input type="date" id="q-ate"></label><button class="b pri" type="button" id="q-datas-ok">Aplicar</button><span class="muted" id="q-datas-st"></span></div>
       <div class="tiles" id="q-tiles"></div>
       <h3>Minhas sugestões para o quiz</h3>
       <div class="props cr-novos" id="q-props"></div>
-      <div class="card" style="display:grid;gap:10px"><div class="row"><h3>Funil tela a tela</h3><span class="muted" style="font-size:12.5px">quantas pessoas passaram de cada tela · em vermelho, as 3 maiores perdas</span></div><div class="qfunil" id="q-funil"></div></div>
+      <div class="card" style="display:grid;gap:10px"><div class="row"><h3>Funil tela a tela</h3><span class="muted" style="font-size:12.5px">quantas pessoas passaram de cada tela e a % de quem viu a 1ª tela · em vermelho, as 3 maiores perdas</span></div><div class="qfunil" id="q-funil"></div></div>
       <div class="card" style="display:grid;gap:10px"><div class="row"><h3>Perfil de recomeço</h3><span class="muted" style="font-size:12.5px">quem chegou ao resultado · quantos clicaram comprar e compraram</span></div><div class="qperfis" id="q-perfis"></div></div>
       <h3>Respostas</h3>
       <div class="qresp" id="q-resp"></div>
@@ -1004,8 +1151,32 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
     </section>
 
     <!-- REFERÊNCIA -->
-    <section class="tab" id="tab-referencia" role="tabpanel" hidden>
-      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Referência</h2><p>Fotos, pixel e pendências, como estavam em 08/10.</p></div></div>
+    <section class="tab rf" id="tab-referencia" role="tabpanel" hidden>
+      <div class="rf-head">
+        <div style="display:grid;gap:4px"><h2>Referência</h2><p>O que está funcionando no Instagram da Laura e no mercado, e peças prontas para subir.</p></div>
+        <div class="rf-bt"><button class="rf-go" type="button" id="rf-buscar">🔎 BUSCAR REFERÊNCIAS</button><span class="rf-st" id="rf-st" aria-live="polite">–</span></div>
+      </div>
+      <div class="card rf-resumo" id="rf-resumo" hidden></div>
+      <div class="rf-sec">
+        <h3>1. O que funcionou no Instagram da Laura <small id="rf-ig-sub"></small></h3>
+        <div class="rf-padrao" id="rf-padrao" hidden></div>
+        <div class="rf-grid" id="rf-ig"></div>
+      </div>
+      <div class="rf-sec">
+        <h3>2. O que os concorrentes estão anunciando <small>Biblioteca de Anúncios do Meta · Brasil · ativos</small></h3>
+        <p class="lead" id="rf-merc-lead"></p>
+        <div class="rf-grid" id="rf-merc"></div>
+      </div>
+      <div class="rf-sec">
+        <h3>3. Peças produzidas a partir disso <small>baixe, peça ajuste ou mande subir</small></h3>
+        <div class="rf-grid" id="rf-pecas"></div>
+      </div>
+      <div class="card rf-need">
+        <h3>O que já funciona e o que precisa conectar</h3>
+        <ul class="clean" id="rf-con"></ul>
+        <p class="muted" style="margin-top:8px">Passo a passo para conectar: <a href="https://github.com/patrikgonzaga2-tech/LR_LauraRosaPersonal/blob/claude/relaxed-cray-r4bnc9/docs/GUIA_CONEXOES.md" target="_blank" rel="noopener">Guia de conexões</a>.</p>
+      </div>
+      <details class="card rf-old"><summary>Fotos autorizadas e pendências antigas (pixel, Compra Realizada, vídeos)</summary>
       <div class="tbl"><table>
         <thead><tr><th>Pasta de fotos</th><th class="l">Autorização</th><th class="l">Uso em anúncio</th></tr></thead>
         <tbody>
@@ -1020,6 +1191,28 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
         <li><span class="pill wait">Pendente</span> Laura gravar os vídeos: <a href="https://claude.ai/code/artifact/57d716fe-6b07-459f-860c-60610ab47371" target="_blank" rel="noopener">roteiros com storyboard</a>.</li>
         <li><span class="pill wait">Pendente</span> A pasta "LAURA FOTOS" está como "qualquer pessoa com o link pode editar".</li>
       </ul></div>
+      </details>
+    </section>
+
+    <section class="tab" id="tab-roteiros" role="tabpanel" hidden>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Roteiros para a Laura gravar</h2><p>Cada roteiro diz por que gravar, o que fazer em cada cena e o texto completo para falar. Gravou? Mande os vídeos na pasta do Drive e toque em "Já gravei".</p></div></div>
+      <div class="card rt-como">
+        <h3>Como gravar (vale para todos)</h3>
+        <ul>
+          <li><b>Celular em pé</b> (vertical), na altura dos olhos, apoiado. Câmera de trás se tiver alguém ajudando; de frente se estiver sozinha.</li>
+          <li><b>Luz de frente</b>: de frente para a janela. Nada de janela atrás.</li>
+          <li><b>Os 3 primeiros segundos decidem tudo</b>: comece já falando a primeira frase, sem "oi, gente".</li>
+          <li>Grave <b>cada cena 2 vezes</b>, sem música e sem legenda. A edição, o texto na tela e a música a gente coloca.</li>
+          <li>Pode ler o texto daqui (ou do WhatsApp) e falar do seu jeito: o importante é a ideia de cada cena.</li>
+        </ul>
+        <p style="font-size:14px"><b>Onde mandar:</b> na pasta <a href="https://drive.google.com/drive/folders/10KpvJsEZsSbHWWKr1LjtmzynlPnclgdG" target="_blank" rel="noopener">LAURA IA CLAUDE</a> do Drive, com o nome do roteiro no arquivo (ex.: "r1 cardio cena 2").</p>
+      </div>
+      <div class="seg" id="rt-filtro" role="group" aria-label="Filtrar roteiros">
+        <button type="button" data-f="gravar" aria-pressed="true">Para gravar <span class="ct" id="rt-c-gravar"></span></button>
+        <button type="button" data-f="gravado" aria-pressed="false">Gravados <span class="ct" id="rt-c-gravado"></span></button>
+        <button type="button" data-f="todos" aria-pressed="false">Todos</button>
+      </div>
+      <div class="rt-lista" id="rt-lista"><div class="empty">Carregando roteiros…</div></div>
     </section>
 
   </div></main>
@@ -1042,7 +1235,7 @@ const fmtD = (s) => { if (!s) return '–'; const d = new Date(String(s).length 
 let db = null, user = null, me = null, mcp = null
 
 // ── Abas ───────────────────────────────────────────────────────────
-const TABS = ['qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'referencia']
+const TABS = ['qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'referencia', 'roteiros']
 function abrir(t, foco) {
   if (t === 'conversar') t = 'aprovar'
   if (!TABS.includes(t)) t = 'resumo'
@@ -1309,7 +1502,6 @@ function renderProps() {
   const abertas = Object.entries(props).filter(([, p]) => ['pendente', 'ajuste'].includes(p.status))
   const esperando = abertas.filter(([, p]) => p.status === 'pendente').length
   const nb = $('nb-aprovar'); nb.textContent = String(esperando); nb.classList.toggle('hot', esperando > 0)
-  $('r-aprovar-t').textContent = esperando ? (esperando === 1 ? '1 proposta esperando você' : esperando + ' propostas esperando você') : 'Nada esperando você'
   const lista = abertas.filter(([, p]) => filtro === 'todos' || p.tipo === filtro).sort((a, b) => String(b[1].criado_em || '').localeCompare(String(a[1].criado_em || '')))
   if (!lista.length) box.append(el('div', { class: 'empty' }, filtro === 'todos' ? 'Nada esperando aprovação.' : 'Nenhuma proposta deste tipo agora.'))
   for (const [id, p] of lista) box.append(cardProposta(id, p))
@@ -1321,6 +1513,7 @@ function renderProps() {
     hb.append(el('tr', {}, el('td', {}, p.titulo || '–'), el('td', { class: 'l' }, el('span', { class: 'pill ' + st[0] }, st[1])), el('td', { class: 'l' }, fmtDt(p.decidido_em)), el('td', { class: 'l' }, fmtDt(p.executado_em)), el('td', { class: 'l' }, fmtD(p.conferir_em)), el('td', { class: 'l' }, p.resultado || p.nota || '–')))
   }
   renderAprovados(); renderCriativos(); if (typeof renderQuiz === 'function') renderQuiz(); if (typeof renderOtimizar === 'function' && !$('tab-otimizar').hidden) renderOtimizar()
+  renderHoje()
   if (foco) { const t = $(foco[0]); if (t) { t.focus(); try { t.setSelectionRange(foco[1], foco[1]) } catch {} } }
 }
 
@@ -1439,7 +1632,7 @@ function janelaSQL(p) {
   return [d0 + " - interval '6 days'", 'now()']
 }
 const ERRS = { server_not_connected: 'o conector não está ligado na sua conta', needs_reauth: 'reconecte o conector em claude.ai → Configurações → Conectores', not_in_manifest: 'libere o conector no menu de Permissões desta página', not_granted: 'você negou o acesso; libere no menu de Permissões desta página', approval_required: 'a página precisa da sua permissão para ler', blocked_by_policy: 'bloqueado pela política da organização' }
-let M = { camps: null, sets: null, ads: null }, Q = { porAd: null, porSet: null, vendas: null, total: null }, stamp = null, hoje = { sets: null, quiz: null, vendas: null }
+let M = { camps: null, sets: null, ads: null }, Q = { porAd: null, porSet: null, vendas: null, total: null, vendSet: null, vendAd: null }, stamp = null, hoje = { sets: null, quiz: null, vendas: null }
 let stFiltro = 'ativas', busca = ''
 const ATIVOS = ['ACTIVE', 'WITH_ISSUES', 'PENDING_REVIEW', 'IN_PROCESS', 'PREAPPROVED']
 const achar = (lista, id) => id ? (lista || []).find((x) => x.id === id) : null
@@ -1457,13 +1650,24 @@ function linhaCamp(c) {
   const q = vazioQ(); let temQ = false
   for (const st of M.sets || []) if (st.campaign_id === c.id) { const x = Q.porSet && Q.porSet[st.id]; if (x) { temQ = true; q.sessoes += x.sessoes; q.t1 += x.t1; q.res += x.res; q.comprar += x.comprar } }
   const budgetSets = (M.sets || []).filter((st) => st.campaign_id === c.id && ATIVOS.includes(st.effective_status)).reduce((a, st) => a + N(st.daily_budget), 0)
-  return { nivel: 'campanha', id: c.id, name: c.name, camp: c.name, st: c.effective_status, budget: N(c.daily_budget) || budgetSets, gasto: N(c.amount_spent), cliques: N(c.link_click), lp: N(c.omni_landing_page_view), ...q, temQ: temQ || !!Q.porSet, ev: '' }
+  const vendas = Q.vendSet ? (M.sets || []).filter((st) => st.campaign_id === c.id).reduce((a, st) => a + (Q.vendSet[st.id] || 0), 0) : null
+  return comVendas({ nivel: 'campanha', id: c.id, name: c.name, camp: c.name, st: c.effective_status, budget: N(c.daily_budget) || budgetSets, gasto: N(c.amount_spent), cliques: N(c.link_click), lp: N(c.omni_landing_page_view), ...q, temQ: temQ || !!Q.porSet, ev: '' }, vendas)
 }
-function linhaSet(s) { const q = (Q.porSet && Q.porSet[s.id]) || null; return { nivel: 'conjunto', id: s.id, name: s.name, camp: s.campaign_name || '–', campId: s.campaign_id, st: s.effective_status, budget: N(s.daily_budget), gasto: N(s.amount_spent), cliques: N(s.link_click), lp: N(s.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porSet, ev: evento(s.results) } }
-function linhaAd(a) { const q = Q.porAd && (Q.porAd[(a.adset_id || '') + '|' + a.name] || Q.porAd['|' + a.name]); return { nivel: 'anúncio', id: a.id, name: a.name, set: a.adset_name || '', setId: a.adset_id, camp: a.campaign_name || '–', campId: a.campaign_id, st: a.effective_status, gasto: N(a.amount_spent), ctr: N(a.ctr), cpm: N(a.cpm), cliques: N(a.link_click), lp: N(a.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porAd, ev: evento(a.results) } }
+const comVendas = (r, vendas) => Object.assign(r, { vendas, cpv: vendas > 0 ? r.gasto / vendas : null })
+function linhaSet(s) { const q = (Q.porSet && Q.porSet[s.id]) || null; return comVendas({ nivel: 'conjunto', id: s.id, name: s.name, camp: s.campaign_name || '–', campId: s.campaign_id, st: s.effective_status, budget: N(s.daily_budget), gasto: N(s.amount_spent), cliques: N(s.link_click), lp: N(s.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porSet, ev: evento(s.results) }, Q.vendSet ? (Q.vendSet[s.id] || 0) : null) }
+function linhaAd(a) { const q = Q.porAd && (Q.porAd[(a.adset_id || '') + '|' + a.name] || Q.porAd['|' + a.name]), va = Q.vendAd; return comVendas({ nivel: 'anúncio', id: a.id, name: a.name, set: a.adset_name || '', setId: a.adset_id, camp: a.campaign_name || '–', campId: a.campaign_id, st: a.effective_status, gasto: N(a.amount_spent), ctr: N(a.ctr), cpm: N(a.cpm), cliques: N(a.link_click), lp: N(a.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porAd, ev: evento(a.results) }, va ? (va[(a.adset_id || '') + '|' + a.name] || va['|' + a.name] || 0) : null) }
+// Sinal para decidir rápido (régua do quiz: custo por venda até R$ 37; corte: R$ 40 sem clique em comprar).
+function sinal(r) {
+  if (r.vendas == null) return null
+  if (r.vendas > 0 && r.cpv <= 37) return r.vendas >= 3 ? ['ok', 'Escalar', r.vendas + ' vendas a ' + brl(r.cpv) + ' cada: dentro da régua de R$ 37'] : ['ok', 'Vendendo', 'vendeu dentro da régua; com 3 vendas vira "Escalar"']
+  if (r.vendas > 0) return ['wait', 'Caro', 'custo por venda de ' + brl(r.cpv) + ', acima da régua de R$ 37']
+  if (r.gasto >= 40 && r.comprar === 0) return ['no', 'Pausar?', brl(r.gasto) + ' gastos e ninguém clicou em comprar']
+  if (r.gasto < 10) return ['n', 'Pouco dado', 'menos de R$ 10 gastos']
+  return ['n', 'Acompanhar', 'ainda sem venda; ' + (r.comprar ? plural(r.comprar, 'pessoa clicou', 'pessoas clicaram') + ' em comprar' : 'ninguém clicou em comprar')]
+}
 function ordenar(lista, s) { return lista.sort((a, b) => { const x = a[s.k], y = b[s.k]; return typeof x === 'string' ? s.dir * x.localeCompare(y) : s.dir * ((x || 0) - (y || 0)) }) }
 function funil(r) {
-  const passos = [['Cliques no anúncio', r.cliques], ['View page', r.lp], ['Começaram o quiz', r.sessoes], ['Passaram da 1ª tela', r.t1], ['Última etapa (resultado)', r.res], ['Clicaram comprar', r.comprar]]
+  const passos = [['Cliques no anúncio', r.cliques], ['Abriram a página do quiz', r.lp], ['Começaram o quiz', r.sessoes], ['Passaram da 1ª tela', r.t1], ['Viram o resultado', r.res], ['Clicaram comprar', r.comprar]]
   const max = Math.max(1, ...passos.map((p) => p[1]))
   return el('div', { class: 'funil' }, ...passos.map(([t, v], i) => el('div', { class: 'fbar' }, el('span', {}, t), el('div', { class: 'track' }, el('div', { class: 'fill' + (i === passos.length - 1 ? ' g' : ''), style: 'width:' + Math.max(v ? 3 : 0, Math.round(100 * v / max)) + '%' })), el('b', {}, String(v)))))
 }
@@ -1472,7 +1676,7 @@ function detalhe(r, cols) {
   const custo = r.comprar > 0 ? brl(r.gasto / r.comprar) + ' por clique em comprar' : 'ninguém clicou em comprar ainda'
   return el('tr', { class: 'det' }, el('td', { colspan: String(cols) },
     el('div', { style: 'display:grid;gap:10px' },
-      el('div', { class: 'muted' }, (r.nivel === 'anúncio' ? 'Conjunto: ' + r.set + ' · ' : '') + (r.nivel !== 'campanha' ? 'Campanha: ' + r.camp + ' · ' : '') + custo),
+      el('div', { class: 'muted' }, (r.nivel === 'anúncio' ? 'Conjunto: ' + r.set + ' · ' : '') + (r.nivel !== 'campanha' ? 'Campanha: ' + r.camp + ' · ' : '') + custo + (r.ev ? ' · otimiza: ' + r.ev : '') + (sinal(r) ? ' · sinal: ' + sinal(r)[1] + ' (' + sinal(r)[2] + ')' : '')),
       funil(r),
       el('div', { class: 'det-actions' },
         el('button', { class: 'b pri', type: 'button', onclick: (e) => { e.stopPropagation(); abrirOtimizar(r) } }, 'Otimizar'),
@@ -1482,19 +1686,25 @@ function celOtimiza(r) {
   const filhos = r.nivel === 'campanha' ? (M.sets || []).filter((x) => x.campaign_id === r.id).map((x) => x.id) : []
   const tem = propostasDe(r.id, filhos).some(([, p]) => ['pendente', 'ajuste'].includes(p.status))
   const alvo = r
-  return el('td', { class: 'l' }, r.ev ? el('span', {}, r.ev) : null, r.ev ? el('br') : null,
+  const s = sinal(r)
+  return el('td', { class: 'l' }, s ? el('span', { class: 'pill ' + s[0], title: s[2] }, s[1]) : null, s ? el('br') : null,
     el('button', { class: 'otbtn', type: 'button', title: 'Ver o que eu mudaria e conversar', onclick: (e) => { e.stopPropagation(); abrirOtimizar(alvo) } }, 'Otimizar →', tem ? el('span', { class: 'dot', title: 'Tem sugestão esperando você' }) : null))
 }
-function linhaTabela(r, cols, key, primeira, numeros) {
-  const st = STATUS[r.st] || ['n', r.st], alerta = r.gasto >= 40 && r.comprar === 0
+// Colunas: nome (verba/dia ou CTR embaixo) · gasto · começaram o quiz · clicaram comprar · vendas · custo por venda · sinal.
+function numerosLinha(r) {
+  return [el('td', { style: 'white-space:nowrap' }, brl(r.gasto)), el('td', {}, r.temQ ? String(r.sessoes) : '–'), el('td', {}, r.temQ ? r.comprar + (r.sessoes ? ' · ' + pct(r.comprar, r.sessoes) : '') : '–'),
+    el('td', {}, r.vendas == null ? '–' : String(r.vendas)), el('td', { style: 'white-space:nowrap;' + (r.cpv > 37 ? 'color:var(--bad);font-weight:700' : r.cpv ? 'color:var(--gd);font-weight:700' : '') }, r.cpv ? brl(r.cpv) : '–')]
+}
+function linhaTabela(r, cols, key, primeira) {
+  const st = STATUS[r.st] || ['n', r.st]
+  const extra = [primeira, r.nivel === 'anúncio' ? (r.ctr ? 'CTR ' + r.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%' : '') : (r.budget ? brl(r.budget) + '/dia' : '')].filter(Boolean).join(' · ')
   const tr = el('tr', { class: 'click' + (abertoKey === key ? ' open' : ''), tabindex: '0', 'aria-expanded': String(abertoKey === key) },
-    el('td', {}, el('b', {}, r.name), PROBLEMA.includes(r.st) ? el('button', { class: 'pill no probbtn', type: 'button', style: 'margin-left:6px', title: 'Ver o problema e pedir a correção', onclick: (e) => { e.stopPropagation(); abrirOtimizar(r) } }, st[1] + ' →') : st[0] !== 'ok' ? el('span', { class: 'pill ' + st[0], style: 'margin-left:6px' }, st[1]) : null, alerta ? el('span', { class: 'warnchip' }, 'R$ 40+ sem compra') : null, primeira ? el('br') : null, primeira ? el('span', { class: 'muted' }, primeira) : null),
-    ...numeros, celOtimiza(r))
+    el('td', {}, el('b', {}, r.name), PROBLEMA.includes(r.st) ? el('button', { class: 'pill no probbtn', type: 'button', style: 'margin-left:6px', title: 'Ver o problema e pedir a correção', onclick: (e) => { e.stopPropagation(); abrirOtimizar(r) } }, st[1] + ' →') : st[0] !== 'ok' ? el('span', { class: 'pill ' + st[0], style: 'margin-left:6px' }, st[1]) : null, extra ? el('br') : null, extra ? el('span', { class: 'muted' }, extra) : null),
+    ...numerosLinha(r), celOtimiza(r))
   const tog = () => { abertoKey = abertoKey === key ? null : key; render() }
   tr.addEventListener('click', tog); tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tog() } })
   return abertoKey === key ? [tr, detalhe(r, cols)] : [tr]
 }
-const qcel = (r, v, soNum) => el('td', {}, r.temQ ? (soNum ? String(v) : v + ' · ' + pct(v, r.sessoes)) : '–')
 function render() {
   if (stamp) { const t = 'atualizado ' + stamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ' · próxima em 1 h'; $('m-at').textContent = t; if (periodo === 'today') $('m-at-r').textContent = t }
   renderSelects()
@@ -1503,8 +1713,8 @@ function render() {
   if (M.camps) {
     const rows = ordenar(M.camps.map(linhaCamp).filter((r) => passaStatus(r.st) && (!campAlvo || r.id === campAlvo) && passaBusca(r.name)), sortSt.camps)
     const tb = $('m-camps'); tb.textContent = ''
-    for (const r of rows) tb.append(...linhaTabela(r, 9, 'c' + r.id, '', [el('td', {}, r.budget ? brl(r.budget) : '–'), el('td', {}, brl(r.gasto)), el('td', {}, String(r.cliques)), el('td', {}, String(r.lp)), qcel(r, r.sessoes, true), qcel(r, r.res), qcel(r, r.comprar)]))
-    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '9', class: 'l muted' }, 'Nenhuma campanha com esse filtro.')))
+    for (const r of rows) tb.append(...linhaTabela(r, 7, 'c' + r.id, ''))
+    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhuma campanha com esse filtro.')))
   }
   if (M.sets) {
     const rows = ordenar(M.sets.map(linhaSet).filter((r) => passaStatus(r.st, r.campId) && (!campAlvo || r.campId === campAlvo) && (!setAlvo || r.id === setAlvo) && passaBusca(r.name, r.camp)), sortSt.sets)
@@ -1512,9 +1722,9 @@ function render() {
     let gasto = 0, cliq = 0, verba = 0
     for (const r of rows) {
       gasto += r.gasto; cliq += r.cliques; if (ATIVOS.includes(r.st)) verba += r.budget
-      tb.append(...linhaTabela(r, 9, 's' + r.id, r.camp, [el('td', {}, r.budget ? brl(r.budget) : '–'), el('td', {}, brl(r.gasto)), el('td', {}, String(r.cliques)), el('td', {}, String(r.lp)), qcel(r, r.sessoes, true), qcel(r, r.res), qcel(r, r.comprar)]))
+      tb.append(...linhaTabela(r, 7, 's' + r.id, r.camp))
     }
-    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '9', class: 'l muted' }, 'Nenhum conjunto com esse filtro.')))
+    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhum conjunto com esse filtro.')))
     $('m-gasto').textContent = brl(gasto); $('m-gasto-s').textContent = 'verba ativa: ' + brl(verba) + '/dia'
     $('m-cliq').textContent = String(cliq); $('m-cliq-s').textContent = gasto > 0 && cliq > 0 ? brl(gasto / cliq) + ' por clique' : ' '
     if (Q.vendas) { $('m-v').textContent = String(Q.vendas.vendas); $('m-v-s').textContent = 'custo por venda: ' + (Q.vendas.vendas > 0 ? brl(gasto / Q.vendas.vendas) : '–') + ' · régua R$ 37' }
@@ -1522,8 +1732,8 @@ function render() {
   if (M.ads) {
     const rows = ordenar(M.ads.map(linhaAd).filter((r) => passaStatus(r.st, r.campId, r.setId) && (!campAlvo || r.campId === campAlvo) && (!setAlvo || r.setId === setAlvo) && (!adSel || r.id === adSel) && passaBusca(r.name, r.set, r.camp)), sortSt.ads)
     const tb = $('m-ads'); tb.textContent = ''
-    for (const r of rows) tb.append(...linhaTabela(r, 9, 'a' + r.id, r.set, [el('td', {}, r.ctr ? r.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%' : '–'), el('td', {}, brl(r.gasto)), el('td', {}, String(r.cliques)), el('td', {}, String(r.lp)), qcel(r, r.sessoes, true), qcel(r, r.res), qcel(r, r.comprar)]))
-    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '9', class: 'l muted' }, 'Nenhum anúncio com esse filtro.')))
+    for (const r of rows) tb.append(...linhaTabela(r, 7, 'a' + r.id, r.set))
+    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhum anúncio com esse filtro.')))
   }
   if (Q.total) { const t = Q.total; $('m-sess').textContent = String(t.sessoes); $('m-sess-s').textContent = t.t1 + ' passaram da 1ª tela (' + pct(t.t1, t.sessoes) + ')'; $('m-ck').textContent = String(t.comprar); $('m-ck-s').textContent = pct(t.comprar, t.sessoes) + ' das sessões · régua 18,7%' }
   renderResumo(); renderOtSel(); if (otAlvo) renderOtimizar()
@@ -1533,6 +1743,29 @@ function renderResumo() {
   if (s) { const g = s.reduce((a, x) => a + N(x.amount_spent), 0), b = s.filter((x) => ATIVOS.includes(x.effective_status)).reduce((a, x) => a + N(x.daily_budget), 0); $('r-gasto').textContent = brl(g); $('r-gasto-s').textContent = 'de ' + brl(b) + ' de verba ativa/dia'; if (v) $('r-v-s').textContent = 'custo por venda: ' + (v.vendas > 0 ? brl(g / v.vendas) : '–') + ' · régua R$ 37' }
   if (q) { $('r-sess').textContent = String(q.sessoes); $('r-t1').textContent = String(q.t1); $('r-t1-s').textContent = pct(q.t1, q.sessoes) + ' · régua 32%'; $('r-ck').textContent = String(q.comprar); $('r-ck-s').textContent = pct(q.comprar, q.sessoes) + ' · régua 18,7%' }
   if (v) $('r-v').textContent = String(v.vendas)
+  renderHoje()
+}
+// ── Resumo: o que fazer hoje (junta o que pede uma decisão sua, do mais urgente ao menos) ──
+function renderHoje() {
+  const box = $('hoje-acoes'); if (!box) return
+  const L = [], ir = (t, fn) => () => { abrir(t); if (fn) fn() }
+  if (RC) { const n = RC.filter((r) => r.sit === 'pix' && !rcFeitos.has(r.id)).length; if (n) L.push({ cls: 'urg', t: n === 1 ? '1 pessoa gerou Pix e não pagou' : n + ' pessoas geraram Pix e não pagaram', d: 'Chame no WhatsApp em até 1 hora: é a venda mais fácil de recuperar.', b: ['Chamar agora', ir('recuperar', () => irPessoas('pix')), 'pri'] }) }
+  if (periodo === 'today' && M.sets && Q.vendSet) {
+    const sets = M.sets.map(linhaSet).filter((r) => ativoEnt(r.st, r.campId)), sig = (r) => (sinal(r) || [])[1]
+    const pausar = sets.filter((r) => sig(r) === 'Pausar?'), escalar = sets.filter((r) => sig(r) === 'Escalar')
+    if (pausar.length) L.push({ cls: 'urg', t: plural(pausar.length, 'conjunto gastou', 'conjuntos gastaram') + ' R$ 40 ou mais hoje sem ninguém clicar em comprar', d: pausar.map((r) => r.name + ' (' + brl(r.gasto) + ')').join(' · '), b: ['Ver e decidir', () => abrirOtimizar(pausar[0]), 'pri'] })
+    if (escalar.length) L.push({ cls: 'ok', t: plural(escalar.length, 'conjunto pronto', 'conjuntos prontos') + ' para escalar', d: escalar.map((r) => r.name + ' (' + brl(r.cpv) + ' por venda)').join(' · '), b: ['Ver', () => abrirOtimizar(escalar[0])] })
+  }
+  if (M.ads) { const prob = M.ads.filter((a) => PROBLEMA.includes(a.effective_status) && ativoEnt('ACTIVE', a.campaign_id, a.adset_id)); if (prob.length) L.push({ cls: 'urg', t: plural(prob.length, 'anúncio reprovado ou com problema', 'anúncios reprovados ou com problema') + ' em campanha ligada', d: prob.map((a) => a.name).join(' · '), b: ['Ver o motivo', () => abrirOtimizar(linhaAd(prob[0])), 'pri'] }) }
+  const esperando = Object.values(props).filter((p) => p.status === 'pendente').length
+  if (esperando) L.push({ t: plural(esperando, 'proposta esperando', 'propostas esperando') + ' a sua aprovação', d: 'Nada muda no Meta sem o seu "Aprovar".', b: ['Ver propostas', ir('aprovar'), 'pri'] })
+  const hj = diaBR(0), d3 = diaBR(3), conferir = Object.values(props).filter((p) => p.status === 'executado' && p.conferir_em && String(p.conferir_em).slice(0, 10) <= hj && String(p.conferir_em).slice(0, 10) >= d3)
+  if (conferir.length) L.push({ t: 'Conferir o resultado de ' + plural(conferir.length, 'mudança', 'mudanças'), d: conferir.map((p) => p.titulo).join(' · '), b: ['Ver no histórico', ir('historico')] })
+  if (objOk(OBJ) && custosVelhos(OBJ)) L.push({ t: 'Atualizar os outros custos da empresa', d: OBJ.custos_em ? 'Última atualização em ' + fmtD(OBJ.custos_em) + '. Sem isso o lucro fica errado.' : 'Ainda não foram preenchidos: o lucro está sem eles.', b: ['Atualizar custos', ir('objetivo', () => editarObj('custos'))] })
+  if (objOk(OBJ) && OBJD && !OBJD.erro && objJanela(OBJ).comecou) { const c = calcObj(); if (estadoObj(c)[0] === 'no') L.push({ t: 'Meta do painel bem abaixo do ritmo', d: pctN(c.pctMeta) + ' da meta com ' + pctN(c.pctTempo) + ' do prazo.', b: ['Ver o plano', ir('objetivo')] }) }
+  if (!L.length) L.push({ cls: 'ok', t: 'Nada urgente agora ✓', d: 'Quando algo pedir uma decisão sua, aparece aqui.' })
+  box.textContent = ''
+  L.forEach((x, i) => box.append(el('div', { class: 'card rc-acao ' + (x.cls || '') }, el('span', { class: 'num' }, String(i + 1)), el('h4', {}, x.t), el('p', {}, x.d), x.b ? el('div', { class: 'btns' }, el('button', { class: 'b ' + (x.b[2] || ''), type: 'button', onclick: x.b[1] }, x.b[0])) : null)))
 }
 sortSt.camps = { k: 'gasto', dir: -1 }
 function sortable(tableId, key) {
@@ -1572,6 +1805,9 @@ function porQuiz(rows) {
 const HORA = 3600000
 const qQuiz = (p) => { const [ini, fim] = janelaSQL(p); return `select coalesce(utm_term,'') conjunto, coalesce(utm_content,'') anuncio, count(*) filter (where status<>'pageview') sessoes, count(*) filter (where reached_index>=1) t1, count(*) filter (where reached_index>=24) res, count(*) filter (where checkout_clicked) comprar from quiz_sessions where created_at>=${ini} and created_at<${fim} and utm_source='FB' group by 1,2` }
 const qVendas = (p) => { const [ini, fim] = janelaSQL(p); return `with v as (select distinct on (coalesce(transaction,hotmart_event_id)) * from vendas where received_at>=${ini} and received_at<${fim} order by coalesce(transaction,hotmart_event_id), received_at desc) select count(*) filter (where offer_code='QN7gci' and status in ('APPROVED','COMPLETED')) vendas, coalesce(sum(full_price) filter (where offer_code='QN7gci' and status in ('APPROVED','COMPLETED')),0) receita from v` }
+// Vendas da oferta do quiz por conjunto (tracking_src) e por anúncio (utm_content da sessão do quiz ligada pelo xcod).
+const qVendasPor = (p) => { const [ini, fim] = janelaSQL(p); return `with v as (select distinct on (coalesce(transaction,hotmart_event_id)) * from vendas where received_at>=${ini} and received_at<${fim} order by coalesce(transaction,hotmart_event_id), received_at desc)
+select coalesce(v.tracking_src,'') conjunto, coalesce((select q.utm_content from quiz_sessions q where v.tracking_xcod is not null and q.xcod = v.tracking_xcod order by (q.checkout_at is null), q.created_at desc limit 1),'') anuncio, count(*) vendas from v where v.offer_code='QN7gci' and v.status in ('APPROVED','COMPLETED') group by 1,2` }
 const diaBR = (menos) => { const d = new Date(Date.now() - menos * 86400000); return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d) }
 const DIAS = { last_3d: 2, last_7d: 6 }
 const baseIn = (p) => ({ ad_account_id: ACCOUNT, ...(DIAS[p] != null ? { time_range: JSON.stringify({ since: diaBR(DIAS[p]), until: diaBR(0) }) } : { date_preset: p }), include_additional_context: false, client_conversation_id: CONV })
@@ -1580,11 +1816,11 @@ const inSets = (p) => ({ ...baseIn(p), level: 'adset', fields: ['id', 'name', 'e
 const inAds = (p) => ({ ...baseIn(p), level: 'ad', fields: ['id', 'name', 'effective_status', 'campaign_id', 'campaign_name', 'adset_name', 'adset_id', 'amount_spent', 'impressions', 'link_click', 'omni_landing_page_view', 'ctr', 'cpm', 'results'], limit: 500 })
 function watchPeriodo() {
   for (const u of unsub) { try { u() } catch {} }
-  unsub = []; M = { camps: null, sets: null, ads: null }; Q = { porAd: null, porSet: null, vendas: null, total: null }; abertoKey = null
-  for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="9" class="l muted">Carregando do Meta…</td></tr>'
+  unsub = []; M = { camps: null, sets: null, ads: null }; Q = { porAd: null, porSet: null, vendas: null, total: null, vendSet: null, vendAd: null }; abertoKey = null
+  for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr>'
   $('m-err').hidden = true
   const onMeta = (k) => (ev) => {
-    if (ev.type === 'error') { if (ev.error.code === 'server_not_connected' && META === METAS[0]) { META = METAS[1]; watchPeriodo(); return } showErr('Meta', ev.error); if (ERRS[ev.error.code]) for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="9" class="l muted">Sem acesso ao Meta.</td></tr>'; return }
+    if (ev.type === 'error') { if (ev.error.code === 'server_not_connected' && META === METAS[0]) { META = METAS[1]; watchPeriodo(); return } showErr('Meta', ev.error); if (ERRS[ev.error.code]) for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="7" class="l muted">Sem acesso ao Meta.</td></tr>'; return }
     const rows = parseMeta(ev.result.payload); if (!rows) { showErr('Meta', { code: 'formato', message: 'resposta em formato inesperado' }); return }
     M[k] = rows; if (periodo === 'today' && k === 'sets') hoje.sets = rows
     stamp = ev.result.cache && ev.result.cache.storedAt ? new Date(ev.result.cache.storedAt) : new Date(); render()
@@ -1596,6 +1832,13 @@ function watchPeriodo() {
     if (ev.type === 'error') { showErr('Quiz (Supabase)', ev.error); return }
     const rows = parseRows(ev.result.payload); if (!rows) return
     const r = porQuiz(rows); Q.porAd = r.porAd; Q.porSet = r.porSet; Q.total = r.total; if (periodo === 'today') hoje.quiz = r.total; render()
+  }, { refetchInterval: HORA }))
+  unsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: qVendasPor(periodo) }, (ev) => {
+    if (ev.type === 'error') return
+    const rows = parseRows(ev.result.payload); if (!rows) return
+    const vs = {}, va = {}
+    for (const r of rows) { const n = Number(r.vendas) || 0, st = r.conjunto || '', nome = dec(r.anuncio); vs[st] = (vs[st] || 0) + n; if (nome) va[st + '|' + nome] = (va[st + '|' + nome] || 0) + n }
+    Q.vendSet = vs; Q.vendAd = va; render()
   }, { refetchInterval: HORA }))
   unsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: qVendas(periodo) }, (ev) => {
     if (ev.type === 'error') return
@@ -1715,11 +1958,11 @@ function tabelaFilhos(titulo, rows, pre, col2) {
   ordenar(rows, { k: 'gasto', dir: -1 })
   const filtro = { ativas: 'ativos', pausadas: 'pausados', todas: 'todos' }[stFiltro]
   const tb = el('tbody', {})
-  for (const r of rows) tb.append(...linhaTabela(r, 9, pre + r.id, r.nivel === 'anúncio' && otAlvo.nivel === 'campanha' ? r.set : '', [el('td', {}, col2 === 'CTR' ? (r.ctr ? r.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%' : '–') : (r.budget ? brl(r.budget) : '–')), el('td', {}, brl(r.gasto)), el('td', {}, String(r.cliques)), el('td', {}, String(r.lp)), qcel(r, r.sessoes, true), qcel(r, r.res), qcel(r, r.comprar)]))
-  if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '9', class: 'l muted' }, 'Nenhum ' + filtro.replace(/s$/, '') + ' aqui. Troque o filtro em Meta ao vivo (Ativas/Pausadas/Todas).')))
+  for (const r of rows) tb.append(...linhaTabela(r, 7, pre + r.id, r.nivel === 'anúncio' && otAlvo.nivel === 'campanha' ? r.set : ''))
+  if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhum ' + filtro.replace(/s$/, '') + ' aqui. Troque o filtro em Meta ao vivo (Ativas/Pausadas/Todas).')))
   const th = (t) => el('th', {}, t)
   return el('div', { class: 'ot-filhos' }, el('h3', {}, titulo + ' · ' + filtro),
-    el('div', { class: 'tbl' }, el('table', {}, el('thead', {}, el('tr', {}, el('th', {}, pre === 'os' ? 'Conjunto' : 'Anúncio'), th(col2), th('Gasto'), th('Cliques'), th('View page'), th('Quiz'), th('Última etapa'), th('Clicou comprar'), el('th', { class: 'l' }, 'Otimiza'))), tb)))
+    el('div', { class: 'tbl' }, el('table', {}, el('thead', {}, el('tr', {}, el('th', {}, pre === 'os' ? 'Conjunto' : 'Anúncio'), th('Gasto'), th('Começaram o quiz'), th('Clicaram comprar'), th('Vendas'), th('Custo por venda'), el('th', { class: 'l' }, 'Sinal'))), tb)))
 }
 const otConv = () => otAlvo ? 'ot-' + otAlvo.id : null
 function renderOtChat() {
@@ -1761,13 +2004,36 @@ document.querySelectorAll('#m-per button, #ot-per button').forEach((b) => b.addE
 
 // ── Sugestão quiz: trajetória do lead ─────────────────────────────
 // Telas do quiz (de app/efeito-lipo-quiz/_data.ts, 08/10). reached_index = última tela respondida.
-const QSTEPS = [{"i": 0, "id": "intro", "k": "intro", "t": "Abertura", "o": []}, {"i": 1, "id": "idade", "k": "single", "t": "Qual a sua faixa etária?", "o": [["-29", "Menos de 29 anos"], ["29-39", "Entre 29 e 39 anos"], ["40-49", "Entre 40 e 49 anos"], ["50+", "50 anos ou mais"]]}, {"i": 2, "id": "laura", "k": "laura", "t": "Apresentação da Laura", "o": []}, {"i": 3, "id": "objetivo", "k": "single", "t": "Qual é o seu principal objetivo agora?", "o": [["barriga", "Secar a barriga de vez"], ["roupa", "Caber naquela roupa especial"], ["bracos", "Afinar os braços"], ["autoestima", "Recuperar minha autoestima"], ["tudo", "Tudo acima"]]}, {"i": 4, "id": "recomecos", "k": "single", "t": "Quantas vezes você já recomeçou?", "o": [["1-2", "Uma ou duas vezes"], ["varias", "Várias vezes"], ["perdi-conta", "Já perdi a conta"], ["comecando", "Ainda estou tentando começar"]]}, {"i": 5, "id": "rotina", "k": "single", "t": "Como é a sua rotina hoje?", "o": [["corrida", "Super corrida, mal tenho tempo pra mim"], ["equilibrada", "Equilibrada mas sem sobra"], ["casa", "Fico em casa mas nunca sobra tempo"], ["tempo", "Tenho tempo para me dedicar"]]}, {"i": 6, "id": "canetinha", "k": "single", "t": "Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?", "o": [["usei", "Sim, já usei"], ["usando", "Sim, estou usando"], ["considerando", "Sim, estou considerando"], ["nao-usar", "Pensei mas decidi não usar"], ["nunca", "Nunca considerei"]]}, {"i": 7, "id": "fisico", "k": "single", "t": "Como você descreveria seu corpo hoje?", "o": [["inchada", "Bem de peso, mas inchada e sem definição"], ["leve-acima", "Levemente acima do peso"], ["acima", "Acima do peso"], ["muito-acima", "Muito acima do peso"]]}, {"i": 8, "id": "prova", "k": "prova", "t": "Prova social", "o": []}, {"i": 9, "id": "corpo-sonhos", "k": "single", "t": "Qual é o corpo que você quer ter?", "o": [["seca", "Seca e definida"], ["lisa", "Barriga lisa e braços finos"], ["curvas", "Com curvas e sem inchaço"], ["leve", "Leve — me sentir bem no meu corpo"]]}, {"i": 10, "id": "alimentacao", "k": "single", "t": "Como você descreveria a sua alimentação hoje?", "o": [["exagero", "Tento comer bem, mas acabo exagerando"], ["dieta", "Faço dieta, mas não vejo resultado"], ["sem-controle", "Como de tudo sem muito controle"], ["desorganizada", "Completamente desorganizada"]]}, {"i": 11, "id": "sabotador", "k": "single", "t": "Qual é o seu maior sabotador?", "o": [["doce", "Doce e chocolate"], ["carbo", "Pão, massa e carboidrato"], ["ansiedade", "Ansiedade e estresse"], ["noite", "Belisco à noite"], ["delivery", "Delivery e fast food"]]}, {"i": 12, "id": "dia-dificil", "k": "single", "t": "Em que dia da semana fica mais difícil manter sua rotina?", "o": [["segunda", "Segunda"], ["terca", "Terça"], ["quarta", "Quarta"], ["quinta", "Quinta"], ["sexta", "Sexta"], ["fim-de-semana", "Fim de semana"], ["sem-dia", "Não tem um dia fixo"]]}, {"i": 13, "id": "sono", "k": "single", "t": "Como anda seu sono e seu inchaço?", "o": [["mal", "Durmo mal e acordo cansada"], ["inchada", "Durmo ok, mas acordo inchada"], ["sem-energia", "Durmo bem, mas sem energia"], ["bom", "Sono bom e energia ok"]]}, {"i": 14, "id": "insight", "k": "insight", "t": "Ciclo do recomeço", "o": []}, {"i": 15, "id": "loading-1", "k": "loading", "t": "Carregando", "o": []}, {"i": 16, "id": "medo", "k": "single", "t": "Qual é o seu maior medo em relação a emagrecer?", "o": [["fracasso", "Medo de não conseguir de novo"], ["tempo", "Medo de não ter tempo"], ["dinheiro", "Medo de gastar e não ter resultado"], ["fome", "Medo de passar fome"], ["rebote", "Medo do efeito rebote"]]}, {"i": 17, "id": "pensamento", "k": "single", "t": "Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?", "o": [["bonita", "“Finalmente me sinto bonita de verdade”"], ["roupa", "“Vou usar aquela roupa que ficou guardada por meses”"], ["biquini", "“Não vou ter vergonha de colocar biquíni”"], ["foto", "“Vou querer tirar foto em tudo que é lugar”"], ["consegui", "“Consegui. Eu sabia que era capaz”"]]}, {"i": 18, "id": "regiao", "k": "multi", "t": "Qual região do seu corpo te incomoda mais?", "o": [["barriga", "Barriga e inchaço abdominal"], ["bracos", "Braços"], ["cintura", "Cintura e laterais"], ["quadril", "Quadril e coxas"], ["inteiro", "Corpo inteiro — tudo me incomoda"], ["nenhuma", "Não tenho queixa específica"]]}, {"i": 19, "id": "tempo-dia", "k": "single", "t": "Quanto tempo você consegue dedicar ao seu corpo por dia?", "o": [["10-15", "10 a 15 minutos"], ["15-20", "15 a 20 minutos"], ["20-30", "20 a 30 minutos"], ["30+", "Mais de 30 minutos"]]}, {"i": 20, "id": "motivo", "k": "multi", "t": "O que te fez chegar até aqui hoje?", "o": [["confianca", "Me sentir confiante no próprio corpo"], ["roupas", "Voltar a usar as roupas que eu amo"], ["saude", "Ter mais saúde e energia no dia a dia"], ["fotos", "Parar de me esconder nas fotos"], ["provar", "Provar pra mim mesma que consigo"]]}, {"i": 21, "id": "altura", "k": "input", "t": "Qual é a sua altura?", "o": []}, {"i": 22, "id": "peso", "k": "input", "t": "Qual é o seu peso atual?", "o": []}, {"i": 23, "id": "loading-2", "k": "loading", "t": "Carregando", "o": []}, {"i": 24, "id": "result", "k": "result", "t": "Resultado (perfil)", "o": []}, {"i": 25, "id": "sales", "k": "sales", "t": "Página de vendas", "o": []}]
+const QSTEPS = [{"i": 0, "id": "intro", "k": "intro", "t": "Abertura", "o": []}, {"i": 1, "id": "idade", "k": "single", "t": "Qual a sua faixa etária?", "o": [["-29", "Menos de 29 anos"], ["29-39", "Entre 29 e 39 anos"], ["40-49", "Entre 40 e 49 anos"], ["50+", "50 anos ou mais"]]}, {"i": 2, "id": "laura", "k": "laura", "t": "Apresentação da Laura", "o": []}, {"i": 3, "id": "objetivo", "k": "single", "t": "Qual é o seu principal objetivo agora?", "o": [["barriga", "Secar a barriga de vez"], ["roupa", "Caber naquela roupa especial"], ["bracos", "Afinar os braços"], ["autoestima", "Recuperar minha autoestima"], ["tudo", "Tudo acima"]]}, {"i": 4, "id": "recomecos", "k": "single", "t": "Quantas vezes você já recomeçou?", "o": [["1-2", "Uma ou duas vezes"], ["varias", "Várias vezes"], ["perdi-conta", "Já perdi a conta"], ["comecando", "Ainda estou tentando começar"]]}, {"i": 5, "id": "rotina", "k": "single", "t": "Como é a sua rotina hoje?", "o": [["corrida", "Super corrida, mal tenho tempo pra mim"], ["equilibrada", "Equilibrada mas sem sobra"], ["casa", "Fico em casa mas nunca sobra tempo"], ["tempo", "Tenho tempo para me dedicar"]]}, {"i": 6, "id": "canetinha", "k": "single", "t": "Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?", "o": [["usei", "Sim, já usei"], ["usando", "Sim, estou usando"], ["considerando", "Sim, estou considerando"], ["nao-usar", "Pensei mas decidi não usar"], ["nunca", "Nunca considerei"]]}, {"i": 7, "id": "fisico", "k": "single", "t": "Como você descreveria seu corpo hoje?", "o": [["inchada", "Bem de peso, mas inchada e sem definição"], ["leve-acima", "Levemente acima do peso"], ["acima", "Acima do peso"], ["muito-acima", "Muito acima do peso"]]}, {"i": 8, "id": "prova", "k": "prova", "t": "Prova social", "o": []}, {"i": 9, "id": "corpo-sonhos", "k": "single", "t": "Qual é o corpo que você quer ter?", "o": [["seca", "Seca e definida"], ["lisa", "Barriga lisa e braços finos"], ["curvas", "Com curvas e sem inchaço"], ["leve", "Leve — me sentir bem no meu corpo"]]}, {"i": 10, "id": "alimentacao", "k": "single", "t": "Como você descreveria a sua alimentação hoje?", "o": [["exagero", "Tento comer bem, mas acabo exagerando"], ["dieta", "Faço dieta, mas não vejo resultado"], ["sem-controle", "Como de tudo sem muito controle"], ["desorganizada", "Completamente desorganizada"]]}, {"i": 11, "id": "sabotador", "k": "single", "t": "Qual é o seu maior sabotador?", "o": [["doce", "Doce e chocolate"], ["carbo", "Pão, massa e carboidrato"], ["ansiedade", "Ansiedade e estresse"], ["noite", "Belisco à noite"], ["delivery", "Delivery e fast food"]]}, {"i": 12, "id": "dia-dificil", "k": "single", "t": "Em que dia da semana fica mais difícil manter sua rotina?", "o": [["segunda", "Segunda"], ["terca", "Terça"], ["quarta", "Quarta"], ["quinta", "Quinta"], ["sexta", "Sexta"], ["fim-de-semana", "Fim de semana"], ["sem-dia", "Não tem um dia fixo"]]}, {"i": 13, "id": "sono", "k": "single", "t": "Como anda seu sono e seu inchaço?", "o": [["mal", "Durmo mal e acordo cansada"], ["inchada", "Durmo ok, mas acordo inchada"], ["sem-energia", "Durmo bem, mas sem energia"], ["bom", "Sono bom e energia ok"]]}, {"i": 14, "id": "insight", "k": "insight", "t": "Ciclo do recomeço", "o": [["faz-sentido", "Faz sentido — nunca tinha pensado assim"], ["novidade", "É novidade pra mim — quero entender melhor"]]}, {"i": 15, "id": "loading-1", "k": "loading", "t": "Carregando", "o": []}, {"i": 16, "id": "medo", "k": "single", "t": "Qual é o seu maior medo em relação a emagrecer?", "o": [["fracasso", "Medo de não conseguir de novo"], ["tempo", "Medo de não ter tempo"], ["dinheiro", "Medo de gastar e não ter resultado"], ["fome", "Medo de passar fome"], ["rebote", "Medo do efeito rebote"]]}, {"i": 17, "id": "pensamento", "k": "single", "t": "Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?", "o": [["bonita", "“Finalmente me sinto bonita de verdade”"], ["roupa", "“Vou usar aquela roupa que ficou guardada por meses”"], ["biquini", "“Não vou ter vergonha de colocar biquíni”"], ["foto", "“Vou querer tirar foto em tudo que é lugar”"], ["consegui", "“Consegui. Eu sabia que era capaz”"]]}, {"i": 18, "id": "regiao", "k": "multi", "t": "Qual região do seu corpo te incomoda mais?", "o": [["barriga", "Barriga e inchaço abdominal"], ["bracos", "Braços"], ["cintura", "Cintura e laterais"], ["quadril", "Quadril e coxas"], ["inteiro", "Corpo inteiro — tudo me incomoda"], ["nenhuma", "Não tenho queixa específica"]]}, {"i": 19, "id": "tempo-dia", "k": "single", "t": "Quanto tempo você consegue dedicar ao seu corpo por dia?", "o": [["10-15", "10 a 15 minutos"], ["15-20", "15 a 20 minutos"], ["20-30", "20 a 30 minutos"], ["30+", "Mais de 30 minutos"]]}, {"i": 20, "id": "motivo", "k": "multi", "t": "O que te fez chegar até aqui hoje?", "o": [["confianca", "Me sentir confiante no próprio corpo"], ["roupas", "Voltar a usar as roupas que eu amo"], ["saude", "Ter mais saúde e energia no dia a dia"], ["fotos", "Parar de me esconder nas fotos"], ["provar", "Provar pra mim mesma que consigo"]]}, {"i": 21, "id": "altura", "k": "input", "t": "Qual é a sua altura?", "o": []}, {"i": 22, "id": "peso", "k": "input", "t": "Qual é o seu peso atual?", "o": []}, {"i": 23, "id": "loading-2", "k": "loading", "t": "Carregando", "o": []}, {"i": 24, "id": "result", "k": "result", "t": "Resultado (perfil)", "o": []}, {"i": 25, "id": "sales", "k": "sales", "t": "Página de vendas", "o": []}]
 const QOPT = {}; for (const st of QSTEPS) for (const [id, lab] of st.o) QOPT[st.id + '|' + id] = lab
 const QUIZ_NOVO = '2026-10-08T11:10:00Z'
+// Filtro "Escolher datas" (de/até, horário de Brasília). Começa no dia do quiz novo (08/10).
+const DIA0 = '2026-10-08', okDia = (d) => /^\d{4}-\d{2}-\d{2}$/.test(d || '')
+const janelaDatas = (de, ate) => "s.created_at >= greatest(('" + de + "'::date::timestamp at time zone 'America/Sao_Paulo'), '" + QUIZ_NOVO + "'::timestamptz) and s.created_at < (('" + ate + "'::date + 1)::timestamp at time zone 'America/Sao_Paulo')"
+const txtDatas = (de, ate) => de === ate ? 'Em ' + fmtD(de) : 'De ' + fmtD(de) + ' a ' + fmtD(ate)
+function ligarPeriodo(pre, aplicar) {
+  const box = $(pre + '-datas'), de = $(pre + '-de'), ate = $(pre + '-ate'), st = $(pre + '-datas-st'), hoje = diaBR(0)
+  for (const i of [de, ate]) { i.min = DIA0; i.max = hoje }
+  de.value = diaBR(6) < DIA0 ? DIA0 : diaBR(6); ate.value = hoje
+  document.querySelectorAll('#' + pre + '-per button').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('#' + pre + '-per button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
+    box.hidden = b.dataset.p !== 'datas'
+    if (b.dataset.p === 'datas') { de.focus(); return }
+    aplicar(b.dataset.p)
+  }))
+  $(pre + '-datas-ok').addEventListener('click', () => {
+    let a = de.value, z = ate.value
+    if (!okDia(a) || !okDia(z)) { st.textContent = 'Escolha as duas datas.'; return }
+    if (a > z) [a, z] = [z, a]
+    if (a < DIA0) a = DIA0
+    st.textContent = txtDatas(a, z); aplicar('datas', a, z)
+  })
+}
 const PERFIL = { emocional: 'A Emocional', 'sem-tempo': 'A Sem Tempo', 'tudo-ou-nada': 'A Tudo ou Nada', cansada: 'A Cansada de Recomeçar' }
 const perfilSQL = "case when answers->>'sabotador' in ('ansiedade','noite') then 'emocional' when answers->>'rotina' in ('corrida','casa') or answers->>'tempo-dia'='10-15' then 'sem-tempo' when answers->>'alimentacao' in ('exagero','dieta') then 'tudo-ou-nada' else 'cansada' end"
-let qPer = 'novo', qOrig = 'fb', qUnsub = [], qAberto = null, Qd = {}
+let qPer = 'novo', qOrig = 'fb', qUnsub = [], qAberto = null, Qd = {}, qDe = '', qAte = ''
 function qJanela() {
+  if (qPer === 'datas' && okDia(qDe) && okDia(qAte)) return janelaDatas(qDe, qAte) + (qOrig === 'fb' ? " and s.utm_source='FB'" : '')
   const d0 = "(date_trunc('day', now() at time zone 'America/Sao_Paulo') at time zone 'America/Sao_Paulo')"
   const ini = qPer === 'today' ? d0 : qPer === 'last_7d' ? d0 + " - interval '7 days'" : "'" + QUIZ_NOVO + "'::timestamptz"
   return "s.created_at >= greatest(" + ini + ", '" + QUIZ_NOVO + "'::timestamptz)" + (qOrig === 'fb' ? " and s.utm_source='FB'" : '')
@@ -1809,7 +2075,7 @@ function renderQuiz() {
       const d = k ? etapas[k - 1].n - e.n : 0
       box.append(el('div', { class: 'qrow' + (quedas.includes(k) ? ' perda' : '') }, el('span', { class: 'n' }, e.i < 0 ? 'T1' : e.i === 0 ? '' : e.i <= 24 ? 'T' + (e.i + 1) : e.i === 25 ? 'T26' : '$'),
         el('span', { class: 't', title: e.t }, e.t), el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + Math.max(e.n ? 1 : 0, Math.round(100 * e.n / max)) + '%' })),
-        el('b', {}, String(e.n), ' ', d > 0 ? el('span', { class: 'drop' }, '−' + d) : null)))
+        el('b', {}, String(e.n), el('span', { class: 'pc' }, ' · ' + pct(e.n, viu)), ' ', d > 0 ? el('span', { class: 'drop' }, '−' + d) : null)))
     })
   }
   if (Qd.perfis) {
@@ -1820,11 +2086,24 @@ function renderQuiz() {
   if (Qd.resp) {
     const b = $('q-resp'); b.textContent = ''
     const g = {}; for (const r of Qd.resp) { if (r.v == null) continue; (g[r.k] ||= []).push(r) }
+    // Quantas pessoas passaram de cada tela (para as telas sem pergunta: Laura, prova social, carregando, resultado)
+    const porR2 = {}; let viu2 = 0
+    for (const r of Qd.funil || []) { const n = Number(r.n) || 0; viu2 += n; porR2[r.r] = (porR2[r.r] || 0) + n }
+    const passou2 = (i) => Object.entries(porR2).reduce((a, [r, n]) => a + (Number(r) >= i ? n : 0), 0)
+    const FAIXA = { altura: [[0, 155, 'Até 1,54 m'], [155, 165, '1,55 a 1,64 m'], [165, 175, '1,65 a 1,74 m'], [175, 999, '1,75 m ou mais']], peso: [[0, 60, 'Até 59 kg'], [60, 70, '60 a 69 kg'], [70, 80, '70 a 79 kg'], [80, 90, '80 a 89 kg'], [90, 999, '90 kg ou mais']] }
     for (const st of QSTEPS) {
-      const l = g[st.id]; if (!l || !st.o.length) continue
+      if (st.i === 0 || st.k === 'sales') continue   // T1 (abertura) e T26 (oferta) estão no funil
+      let l = g[st.id]
+      if (FAIXA[st.id] && l) { const m = {}; for (const r of l) { const x = Number(String(r.v).replace(',', '.')), f = FAIXA[st.id].find(([a, z]) => x >= a && x < z); if (f) m[f[2]] = (m[f[2]] || 0) + (Number(r.n) || 0) } l = FAIXA[st.id].filter((f) => m[f[2]]).map((f) => ({ v: f[2], n: m[f[2]], lab: f[2] })) }
+      if (!l || !l.length) {
+        if (!Qd.funil || st.o.length) continue
+        const n = passou2(st.i)
+        b.append(el('div', { class: 'card sem' }, el('h4', {}, 'T' + (st.i + 1) + ' · ' + st.t), el('span', { class: 'muted', style: 'font-size:12.5px' }, 'Tela sem pergunta: ' + n + ' passaram por ela (' + pct(n, viu2) + ' de quem viu a 1ª tela, igual ao funil).')))
+        continue
+      }
       const tot = l.reduce((a, r) => a + (Number(r.n) || 0), 0), mx = Math.max(...l.map((r) => Number(r.n) || 0))
-      const card = el('div', { class: 'card' }, el('h4', {}, 'T' + (st.i + 1) + ' · ' + st.t), el('span', { class: 'muted', style: 'font-size:12px' }, tot + ' respostas'))
-      for (const r of l.sort((a, c) => c.n - a.n)) card.append(el('div', { class: 'rbar' }, el('span', { class: 'lab' }, el('i', { style: 'width:' + Math.round(100 * r.n / mx) + '%' }), QOPT[st.id + '|' + r.v] || r.v), el('b', {}, r.n + ' · ' + pct(r.n, tot))))
+      const card = el('div', { class: 'card' }, el('h4', {}, 'T' + (st.i + 1) + ' · ' + st.t), el('span', { class: 'muted', style: 'font-size:12px' }, tot + ' respostas' + (st.k === 'multi' ? ' (podia marcar mais de uma)' : '')))
+      for (const r of (FAIXA[st.id] ? l : l.sort((a, c) => c.n - a.n))) card.append(el('div', { class: 'rbar' }, el('span', { class: 'lab' }, el('i', { style: 'width:' + Math.round(100 * r.n / mx) + '%' }), r.lab || QOPT[st.id + '|' + r.v] || r.v), el('b', {}, r.n + ' · ' + pct(r.n, tot))))
       b.append(card)
     }
     if (!b.children.length) b.append(el('div', { class: 'empty' }, 'Ainda sem respostas neste período.'))
@@ -1855,7 +2134,7 @@ function renderQuiz() {
   if (!lista.length) qp.append(el('div', { class: 'empty' }, 'Nenhuma sugestão para o quiz ainda. Elas chegam na análise das 7h, ou peça no chat, assunto "Quiz".'))
   for (const [id, p] of lista) qp.append(cardProposta(id, p, 'qz-'))
 }
-document.querySelectorAll('#q-per button').forEach((b) => b.addEventListener('click', () => { qPer = b.dataset.p; document.querySelectorAll('#q-per button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); qWatch() }))
+ligarPeriodo('q', (p, a, z) => { qPer = p; if (p === 'datas') { qDe = a; qAte = z } qWatch() })
 document.querySelectorAll('#q-orig button').forEach((b) => b.addEventListener('click', () => { qOrig = b.dataset.o; document.querySelectorAll('#q-orig button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); qWatch() }))
 
 
@@ -1968,7 +2247,7 @@ function renderObj() {
     if (!$('ob-custos').children.length) { for (const n of CUSTOS_PADRAO) $('ob-custos').append(linhaCusto(n, '')); somaCustos() }
     if (!objOk(OBJ)) box.append(el('div', { class: 'empty' }, 'Ainda não tem meta. Preencha abaixo, por exemplo: Lucro · R$ 100.000 · 30 dias. A meta vale para o painel todo e para a análise das 7h.'))
   } else form.hidden = true
-  renderObStrip(); renderObChat()
+  renderObStrip(); renderObChat(); renderHoje()
   if (!objOk(OBJ)) { $('ob-at').textContent = 'sem meta'; $('ob-conta').textContent = ''; return }
   const o = OBJ, J = objJanela(o)
   const titulo = o.texto || ('Bater ' + valorObj(o, o.valor) + ' ' + (o.tipo === 'vendas' ? '' : TIPO_OBJ[o.tipo]) + ' em ' + o.dias + ' dias').replace(/\s+/g, ' ')
@@ -2116,16 +2395,17 @@ $('ob-pedir').addEventListener('click', (e) => {
 })
 
 // ── Clicou em comprar e não comprou ────────────────────────────────
-let rcPer = 'novo', rcSit = 'nao', rcUnsub = null, RC = null, rcAberto = null, rcPlano = null
+let rcPer = 'novo', rcSit = 'nao', rcUnsub = null, RC = null, rcAberto = null, rcPlano = null, rcDe = '', rcAte = ''
 const rcFeitos = new Map() // id da sessão do quiz → {feito_em}: quem você já chamou no WhatsApp (só o id, sem dados da pessoa)
 const MEDO = { fracasso: 'Não conseguir de novo', tempo: 'Não ter tempo', dinheiro: 'Gastar e não ter resultado', fome: 'Passar fome', rebote: 'Efeito rebote' }
 function rcJanela() {
+  if (rcPer === 'datas' && okDia(rcDe) && okDia(rcAte)) return janelaDatas(rcDe, rcAte)
   const d0 = "(date_trunc('day', now() at time zone 'America/Sao_Paulo') at time zone 'America/Sao_Paulo')"
   const ini = rcPer === 'today' ? d0 : rcPer === 'last_7d' ? d0 + " - interval '6 days'" : "'" + QUIZ_NOVO + "'::timestamptz"
   return "s.created_at >= greatest(" + ini + ", '" + QUIZ_NOVO + "'::timestamptz)"
 }
 // Ligação quiz ↔ venda pelo xcod (tracking_xcod), qualquer oferta/gateway.
-const qRec = () => `with q as (select s.id, s.created_at, s.checkout_at, s.utm_source, s.utm_content, s.answers, s.checkout_ab, s.xcod, ${perfilSQL} perfil from quiz_sessions s where ${rcJanela()} and s.checkout_clicked),
+const qRec = () => `with q as (select s.id, s.created_at, s.checkout_at, s.utm_source, s.utm_content, s.answers, s.checkout_ab, s.xcod, ${perfilSQL} perfil from quiz_sessions s where ${rcJanela()} and s.checkout_clicked and coalesce(s.utm_source,'') not ilike '%tagassistant%' and coalesce(s.referrer,'') not ilike '%tagassistant%'),
 v as (select v.tracking_xcod x, bool_or(v.status in ('APPROVED','COMPLETED')) pagou, bool_or(v.status not in ('APPROVED','COMPLETED','REFUNDED','CHARGEBACK','CANCELED','CANCELLED')) pendente, max(v.payment_method) metodo, max(split_part(trim(coalesce(v.buyer_name,'')),' ',1)) nome, max(v.buyer_phone) tel, max(v.received_at) ult from vendas v where v.tracking_xcod in (select xcod from q where xcod is not null) group by 1)
 select q.id, q.created_at, q.checkout_at, q.utm_source, q.utm_content, q.answers, q.checkout_ab, q.perfil, coalesce(v.pagou,false) pagou, coalesce(v.pendente,false) pendente, v.metodo, v.nome, v.tel, v.ult from q left join v on v.x = q.xcod order by q.created_at desc limit 500`
 function rcWatch() {
@@ -2139,7 +2419,7 @@ function rcWatch() {
     RC = rows; $('rc-at').textContent = 'atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); renderRec()
   }, { refetchInterval: HORA })
 }
-const SIT = { comprou: ['ok', 'Comprou'], pix: ['wait', 'Pix/boleto sem pagar'], saiu: ['no', 'Saiu do checkout'] }
+const SIT = { comprou: ['ok', 'Comprou'], pix: ['wait', 'Pix/boleto sem pagar'], saiu: ['no', 'Saiu do checkout'] }  // ordem e textos usados também na barra do topo
 const telBR = (t) => { let d = String(t || '').replace(/\D/g, ''); if (!d) return ''; if (d.length <= 11) d = '55' + d; return d }
 const telMask = (t) => { const d = telBR(t); return d.length >= 12 ? '(' + d.slice(2, 4) + ') ' + d.slice(4, 5) + '••••-' + d.slice(-4) : '' }
 function msgRec(r) {
@@ -2149,25 +2429,94 @@ function msgRec(r) {
   return 'Oi' + nome + '! Aqui é da equipe da Laura Rosa 💚 Você fez o quiz De Volta ao Eixo' + perfil + '. ' + ab
 }
 function contar(rows, f) { const m = {}; for (const r of rows) { const ks = [].concat(f(r)).filter(Boolean); for (const k of ks) m[k] = (m[k] || 0) + 1 } return m }
-function cmpCard(titulo, nao, sim, f, rotulo) {
-  const a = contar(nao, f), b = contar(sim, f), ks = [...new Set([...Object.keys(a), ...Object.keys(b)])].sort((x, y) => (a[y] || 0) - (a[x] || 0)).slice(0, 6)
-  if (!ks.length) return null
-  const g = el('div', { class: 'rc-l' }, el('span', { class: 'h' }, ''), el('span', { class: 'h n' }, 'Não'), el('span', { class: 'h n' }, 'Sim'))
-  for (const k of ks) { const pn = nao.length ? (a[k] || 0) / nao.length : 0, ps = sim.length ? (b[k] || 0) / sim.length : 0; g.append(el('span', {}, rotulo(k)), el('span', { class: 'n' + (nao.length >= 3 && pn - ps >= 0.2 ? ' hi' : '') }, pctN(pn)), el('span', { class: 'n' }, sim.length ? pctN(ps) : '–')) }
-  return el('div', { class: 'card' }, el('h4', {}, titulo), g)
+const SIT_ORD = { pix: 0, saiu: 1, comprou: 2 }
+// Ordena respostas: mais comum em quem não comprou primeiro; no empate, a que menos aparece em quem comprou (a que mais diferencia).
+const ordemNao = (a, b) => (x, y) => (a[y] || 0) - (a[x] || 0) || (b[x] || 0) - (b[y] || 0)
+const plural = (n, um, varios) => n + ' ' + (n === 1 ? um : varios)
+const origem = (r) => r.utm_source === 'FB' ? (dec(r.utm_content) || 'Anúncio') : r.utm_source === 'direto' ? 'Direto (sem anúncio)' : (r.utm_source || 'Sem origem')
+// Dica de mensagem/remarketing para o medo mais comum de quem não comprou (sem mudar oferta nem preço).
+const DICA_MEDO = {
+  dinheiro: 'Na mensagem e no remarketing, lembre que tem garantia de 7 dias: se não gostar, recebe o dinheiro de volta.',
+  fracasso: 'Fale de recomeço sem culpa: é um roteiro de 21 dias, um passo por dia, e um dia ruim não estraga tudo.',
+  tempo: 'Mostre que os treinos são curtos e em casa, feitos para a rotina corrida.',
+  fome: 'Reforce: sem dieta maluca e sem passar fome, comida de verdade.',
+  rebote: 'Mostre que o roteiro cria hábito, não é dieta de choque que volta tudo depois.',
 }
+// Bloco "Por que não compram": cada resposta do quiz com quantas pessoas de cada grupo marcaram.
+function cmpCard(titulo, nao, sim, f, rotulo) {
+  const a = contar(nao, f), b = contar(sim, f), ks = [...new Set([...Object.keys(a), ...Object.keys(b)])].sort(ordemNao(a, b)).slice(0, 6)
+  if (ks.length < 2) return null   // uma resposta só (ex.: todo mundo no mesmo checkout) não ajuda a decidir
+  const top = ks[0], g = el('div', { class: 'rc-l' }, el('span', {}), el('span', { class: 'h' }, 'Não compraram (' + nao.length + ')'), el('span', { class: 'h' }, 'Compraram (' + sim.length + ')'))
+  const cel = (n, tot, cls) => el('span', { class: 'n ' + cls, title: n + ' de ' + tot }, el('b', {}, tot ? n + ' de ' + tot : '–'), el('i', { style: '--w:' + (tot ? Math.round(100 * n / tot) : 0) + '%' }))
+  for (const k of ks) g.append(el('span', {}, rotulo(k)), cel(a[k] || 0, nao.length, 'nao' + (k === top && a[k] ? ' top' : '')), cel(b[k] || 0, sim.length, 'sim'))
+  const leit = a[top] ? 'Mais comum em quem não comprou: ' + rotulo(top) + ' (' + a[top] + ' de ' + nao.length + ').' : null
+  return el('div', { class: 'q' }, el('h4', {}, titulo), leit ? el('p', { class: 'leit' }, leit) : null, g)
+}
+function irPessoas(sit) { rcSit = sit; renderRec(); $('rc-pessoas-box').scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 function renderRec() {
-  const tiles = $('rc-tiles'); if (!tiles) return
-  tiles.textContent = ''
-  const tb = $('rc-pessoas'), mot = $('rc-motivos')
-  if (!RC) { tb.innerHTML = '<tr><td colspan="8" class="l muted">' + (mcp ? 'Carregando…' : 'Os dados aparecem para quem tem o conector do Supabase.') + '</td></tr>'; mot.textContent = ''; renderRcChat(); return }
+  const top = $('rc-top'); if (!top) return
+  const tb = $('rc-pessoas'), mot = $('rc-motivos'), acoes = $('rc-acoes'), sitBox = $('rc-sit')
+  if (!RC) { top.innerHTML = '<span class="muted">' + (mcp ? 'Carregando…' : 'Os dados aparecem para quem tem o conector do Supabase.') + '</span>'; acoes.textContent = ''; tb.innerHTML = '<tr><td colspan="6" class="l muted">' + (mcp ? 'Carregando…' : '–') + '</td></tr>'; mot.textContent = ''; renderRcChat(); return }
   const ck = RC.length, comp = RC.filter((r) => r.sit === 'comprou'), pix = RC.filter((r) => r.sit === 'pix'), saiu = RC.filter((r) => r.sit === 'saiu'), nao = [...pix, ...saiu]
-  const comTel = pix.filter((r) => telBR(r.tel)).length, aChamar = pix.filter((r) => !rcFeitos.has(r.id)).length
-  for (const [k, v, sub, cls] of [['Clicaram comprar', ck, 'no período', 'o'], ['Compraram', comp.length, pctN(ck ? comp.length / ck : null) + ' de quem clicou', 'g'], ['Não compraram', nao.length, pctN(ck ? nao.length / ck : null) + ' de quem clicou', ''], ['Pix/boleto sem pagar', pix.length, aChamar ? aChamar + ' para chamar no WhatsApp' : (pix.length ? 'todas já chamadas ✓' : 'ninguém agora'), 'gd'], ['Saíram do checkout', saiu.length, 'só remarketing alcança', '']])
-    tiles.append(el('div', { class: 'tile ' + cls }, el('span', { class: 'k' }, k), el('span', { class: 'v' }, String(v)), el('span', { class: 's' }, sub)))
+  const aChamar = pix.filter((r) => !rcFeitos.has(r.id)).length
   const nb = $('nb-rc'); nb.textContent = String(aChamar); nb.classList.toggle('hot', aChamar > 0)
-  // por que não compraram: respostas de quem NÃO comprou × quem comprou
+  const PER = rcPer === 'datas' ? txtDatas(rcDe, rcAte) : { today: 'Hoje', last_7d: 'Nos últimos 7 dias', novo: 'Desde o quiz novo (08/10)' }[rcPer]
+  // 1 · A situação numa frase + barra
+  top.textContent = ''
+  if (!ck) top.append(el('p', { class: 'rc-frase' }, PER + ', ninguém clicou em comprar ainda.'))
+  else {
+    top.append(el('p', { class: 'rc-frase' }, PER + ', ', el('em', {}, plural(ck, 'pessoa clicou', 'pessoas clicaram')), ' em comprar e ', el('em', {}, plural(comp.length, 'comprou', 'compraram')), ' (' + pctN(comp.length / ck) + ').'))
+    const seg = [['comprou', comp.length, 'Comprou'], ['pix', pix.length, 'Gerou Pix/boleto e não pagou'], ['saiu', saiu.length, 'Saiu do checkout sem preencher']]
+    top.append(el('div', { class: 'rc-barra', role: 'img', 'aria-label': seg.map(([, n, t]) => t + ': ' + n).join(', ') }, ...seg.filter(([, n]) => n).map(([k, n]) => el('i', { class: 'c-' + k, style: 'width:' + (100 * n / ck) + '%' }))),
+      el('div', { class: 'rc-leg' }, ...seg.map(([k, n, t]) => el('span', {}, el('i', { class: 'cor c-' + k }), el('b', {}, String(n)), t))))
+  }
+  // 2 · O que fazer agora (em ordem de prioridade)
+  acoes.textContent = ''
+  const lista = []
+  if (pix.length) lista.push(aChamar
+    ? { cls: 'urg', t: aChamar === 1 ? 'Chamar no WhatsApp 1 pessoa que gerou Pix e não pagou' : 'Chamar no WhatsApp ' + aChamar + ' pessoas que geraram Pix e não pagaram', d: 'É a venda mais fácil de recuperar: tem nome e WhatsApp. A mensagem já está pronta; mande em até 1 hora.', b: el('button', { class: 'b pri', type: 'button', onclick: () => irPessoas('pix') }, 'Ver quem chamar ↓') }
+    : { cls: 'ok', t: 'Todas que geraram Pix já foram chamadas ✓', d: 'Se alguma pagar, ela passa para "Comprou" aqui.' })
+  if (saiu.length) {
+    const rmkt = Object.values(props).find((p) => /remarketing/i.test(p.titulo || '') && ['executado', 'aprovado', 'preparando'].includes(p.status))
+    lista.push({ cls: rmkt ? 'ok' : '', t: plural(saiu.length, 'pessoa saiu', 'pessoas saíram') + ' do checkout sem deixar contato', d: 'Não dá para chamar no WhatsApp: só o remarketing no Meta alcança essas pessoas.' + (rmkt ? (rmkt.status === 'executado' ? ' O remarketing já está no ar ✓' : ' O remarketing está sendo preparado.') : ''),
+      b: rmkt ? el('button', { class: 'b', type: 'button', onclick: () => { $('m-busca').value = 'RMKT'; busca = 'rmkt'; abrir('meta'); render() } }, 'Ver o remarketing') : el('button', { class: 'b pri', type: 'button', onclick: (e) => enviarRc('Crie um anúncio de remarketing para quem clicou em comprar e saiu do checkout sem preencher.', e.currentTarget) }, 'Pedir remarketing') })
+  }
+  const fMedo = (r) => r.answers && r.answers.medo, medos = contar(nao, fMedo), mk = Object.keys(medos).sort(ordemNao(medos, contar(comp, fMedo)))[0], tm = mk && [mk, medos[mk]]
+  if (tm && nao.length >= 2) lista.push({ t: 'O que mais segura quem não comprou: medo de "' + (MEDO[tm[0]] || tm[0]).toLowerCase() + '" (' + tm[1] + ' de ' + nao.length + ')', d: DICA_MEDO[tm[0]] || 'Responda esse medo na mensagem e no remarketing.' })
+  if (ck && comp.length < 5) lista.push({ cls: 'info', t: 'Ainda é cedo para saber o que diferencia quem compra', d: 'Só ' + plural(comp.length, 'compra', 'compras') + ' no período. A comparação fica confiável com umas 10. Até lá, o que mais rende é chamar quem gerou Pix.' })
+  if (!lista.length) lista.push({ cls: 'ok', t: 'Nada para fazer agora ✓', d: ck ? 'Quem clicou em comprar comprou.' : 'Quando alguém clicar em comprar e não comprar, aparece aqui.' })
+  lista.forEach((x, i) => acoes.append(el('div', { class: 'card rc-acao ' + (x.cls || '') }, el('span', { class: 'num' }, String(i + 1)), el('h4', {}, x.t), el('p', {}, x.d), x.b ? el('div', { class: 'btns' }, x.b) : null)))
+  // 3 · Pessoas
+  const FILTROS = [['nao', 'Não compraram', nao.length], ['pix', 'Pix sem pagar', pix.length], ['saiu', 'Saíram do checkout', saiu.length], ['comprou', 'Compraram', comp.length], ['todas', 'Todas', ck]]
+  sitBox.textContent = ''
+  for (const [k, t, n] of FILTROS) sitBox.append(el('button', { type: 'button', 'aria-pressed': String(rcSit === k), onclick: () => { rcSit = k; renderRec() } }, t + ' ', el('span', { class: 'ct' }, String(n))))
+  tb.textContent = ''
+  const pessoas = RC.filter((r) => rcSit === 'todas' ? true : rcSit === 'nao' ? r.sit !== 'comprou' : r.sit === rcSit)
+    .sort((a, b) => (SIT_ORD[a.sit] - SIT_ORD[b.sit]) || (rcFeitos.has(a.id) - rcFeitos.has(b.id)) || String(b.checkout_at || b.created_at).localeCompare(String(a.checkout_at || a.created_at)))
+  for (const r of pessoas) {
+    const st = SIT[r.sit], tel = telBR(r.tel), medo = MEDO[r.answers && r.answers.medo]
+    const tr = el('tr', { class: 'click' + (rcAberto === r.id ? ' open' : '') + (r.sit === 'pix' && rcFeitos.has(r.id) ? ' feito' : ''), tabindex: '0' },
+      el('td', { class: 'l q-quando' }, fmtDt(r.checkout_at || r.created_at)),
+      el('td', { class: 'l q-pessoa' }, r.nome || (r.sit === 'saiu' ? 'Sem nome (não preencheu)' : '–'), tel ? el('span', { class: 'muted' }, ' ' + telMask(r.tel)) : null),
+      el('td', { class: 'l q-sit' }, el('span', { class: 'pill ' + st[0] }, st[1])),
+      el('td', { class: 'l q-perfil' }, (PERFIL[r.perfil] || '–') + (medo ? ' · medo: ' + medo.toLowerCase() : '')),
+      el('td', { class: 'l q-origem' }, origem(r)),
+      el('td', { class: 'l q-acao' }, r.sit === 'pix' ? acoesPix(r, tel) : r.sit === 'saiu' ? el('span', { class: 'muted' }, 'Só remarketing alcança') : el('span', { class: 'muted' }, 'Nada a fazer ✓')))
+    const tog = () => { rcAberto = rcAberto === r.id ? null : r.id; renderRec() }
+    tr.addEventListener('click', tog); tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tog() } })
+    tb.append(tr)
+    if (rcAberto === r.id) {
+      const g = el('div', { class: 'resps' })
+      for (const q of QSTEPS) { const v = r.answers && r.answers[q.id]; if (v == null || v === '') continue; g.append(el('div', {}, el('span', {}, 'T' + (q.i + 1) + ' · ' + q.t + ': '), (Array.isArray(v) ? v : [v]).map((x) => QOPT[q.id + '|' + x] || x).join(', '))) }
+      if (r.checkout_ab) g.append(el('div', {}, el('span', {}, 'Checkout: '), ({ greenn: 'Greenn', hotmart: 'Hotmart' }[r.checkout_ab] || r.checkout_ab)))
+      if (tel && r.sit !== 'comprou') g.append(el('div', {}, el('span', {}, 'Mensagem sugerida: '), msgRec(r)))
+      tb.append(el('tr', { class: 'lead-det' }, el('td', { colspan: '6' }, g.children.length ? g : el('span', { class: 'muted' }, 'Sem respostas gravadas.'))))
+    }
+  }
+  if (!pessoas.length) tb.append(el('tr', {}, el('td', { colspan: '6', class: 'l muted' }, 'Ninguém nesta situação no período.')))
+  // 4 · Por que não compram (comparação, recolhida)
   mot.textContent = ''
+  $('rc-det-s').textContent = comp.length < 5 ? 'Respostas do quiz de quem comprou × quem não comprou · ainda pouca venda, use como pista' : 'Respostas do quiz de quem comprou × quem não comprou'
   const ans = (k) => (r) => { const v = r.answers && r.answers[k]; return v == null ? null : v }
   const opt = (id) => (k) => QOPT[id + '|' + k] || k
   const cards = [
@@ -2176,41 +2525,11 @@ function renderRec() {
     cmpCard('Canetinha (T7)', nao, comp, ans('canetinha'), opt('canetinha')),
     cmpCard('Quantas vezes recomeçou (T5)', nao, comp, ans('recomecos'), opt('recomecos')),
     cmpCard('Checkout que abriu', nao, comp, (r) => r.checkout_ab || 'sem registro', (k) => ({ greenn: 'Greenn', hotmart: 'Hotmart' }[k] || k)),
-    cmpCard('Anúncio', nao, comp, (r) => dec(r.utm_content) || (r.utm_source ? r.utm_source : 'sem anúncio'), (k) => k)].filter(Boolean)
-  const leit = []
-  if (saiu.length > pix.length) leit.push('A maioria sai do checkout sem preencher nada (' + saiu.length + ' de ' + nao.length + '): o problema está entre o botão e o formulário (preço visto na hora, confiança, página lenta ou checkout diferente do esperado). Esse grupo só volta por remarketing no Meta.')
-  if (pix.length) leit.push((pix.length === 1 ? '1 pessoa gerou Pix ou boleto e não pagou' : pix.length + ' pessoas geraram Pix ou boleto e não pagaram') + ': é o grupo mais fácil de recuperar. Uma mensagem no WhatsApp em até 1 hora costuma trazer parte dessas vendas de volta.')
-  const medoNao = contar(nao, ans('medo')), topMedo = Object.entries(medoNao).sort((a, b) => b[1] - a[1])[0]
-  if (topMedo && nao.length >= 3) leit.push('O medo mais comum de quem não comprou é "' + (MEDO[topMedo[0]] || topMedo[0]) + '" (' + pctN(topMedo[1] / nao.length) + '). A recuperação e o remarketing devem responder exatamente isso.')
-  if (nao.length < 5) leit.push('Ainda são poucas pessoas (' + nao.length + '), então as porcentagens mudam rápido. Use como pista, não como regra.')
-  mot.append(el('div', { class: 'card' }, el('h4', {}, 'O que os dados dizem'), el('ul', { class: 'clean' }, ...leit.map((t) => el('li', {}, t))), el('span', { class: 'muted', style: 'font-size:12.5px' }, 'Abaixo: % de quem NÃO comprou × % de quem comprou em cada resposta. Em vermelho, o que aparece bem mais em quem não comprou.')))
-  if (cards.length) mot.append(el('div', { class: 'rc-cmp' }, ...cards))
-  // pessoas
-  tb.textContent = ''
-  const lista = RC.filter((r) => rcSit === 'todas' ? true : rcSit === 'nao' ? r.sit !== 'comprou' : r.sit === rcSit)
-  for (const r of lista) {
-    const st = SIT[r.sit], tel = telBR(r.tel)
-    const tr = el('tr', { class: 'click' + (rcAberto === r.id ? ' open' : ''), tabindex: '0' },
-      el('td', { class: 'l' }, fmtDt(r.checkout_at || r.created_at)),
-      el('td', { class: 'l' }, r.nome || '–', tel ? el('br') : null, tel ? el('span', { class: 'muted' }, telMask(r.tel)) : null),
-      el('td', { class: 'l' }, el('span', { class: 'pill ' + st[0] }, st[1]), r.metodo && r.sit !== 'saiu' ? el('span', { class: 'muted' }, ' ' + String(r.metodo).toLowerCase()) : null),
-      el('td', { class: 'l' }, PERFIL[r.perfil] || '–'),
-      el('td', { class: 'l' }, MEDO[r.answers && r.answers.medo] || '–'),
-      el('td', { class: 'l' }, dec(r.utm_content) || (r.utm_source || '–')),
-      el('td', { class: 'l' }, ({ greenn: 'Greenn', hotmart: 'Hotmart' }[r.checkout_ab] || '–')),
-      el('td', { class: 'l' }, r.sit === 'pix' ? acoesPix(r, tel) : r.sit === 'saiu' ? el('span', { class: 'muted' }, 'remarketing') : '–'))
-    const tog = () => { rcAberto = rcAberto === r.id ? null : r.id; renderRec() }
-    tr.addEventListener('click', tog); tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tog() } })
-    tb.append(tr)
-    if (rcAberto === r.id) {
-      const g = el('div', { class: 'resps' })
-      for (const q of QSTEPS) { const v = r.answers && r.answers[q.id]; if (v == null || v === '') continue; g.append(el('div', {}, el('span', {}, 'T' + (q.i + 1) + ' · ' + q.t + ': '), (Array.isArray(v) ? v : [v]).map((x) => QOPT[q.id + '|' + x] || x).join(', '))) }
-      if (tel && r.sit !== 'comprou') g.append(el('div', {}, el('span', {}, 'Mensagem sugerida: '), msgRec(r)))
-      tb.append(el('tr', { class: 'lead-det' }, el('td', { colspan: '8' }, g.children.length ? g : el('span', { class: 'muted' }, 'Sem respostas gravadas.'))))
-    }
-  }
-  if (!lista.length) tb.append(el('tr', {}, el('td', { colspan: '8', class: 'l muted' }, 'Ninguém nesta situação no período.')))
-  renderRcChat()
+    cmpCard('De onde veio', nao, comp, origem, (k) => k)].filter(Boolean)
+  mot.append(el('div', { class: 'rc-ajuda' }, el('b', {}, 'Como ler'), el('span', {}, 'Cada linha é uma resposta do quiz. "4 de 8" quer dizer que 4 das 8 pessoas daquele grupo marcaram essa resposta. Em vermelho, a resposta mais comum de quem não comprou.'),
+    comp.length < 5 ? el('span', {}, 'Atenção: só ' + plural(comp.length, 'pessoa comprou', 'pessoas compraram') + ' no período, então a coluna "Compraram" ainda não diz muito. Fica confiável com umas 10 compras.') : null))
+  if (cards.length) mot.append(el('div', { class: 'rc-cmp' }, ...cards)); else mot.append(el('p', { class: 'muted' }, 'Ainda sem respostas suficientes para comparar.'))
+  renderRcChat(); renderHoje()
 }
 function acoesPix(r, tel) {
   const feito = rcFeitos.get(r.id), box = el('div', { style: 'display:flex;flex-wrap:wrap;gap:6px;align-items:center' })
@@ -2227,7 +2546,7 @@ async function marcarFeito(id, sim, btn) {
 }
 function renderRcPlano(v) {
   const box = $('rc-plano'); box.textContent = ''
-  if (!v || !Array.isArray(v.acoes) || !v.acoes.length) { box.append(el('div', { class: 'empty' }, 'O plano de recuperação do Claude chega na análise das 7h (anúncio, mudança, remarketing, campanha ou automação). Para receber agora, clique em "Pedir plano de recuperação ao Claude".')); return }
+  if (!v || !Array.isArray(v.acoes) || !v.acoes.length) { box.append(el('div', { class: 'empty' }, 'O plano de recuperação do Claude chega na análise das 7h (anúncio, mudança, remarketing, campanha ou automação). Para receber agora, toque em "Pedir plano ao Claude".')); return }
   const TIPO = { anuncio: 'Anúncio', mudanca: 'Mudança', rmkt: 'Remarketing', campanha: 'Campanha', automacao: 'Automação' }
   box.append(el('div', { class: 'row' }, el('h4', {}, 'Plano de recuperação do Claude'), el('span', { class: 'pill n' }, fmtDt(v.em))))
   if (v.resumo) box.append(el('p', {}, v.resumo))
@@ -2265,18 +2584,214 @@ $('rc-pedir').addEventListener('click', (e) => {
   if (RC) { const pix = RC.filter((r) => r.sit === 'pix').length, saiu = RC.filter((r) => r.sit === 'saiu').length, comp = RC.filter((r) => r.sit === 'comprou').length; est = ' Agora: ' + RC.length + ' clicaram comprar, ' + comp + ' compraram, ' + pix + ' geraram Pix/boleto sem pagar, ' + saiu + ' saíram do checkout.' }
   enviarRc('Descubra por que quem clicou em comprar não comprou e monte o plano de recuperação.' + est + ' Use as respostas do quiz delas. Sugira o que você achar que faz essa pessoa comprar: anúncio de remarketing, mudança no checkout ou na página, campanha nova e automação de recuperação no WhatsApp. Cada mudança como proposta para eu aprovar.', e.currentTarget)
 })
-document.querySelectorAll('#rc-per button').forEach((b) => b.addEventListener('click', () => { rcPer = b.dataset.p; document.querySelectorAll('#rc-per button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); rcWatch() }))
-document.querySelectorAll('#rc-sit button').forEach((b) => b.addEventListener('click', () => { rcSit = b.dataset.s; document.querySelectorAll('#rc-sit button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); renderRec() }))
+ligarPeriodo('rc', (p, a, z) => { rcPer = p; if (p === 'datas') { rcDe = a; rcAte = z } rcWatch() })
 
 setInterval(() => { if (Object.values(msgs).some((m) => m.papel !== 'claude' && !m.respondido)) { renderChat(); renderOtChat(); renderObChat(); renderRcChat() } }, 30000)
+// ── Referência: Instagram da Laura, concorrentes e peças prontas ───
+// Dados: referencias/atual (instagram, mercado, conexoes, resumo), referencias_pecas/<id>, config/referencias (pedido_em).
+// O botão BUSCAR REFERÊNCIAS chama a rotina com "PEDIDO: referencias".
+let REF = null, refPedido = null, DL = null
+const PECAS = {}, ROTS = {}
+let rtFiltro = 'gravar'
+const numBRi = (n) => (Number(n) || 0).toLocaleString('pt-BR')
+const linkFora = (href, txt, cls) => el('a', { href, target: '_blank', rel: 'noopener', class: cls || '' }, txt)
+function renderRefStatus() {
+  const st = $('rf-st'), bt = $('rf-buscar')
+  const pedido = refPedido && refPedido.pedido_em, feito = REF && REF.em
+  const buscando = pedido && (!feito || new Date(pedido) > new Date(feito)) && (Date.now() - new Date(pedido)) < 30 * 60000
+  bt.setAttribute('aria-disabled', String(!!buscando))
+  st.textContent = buscando ? 'Buscando… pedido às ' + fmtDt(pedido) + ' · leva uns 5 minutos' : feito ? 'Última busca: ' + fmtDt(feito) : 'Ainda não buscou'
+}
+function renderRef() {
+  renderRefStatus()
+  const r = REF || {}
+  const res = $('rf-resumo'); res.textContent = ''
+  if (r.resumo || (r.fazer && r.fazer.length)) {
+    res.hidden = false
+    res.append(el('h3', {}, 'O que fazer com isso'), r.resumo ? el('p', {}, r.resumo) : null)
+    if (r.fazer && r.fazer.length) { const ol = el('ol'); for (const f of r.fazer) ol.append(el('li', {}, f)); res.append(ol) }
+  } else res.hidden = true
+  // 1. Instagram
+  const ig = r.instagram || {}
+  $('rf-ig-sub').textContent = ig.sub || ''
+  const pd = $('rf-padrao'); pd.textContent = ''
+  if (ig.padrao && ig.padrao.length) {
+    pd.hidden = false; const ul = el('ul'); for (const p of ig.padrao) ul.append(el('li', {}, p))
+    pd.append(el('b', {}, 'Padrão encontrado'), ul, ig.obs ? el('p', { class: 'obs' }, ig.obs) : null)
+  } else pd.hidden = true
+  const igb = $('rf-ig'); igb.textContent = ''
+  if (!(ig.posts || []).length) igb.append(el('div', { class: 'empty', style: 'grid-column:1/-1' }, 'Toque em BUSCAR REFERÊNCIAS para analisar os posts da Laura.'))
+  ;(ig.posts || []).forEach((p, i) => {
+    igb.append(el('div', { class: 'rf-c' },
+      el('div', { class: 't' }, el('span', { class: 'pill n' }, (p.tipo || 'Post') + (p.dur ? ' · ' + p.dur + 's' : '')), el('span', { class: 'pill o' }, (i + 1) + 'º'), el('span', { class: 'rf-st' }, p.data || '')),
+      p.alcance != null
+        ? el('div', { class: 'rf-n' }, numBRi(p.alcance), ' ', el('i', {}, 'alcance'), ' · ', numBRi(p.salvos), ' ', el('i', {}, 'salvos'))
+        : el('div', { class: 'rf-n' }, numBRi(p.curtidas), ' ', el('i', {}, 'curtidas'), ' · ', numBRi(p.coment), ' ', el('i', {}, 'coment.')),
+      p.alcance != null ? el('div', { class: 'mt' }, numBRi(p.curtidas) + ' curtidas · ' + numBRi(p.compart) + ' compartilhamentos' + (p.assistido ? ' · assistem ' + p.assistido + 's em média' : '')) : null,
+      p.legenda ? el('q', {}, p.legenda) : null,
+      p.porque ? el('div', { class: 'why' }, el('b', {}, 'Por que funcionou: '), p.porque) : null,
+      p.ideia ? el('div', { class: 'idea' }, el('b', {}, 'Como vira anúncio: '), p.ideia) : null,
+      el('div', { class: 'acts' }, p.link ? linkFora(p.link, 'Abrir no Instagram') : null,
+        el('button', { type: 'button', class: 'ap', onclick: (e) => pedirCriativo('Transforme o post do Instagram de ' + (p.data || '') + ' ("' + (p.legenda || '').slice(0, 80) + '", ' + (p.link || '') + ') em anúncio para o quiz. ' + (p.ideia || ''), e.currentTarget) }, 'Virar anúncio'))))
+  })
+  // 2. Mercado
+  $('rf-merc-lead').textContent = r.mercado_lead || ''
+  const mb = $('rf-merc'); mb.textContent = ''
+  if (!(r.mercado || []).length) mb.append(el('div', { class: 'empty', style: 'grid-column:1/-1' }, 'Sem referências de mercado ainda.'))
+  for (const m of r.mercado || []) {
+    const tag = { quiz: ['o', 'Funil de quiz'], antigo: ['ok', 'No ar há muito tempo'], escala: ['wait', 'Muitas versões'], whats: ['n', 'Leva para o WhatsApp'], mesmo: ['n', 'Mesmo modelo da Laura'], gancho: ['o', 'Gancho forte'] }[m.tag] || ['n', m.tag || 'Referência']
+    mb.append(el('div', { class: 'rf-c' },
+      el('div', { class: 't' }, el('span', { class: 'pill ' + tag[0] }, tag[1])),
+      el('div', { class: 'pg' }, m.pagina || '–'),
+      m.titulo ? el('q', {}, m.titulo) : null,
+      el('div', { class: 'mt' }, [m.dias != null ? 'no ar há ' + m.dias + (m.dias === 1 ? ' dia' : ' dias') : '', m.ativos != null ? numBRi(m.ativos) + ' anúncios ativos' : ''].filter(Boolean).join(' · ')),
+      m.leitura ? el('div', { class: 'why' }, el('b', {}, 'Leitura: '), m.leitura) : null,
+      el('div', { class: 'acts' }, m.link ? linkFora(m.link, m.video ? 'Ver vídeo' : 'Ver anúncio') : null)))
+  }
+  // conexões
+  const cb = $('rf-con'); cb.textContent = ''
+  for (const c of r.conexoes || []) cb.append(el('li', {}, el('span', { class: 'pill ' + ({ ok: 'ok', falta: 'wait', no: 'no' }[c.st] || 'n') }, { ok: 'Já funciona', falta: 'Falta', no: 'Falta' }[c.st] || c.st), el('span', {}, c.t)))
+  renderPecas()
+}
+function renderPecas() {
+  const box = $('rf-pecas'); box.textContent = ''
+  const lista = Object.entries(PECAS).filter(([, p]) => p.status !== 'descartada').sort((a, b) => (a[1].ordem ?? 99) - (b[1].ordem ?? 99))
+  if (!lista.length) box.append(el('div', { class: 'empty', style: 'grid-column:1/-1' }, 'Nenhuma peça ainda. Toque em BUSCAR REFERÊNCIAS.'))
+  for (const [id, p] of lista) {
+    const thumb = p.thumb
+      ? el('div', { class: 'rf-thumb' }, el('img', { src: p.thumb, alt: p.titulo || 'Peça', loading: 'lazy' }), el('span', { class: 'ty' }, p.formato || p.tipo || ''))
+      : el('div', { class: 'rf-thumb vazio' }, el('div', {}, el('b', {}, p.tipo === 'video' ? '🎬' : '🖼️'), p.vazio || 'Sem prévia'))
+    const st = { pronta: ['ok', 'Pronta'], subir: ['o', 'Pedido para subir'], ajuste: ['wait', 'Ajuste pedido'], editar: ['wait', p.precisa || 'Falta liberar'] }[p.status] || ['n', p.status || '–']
+    const acts = el('div', { class: 'acts' })
+    for (const a of p.arquivos || []) acts.append(el('button', { type: 'button', class: 'dl', onclick: (e) => baixar(a, e.currentTarget) }, '⬇ ' + (a.rotulo || 'Baixar')))
+    if (p.status === 'pronta' || p.status === 'ajuste') acts.append(el('button', { type: 'button', class: 'ap', onclick: (e) => pecaSubir(id, p, e.currentTarget) }, 'Quero subir'))
+    const nota = el('textarea', { rows: '2', placeholder: 'O que mudar? (Ctrl+Enter envia)', 'aria-label': 'Ajuste para ' + (p.titulo || 'a peça'), hidden: '' })
+    const bAj = el('button', { type: 'button', onclick: (e) => { if (nota.hidden) { nota.hidden = false; nota.focus() } else pecaAjuste(id, p, nota.value.trim(), e.currentTarget) } }, 'Pedir ajuste')
+    nota.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); bAj.click() } })
+    acts.append(bAj)
+    box.append(el('div', { class: 'rf-c' }, thumb,
+      el('div', { class: 't' }, el('span', { class: 'pill ' + st[0] }, st[1])),
+      el('b', {}, p.titulo || '–'),
+      p.porque ? el('div', { class: 'rf-st' }, p.porque) : null,
+      p.texto ? el('div', { class: 'idea' }, el('b', {}, 'Texto do anúncio: '), p.texto) : null,
+      p.nota ? el('div', { class: 'mt' }, 'Seu pedido: ' + p.nota) : null,
+      nota, acts))
+  }
+}
+async function baixar(a, btn) {
+  if (!a || !a.url) return
+  if (!DL) { window.open(a.url, '_blank', 'noopener'); return }
+  btn.setAttribute('aria-disabled', 'true')
+  try {
+    const r = await fetch(a.url); if (!r.ok) throw new Error('http')
+    await DL.save({ filename: a.nome || 'peca', data: await r.blob() })
+  } catch (e) {
+    if (!(e && e.code === 'declined')) { toast('Abrindo o arquivo para você salvar…'); window.open(a.url, '_blank', 'noopener') }
+  } finally { btn.removeAttribute('aria-disabled') }
+}
+async function pedirCriativo(texto, btn) {
+  if (!db) { toast('Entre na sua conta para pedir.'); return }
+  btn && btn.setAttribute('aria-disabled', 'true')
+  try {
+    await db.collection('chat').add({ canal: 'criativo', conversa: convAtual.criativo, papel: 'patrik', texto, em: new Date().toISOString(), respondido: false, por: me || '' })
+    const r = await chamarClaude('chat'); toast(AVISO[r] || 'Pedido salvo.')
+  } catch (e) { toast(e && e.code === 'not_granted' ? 'Você só pode ver esta página.' : 'Não consegui enviar. Tente de novo.') }
+  finally { btn && btn.removeAttribute('aria-disabled') }
+}
+async function pecaSubir(id, p, btn) {
+  try { await db.collection('referencias_pecas').doc(id).update({ status: 'subir', pedido_em: new Date().toISOString() }) } catch {}
+  pedirCriativo('Pode subir a peça "' + (p.titulo || id) + '" (referencias_pecas/' + id + ') no Meta: monte a proposta de criativo com estes arquivos, texto e o conjunto onde entra, para eu aprovar.', btn)
+}
+async function pecaAjuste(id, p, nota, btn) {
+  if (!nota) { toast('Escreva o que mudar.'); return }
+  try { await db.collection('referencias_pecas').doc(id).update({ status: 'ajuste', nota }) } catch {}
+  pedirCriativo('Ajuste na peça "' + (p.titulo || id) + '" (referencias_pecas/' + id + '): ' + nota + '. Refaça os arquivos e atualize a peça.', btn)
+}
+$('rf-buscar').addEventListener('click', async (e) => {
+  const bt = e.currentTarget; if (bt.getAttribute('aria-disabled') === 'true') return
+  if (!db) { toast('Entre na sua conta para buscar.'); return }
+  try { await db.doc('config/referencias').set({ pedido_em: new Date().toISOString(), por: me || '' }) } catch { toast('Você só pode ver esta página.'); return }
+  const r = await chamarClaude('referencias')
+  toast(r === 'ok' ? 'Buscando referências. Leva uns 5 minutos; a aba atualiza sozinha.' : (AVISO[r] || 'Pedido salvo.'))
+})
+
+// ── Roteiros da Laura ──────────────────────────────────────────────
+function textoRoteiro(r) {
+  return '🎬 ' + (r.titulo || '') + ' (' + (r.dur || '') + ')\n\n' + (r.cenas || []).map((c) => '[' + c.t + '] ' + c.faz + '\nFALA: "' + c.fala + '"' + (c.tela ? '\nTEXTO NA TELA: ' + c.tela : '')).join('\n\n') + (r.onde ? '\n\nOnde: ' + r.onde : '') + (r.roupa ? '\nRoupa: ' + r.roupa : '') + (r.cuidado ? '\nCuidado: ' + r.cuidado : '')
+}
+async function copiar(txt) {
+  try { await navigator.clipboard.writeText(txt); toast('Texto copiado.') }
+  catch { const t = el('textarea'); t.value = txt; document.body.append(t); t.select(); let ok = false; try { ok = document.execCommand('copy') } catch {} t.remove(); toast(ok ? 'Texto copiado.' : 'Não consegui copiar; use "Mandar no WhatsApp".') }
+}
+function renderRoteiros() {
+  const lista = Object.entries(ROTS).sort((a, b) => (a[1].ordem ?? 99) - (b[1].ordem ?? 99))
+  const n = { gravar: 0, gravado: 0 }; for (const [, r] of lista) { if (r.status === 'gravado') n.gravado++; else n.gravar++ }
+  $('rt-c-gravar').textContent = n.gravar ? '· ' + n.gravar : ''; $('rt-c-gravado').textContent = n.gravado ? '· ' + n.gravado : ''
+  const nb = $('nb-rot'); nb.textContent = String(n.gravar); nb.classList.toggle('hot', n.gravar > 0)
+  const box = $('rt-lista'); box.textContent = ''
+  const vis = lista.filter(([, r]) => rtFiltro === 'todos' || (rtFiltro === 'gravado' ? r.status === 'gravado' : r.status !== 'gravado'))
+  if (!vis.length) box.append(el('div', { class: 'empty' }, rtFiltro === 'gravado' ? 'Nenhum roteiro marcado como gravado ainda.' : lista.length ? 'Tudo gravado. 🎉' : 'Nenhum roteiro ainda. Eles aparecem quando o Claude busca referências.'))
+  for (const [id, r] of vis) {
+    const cenas = el('div', { class: 'rt-cenas' }, el('span', { class: 'k' }, 'Cena a cena'))
+    for (const c of r.cenas || []) cenas.append(el('div', { class: 'rt-cena' }, el('span', { class: 'tm' }, c.t), el('span', { class: 'faz' }, c.faz), el('span', { class: 'fala' }, '"' + c.fala + '"'), c.tela ? el('span', { class: 'tela' }, 'Na tela: ', el('b', {}, c.tela)) : null))
+    const fala = el('div', { class: 'fala' }); for (const c of r.cenas || []) fala.append(el('p', {}, c.fala))
+    const texto = el('div', { class: 'rt-texto' }, el('span', { class: 'k' }, 'Texto completo para falar'), fala, r.legenda ? el('div', { class: 'leg' }, el('b', {}, 'Legenda do anúncio: '), r.legenda) : null)
+    const nota = el('textarea', { rows: '2', placeholder: 'O que mudar neste roteiro? (Ctrl+Enter envia)', 'aria-label': 'Ajuste no roteiro ' + (r.titulo || ''), hidden: '' })
+    const bAj = el('button', { class: 'b', type: 'button', onclick: (e) => { if (nota.hidden) { nota.hidden = false; nota.focus() } else rtAjuste(id, r, nota.value.trim(), e.currentTarget) } }, 'Pedir ajuste')
+    nota.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); bAj.click() } })
+    const st = r.status === 'gravado' ? ['ok', 'Gravado' + (r.gravado_em ? ' em ' + fmtD(r.gravado_em) : '')] : r.status === 'ajuste' ? ['wait', 'Ajuste pedido'] : ['o', 'Para gravar']
+    box.append(el('article', { class: 'card rt ' + (r.status || 'gravar') },
+      el('div', { class: 'rt-top' }, el('span', { class: 'num' }, String(r.ordem ?? '•')), el('div', {}, el('h3', {}, r.titulo || '–'),
+        el('div', { class: 't' }, el('span', { class: 'pill ' + st[0] }, st[1]), r.dur ? el('span', { class: 'pill n' }, '⏱ ' + r.dur) : null, r.precisa_ok ? el('span', { class: 'pill no' }, 'Esperar OK do Patrik') : null))),
+      r.porque ? el('div', { class: 'rt-why' }, el('b', {}, 'Por que gravar: '), r.porque) : null,
+      refRoteiro(r.referencia),
+      el('div', { class: 'rt-cols' }, cenas, texto),
+      el('div', { class: 'rt-info' }, r.onde ? el('span', {}, el('b', {}, 'Onde: '), r.onde) : null, r.roupa ? el('span', {}, el('b', {}, 'Roupa: '), r.roupa) : null),
+      r.cuidado ? el('div', { class: 'rt-cuidado' }, '⚠️ ', r.cuidado) : null,
+      r.nota ? el('p', { class: 'muted' }, 'Ajuste pedido: ' + r.nota) : null,
+      nota,
+      el('div', { class: 'btns' },
+        el('button', { class: 'b', type: 'button', onclick: () => copiar(textoRoteiro(r)) }, '📋 Copiar texto'),
+        el('a', { class: 'b', href: 'https://wa.me/?text=' + encodeURIComponent(textoRoteiro(r)), target: '_blank', rel: 'noopener' }, '💬 Mandar no WhatsApp'),
+        r.status === 'gravado'
+          ? el('button', { class: 'b ghost', type: 'button', onclick: (e) => rtStatus(id, 'gravar', e.currentTarget) }, 'Desmarcar')
+          : el('button', { class: 'b ok', type: 'button', onclick: (e) => rtStatus(id, 'gravado', e.currentTarget) }, '✓ Já gravei'),
+        bAj)))
+  }
+}
+function refRoteiro(f) {
+  if (!f) return null
+  if (typeof f === 'string') return el('div', { class: 'rt-ref' }, el('b', {}, 'Referência: '), f)
+  return el('div', { class: 'rt-ref' },
+    el('div', { class: 'rt-ref-t' }, el('b', {}, 'Referência: '), (f.titulo || '') + ' ', f.link ? linkFora(f.link, 'Ver referência ↗', 'rt-ref-a') : null),
+    f.legenda_original ? el('q', {}, f.legenda_original) : null,
+    f.o_que_copiar ? el('p', {}, el('b', {}, 'O que copiar: '), f.o_que_copiar) : null,
+    f.comparacao ? el('p', { class: 'muted' }, f.comparacao) : null)
+}
+async function rtStatus(id, status, btn) {
+  if (!db) { toast('Entre na sua conta.'); return }
+  btn.disabled = true
+  try { await db.collection('roteiros').doc(id).update(status === 'gravado' ? { status, gravado_em: new Date().toISOString(), por: me || '' } : { status }); if (status === 'gravado') toast('Marcado. Agora é só mandar os vídeos na pasta do Drive.') }
+  catch (e) { toast(e && e.code === 'not_granted' ? 'Você só pode ver esta página.' : 'Não consegui salvar. Tente de novo.') }
+  finally { btn.disabled = false }
+}
+async function rtAjuste(id, r, nota, btn) {
+  if (!nota) { toast('Escreva o que mudar.'); return }
+  try { await db.collection('roteiros').doc(id).update({ status: 'ajuste', nota }) } catch {}
+  pedirCriativo('Ajuste no roteiro "' + (r.titulo || id) + '" (roteiros/' + id + '): ' + nota + '. Reescreva o roteiro e volte para "gravar".', btn)
+}
+document.querySelectorAll('#rt-filtro button').forEach((b) => b.addEventListener('click', () => { rtFiltro = b.dataset.f; document.querySelectorAll('#rt-filtro button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); renderRoteiros() }))
+setInterval(renderRefStatus, 60000)
+
 // ── Arranque ───────────────────────────────────────────────────────
-renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); renderRcPlano(null)
+renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); renderRcPlano(null); renderRef(); renderRoteiros()
 ;(async () => {
   const c = window.claude
   if (!c) { $('pr-state').textContent = 'abra no claude.ai'; $('ch-state').textContent = 'abra no claude.ai'; $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; return }
   ;[db, user, mcp] = await Promise.all([c.use('db').catch(() => null), c.use('user').catch(() => null), c.use('mcp').catch(() => null)])
   if (user) { try { me = await user.id() } catch {} }
-  if (mcp) { watchPeriodo(); rcWatch() }
+  c.use('downloads').then((x) => { DL = x }).catch(() => {})
+  if (mcp) { watchPeriodo(); rcWatch(); qWatch() }
   else { $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; $('m-sets').innerHTML = '<tr><td colspan="7" class="l muted">Os números ao vivo aparecem para quem tem os conectores do Meta e do Supabase.</td></tr>'; $('m-ads').innerHTML = '' }
   if (!db) { $('pr-state').textContent = 'entre na sua conta'; $('ch-state').textContent = 'entre na sua conta'; return }
   $('pr-state').textContent = 'aprovações salvas no painel'; $('ch-state').textContent = 'conversas salvas no painel'
@@ -2288,6 +2803,10 @@ renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); rend
   db.collection('recuperacao_feitos').onSnapshot((snap) => { rcFeitos.clear(); snap.docs.forEach((d) => rcFeitos.set(d.id, d.data())); renderRec() }, () => {})
   db.doc('recuperacao/atual').onSnapshot((d) => { rcPlano = d.exists ? d.data() : null; renderRcPlano(rcPlano) }, () => {})
   db.doc('meta_plano/atual').onSnapshot((d) => { obPlano = d.exists ? d.data() : null; renderObPlano(obPlano) }, () => {})
+  db.doc('referencias/atual').onSnapshot((d) => { REF = d.exists ? d.data() : null; renderRef() }, () => {})
+  db.doc('config/referencias').onSnapshot((d) => { refPedido = d.exists ? d.data() : null; renderRefStatus() }, () => {})
+  db.collection('referencias_pecas').onSnapshot((snap) => { for (const k of Object.keys(PECAS)) delete PECAS[k]; snap.docs.forEach((d) => { PECAS[d.id] = d.data() }); renderPecas() }, () => {})
+  db.collection('roteiros').onSnapshot((snap) => { for (const k of Object.keys(ROTS)) delete ROTS[k]; snap.docs.forEach((d) => { ROTS[d.id] = d.data() }); renderRoteiros() }, () => {})
   db.doc('config/chat').onSnapshot((d) => { if (d.exists) { const v = d.data(); for (const c of CANAIS) if (v[c]) convAtual[c] = v[c]; renderChat() } }, () => {})
   db.collection('chat').orderBy('em', 'desc').limit(600).onSnapshot((snap) => { for (const k of Object.keys(msgs)) delete msgs[k]; snap.docs.forEach((d) => { msgs[d.id] = d.data() }); renderChat(); renderProps(); renderOtChat(); renderObChat(); renderRcChat() }, () => { $('ch-state').textContent = 'fora do ar; recarregue' })
   renderProps(); renderChat()
@@ -2295,7 +2814,7 @@ renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); rend
 </script>
 <script>
 // ── Ajuste do quiz: telas do quiz (geradas pelo tools/quiz-revisao) ──
-window.SCREENS = [{"idx":0,"id":"intro","kind":"intro","title":"Tela de abertura (texto fica em _quiz.tsx)","fields":[],"note":"Os textos desta tela ficam no componente do quiz. Peça a mudança no campo de pedido livre."},{"idx":1,"id":"idade","kind":"single","title":"Qual a sua faixa etária?","fields":[{"k":"idade.headline","label":"Pergunta","v":"Qual a sua faixa etária?","long":false},{"k":"idade.sub","label":"Subtítulo","v":"Cada fase da vida tem um metabolismo diferente. Sua resposta define o protocolo ideal para o seu corpo.","long":true},{"k":"idade.opt.-29.label","label":"Opção 🌸","v":"Menos de 29 anos"},{"k":"idade.opt.29-39.label","label":"Opção ✨","v":"Entre 29 e 39 anos"},{"k":"idade.opt.40-49.label","label":"Opção 🌿","v":"Entre 40 e 49 anos"},{"k":"idade.opt.50+.label","label":"Opção 👑","v":"50 anos ou mais"}]},{"idx":2,"id":"laura","kind":"laura","title":"Quem é a Laura","fields":[{"k":"laura.p0","label":"Parágrafo 1","v":"Sou Laüra Rosa — educadora física e especialista em emagrecimento feminino.","long":true},{"k":"laura.p1","label":"Parágrafo 2","v":"Mas o que me trouxe até aqui não foi só a formação. Com 23 anos eu descobri que tinha SOP (Síndrome dos Ovários Policísticos). Engordei 15 quilos em menos de um ano sem conseguir explicar por quê. Fazia academia todo dia, pesava cada grama de comida, cortava tudo que mandavam cortar.","long":true},{"k":"laura.p2","label":"Parágrafo 3","v":"E quanto mais eu me esforçava, pior eu ficava.","long":true},{"k":"laura.p3","label":"Parágrafo 4","v":"Foi quando eu descobri que o problema era a inflamação travando o meu metabolismo. Quando eu mudei o método, 8 quilos foram embora em 23 dias.","long":true},{"k":"laura.p4","label":"Parágrafo 5","v":"Depois de validar comigo mesma e ajudar mais de 5.000 seguidoras, eu decidi ajudar mais mulheres a terem o mesmo resultado.","long":true},{"k":"laura.p5","label":"Parágrafo 6","v":"Eu chamei isso de Efeito Lipo — quando o seu corpo para de reter e entra em estado de queima de dentro pra fora. E foi por isso que eu criei o protocolo que você está prestes a receber.","long":true}]},{"idx":3,"id":"objetivo","kind":"single","title":"Qual é o seu principal objetivo agora?","fields":[{"k":"objetivo.headline","label":"Pergunta","v":"Qual é o seu principal objetivo agora?","long":false},{"k":"objetivo.sub","label":"Subtítulo","v":"Essa resposta é a que mais impacta o protocolo para o qual você será direcionada.","long":true},{"k":"objetivo.opt.barriga.label","label":"Opção 🪡","v":"Secar a barriga de vez"},{"k":"objetivo.opt.barriga.sub","label":"↳ detalhe","v":"Acabar com aquele inchaço que não sai nem com reza brava"},{"k":"objetivo.opt.roupa.label","label":"Opção 👗","v":"Caber naquela roupa especial"},{"k":"objetivo.opt.roupa.sub","label":"↳ detalhe","v":"Voltar a usar as peças que você ama e escondeu no fundo do guarda-roupa"},{"k":"objetivo.opt.bracos.label","label":"Opção 💪","v":"Afinar os braços"},{"k":"objetivo.opt.bracos.sub","label":"↳ detalhe","v":"Parar de esconder os braços em toda foto"},{"k":"objetivo.opt.autoestima.label","label":"Opção ❤️","v":"Recuperar minha autoestima"},{"k":"objetivo.opt.autoestima.sub","label":"↳ detalhe","v":"Me olhar no espelho e me reconhecer de novo"},{"k":"objetivo.opt.tudo.label","label":"Opção 🎯","v":"Tudo acima"},{"k":"objetivo.opt.tudo.sub","label":"↳ detalhe","v":"Quero a transformação completa"}]},{"idx":4,"id":"recomecos","kind":"single","title":"Quantas vezes você já recomeçou?","fields":[{"k":"recomecos.headline","label":"Pergunta","v":"Quantas vezes você já recomeçou?","long":false},{"k":"recomecos.sub","label":"Subtítulo","v":"Seja sincera. Essa resposta é fundamental para entendermos onde o seu metabolismo está travado.","long":true},{"k":"recomecos.opt.1-2.label","label":"Opção 🌱","v":"Uma ou duas vezes"},{"k":"recomecos.opt.varias.label","label":"Opção 🔁","v":"Várias vezes"},{"k":"recomecos.opt.perdi-conta.label","label":"Opção 🔄","v":"Já perdi a conta"},{"k":"recomecos.opt.comecando.label","label":"Opção ✨","v":"Ainda estou tentando começar"}]},{"idx":5,"id":"rotina","kind":"single","title":"Como é a sua rotina hoje?","fields":[{"k":"rotina.headline","label":"Pergunta","v":"Como é a sua rotina hoje?","long":false},{"k":"rotina.sub","label":"Subtítulo","v":"O Efeito Lipo foi criado para funcionar na rotina real, não na ideal. 80% das mulheres fizeram o protocolo com rotina corrida, filhos, trabalho e casa.","long":true},{"k":"rotina.opt.corrida.label","label":"Opção 🏃‍♀️","v":"Super corrida, mal tenho tempo pra mim"},{"k":"rotina.opt.corrida.sub","label":"↳ detalhe","v":"Trabalho, filho, casa… o dia acaba antes de eu perceber"},{"k":"rotina.opt.equilibrada.label","label":"Opção ⚖️","v":"Equilibrada mas sem sobra"},{"k":"rotina.opt.equilibrada.sub","label":"↳ detalhe","v":"Consigo me organizar mas não tenho tempo livre"},{"k":"rotina.opt.casa.label","label":"Opção 🏠","v":"Fico em casa mas nunca sobra tempo"},{"k":"rotina.opt.casa.sub","label":"↳ detalhe","v":"Cuido dos filhos e da casa e me perco na rotina"},{"k":"rotina.opt.tempo.label","label":"Opção 🧘","v":"Tenho tempo para me dedicar"},{"k":"rotina.opt.tempo.sub","label":"↳ detalhe","v":"Posso investir tempo em mim mesma"}]},{"idx":6,"id":"canetinha","kind":"single","title":"Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?","fields":[{"k":"canetinha.headline","label":"Pergunta","v":"Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?","long":true},{"k":"canetinha.sub","label":"Subtítulo","v":"Não existe resposta certa ou errada. Só queremos entender o que você já considerou antes de chegar aqui.","long":true},{"k":"canetinha.opt.usei.label","label":"Opção 💉","v":"Sim, já usei"},{"k":"canetinha.opt.usei.sub","label":"↳ detalhe","v":"Tive resultado mas parei e voltou tudo"},{"k":"canetinha.opt.usando.label","label":"Opção 💉","v":"Sim, estou usando"},{"k":"canetinha.opt.usando.sub","label":"↳ detalhe","v":"Tenho medo de voltar a engordar tudo de novo"},{"k":"canetinha.opt.considerando.label","label":"Opção 🤔","v":"Sim, estou considerando"},{"k":"canetinha.opt.considerando.sub","label":"↳ detalhe","v":"Ainda não decidi mas está na minha cabeça"},{"k":"canetinha.opt.nao-usar.label","label":"Opção ❌","v":"Pensei mas decidi não usar"},{"k":"canetinha.opt.nao-usar.sub","label":"↳ detalhe","v":"Tenho medo dos efeitos colaterais"},{"k":"canetinha.opt.nunca.label","label":"Opção 🙅‍♀️","v":"Nunca considerei"},{"k":"canetinha.opt.nunca.sub","label":"↳ detalhe","v":"Quero emagrecer de forma natural"}]},{"idx":7,"id":"fisico","kind":"single","title":"Como você descreveria seu corpo hoje?","fields":[{"k":"fisico.headline","label":"Pergunta","v":"Como você descreveria seu corpo hoje?","long":false},{"k":"fisico.sub","label":"Subtítulo","v":"Escolha uma opção para avançar","long":true},{"k":"fisico.opt.inchada.label","label":"Opção","v":"Bem de peso, mas inchada e sem definição"},{"k":"fisico.opt.inchada.sub","label":"↳ detalhe","v":"As roupas não caem como antes"},{"k":"fisico.opt.leve-acima.label","label":"Opção","v":"Levemente acima do peso"},{"k":"fisico.opt.acima.label","label":"Opção","v":"Acima do peso"},{"k":"fisico.opt.muito-acima.label","label":"Opção","v":"Muito acima do peso"}]},{"idx":8,"id":"prova","kind":"prova","title":"Prova social","fields":[],"note":"Só fotos de depoimento nesta tela. Para trocar uma foto, use o pedido livre."},{"idx":9,"id":"corpo-sonhos","kind":"single","title":"Qual é o corpo que você quer ter?","fields":[{"k":"corpo-sonhos.headline","label":"Pergunta","v":"Qual é o corpo que você quer ter?","long":false},{"k":"corpo-sonhos.sub","label":"Subtítulo","v":"Visualizar o resultado que deseja aumenta em até 3x as chances de você chegar lá. Escolha com honestidade.","long":true},{"k":"corpo-sonhos.opt.seca.label","label":"Opção","v":"Seca e definida"},{"k":"corpo-sonhos.opt.lisa.label","label":"Opção","v":"Barriga lisa e braços finos"},{"k":"corpo-sonhos.opt.curvas.label","label":"Opção","v":"Com curvas e sem inchaço"},{"k":"corpo-sonhos.opt.leve.label","label":"Opção","v":"Leve — me sentir bem no meu corpo"}]},{"idx":10,"id":"alimentacao","kind":"single","title":"Como você descreveria a sua alimentação hoje?","fields":[{"k":"alimentacao.headline","label":"Pergunta","v":"Como você descreveria a sua alimentação hoje?","long":false},{"k":"alimentacao.sub","label":"Subtítulo","v":"Seja sincera. Não existe resposta errada — preciso de informações pra montar o seu protocolo com mais precisão.","long":true},{"k":"alimentacao.opt.exagero.label","label":"Opção 🍔","v":"Tento comer bem, mas acabo exagerando"},{"k":"alimentacao.opt.exagero.sub","label":"↳ detalhe","v":"Começo bem e perco o controle"},{"k":"alimentacao.opt.dieta.label","label":"Opção 🥗","v":"Faço dieta, mas não vejo resultado"},{"k":"alimentacao.opt.dieta.sub","label":"↳ detalhe","v":"Como certinho mas não emagreço"},{"k":"alimentacao.opt.sem-controle.label","label":"Opção 🍕","v":"Como de tudo sem muito controle"},{"k":"alimentacao.opt.sem-controle.sub","label":"↳ detalhe","v":"Ainda não criei hábito nenhum"},{"k":"alimentacao.opt.desorganizada.label","label":"Opção 😩","v":"Completamente desorganizada"},{"k":"alimentacao.opt.desorganizada.sub","label":"↳ detalhe","v":"Não tenho rotina alimentar nenhuma"}]},{"idx":11,"id":"sabotador","kind":"single","title":"Qual é o seu maior sabotador?","fields":[{"k":"sabotador.headline","label":"Pergunta","v":"Qual é o seu maior sabotador?","long":false},{"k":"sabotador.sub","label":"Subtítulo","v":"Todo mundo tem um. Identificar o seu é o primeiro passo para parar de lutar contra ele e começar a trabalhar com o seu corpo.","long":true},{"k":"sabotador.opt.doce.label","label":"Opção 🍫","v":"Doce e chocolate"},{"k":"sabotador.opt.doce.sub","label":"↳ detalhe","v":"“Não consigo resistir a um docinho…”"},{"k":"sabotador.opt.carbo.label","label":"Opção 🍞","v":"Pão, massa e carboidrato"},{"k":"sabotador.opt.carbo.sub","label":"↳ detalhe","v":"“Amo pão, não consigo cortar”"},{"k":"sabotador.opt.ansiedade.label","label":"Opção 😰","v":"Ansiedade e estresse"},{"k":"sabotador.opt.ansiedade.sub","label":"↳ detalhe","v":"“Quando estresso, vou direto pra geladeira”"},{"k":"sabotador.opt.noite.label","label":"Opção 🌙","v":"Belisco à noite"},{"k":"sabotador.opt.noite.sub","label":"↳ detalhe","v":"“Depois do jantar não paro mais”"},{"k":"sabotador.opt.delivery.label","label":"Opção 🛵","v":"Delivery e fast food"},{"k":"sabotador.opt.delivery.sub","label":"↳ detalhe","v":"“Praticidade é tudo na minha rotina”"}]},{"idx":12,"id":"dia-dificil","kind":"single","title":"Em que dia da semana fica mais difícil manter sua rotina?","fields":[{"k":"dia-dificil.headline","label":"Pergunta","v":"Em que dia da semana fica mais difícil manter sua rotina?","long":false},{"k":"dia-dificil.sub","label":"Subtítulo","v":"Saber quando você cede ajuda a criar estratégias preventivas. O Efeito Lipo tem abordagem específica para cada momento crítico.","long":true},{"k":"dia-dificil.opt.segunda.label","label":"Opção 📅","v":"Segunda"},{"k":"dia-dificil.opt.terca.label","label":"Opção 📅","v":"Terça"},{"k":"dia-dificil.opt.quarta.label","label":"Opção 📅","v":"Quarta"},{"k":"dia-dificil.opt.quinta.label","label":"Opção 📅","v":"Quinta"},{"k":"dia-dificil.opt.sexta.label","label":"Opção 📅","v":"Sexta"},{"k":"dia-dificil.opt.fim-de-semana.label","label":"Opção 🛋️","v":"Fim de semana"},{"k":"dia-dificil.opt.sem-dia.label","label":"Opção 🔀","v":"Não tem um dia fixo"}]},{"idx":13,"id":"sono","kind":"single","title":"Como anda seu sono e seu inchaço?","fields":[{"k":"sono.headline","label":"Pergunta","v":"Como anda seu sono e seu inchaço?","long":false},{"k":"sono.sub","label":"Subtítulo","v":"Dormir mal aumenta o cortisol, o hormônio do estresse, que faz o corpo reter gordura na barriga mesmo quando você come certo.","long":true},{"k":"sono.opt.mal.label","label":"Opção 😴","v":"Durmo mal e acordo cansada"},{"k":"sono.opt.mal.sub","label":"↳ detalhe","v":"Sempre sonolenta durante o dia"},{"k":"sono.opt.inchada.label","label":"Opção 💤","v":"Durmo ok, mas acordo inchada"},{"k":"sono.opt.inchada.sub","label":"↳ detalhe","v":"O sono é razoável mas retenho muito líquido"},{"k":"sono.opt.sem-energia.label","label":"Opção ⚡","v":"Durmo bem, mas sem energia"},{"k":"sono.opt.sem-energia.sub","label":"↳ detalhe","v":"Acordo cansada mesmo dormindo a noite toda"},{"k":"sono.opt.bom.label","label":"Opção ✨","v":"Sono bom e energia ok"},{"k":"sono.opt.bom.sub","label":"↳ detalhe","v":"Mas o corpo ainda não responde como eu quero"}]},{"idx":14,"id":"insight","kind":"insight","title":"Insight: inflamação","fields":[{"k":"insight.headline","label":"Título","v":"Talvez você se reconheça neste ciclo","long":true},{"k":"insight.intro","label":"Abertura","v":""},{"k":"insight.ruins.0","label":"Erro 1","v":"SEGUNDA — Agora vai. Vou fazer tudo certinho."},{"k":"insight.ruins.1","label":"Erro 2","v":"QUARTA — A rotina apertou e já ficou difícil manter o ritmo."},{"k":"insight.ruins.2","label":"Erro 3","v":"SEXTA — Saí do combinado. Parece que perdi a semana."},{"k":"insight.ruins.3","label":"Erro 4","v":"FIM DE SEMANA — Depois eu compenso e recomeço."},{"k":"insight.bom","label":"Virada","v":"Quando o plano depende de fazer tudo perfeitamente, qualquer imprevisto pode parecer motivo para desistir. O Efeito Lipo 21D propõe começar com uma rotina de treinos em casa e foco em desinchar — sem dieta maluca e sem exigir perfeição.","long":true},{"k":"insight.fecho","label":"Fecho","v":""},{"k":"insight.opt.faz-sentido","label":"Botão ✅","v":"Faz sentido — nunca tinha pensado assim"},{"k":"insight.opt.novidade","label":"Botão 💡","v":"É novidade pra mim — quero entender melhor"}]},{"idx":15,"id":"loading-1","kind":"loading","title":"Analisando suas respostas…","fields":[{"k":"loading-1.title","label":"Título","v":"Analisando suas respostas…"},{"k":"loading-1.body","label":"Texto","v":"Aguarde enquanto o sistema cruza seus dados com o banco de mais de 5.000 transformações reais para montar o seu Protocolo Efeito Lipo personalizado.","long":true},{"k":"loading-1.ticks.0","label":"Etapa 1 da barra","v":"Verificando seu perfil metabólico…"},{"k":"loading-1.ticks.1","label":"Etapa 2 da barra","v":"Identificando seus pontos de travamento…"},{"k":"loading-1.ticks.2","label":"Etapa 3 da barra","v":"Calculando seu potencial de resultado…"}]},{"idx":16,"id":"medo","kind":"single","title":"Qual é o seu maior medo em relação a emagrecer?","fields":[{"k":"medo.headline","label":"Pergunta","v":"Qual é o seu maior medo em relação a emagrecer?","long":false},{"k":"medo.sub","label":"Subtítulo","v":"Seus medos são válidos. O Efeito Lipo foi criado justamente para eliminar cada um deles.","long":true},{"k":"medo.opt.fracasso.label","label":"Opção 😰","v":"Medo de não conseguir de novo"},{"k":"medo.opt.fracasso.sub","label":"↳ detalhe","v":"Já fracassei tantas vezes que não acredito mais"},{"k":"medo.opt.tempo.label","label":"Opção ⏰","v":"Medo de não ter tempo"},{"k":"medo.opt.tempo.sub","label":"↳ detalhe","v":"Minha rotina não deixa espaço pra mais nada"},{"k":"medo.opt.dinheiro.label","label":"Opção 💰","v":"Medo de gastar e não ter resultado"},{"k":"medo.opt.dinheiro.sub","label":"↳ detalhe","v":"Já investi em tantas coisas que não funcionaram"},{"k":"medo.opt.fome.label","label":"Opção 🥗","v":"Medo de passar fome"},{"k":"medo.opt.fome.sub","label":"↳ detalhe","v":"Não aguento mais dieta restritiva"},{"k":"medo.opt.rebote.label","label":"Opção 🔄","v":"Medo do efeito rebote"},{"k":"medo.opt.rebote.sub","label":"↳ detalhe","v":"Emagreço e engorda tudo de volta quando paro"}]},{"idx":17,"id":"pensamento","kind":"single","title":"Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?","fields":[{"k":"pensamento.headline","label":"Pergunta","v":"Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?","long":true},{"k":"pensamento.sub","label":"Subtítulo","v":"Feche os olhos por 3 segundos e realmente imagine. Visualizar o resultado ativa o cérebro de um jeito que aumenta suas chances de chegar lá.","long":true},{"k":"pensamento.opt.bonita.label","label":"Opção 😍","v":"“Finalmente me sinto bonita de verdade”"},{"k":"pensamento.opt.roupa.label","label":"Opção 👗","v":"“Vou usar aquela roupa que ficou guardada por meses”"},{"k":"pensamento.opt.biquini.label","label":"Opção 🏖️","v":"“Não vou ter vergonha de colocar biquíni”"},{"k":"pensamento.opt.foto.label","label":"Opção 📸","v":"“Vou querer tirar foto em tudo que é lugar”"},{"k":"pensamento.opt.consegui.label","label":"Opção 💪","v":"“Consegui. Eu sabia que era capaz”"}]},{"idx":18,"id":"regiao","kind":"multi","title":"Qual região do seu corpo te incomoda mais?","fields":[{"k":"regiao.headline","label":"Pergunta","v":"Qual região do seu corpo te incomoda mais?","long":false},{"k":"regiao.sub","label":"Subtítulo","v":"Pode marcar mais de uma","long":true},{"k":"regiao.opt.barriga.label","label":"Opção","v":"Barriga e inchaço abdominal"},{"k":"regiao.opt.bracos.label","label":"Opção","v":"Braços"},{"k":"regiao.opt.cintura.label","label":"Opção","v":"Cintura e laterais"},{"k":"regiao.opt.quadril.label","label":"Opção","v":"Quadril e coxas"},{"k":"regiao.opt.inteiro.label","label":"Opção","v":"Corpo inteiro — tudo me incomoda"},{"k":"regiao.opt.nenhuma.label","label":"Opção","v":"Não tenho queixa específica"}]},{"idx":19,"id":"tempo-dia","kind":"single","title":"Quanto tempo você consegue dedicar ao seu corpo por dia?","fields":[{"k":"tempo-dia.headline","label":"Pergunta","v":"Quanto tempo você consegue dedicar ao seu corpo por dia?","long":false},{"k":"tempo-dia.sub","label":"Subtítulo","v":"O Protocolo do Efeito Lipo foi criado para funcionar em qualquer janela de tempo — inclusive a menor.","long":true},{"k":"tempo-dia.opt.10-15.label","label":"Opção ⚡","v":"10 a 15 minutos"},{"k":"tempo-dia.opt.10-15.sub","label":"↳ detalhe","v":"Meu tempo é curtíssimo"},{"k":"tempo-dia.opt.15-20.label","label":"Opção 🕐","v":"15 a 20 minutos"},{"k":"tempo-dia.opt.15-20.sub","label":"↳ detalhe","v":"Consigo separar um tempinho"},{"k":"tempo-dia.opt.20-30.label","label":"Opção 🕑","v":"20 a 30 minutos"},{"k":"tempo-dia.opt.20-30.sub","label":"↳ detalhe","v":"Tenho essa janela disponível"},{"k":"tempo-dia.opt.30+.label","label":"Opção 🕒","v":"Mais de 30 minutos"},{"k":"tempo-dia.opt.30+.sub","label":"↳ detalhe","v":"Posso me dedicar bem"}]},{"idx":20,"id":"motivo","kind":"multi","title":"O que te fez chegar até aqui hoje?","fields":[{"k":"motivo.headline","label":"Pergunta","v":"O que te fez chegar até aqui hoje?","long":false},{"k":"motivo.sub","label":"Subtítulo","v":"Pode marcar mais de uma opção","long":true},{"k":"motivo.opt.confianca.label","label":"Opção ✨","v":"Me sentir confiante no próprio corpo"},{"k":"motivo.opt.roupas.label","label":"Opção 👗","v":"Voltar a usar as roupas que eu amo"},{"k":"motivo.opt.saude.label","label":"Opção 🫀","v":"Ter mais saúde e energia no dia a dia"},{"k":"motivo.opt.fotos.label","label":"Opção 📸","v":"Parar de me esconder nas fotos"},{"k":"motivo.opt.provar.label","label":"Opção 🏆","v":"Provar pra mim mesma que consigo"}]},{"idx":21,"id":"altura","kind":"input","title":"Qual é a sua altura?","fields":[{"k":"altura.headline","label":"Pergunta","v":"Qual é a sua altura?","long":false},{"k":"altura.sub","label":"Subtítulo","v":"Digite em centímetros — por exemplo, 162 para 1,62m","long":true},{"k":"altura.placeholder","label":"Exemplo no campo","v":"Ex: 162"}]},{"idx":22,"id":"peso","kind":"input","title":"Qual é o seu peso atual?","fields":[{"k":"peso.headline","label":"Pergunta","v":"Qual é o seu peso atual?","long":false},{"k":"peso.sub","label":"Subtítulo","v":"Digite em kg — por exemplo, 74 para 74kg","long":true},{"k":"peso.placeholder","label":"Exemplo no campo","v":"Ex: 74"}]},{"idx":23,"id":"loading-2","kind":"loading","title":"Montando o seu Protocolo Efeito Lipo…","fields":[{"k":"loading-2.title","label":"Título","v":"Montando o seu Protocolo Efeito Lipo…"},{"k":"loading-2.body","label":"Texto","v":"Quase lá. Estamos usando suas respostas para personalizar as três fases do protocolo — Limpeza, Ativação Metabólica e Queima Total — de acordo com o seu perfil.","long":true},{"k":"loading-2.ticks.0","label":"Etapa 1 da barra","v":"Calculando sua fase de limpeza ideal…"},{"k":"loading-2.ticks.1","label":"Etapa 2 da barra","v":"Ajustando a ativação metabólica pro seu ritmo…"},{"k":"loading-2.ticks.2","label":"Etapa 3 da barra","v":"Estimando seu potencial de resultado em 21 dias…"}]},{"idx":24,"id":"result","kind":"result","title":"Resultado do protocolo","fields":[{"k":"result.Dia 01","label":"Dia 01 · Ponto de partida","v":"Corpo inflamado — antes da limpeza"},{"k":"result.Dia 03","label":"Dia 03 · Primeiros sinais","v":"Desinflame iniciando — roupas começam a ficar largas"},{"k":"result.Dia 07","label":"Dia 07 · Virada","v":"Limpeza completa — 2 a 4kg a menos"},{"k":"result.Dia 14","label":"Dia 14 · Aceleração","v":"Ativação metabólica respondendo"},{"k":"result.Dia 21","label":"Dia 21 · Transformação","v":"Queima Total — até 8kg e metabolismo no piloto automático"}]},{"idx":25,"id":"sales","kind":"sales","title":"Oferta / vendas","fields":[{"k":"sales.antes.0","label":"Antes 1","v":"Começa na segunda e para na sexta"},{"k":"sales.depois.0","label":"Depois 1","v":"Segue um roteiro de 21 dias que cabe na sua semana"},{"k":"sales.antes.1","label":"Antes 2","v":"Um deslize vira \"já estraguei\""},{"k":"sales.depois.1","label":"Depois 2","v":"Um dia difícil é só um dia, e você retoma no próximo passo"},{"k":"sales.antes.2","label":"Antes 3","v":"Treino longo que não cabe na rotina"},{"k":"sales.depois.2","label":"Depois 3","v":"Treinos em casa para encaixar na rotina que você tem"},{"k":"sales.entrega.0","label":"Entregável 1","v":"Plano \"Efeito Lipo\": passo a passo para secar a barriga"},{"k":"sales.entrega.0.desc","label":"↳ descrição","v":"O protocolo completo dos 21 dias nas três fases (Limpeza, Ativação Metabólica e Queima Total) para desinflamar o corpo e eliminar o inchaço. Sem passar fome e sem canetinha","long":true},{"k":"sales.entrega.1","label":"Entregável 2","v":"21 Treinos Hormonais para queimar a gordura da barriga e ganhar músculo"},{"k":"sales.entrega.1.desc","label":"↳ descrição","v":"Aulas em vídeo de 15 minutos, com ficha escrita. Em casa, sem equipamento, feitas para a rotina real","long":true},{"k":"sales.entrega.2","label":"Entregável 3","v":"Guia Alimentar \"Sem Neura\" (PDF visual)"},{"k":"sales.entrega.2.desc","label":"↳ descrição","v":"Cardápio dos 21 dias, lista de compras e o que comer em cada fase. Comida de verdade, sem passar fome e sem contar caloria","long":true},{"k":"sales.entrega.3","label":"Entregável 4","v":"Áudios \"Quebra de Sabotagem\""},{"k":"sales.entrega.3.desc","label":"↳ descrição","v":"Áudios curtos para ouvir na hora em que bate a vontade de comer por ansiedade ou cansaço, e seguir no plano","long":true},{"k":"sales.entrega.4","label":"Entregável 5","v":"Planner de Progresso (PDF para imprimir)"},{"k":"sales.entrega.4.desc","label":"↳ descrição","v":"Cronograma diário com metas, checklist de hábitos e espaço para anotar como você se sente. Você enxerga a sua evolução dia a dia","long":true},{"k":"sales.bonus.0","label":"Bônus 1 (de R$ 297)","v":"Bônus 1 — Guia do Ciclo Menstrual"},{"k":"sales.bonus.0.desc","label":"↳ descrição","v":"As quatro janelas hormonais do ciclo — como adaptar treino e alimentação a cada semana do mês para queimar gordura no ritmo certo","long":true},{"k":"sales.bonus.1","label":"Bônus 2 (de R$ 497)","v":"Bônus 2 — Protocolo Anti-Pelanquinha"},{"k":"sales.bonus.1.desc","label":"↳ descrição","v":"Como estimular colágeno e elastina enquanto você perde gordura — para a pele acompanhar o resultado e ficar firme","long":true},{"k":"sales.stack.0","label":"Valor na pilha · Efeito Lipo 21","v":"R$ 1.500"},{"k":"sales.stack.1","label":"Valor na pilha · 21 Treinos Hormonais","v":"R$ 1.250"},{"k":"sales.stack.2","label":"Valor na pilha · Áudios \"Quebra de Sabotagem\"","v":"R$ 497"},{"k":"sales.stack.3","label":"Valor na pilha · Planner de Progresso","v":"R$ 197"},{"k":"sales.stack.4","label":"Valor na pilha · Guia Alimentar \"Sem Neura\"","v":"R$ 297"},{"k":"sales.stack.5","label":"Valor na pilha · Guia do Ciclo Menstrual","v":"R$ 297"},{"k":"sales.stack.6","label":"Valor na pilha · Protocolo Anti-Pelanquinha","v":"R$ 497"}],"note":"Preço, parcelamento e link de checkout passam pela regra de aprovação do Patrik antes de qualquer mudança."}];
+window.SCREENS = [{"idx":0,"id":"intro","kind":"intro","title":"Tela de abertura (texto fica em _quiz.tsx)","fields":[],"note":"Os textos desta tela ficam no componente do quiz. Peça a mudança no campo de pedido livre."},{"idx":1,"id":"idade","kind":"single","title":"Qual a sua faixa etária?","fields":[{"k":"idade.headline","label":"Pergunta","v":"Qual a sua faixa etária?","long":false},{"k":"idade.sub","label":"Subtítulo","v":"Cada fase da vida tem um metabolismo diferente. Sua resposta define o protocolo ideal para o seu corpo.","long":true},{"k":"idade.opt.-29.label","label":"Opção 🌸","v":"Menos de 29 anos"},{"k":"idade.opt.29-39.label","label":"Opção ✨","v":"Entre 29 e 39 anos"},{"k":"idade.opt.40-49.label","label":"Opção 🌿","v":"Entre 40 e 49 anos"},{"k":"idade.opt.50+.label","label":"Opção 👑","v":"50 anos ou mais"}]},{"idx":2,"id":"laura","kind":"laura","title":"Quem é a Laura","fields":[{"k":"laura.p0","label":"Parágrafo 1","v":"Sou Laüra Rosa — educadora física e especialista em emagrecimento feminino.","long":true},{"k":"laura.p1","label":"Parágrafo 2","v":"Mas o que me trouxe até aqui não foi só a formação. Com 23 anos eu descobri que tinha SOP (Síndrome dos Ovários Policísticos). Engordei 15 quilos em menos de um ano sem conseguir explicar por quê. Fazia academia todo dia, pesava cada grama de comida, cortava tudo que mandavam cortar.","long":true},{"k":"laura.p2","label":"Parágrafo 3","v":"E quanto mais eu me esforçava, pior eu ficava.","long":true},{"k":"laura.p3","label":"Parágrafo 4","v":"Foi quando eu descobri que o problema era a inflamação travando o meu metabolismo. Quando eu mudei o método, 8 quilos foram embora em 23 dias.","long":true},{"k":"laura.p4","label":"Parágrafo 5","v":"Depois de validar comigo mesma e ajudar mais de 5.000 seguidoras, eu decidi ajudar mais mulheres a terem o mesmo resultado.","long":true},{"k":"laura.p5","label":"Parágrafo 6","v":"Eu chamei isso de Efeito Lipo — quando o seu corpo para de reter e entra em estado de queima de dentro pra fora. E foi com ele que eu montei o roteiro De Volta ao Eixo que você está prestes a receber.","long":true}]},{"idx":3,"id":"objetivo","kind":"single","title":"Qual é o seu principal objetivo agora?","fields":[{"k":"objetivo.headline","label":"Pergunta","v":"Qual é o seu principal objetivo agora?","long":false},{"k":"objetivo.sub","label":"Subtítulo","v":"Essa resposta é a que mais impacta o protocolo para o qual você será direcionada.","long":true},{"k":"objetivo.opt.barriga.label","label":"Opção 🪡","v":"Secar a barriga de vez"},{"k":"objetivo.opt.barriga.sub","label":"↳ detalhe","v":"Acabar com aquele inchaço que não sai nem com reza brava"},{"k":"objetivo.opt.roupa.label","label":"Opção 👗","v":"Caber naquela roupa especial"},{"k":"objetivo.opt.roupa.sub","label":"↳ detalhe","v":"Voltar a usar as peças que você ama e escondeu no fundo do guarda-roupa"},{"k":"objetivo.opt.bracos.label","label":"Opção 💪","v":"Afinar os braços"},{"k":"objetivo.opt.bracos.sub","label":"↳ detalhe","v":"Parar de esconder os braços em toda foto"},{"k":"objetivo.opt.autoestima.label","label":"Opção ❤️","v":"Recuperar minha autoestima"},{"k":"objetivo.opt.autoestima.sub","label":"↳ detalhe","v":"Me olhar no espelho e me reconhecer de novo"},{"k":"objetivo.opt.tudo.label","label":"Opção 🎯","v":"Tudo acima"},{"k":"objetivo.opt.tudo.sub","label":"↳ detalhe","v":"Quero a transformação completa"}]},{"idx":4,"id":"recomecos","kind":"single","title":"Quantas vezes você já recomeçou?","fields":[{"k":"recomecos.headline","label":"Pergunta","v":"Quantas vezes você já recomeçou?","long":false},{"k":"recomecos.sub","label":"Subtítulo","v":"Seja sincera. Essa resposta é fundamental para entendermos onde o seu metabolismo está travado.","long":true},{"k":"recomecos.opt.1-2.label","label":"Opção 🌱","v":"Uma ou duas vezes"},{"k":"recomecos.opt.varias.label","label":"Opção 🔁","v":"Várias vezes"},{"k":"recomecos.opt.perdi-conta.label","label":"Opção 🔄","v":"Já perdi a conta"},{"k":"recomecos.opt.comecando.label","label":"Opção ✨","v":"Ainda estou tentando começar"}]},{"idx":5,"id":"rotina","kind":"single","title":"Como é a sua rotina hoje?","fields":[{"k":"rotina.headline","label":"Pergunta","v":"Como é a sua rotina hoje?","long":false},{"k":"rotina.sub","label":"Subtítulo","v":"O De Volta ao Eixo foi criado para a rotina real, não a ideal. 80% das mulheres fizeram o roteiro com rotina corrida, filhos, trabalho e casa.","long":true},{"k":"rotina.opt.corrida.label","label":"Opção 🏃‍♀️","v":"Super corrida, mal tenho tempo pra mim"},{"k":"rotina.opt.corrida.sub","label":"↳ detalhe","v":"Trabalho, filho, casa… o dia acaba antes de eu perceber"},{"k":"rotina.opt.equilibrada.label","label":"Opção ⚖️","v":"Equilibrada mas sem sobra"},{"k":"rotina.opt.equilibrada.sub","label":"↳ detalhe","v":"Consigo me organizar mas não tenho tempo livre"},{"k":"rotina.opt.casa.label","label":"Opção 🏠","v":"Fico em casa mas nunca sobra tempo"},{"k":"rotina.opt.casa.sub","label":"↳ detalhe","v":"Cuido dos filhos e da casa e me perco na rotina"},{"k":"rotina.opt.tempo.label","label":"Opção 🧘","v":"Tenho tempo para me dedicar"},{"k":"rotina.opt.tempo.sub","label":"↳ detalhe","v":"Posso investir tempo em mim mesma"}]},{"idx":6,"id":"canetinha","kind":"single","title":"Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?","fields":[{"k":"canetinha.headline","label":"Pergunta","v":"Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?","long":true},{"k":"canetinha.sub","label":"Subtítulo","v":"Não existe resposta certa ou errada. Só queremos entender o que você já considerou antes de chegar aqui.","long":true},{"k":"canetinha.opt.usei.label","label":"Opção 💉","v":"Sim, já usei"},{"k":"canetinha.opt.usei.sub","label":"↳ detalhe","v":"Tive resultado mas parei e voltou tudo"},{"k":"canetinha.opt.usando.label","label":"Opção 💉","v":"Sim, estou usando"},{"k":"canetinha.opt.usando.sub","label":"↳ detalhe","v":"Tenho medo de voltar a engordar tudo de novo"},{"k":"canetinha.opt.considerando.label","label":"Opção 🤔","v":"Sim, estou considerando"},{"k":"canetinha.opt.considerando.sub","label":"↳ detalhe","v":"Ainda não decidi mas está na minha cabeça"},{"k":"canetinha.opt.nao-usar.label","label":"Opção ❌","v":"Pensei mas decidi não usar"},{"k":"canetinha.opt.nao-usar.sub","label":"↳ detalhe","v":"Tenho medo dos efeitos colaterais"},{"k":"canetinha.opt.nunca.label","label":"Opção 🙅‍♀️","v":"Nunca considerei"},{"k":"canetinha.opt.nunca.sub","label":"↳ detalhe","v":"Quero emagrecer de forma natural"}]},{"idx":7,"id":"fisico","kind":"single","title":"Como você descreveria seu corpo hoje?","fields":[{"k":"fisico.headline","label":"Pergunta","v":"Como você descreveria seu corpo hoje?","long":false},{"k":"fisico.sub","label":"Subtítulo","v":"Escolha uma opção para avançar","long":true},{"k":"fisico.opt.inchada.label","label":"Opção","v":"Bem de peso, mas inchada e sem definição"},{"k":"fisico.opt.inchada.sub","label":"↳ detalhe","v":"As roupas não caem como antes"},{"k":"fisico.opt.leve-acima.label","label":"Opção","v":"Levemente acima do peso"},{"k":"fisico.opt.acima.label","label":"Opção","v":"Acima do peso"},{"k":"fisico.opt.muito-acima.label","label":"Opção","v":"Muito acima do peso"}]},{"idx":8,"id":"prova","kind":"prova","title":"Prova social","fields":[],"note":"Só fotos de depoimento nesta tela. Para trocar uma foto, use o pedido livre."},{"idx":9,"id":"corpo-sonhos","kind":"single","title":"Qual é o corpo que você quer ter?","fields":[{"k":"corpo-sonhos.headline","label":"Pergunta","v":"Qual é o corpo que você quer ter?","long":false},{"k":"corpo-sonhos.sub","label":"Subtítulo","v":"Visualizar o resultado que deseja aumenta em até 3x as chances de você chegar lá. Escolha com honestidade.","long":true},{"k":"corpo-sonhos.opt.seca.label","label":"Opção","v":"Seca e definida"},{"k":"corpo-sonhos.opt.lisa.label","label":"Opção","v":"Barriga lisa e braços finos"},{"k":"corpo-sonhos.opt.curvas.label","label":"Opção","v":"Com curvas e sem inchaço"},{"k":"corpo-sonhos.opt.leve.label","label":"Opção","v":"Leve — me sentir bem no meu corpo"}]},{"idx":10,"id":"alimentacao","kind":"single","title":"Como você descreveria a sua alimentação hoje?","fields":[{"k":"alimentacao.headline","label":"Pergunta","v":"Como você descreveria a sua alimentação hoje?","long":false},{"k":"alimentacao.sub","label":"Subtítulo","v":"Seja sincera. Não existe resposta errada — preciso de informações pra montar o seu protocolo com mais precisão.","long":true},{"k":"alimentacao.opt.exagero.label","label":"Opção 🍔","v":"Tento comer bem, mas acabo exagerando"},{"k":"alimentacao.opt.exagero.sub","label":"↳ detalhe","v":"Começo bem e perco o controle"},{"k":"alimentacao.opt.dieta.label","label":"Opção 🥗","v":"Faço dieta, mas não vejo resultado"},{"k":"alimentacao.opt.dieta.sub","label":"↳ detalhe","v":"Como certinho mas não emagreço"},{"k":"alimentacao.opt.sem-controle.label","label":"Opção 🍕","v":"Como de tudo sem muito controle"},{"k":"alimentacao.opt.sem-controle.sub","label":"↳ detalhe","v":"Ainda não criei hábito nenhum"},{"k":"alimentacao.opt.desorganizada.label","label":"Opção 😩","v":"Completamente desorganizada"},{"k":"alimentacao.opt.desorganizada.sub","label":"↳ detalhe","v":"Não tenho rotina alimentar nenhuma"}]},{"idx":11,"id":"sabotador","kind":"single","title":"Qual é o seu maior sabotador?","fields":[{"k":"sabotador.headline","label":"Pergunta","v":"Qual é o seu maior sabotador?","long":false},{"k":"sabotador.sub","label":"Subtítulo","v":"Todo mundo tem um. Identificar o seu é o primeiro passo para parar de lutar contra ele e começar a trabalhar com o seu corpo.","long":true},{"k":"sabotador.opt.doce.label","label":"Opção 🍫","v":"Doce e chocolate"},{"k":"sabotador.opt.doce.sub","label":"↳ detalhe","v":"“Não consigo resistir a um docinho…”"},{"k":"sabotador.opt.carbo.label","label":"Opção 🍞","v":"Pão, massa e carboidrato"},{"k":"sabotador.opt.carbo.sub","label":"↳ detalhe","v":"“Amo pão, não consigo cortar”"},{"k":"sabotador.opt.ansiedade.label","label":"Opção 😰","v":"Ansiedade e estresse"},{"k":"sabotador.opt.ansiedade.sub","label":"↳ detalhe","v":"“Quando estresso, vou direto pra geladeira”"},{"k":"sabotador.opt.noite.label","label":"Opção 🌙","v":"Belisco à noite"},{"k":"sabotador.opt.noite.sub","label":"↳ detalhe","v":"“Depois do jantar não paro mais”"},{"k":"sabotador.opt.delivery.label","label":"Opção 🛵","v":"Delivery e fast food"},{"k":"sabotador.opt.delivery.sub","label":"↳ detalhe","v":"“Praticidade é tudo na minha rotina”"}]},{"idx":12,"id":"dia-dificil","kind":"single","title":"Em que dia da semana fica mais difícil manter sua rotina?","fields":[{"k":"dia-dificil.headline","label":"Pergunta","v":"Em que dia da semana fica mais difícil manter sua rotina?","long":false},{"k":"dia-dificil.sub","label":"Subtítulo","v":"Saber quando você cede ajuda a se preparar antes. O roteiro De Volta ao Eixo tem um plano para cada dia difícil.","long":true},{"k":"dia-dificil.opt.segunda.label","label":"Opção 📅","v":"Segunda"},{"k":"dia-dificil.opt.terca.label","label":"Opção 📅","v":"Terça"},{"k":"dia-dificil.opt.quarta.label","label":"Opção 📅","v":"Quarta"},{"k":"dia-dificil.opt.quinta.label","label":"Opção 📅","v":"Quinta"},{"k":"dia-dificil.opt.sexta.label","label":"Opção 📅","v":"Sexta"},{"k":"dia-dificil.opt.fim-de-semana.label","label":"Opção 🛋️","v":"Fim de semana"},{"k":"dia-dificil.opt.sem-dia.label","label":"Opção 🔀","v":"Não tem um dia fixo"}]},{"idx":13,"id":"sono","kind":"single","title":"Como anda seu sono e seu inchaço?","fields":[{"k":"sono.headline","label":"Pergunta","v":"Como anda seu sono e seu inchaço?","long":false},{"k":"sono.sub","label":"Subtítulo","v":"Dormir mal aumenta o cortisol, o hormônio do estresse, que faz o corpo reter gordura na barriga mesmo quando você come certo.","long":true},{"k":"sono.opt.mal.label","label":"Opção 😴","v":"Durmo mal e acordo cansada"},{"k":"sono.opt.mal.sub","label":"↳ detalhe","v":"Sempre sonolenta durante o dia"},{"k":"sono.opt.inchada.label","label":"Opção 💤","v":"Durmo ok, mas acordo inchada"},{"k":"sono.opt.inchada.sub","label":"↳ detalhe","v":"O sono é razoável mas retenho muito líquido"},{"k":"sono.opt.sem-energia.label","label":"Opção ⚡","v":"Durmo bem, mas sem energia"},{"k":"sono.opt.sem-energia.sub","label":"↳ detalhe","v":"Acordo cansada mesmo dormindo a noite toda"},{"k":"sono.opt.bom.label","label":"Opção ✨","v":"Sono bom e energia ok"},{"k":"sono.opt.bom.sub","label":"↳ detalhe","v":"Mas o corpo ainda não responde como eu quero"}]},{"idx":14,"id":"insight","kind":"insight","title":"Insight: inflamação","fields":[{"k":"insight.headline","label":"Título","v":"Talvez você se reconheça neste ciclo","long":true},{"k":"insight.intro","label":"Abertura","v":""},{"k":"insight.ruins.0","label":"Erro 1","v":"SEGUNDA — Agora vai. Vou fazer tudo certinho."},{"k":"insight.ruins.1","label":"Erro 2","v":"QUARTA — A rotina apertou e já ficou difícil manter o ritmo."},{"k":"insight.ruins.2","label":"Erro 3","v":"SEXTA — Saí do combinado. Parece que perdi a semana."},{"k":"insight.ruins.3","label":"Erro 4","v":"FIM DE SEMANA — Depois eu compenso e recomeço."},{"k":"insight.bom","label":"Virada","v":"Quando o plano depende de fazer tudo perfeitamente, qualquer imprevisto pode parecer motivo para desistir. O De Volta ao Eixo propõe começar com uma rotina de treinos em casa e foco em desinchar — sem dieta maluca e sem exigir perfeição.","long":true},{"k":"insight.fecho","label":"Fecho","v":""},{"k":"insight.opt.faz-sentido","label":"Botão ✅","v":"Faz sentido — nunca tinha pensado assim"},{"k":"insight.opt.novidade","label":"Botão 💡","v":"É novidade pra mim — quero entender melhor"}]},{"idx":15,"id":"loading-1","kind":"loading","title":"Analisando suas respostas…","fields":[{"k":"loading-1.title","label":"Título","v":"Analisando suas respostas…"},{"k":"loading-1.body","label":"Texto","v":"Aguarde enquanto o sistema cruza seus dados com o banco de mais de 5.000 transformações reais para montar o seu roteiro De Volta ao Eixo personalizado.","long":true},{"k":"loading-1.ticks.0","label":"Etapa 1 da barra","v":"Verificando seu perfil metabólico…"},{"k":"loading-1.ticks.1","label":"Etapa 2 da barra","v":"Identificando seus pontos de travamento…"},{"k":"loading-1.ticks.2","label":"Etapa 3 da barra","v":"Calculando seu potencial de resultado…"}]},{"idx":16,"id":"medo","kind":"single","title":"Qual é o seu maior medo em relação a emagrecer?","fields":[{"k":"medo.headline","label":"Pergunta","v":"Qual é o seu maior medo em relação a emagrecer?","long":false},{"k":"medo.sub","label":"Subtítulo","v":"Seus medos são válidos. O De Volta ao Eixo foi pensado justamente para cada um deles.","long":true},{"k":"medo.opt.fracasso.label","label":"Opção 😰","v":"Medo de não conseguir de novo"},{"k":"medo.opt.fracasso.sub","label":"↳ detalhe","v":"Já fracassei tantas vezes que não acredito mais"},{"k":"medo.opt.tempo.label","label":"Opção ⏰","v":"Medo de não ter tempo"},{"k":"medo.opt.tempo.sub","label":"↳ detalhe","v":"Minha rotina não deixa espaço pra mais nada"},{"k":"medo.opt.dinheiro.label","label":"Opção 💰","v":"Medo de gastar e não ter resultado"},{"k":"medo.opt.dinheiro.sub","label":"↳ detalhe","v":"Já investi em tantas coisas que não funcionaram"},{"k":"medo.opt.fome.label","label":"Opção 🥗","v":"Medo de passar fome"},{"k":"medo.opt.fome.sub","label":"↳ detalhe","v":"Não aguento mais dieta restritiva"},{"k":"medo.opt.rebote.label","label":"Opção 🔄","v":"Medo do efeito rebote"},{"k":"medo.opt.rebote.sub","label":"↳ detalhe","v":"Emagreço e engorda tudo de volta quando paro"}]},{"idx":17,"id":"pensamento","kind":"single","title":"Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?","fields":[{"k":"pensamento.headline","label":"Pergunta","v":"Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?","long":true},{"k":"pensamento.sub","label":"Subtítulo","v":"Feche os olhos por 3 segundos e realmente imagine. Visualizar o resultado ativa o cérebro de um jeito que aumenta suas chances de chegar lá.","long":true},{"k":"pensamento.opt.bonita.label","label":"Opção 😍","v":"“Finalmente me sinto bonita de verdade”"},{"k":"pensamento.opt.roupa.label","label":"Opção 👗","v":"“Vou usar aquela roupa que ficou guardada por meses”"},{"k":"pensamento.opt.biquini.label","label":"Opção 🏖️","v":"“Não vou ter vergonha de colocar biquíni”"},{"k":"pensamento.opt.foto.label","label":"Opção 📸","v":"“Vou querer tirar foto em tudo que é lugar”"},{"k":"pensamento.opt.consegui.label","label":"Opção 💪","v":"“Consegui. Eu sabia que era capaz”"}]},{"idx":18,"id":"regiao","kind":"multi","title":"Qual região do seu corpo te incomoda mais?","fields":[{"k":"regiao.headline","label":"Pergunta","v":"Qual região do seu corpo te incomoda mais?","long":false},{"k":"regiao.sub","label":"Subtítulo","v":"Pode marcar mais de uma","long":true},{"k":"regiao.opt.barriga.label","label":"Opção","v":"Barriga e inchaço abdominal"},{"k":"regiao.opt.bracos.label","label":"Opção","v":"Braços"},{"k":"regiao.opt.cintura.label","label":"Opção","v":"Cintura e laterais"},{"k":"regiao.opt.quadril.label","label":"Opção","v":"Quadril e coxas"},{"k":"regiao.opt.inteiro.label","label":"Opção","v":"Corpo inteiro — tudo me incomoda"},{"k":"regiao.opt.nenhuma.label","label":"Opção","v":"Não tenho queixa específica"}]},{"idx":19,"id":"tempo-dia","kind":"single","title":"Quanto tempo você consegue dedicar ao seu corpo por dia?","fields":[{"k":"tempo-dia.headline","label":"Pergunta","v":"Quanto tempo você consegue dedicar ao seu corpo por dia?","long":false},{"k":"tempo-dia.sub","label":"Subtítulo","v":"O roteiro De Volta ao Eixo foi criado para caber em qualquer janela de tempo — inclusive a menor.","long":true},{"k":"tempo-dia.opt.10-15.label","label":"Opção ⚡","v":"10 a 15 minutos"},{"k":"tempo-dia.opt.10-15.sub","label":"↳ detalhe","v":"Meu tempo é curtíssimo"},{"k":"tempo-dia.opt.15-20.label","label":"Opção 🕐","v":"15 a 20 minutos"},{"k":"tempo-dia.opt.15-20.sub","label":"↳ detalhe","v":"Consigo separar um tempinho"},{"k":"tempo-dia.opt.20-30.label","label":"Opção 🕑","v":"20 a 30 minutos"},{"k":"tempo-dia.opt.20-30.sub","label":"↳ detalhe","v":"Tenho essa janela disponível"},{"k":"tempo-dia.opt.30+.label","label":"Opção 🕒","v":"Mais de 30 minutos"},{"k":"tempo-dia.opt.30+.sub","label":"↳ detalhe","v":"Posso me dedicar bem"}]},{"idx":20,"id":"motivo","kind":"multi","title":"O que te fez chegar até aqui hoje?","fields":[{"k":"motivo.headline","label":"Pergunta","v":"O que te fez chegar até aqui hoje?","long":false},{"k":"motivo.sub","label":"Subtítulo","v":"Pode marcar mais de uma opção","long":true},{"k":"motivo.opt.confianca.label","label":"Opção ✨","v":"Me sentir confiante no próprio corpo"},{"k":"motivo.opt.roupas.label","label":"Opção 👗","v":"Voltar a usar as roupas que eu amo"},{"k":"motivo.opt.saude.label","label":"Opção 🫀","v":"Ter mais saúde e energia no dia a dia"},{"k":"motivo.opt.fotos.label","label":"Opção 📸","v":"Parar de me esconder nas fotos"},{"k":"motivo.opt.provar.label","label":"Opção 🏆","v":"Provar pra mim mesma que consigo"}]},{"idx":21,"id":"altura","kind":"input","title":"Qual é a sua altura?","fields":[{"k":"altura.headline","label":"Pergunta","v":"Qual é a sua altura?","long":false},{"k":"altura.sub","label":"Subtítulo","v":"Digite em centímetros — por exemplo, 162 para 1,62m","long":true},{"k":"altura.placeholder","label":"Exemplo no campo","v":"Ex: 162"}]},{"idx":22,"id":"peso","kind":"input","title":"Qual é o seu peso atual?","fields":[{"k":"peso.headline","label":"Pergunta","v":"Qual é o seu peso atual?","long":false},{"k":"peso.sub","label":"Subtítulo","v":"Digite em kg — por exemplo, 74 para 74kg","long":true},{"k":"peso.placeholder","label":"Exemplo no campo","v":"Ex: 74"}]},{"idx":23,"id":"loading-2","kind":"loading","title":"Montando o seu roteiro De Volta ao Eixo…","fields":[{"k":"loading-2.title","label":"Título","v":"Montando o seu roteiro De Volta ao Eixo…"},{"k":"loading-2.body","label":"Texto","v":"Quase lá. Estamos usando suas respostas para personalizar as três fases do protocolo — Limpeza, Ativação Metabólica e Queima Total — de acordo com o seu perfil.","long":true},{"k":"loading-2.ticks.0","label":"Etapa 1 da barra","v":"Calculando sua fase de limpeza ideal…"},{"k":"loading-2.ticks.1","label":"Etapa 2 da barra","v":"Ajustando a ativação metabólica pro seu ritmo…"},{"k":"loading-2.ticks.2","label":"Etapa 3 da barra","v":"Estimando seu potencial de resultado em 21 dias…"}]},{"idx":24,"id":"result","kind":"result","title":"Resultado do protocolo","fields":[{"k":"result.Dia 01","label":"Dia 01 · Ponto de partida","v":"Corpo inflamado — antes da limpeza"},{"k":"result.Dia 03","label":"Dia 03 · Primeiros sinais","v":"Desinflame iniciando — roupas começam a ficar largas"},{"k":"result.Dia 07","label":"Dia 07 · Virada","v":"Limpeza completa — 2 a 4kg a menos"},{"k":"result.Dia 14","label":"Dia 14 · Aceleração","v":"Ativação metabólica respondendo"},{"k":"result.Dia 21","label":"Dia 21 · Transformação","v":"Queima Total — até 8kg e metabolismo no piloto automático"}]},{"idx":25,"id":"sales","kind":"sales","title":"Oferta / vendas","fields":[{"k":"sales.antes.0","label":"Antes 1","v":"Começa na segunda e para na sexta"},{"k":"sales.depois.0","label":"Depois 1","v":"Segue um roteiro de 21 dias que cabe na sua semana"},{"k":"sales.antes.1","label":"Antes 2","v":"Um deslize vira \"já estraguei\""},{"k":"sales.depois.1","label":"Depois 2","v":"Um dia difícil é só um dia, e você retoma no próximo passo"},{"k":"sales.antes.2","label":"Antes 3","v":"Treino longo que não cabe na rotina"},{"k":"sales.depois.2","label":"Depois 3","v":"Treinos em casa para encaixar na rotina que você tem"},{"k":"sales.entrega.0","label":"Entregável 1","v":"Roteiro De Volta ao Eixo: o passo a passo dos 21 dias (método Efeito Lipo)"},{"k":"sales.entrega.0.desc","label":"↳ descrição","v":"O protocolo completo dos 21 dias nas três fases (Limpeza, Ativação Metabólica e Queima Total) para desinflamar o corpo e eliminar o inchaço. Sem passar fome e sem canetinha","long":true},{"k":"sales.entrega.1","label":"Entregável 2","v":"21 Treinos Hormonais para queimar a gordura da barriga e ganhar músculo"},{"k":"sales.entrega.1.desc","label":"↳ descrição","v":"Aulas em vídeo de 15 minutos, com ficha escrita. Em casa, sem equipamento, feitas para a rotina real","long":true},{"k":"sales.entrega.2","label":"Entregável 3","v":"Guia Alimentar \"Sem Neura\" (PDF visual)"},{"k":"sales.entrega.2.desc","label":"↳ descrição","v":"Cardápio dos 21 dias, lista de compras e o que comer em cada fase. Comida de verdade, sem passar fome e sem contar caloria","long":true},{"k":"sales.entrega.3","label":"Entregável 4","v":"Áudios \"Quebra de Sabotagem\""},{"k":"sales.entrega.3.desc","label":"↳ descrição","v":"Áudios curtos para ouvir na hora em que bate a vontade de comer por ansiedade ou cansaço, e seguir no plano","long":true},{"k":"sales.entrega.4","label":"Entregável 5","v":"Planner de Progresso (PDF para imprimir)"},{"k":"sales.entrega.4.desc","label":"↳ descrição","v":"Cronograma diário com metas, checklist de hábitos e espaço para anotar como você se sente. Você enxerga a sua evolução dia a dia","long":true},{"k":"sales.bonus.0","label":"Bônus 1 (de R$ 297)","v":"Bônus 1 — Guia do Ciclo Menstrual"},{"k":"sales.bonus.0.desc","label":"↳ descrição","v":"As quatro janelas hormonais do ciclo — como adaptar treino e alimentação a cada semana do mês para queimar gordura no ritmo certo","long":true},{"k":"sales.bonus.1","label":"Bônus 2 (de R$ 497)","v":"Bônus 2 — Protocolo Anti-Pelanquinha"},{"k":"sales.bonus.1.desc","label":"↳ descrição","v":"Como estimular colágeno e elastina enquanto você perde gordura — para a pele acompanhar o resultado e ficar firme","long":true},{"k":"sales.stack.0","label":"Valor na pilha · Roteiro De Volta ao Eixo (21 dias)","v":"R$ 1.500"},{"k":"sales.stack.1","label":"Valor na pilha · 21 Treinos Hormonais","v":"R$ 1.250"},{"k":"sales.stack.2","label":"Valor na pilha · Áudios \"Quebra de Sabotagem\"","v":"R$ 497"},{"k":"sales.stack.3","label":"Valor na pilha · Planner de Progresso","v":"R$ 197"},{"k":"sales.stack.4","label":"Valor na pilha · Guia Alimentar \"Sem Neura\"","v":"R$ 297"},{"k":"sales.stack.5","label":"Valor na pilha · Guia do Ciclo Menstrual","v":"R$ 297"},{"k":"sales.stack.6","label":"Valor na pilha · Protocolo Anti-Pelanquinha","v":"R$ 497"}],"note":"Preço, parcelamento e link de checkout passam pela regra de aprovação do Patrik antes de qualquer mudança."}];
 window.irPara = (id) => abrir('qz-' + id)
 </script>
 <script>
@@ -2420,7 +2939,8 @@ window.irPara = (id) => abrir('qz-' + id)
         "T3, T6, T9, T13, T15, T16, T17, T20, T24 e T25: \"Efeito Lipo\" / \"Protocolo Efeito Lipo\" viram \"De Volta ao Eixo\" / \"roteiro De Volta ao Eixo\". Na T3, \"Efeito Lipo\" continua como nome do método.",
         "T26: \"Antes e depois de voltar ao eixo\", entregável 1 \"Roteiro De Volta ao Eixo: o passo a passo dos 21 dias (método Efeito Lipo)\", 1ª linha do quadro \"Roteiro De Volta ao Eixo (21 dias)\", linha do botão final e rodapé.",
         "Título e descrição do Google/WhatsApp: \"Quiz De Volta ao Eixo — descubra seu perfil de recomeço\", sem \"até 8kg\".",
-        "Preço, valores, parcelamento, garantia e links de checkout iguais."
+        "Preço, valores, parcelamento, garantia e links de checkout iguais.",
+        "Às 18h53 (PR #15, merge cd27aed), sem mudar nenhuma tela: o botão de compra passou a levar o fbclid do anúncio para a Greenn, para o pixel ligar a compra ao anúncio."
       ],
       "motivo": "A cliente lia dois nomes no mesmo funil: anúncio e T1 falam de \"De Volta ao Eixo\" e o resto do quiz de \"Efeito Lipo\". Patrik escolheu a opção A da aba Marca e aprovou as 17 trocas em 08/10.",
       "sugestao": "Publicada a pedido do Patrik antes de 11/10: a conta de 11/10 deve separar v6 (16h23–18h32) e v7 (desde 18h32). Pendente: T25 ainda fala \"até 8kg\" nos marcos e os botões dizem \"protocolo\".",

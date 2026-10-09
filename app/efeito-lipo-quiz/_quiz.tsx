@@ -708,12 +708,14 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 // histórico de A continua intacto no banco.
 export const INTRO_AB_KEY = 'el_intro_ab'
 
+// Teste G (09/10): 'G-A' = tela no ar hoje; 'G-B' = título de recomeço sem subtítulo.
+// O braço é sorteado no page.tsx (pageview) e gravado em sessionStorage.
 function Intro({ onStart }: { onStart: () => void }) {
-  useEffect(() => { try { sessionStorage.setItem(INTRO_AB_KEY, 'B') } catch {} }, [])
-  return <IntroB onStart={onStart} />
+  const arm = (typeof window !== 'undefined' && sessionStorage.getItem(INTRO_AB_KEY)) || 'G-A'
+  return <IntroB onStart={onStart} novo={arm === 'G-B'} />
 }
 
-function IntroB({ onStart }: { onStart: () => void }) {
+function IntroB({ onStart, novo = false }: { onStart: () => void; novo?: boolean }) {
   return (
     <div className="min-h-[100dvh] flex flex-col" style={{ background: '#fff' }}>
       <div className="w-full px-4 py-2" style={{ background: 'var(--g)', color: '#fff' }}>
@@ -725,11 +727,13 @@ function IntroB({ onStart }: { onStart: () => void }) {
       </div>
       <div className="flex-1 flex flex-col items-center text-center mx-auto w-full px-5 py-8" style={{ maxWidth: 600 }}>
         <h1 className="font-display q-in mt-7" style={{ fontSize: 'clamp(29px,6.4vw,46px)', fontWeight: 800, lineHeight: 1.08, letterSpacing: '-0.03em', color: '#0d0d0d', maxWidth: 540 }}>
-          Você começa toda segunda e na sexta já saiu do plano?
+          {novo ? 'Descubra seu perfil de recomeço em 2 minutos e o primeiro passo para sentir o corpo menos inchado' : 'Você começa toda segunda e na sexta já saiu do plano?'}
         </h1>
-        <p className="q-in" style={{ fontSize: 'clamp(16.5px,2.6vw,20px)', lineHeight: 1.5, fontWeight: 600, color: '#1a1a1a', maxWidth: 500, marginTop: 18 }}>
-          Descubra o porquê <span style={{ color: 'var(--o)', fontWeight: 800 }}>em 2 minutos</span>.
-        </p>
+        {!novo && (
+          <p className="q-in" style={{ fontSize: 'clamp(16.5px,2.6vw,20px)', lineHeight: 1.5, fontWeight: 600, color: '#1a1a1a', maxWidth: 500, marginTop: 18 }}>
+            Descubra o porquê <span style={{ color: 'var(--o)', fontWeight: 800 }}>em 2 minutos</span>.
+          </p>
+        )}
         <div className="q-in mt-6">
           <CtaButton onClick={onStart} glow size="lg">Quero descobrir meu perfil</CtaButton>
         </div>
