@@ -736,12 +736,11 @@ button.b.bad:hover{background:var(--bad);color:#fff}
       <button role="tab" data-grupo="quiz" aria-selected="false">Quiz e testes <span class="badge" id="ng-quiz"></span></button>
       <button role="tab" data-grupo="conteudo" aria-selected="false">Conteúdo da Laura <span class="badge" id="ng-conteudo"></span></button>
       <button role="tab" data-grupo="aprovar" aria-selected="false">Aprovar e conversar <span class="badge" id="ng-aprovar"></span></button>
+      <button role="tab" data-grupo="leads" aria-selected="false">Leads da Aline <span class="badge" id="ng-leads"></span></button>
     </nav>
     <div class="side-links" aria-label="Painéis ligados">
       <div class="navlbl" style="padding:6px 0 2px">Ligados</div>
       <a href="https://www.laurarosapersonal.com/efeito-lipo-quiz" target="_blank" rel="noopener">Quiz no ar <span aria-hidden="true">↗</span></a>
-      <a href="https://claude.ai/artifact/8Ys79EhBMSiRkDqm3n6QbG" target="_blank" rel="noopener">Leads da Aline <span aria-hidden="true">↗</span></a>
-      <a href="https://claude.ai/artifact/Br7unX3TmXKevyrEoZD1EY" target="_blank" rel="noopener">Roteiros de vídeo <span aria-hidden="true">↗</span></a>
     </div>
     <div class="side-foot"><span>Análise automática: <b>todo dia às 7h</b></span><span>Números do Meta: <b>a cada 1 hora</b></span><span>Mudanças no Meta: <b>só com sua aprovação</b></span></div>
     </div>
@@ -763,11 +762,14 @@ button.b.bad:hover{background:var(--bad);color:#fff}
       <button type="button" role="tab" data-grupo="quiz" data-tab="qz-marca">Marca <span class="badge" id="nb-marca">–</span></button>
       <button type="button" role="tab" data-grupo="quiz" data-tab="qz-editar">Editar textos <span class="badge" id="nb-fila">0</span></button>
       <button type="button" role="tab" data-grupo="conteudo" data-tab="referencia">O que está funcionando</button>
+      <button type="button" role="tab" data-grupo="conteudo" data-tab="roteiros-video">Roteiros de vídeo (guia)</button>
       <button type="button" role="tab" data-grupo="conteudo" data-tab="roteiros">Roteiros da Laura <span class="badge" id="nb-rot">0</span></button>
       <button type="button" role="tab" data-grupo="conteudo" data-tab="videos">Vídeos <span class="badge" id="nb-videos">–</span></button>
-      <button type="button" role="tab" data-grupo="aprovar" data-tab="aprovar">Para aprovar <span class="badge" id="nb-aprovar">0</span></button>
+      <button type="button" role="tab" data-grupo="aprovar" data-tab="aprovar">Notificações <span class="badge" id="nb-aprovar">0</span></button>
+      <button type="button" role="tab" data-grupo="aprovar" data-tab="resolvendo">Resolvendo <span class="badge" id="nb-resolvendo">0</span></button>
       <button type="button" role="tab" data-grupo="aprovar" data-tab="aprovados">Aprovados <span class="badge" id="nb-aprovados">0</span></button>
       <button type="button" role="tab" data-grupo="aprovar" data-tab="historico">Histórico</button>
+      <button type="button" role="tab" data-grupo="leads" data-tab="leads">Leads da Aline</button>
     </div>
 
     <!-- META DO PAINEL -->
@@ -823,14 +825,55 @@ button.b.bad:hover{background:var(--bad);color:#fff}
     </section>
 
     <!-- APROVADOS -->
+    <!-- LEADS DA ALINE (mesma base do Painel de Leads; a rotina das 23:59 atualiza o banco) -->
+    <section class="tab" id="tab-leads" role="tabpanel" hidden>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Leads da Aline</h2><p>A base de leads do WhatsApp, a mesma do Painel de Leads que a Aline usa. A rotina das 23:59 lê as conversas e atualiza a base; aqui você só consulta.</p></div><span class="pill n" id="ld-at">carregando…</span></div>
+      <iframe id="ld-frame" title="Leads da Aline" src="leads/index.html" style="width:100%;height:max(78vh,640px);border:1px solid var(--line);border-radius:14px;background:#f4f6f2;display:block"></iframe>
+    </section>
+    <!-- ROTEIROS DE VÍDEO (guia de gravação para a Laura, vindo do doc "Roteiros de vídeo — Laura") -->
+    <section class="tab" id="tab-roteiros-video" role="tabpanel" hidden>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Roteiros de vídeo · guia de gravação</h2><p>5 vídeos curtos para os anúncios do quiz. A Laura grava do jeito que sai, sem editar, e manda os arquivos brutos. A edição fica com a gente.</p></div></div>
+      <div class="card rt-como"><h3>Como gravar</h3>
+        <ul><li><b>Duração:</b> 20 a 40 segundos. A primeira frase sai nos 2 primeiros segundos, olhando para a câmera.</li><li><b>Celular:</b> em pé (vertical), câmera de trás se der, 1080p ou 4K, 30 fps.</li><li><b>Luz:</b> de frente para uma janela, de dia. Sem luz forte atrás.</li><li><b>Som:</b> lugar quieto, sem música e sem TV. Microfone de lapela, se tiver.</li><li><b>Enquadramento:</b> do peito para cima nas falas; corpo inteiro nos treinos.</li><li><b>Tomadas:</b> 3 de cada roteiro. Pode errar e recomeçar na mesma gravação.</li><li><b>Edição:</b> nenhuma. Sem filtro, música, texto ou legenda.</li><li><b>Envio:</b> arquivo original (no WhatsApp, como Documento). Nome do arquivo: R1-tomada2.mp4.</li></ul>
+        <p class="rt-cuidado"><b>Não pode aparecer</b> (regras do Meta para emagrecimento): antes e depois; promessa de quilos ou de prazo; falar mal do corpo de quem assiste; nome de remédio como solução; balança, fita métrica apertando a cintura ou pinçar a barriga. Tom da Comunidade: acolhedor, direto, sem milagre. O convite final é sempre o quiz gratuito de 2 minutos.</p>
+      </div>
+      <div class="rt-lista">
+        <article class="card rt"><div class="rt-top"><span class="num">1</span><div><h3>Pergunta que a Profe te ajuda</h3></div></div>
+          <p class="rt-why"><b>Por que gravar:</b> mesmo formato do vídeo do Mounjaro, o que mais trouxe gente para o quiz.</p>
+          <p><b>O que mostrar:</b> você sentada à mesa, com café ou um prato de comida de verdade, roupa do dia a dia, do peito para cima.</p>
+          <p><b>Texto na tela (a gente coloca):</b> "Pergunta que a Profe te ajuda: toda segunda eu começo e na sexta já desisti. O que eu faço?"</p>
+          <ol><li><b>Abertura (2 s):</b> "Isso acontece com muita gente, e não é falta de força de vontade."</li><li><b>O porquê (10 a 15 s):</b> o plano começa radical na segunda, a rotina aperta na quarta, um deslize vira "já estraguei" na sexta e o fim de semana vira compensação.</li><li><b>O que fazer (10 s):</b> um dia difícil é só um dia. Na próxima refeição, você volta para o plano, sem compensar e sem esperar segunda.</li><li><b>Convite (5 s):</b> "Eu fiz um quiz de 2 minutos que mostra o seu perfil de recomeço e o seu primeiro passo. É gratuito, está no link."</li></ol></article>
+        <article class="card rt"><div class="rt-top"><span class="num">2</span><div><h3>Treino em casa, sem antes e depois</h3></div></div>
+          <p class="rt-why"><b>Por que gravar:</b> é a cena do anúncio que mais vendeu (treino de braço com halteres), agora sem a montagem de antes e depois, que o Meta não aceita.</p>
+          <p><b>O que mostrar:</b> você em casa, corpo inteiro no quadro, 2 exercícios de braço ou abdômen dos 21 Treinos Hormonais, 3 ou 4 repetições de cada. Roupa de treino, celular parado num apoio.</p>
+          <ol><li><b>Abertura (2 s):</b> "Não precisa de academia nem de 1 hora por dia."</li><li><b>Durante o exercício (15 s):</b> o nome de cada exercício e por que ele entra no treino (força, cardio ou multiarticular).</li><li><b>Fechamento (5 s):</b> "São treinos de 15 minutos em casa. Faz o quiz de 2 minutos no link e descobre por onde começar."</li></ol>
+          <p class="muted">Grave também 10 segundos de cada exercício sem falar nada (fundo para outros anúncios).</p></article>
+        <article class="card rt"><div class="rt-top"><span class="num">3</span><div><h3>Qual desses perfis é você?</h3></div></div>
+          <p><b>O que mostrar:</b> você de pé, do joelho para cima, com espaço vazio de um lado (onde entra o texto). A cada perfil, aponte para o lado vazio.</p>
+          <ol><li><b>Abertura (2 s):</b> "Quem vive recomeçando costuma ser um destes 4 perfis."</li><li><b>Os perfis (4 s cada):</b> A Emocional (quando o dia pesa, a comida vira o refúgio) · A Sem Tempo (o plano é bom, mas não cabe na rotina) · A Tudo ou Nada (um deslize e parece que a semana acabou) · A Cansada de Recomeçar (já tentou de tudo e não quer começar do zero de novo).</li><li><b>Convite (5 s):</b> "Qual é o seu? Faz o quiz de 2 minutos no link. Ele mostra o seu perfil e o seu primeiro passo."</li></ol></article>
+        <article class="card rt"><div class="rt-top"><span class="num">4</span><div><h3>Um dia real, sem perfeição</h3></div></div>
+          <p><b>O que mostrar:</b> trechos de 5 a 8 segundos de um dia comum, celular na mão.</p>
+          <ul><li><b>Manhã:</b> café da manhã de verdade sendo montado. "Café de verdade, sem shake milagroso."</li><li><b>Meio do dia:</b> correria (carro, trabalho, filho, aluno). "A rotina aperta pra mim também."</li><li><b>Tarde:</b> treino de 15 minutos em casa. "15 minutos e pronto."</li><li><b>Noite:</b> jantar simples ou lanche do plano. "Saiu do plano no almoço? Volta no jantar."</li><li><b>Fim:</b> falando com a câmera. "Se você vive recomeçando, faz o quiz de 2 minutos no link."</li></ul>
+          <p class="muted">Não precisa arrumar a casa nem se maquiar. Quanto mais real, melhor funciona.</p></article>
+        <article class="card rt"><div class="rt-top"><span class="num">5</span><div><h3>A sua história de recomeço (só se for real)</h3></div></div>
+          <p><b>O que mostrar:</b> você sentada perto de uma janela, do peito para cima, como numa conversa.</p>
+          <ol><li>Teve uma época em que você começava e parava? Como era?</li><li>O que te fazia desistir: rotina, cansaço, cobrança, resultado que não aparecia?</li><li>O que mudou quando você parou de tentar fazer tudo perfeito?</li><li>O que você diria hoje para quem está recomeçando pela décima vez?</li></ol>
+          <p>Feche com: "Eu fiz um quiz de 2 minutos para te mostrar o seu perfil de recomeço e o seu primeiro passo. É gratuito, está no link."</p></article>
+      </div>
+      <p class="muted">Os desenhos de enquadramento e os storyboards continuam no documento original. Os roteiros que a análise cria toda semana ficam em "Roteiros da Laura".</p>
+    </section>
+    <section class="tab" id="tab-resolvendo" role="tabpanel" hidden>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Resolvendo</h2><p>O que você aprovou e eu estou fazendo agora. Quando fica pronto, passa para Aprovados.</p></div></div>
+      <div class="aps" id="rs-box"></div>
+    </section>
     <section class="tab" id="tab-aprovados" role="tabpanel" hidden>
-      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Aprovados</h2><p>Tudo o que você aprovou, em 3 etapas: Aprovado, Preparando e Feito. Assim que você aprova, eu subo no Meta. Mudanças no quiz ficam em Preparando até irem para o site. Cada item some daqui 24 horas depois de feito; o registro completo fica no Histórico.</p></div></div>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Aprovados</h2><p>O que você aprovou e já está feito, com o que foi feito e quando conferir o resultado. Ficam aqui por 7 dias; o registro completo fica no Histórico.</p></div></div>
       <div class="aps" id="ap-box"></div>
     </section>
 
     <!-- APROVAR E CONVERSAR -->
     <section class="tab" id="tab-aprovar" role="tabpanel" hidden>
-      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Aprovar e conversar</h2><p>À esquerda, minhas sugestões: aprove com um clique ou comente em cada uma. À direita, fale comigo sobre qualquer coisa. Nada muda no Meta sem o seu "Aprovar".</p></div><span class="pill n" id="pr-state">carregando…</span></div>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Notificações</h2><p>Uma aprovação por vez, da mais antiga para a mais nova. <b>Aprovar</b>: vai para Resolvendo e depois para Aprovados. <b>Pedir ajuste</b>: escreva o que mudar e eu refaço. <b>Recusar</b>: some daqui. À direita, fale comigo sobre qualquer coisa. Nada muda no Meta sem o seu "Aprovar".</p></div><span class="pill n" id="pr-state">carregando…</span></div>
       <div class="apr">
         <div class="apr-main">
           <div class="seg" role="group" aria-label="Filtrar por tipo" id="pr-filtro">
@@ -1321,9 +1364,9 @@ const fmtD = (s) => { if (!s) return '–'; const d = new Date(String(s).length 
 let db = null, user = null, me = null, mcp = null
 
 // ── Abas ───────────────────────────────────────────────────────────
-const TABS = ['testes', 'qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'videos', 'referencia', 'roteiros']
+const TABS = ['leads', 'roteiros-video', 'resolvendo', 'testes', 'qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'videos', 'referencia', 'roteiros']
 // 5 seções; cada uma abre na última parte que você usou nela.
-const GRUPO_NOME = { hoje: 'Hoje', anuncios: 'Anúncios', quiz: 'Quiz e testes', conteudo: 'Conteúdo da Laura', aprovar: 'Aprovar e conversar' }
+const GRUPO_NOME = { hoje: 'Hoje', anuncios: 'Anúncios', quiz: 'Quiz e testes', conteudo: 'Conteúdo da Laura', aprovar: 'Aprovar e conversar', leads: 'Leads da Aline' }
 const SUBS = [...document.querySelectorAll('#subnav [data-tab]')]
 const GRUPO = Object.fromEntries(SUBS.map((b) => [b.dataset.tab, b.dataset.grupo]))
 const ultimaDe = {}
@@ -1345,7 +1388,7 @@ function abrir(t, foco) {
 }
 // Número em cada seção = quantas coisas esperam você ali (propostas para aprovar, Pix para chamar,
 // sugestões do quiz, roteiros para a Laura gravar). Não conta o que já foi feito nem a fila de textos do Claude.
-const SO_INFO = ['nb-versoes', 'nb-marca', 'nb-obj', 'nb-videos', 'nb-aprovados', 'nb-fila']
+const SO_INFO = ['nb-versoes', 'nb-marca', 'nb-obj', 'nb-videos', 'nb-aprovados', 'nb-resolvendo', 'nb-fila']
 function somaGrupos() {
   for (const g of Object.keys(GRUPO_NOME)) {
     let n = 0, hot = false
@@ -1354,6 +1397,27 @@ function somaGrupos() {
   }
 }
 setInterval(somaGrupos, 2000)
+// ── Leads da Aline: lê o banco do CRM (projeto do Painel de Leads) e manda para a aba ──
+const LEADS_PROJ = 'ysgsyhmkixvlxpgbyqkl'
+const LEADS_SQL = `select (select jsonb_agg(x order by x->>'d') from (select jsonb_strip_nulls(jsonb_build_object('d',chegou_em::text,'t',case tipo when 'lead' then 'l' else 'a' end,'o',origem,'r',case resultado when 'comprou' then 'c' when 'nao_comprou' then 'n' when 'em_andamento' then 'e' else 'i' end,'g',case when resultado<>'comprou' or tipo<>'lead' then null when greenn_status='nao_encontrada' then 'n' when greenn_status is null then null else 't' end,'f',concat((coalesce(atendimento_humano,false))::int,(coalesce(chegou_na_oferta,false))::int,(coalesce(recebeu_link,false))::int,(coalesce(recebeu_followup_no_dia,false))::int,(entrou_follow_up_2_em is not null)::int,(coalesce(comprou_apos_followup,false))::int,(coalesce(comprou_apos_followup_2,false))::int,(entrou_follow_em is not null)::int),'dr',case when cardinality(dores_detalhe)=0 then null else to_jsonb(dores_detalhe) end,'ob',case when cardinality(objecoes_detalhe)=0 then null else to_jsonb(objecoes_detalhe) end,'mc',motivo_compra,'mn',case when resultado='nao_comprou' then motivo_nao_compra end)) x from public.conversas_lidas where tipo in ('lead','aluna')) s) as data, (select jsonb_agg(jsonb_build_object('d',dia::text,'c',categoria,'q',qtd)) from public.nao_leads_diario) as naolead, (select to_char(max(lido_em) at time zone 'America/Sao_Paulo', 'DD/MM "às" HH24:MI') from public.conversas_lidas) as upd`
+let LEADS = null, leadsLendo = false
+function mandaLeads() { const f = $('ld-frame'); if (f && f.contentWindow && LEADS) f.contentWindow.postMessage({ tipo: 'leads', ...LEADS }, '*') }
+async function carregaLeads() {
+  if (leadsLendo) return
+  if (!mcp) { $('ld-at').textContent = 'sem conexão com o banco'; LEADS = { erro: 'Os leads aparecem para quem tem o conector do Supabase.' }; mandaLeads(); return }
+  leadsLendo = true; $('ld-at').textContent = 'lendo a base…'
+  try {
+    const res = await mcp.callTool('Supabase', 'execute_sql', { project_id: LEADS_PROJ, query: LEADS_SQL }, { cache: false })
+    const r = (parseRows(res.payload) || [])[0] || {}
+    const js = (v) => typeof v === 'string' ? JSON.parse(v) : v
+    LEADS = { data: js(r.data) || [], naolead: js(r.naolead) || [], upd: r.upd || '' }
+    $('ld-at').textContent = 'base atualizada em ' + (r.upd || '–'); mandaLeads()
+  } catch (e) { const m = 'Não consegui ler a base de leads: ' + (ERRS[e && e.code] || (e && e.message) || 'erro') + '.'; $('ld-at').textContent = 'erro'; LEADS = { erro: m }; mandaLeads() }
+  finally { leadsLendo = false }
+}
+window.addEventListener('message', (e) => { if (e.data && e.data.tipo === 'leads-pronto') { if (LEADS) mandaLeads(); else if (mcp) carregaLeads() } })
+document.querySelector('#subnav [data-tab="leads"]').addEventListener('click', () => { if (!LEADS || LEADS.erro) carregaLeads() })
+document.querySelector('nav [data-grupo="leads"]').addEventListener('click', () => { if (!LEADS || LEADS.erro) carregaLeads() })
 // ── Menu do celular (☰): as abas abrem numa gaveta à esquerda ──────
 const CELULAR = window.matchMedia('(max-width:860px)')
 function menu(aberto) {
@@ -1523,6 +1587,7 @@ async function comentar(id, p, btn) {
   btn.disabled = false
 }
 async function decidir(id, status, nota, btn) {
+  if (status === 'ajuste' && !nota) { const t = btn.closest('.prop') && btn.closest('.prop').querySelector('textarea'); if (t) t.focus(); toast('Escreva no campo acima o que ajustar e clique de novo em "Pedir ajuste".'); return }
   btn.disabled = true
   try {
     delete rasc[id]
@@ -1533,9 +1598,9 @@ async function decidir(id, status, nota, btn) {
       await salvarConv(canal, 'cv-' + Date.now().toString(36))
       const r = await chamarClaude('executar')
       $('pr-state').textContent = r === 'ok' ? 'aprovado · o Claude já está subindo' : 'aprovado · o Claude sobe às 7h'
-      toast('Aprovado. Acompanhe em "Aprovados": Aprovado → Preparando → Feito.')
-    } else if (status === 'ajuste') { const r = await chamarClaude('chat'); $('pr-state').textContent = r === 'ok' ? 'ajuste enviado ao Claude' : 'salvo · o Claude lê às 7h' }
-    else $('pr-state').textContent = 'recusa salva'
+      toast('Aprovado. Foi para "Resolvendo"; quando ficar pronto, passa para "Aprovados".')
+    } else if (status === 'ajuste') { const r = await chamarClaude('chat'); $('pr-state').textContent = r === 'ok' ? 'ajuste enviado ao Claude' : 'salvo · o Claude lê às 7h'; toast('Ajuste pedido. Eu refaço e ela volta aqui para você aprovar.') }
+    else { $('pr-state').textContent = 'recusa salva'; toast('Recusada. Saiu das notificações.') }
   } catch (e) { $('pr-state').textContent = e && e.code === 'not_granted' ? 'você só pode ver' : 'não consegui salvar, tente de novo' }
   btn.disabled = false
 }
@@ -1545,35 +1610,39 @@ async function tentarDeNovo(id, btn) {
   btn.disabled = false
 }
 function toast(t) { const d = $('toast'); d.textContent = t; d.hidden = false; clearTimeout(d._t); d._t = setTimeout(() => { d.hidden = true }, 5000) }
-// Aba Aprovados: Aprovado → Preparando → Feito. Some 24 h depois de feito.
+// Resolvendo = aprovado e em andamento (Aprovado → Preparando). Aprovados = feito (fica 7 dias).
 const DIA = 86400000
-function renderAprovados() {
-  const box = $('ap-box'); box.textContent = ''
-  const agora = Date.now()
-  const lista = Object.entries(props).filter(([, p]) => ['aprovado', 'preparando', 'pronto', 'publicar', 'erro'].includes(p.status) || (p.status === 'executado' && p.executado_em && agora - new Date(p.executado_em).getTime() < DIA))
-    .sort((a, b) => String(b[1].decidido_em || '').localeCompare(String(a[1].decidido_em || '')))
-  const ativos = lista.filter(([, p]) => p.status !== 'executado').length
-  const nb = $('nb-aprovados'); nb.textContent = String(lista.length); nb.classList.toggle('hot', ativos > 0)
-  if (!lista.length) { box.append(el('div', { class: 'empty' }, 'Nada aprovado nas últimas 24 horas. Quando você aprovar algo, ele aparece aqui até ficar pronto.')); return }
-  for (const [id, p] of lista) {
-    const etapa = p.status === 'executado' ? 3 : p.status === 'erro' ? -1 : ['preparando', 'pronto', 'publicar'].includes(p.status) ? 2 : 1
-    const passo = (n, t, quando) => el('div', { class: 'passo' + (etapa >= n ? ' on' : '') + (etapa === n && n < 3 ? ' atual' : '') }, el('span', { class: 'bola' }, etapa > n || (n === 3 && etapa === 3) ? '✓' : String(n)), el('b', {}, t), el('small', {}, quando ? fmtDt(quando) : (etapa === n ? 'agora' : '')))
-    const resumo = p.resumo || p.depois || p.titulo || ''
-    const card = el('article', { class: 'card ap' + (etapa === 3 ? ' feito' : etapa < 0 ? ' erro' : '') },
-      el('div', { class: 'row' }, el('span', { class: 'tipo' }, TIPO[p.tipo] || 'Proposta'), etapa === 3 ? el('span', { class: 'muted', style: 'font-size:12px' }, 'some em ' + Math.max(1, Math.ceil((DIA - (agora - new Date(p.executado_em).getTime())) / 3600000)) + ' h') : null),
-      el('h3', {}, p.titulo || 'Proposta'),
-      el('p', { class: 'muted', style: 'font-size:13.5px' }, resumo.length > 220 ? resumo.slice(0, 217) + '…' : resumo),
-      etapa < 0 ? el('div', { class: 'state' }, 'Deu erro ao subir: ' + (p.resultado || 'sem detalhe'), ' ', el('button', { class: 'b', type: 'button', onclick: (e) => tentarDeNovo(id, e.currentTarget) }, 'Tentar de novo'))
-        : el('div', { class: 'etapas' }, passo(1, 'Aprovado', p.decidido_em), passo(2, 'Preparando', p.preparando_em), passo(3, 'Feito', p.executado_em)),
-      etapa === 3 && p.resultado ? el('p', { class: 'como' }, el('b', {}, 'O que foi feito: '), p.resultado) : null,
-      etapa === 2 && p.resultado ? el('p', { class: 'como' }, el('b', {}, 'Andamento: '), p.resultado) : null)
-    box.append(card)
-  }
+function cardAp(id, p, agora) {
+  const etapa = p.status === 'executado' ? 3 : p.status === 'erro' ? -1 : ['preparando', 'pronto', 'publicar'].includes(p.status) ? 2 : 1
+  const passo = (n, t, quando) => el('div', { class: 'passo' + (etapa >= n ? ' on' : '') + (etapa === n && n < 3 ? ' atual' : '') }, el('span', { class: 'bola' }, etapa > n || (n === 3 && etapa === 3) ? '✓' : String(n)), el('b', {}, t), el('small', {}, quando ? fmtDt(quando) : (etapa === n ? 'agora' : '')))
+  const resumo = p.resumo || p.depois || p.titulo || ''
+  return el('article', { class: 'card ap' + (etapa === 3 ? ' feito' : etapa < 0 ? ' erro' : '') },
+    el('div', { class: 'row' }, el('span', { class: 'tipo' }, TIPO[p.tipo] || 'Proposta'), p.conferir_em && etapa === 3 ? el('span', { class: 'muted', style: 'font-size:12px' }, 'conferir em ' + fmtD(p.conferir_em)) : null),
+    el('h3', {}, p.titulo || 'Proposta'),
+    el('p', { class: 'muted', style: 'font-size:13.5px' }, resumo.length > 220 ? resumo.slice(0, 217) + '…' : resumo),
+    etapa < 0 ? el('div', { class: 'state' }, 'Deu erro ao subir: ' + (p.resultado || 'sem detalhe'), ' ', el('button', { class: 'b', type: 'button', onclick: (e) => tentarDeNovo(id, e.currentTarget) }, 'Tentar de novo'))
+      : el('div', { class: 'etapas' }, passo(1, 'Aprovado', p.decidido_em), passo(2, 'Resolvendo', p.preparando_em), passo(3, 'Feito', p.executado_em)),
+    etapa === 3 && p.resultado ? el('p', { class: 'como' }, el('b', {}, 'O que foi feito: '), p.resultado) : null,
+    etapa === 2 && p.resultado ? el('p', { class: 'como' }, el('b', {}, 'Andamento: '), p.resultado) : null)
 }
-setInterval(() => { if (!$('tab-aprovados').hidden) renderAprovados() }, 60000)
-function cardProposta(id, p, pre = '') {
+function renderAprovados() {
+  const agora = Date.now(), porData = (k) => (a, b) => String(b[1][k] || '').localeCompare(String(a[1][k] || ''))
+  const resolvendo = Object.entries(props).filter(([, p]) => ['aprovado', 'preparando', 'pronto', 'publicar', 'erro'].includes(p.status)).sort(porData('decidido_em'))
+  const feitos = Object.entries(props).filter(([, p]) => p.status === 'executado' && p.executado_em && agora - new Date(p.executado_em).getTime() < 7 * DIA).sort(porData('executado_em'))
+  const nr = $('nb-resolvendo'); nr.textContent = String(resolvendo.length); nr.classList.toggle('hot', resolvendo.some(([, p]) => p.status === 'erro'))
+  $('nb-aprovados').textContent = String(feitos.length)
+  const rs = $('rs-box'); rs.textContent = ''
+  if (!resolvendo.length) rs.append(el('div', { class: 'empty' }, 'Nada em andamento. Quando você aprovar uma notificação, ela aparece aqui até ficar pronta.'))
+  for (const [id, p] of resolvendo) rs.append(cardAp(id, p, agora))
+  const box = $('ap-box'); box.textContent = ''
+  if (!feitos.length) box.append(el('div', { class: 'empty' }, 'Nada feito nos últimos 7 dias.'))
+  for (const [id, p] of feitos) box.append(cardAp(id, p, agora))
+}
+setInterval(() => { if (!$('tab-aprovados').hidden || !$('tab-resolvendo').hidden) renderAprovados() }, 60000)
+function cardProposta(id, p, pre = '', ordem = '') {
   const st = ST[p.status] || ['n', p.status]
   const card = el('article', { class: 'card prop' },
+    ordem ? el('span', { class: 'k', style: 'color:var(--od)' }, ordem) : null,
     el('div', { class: 'row' }, el('span', { class: 'tipo' }, TIPO[p.tipo] || p.tipo || 'Proposta'), el('span', { class: 'pill ' + st[0] }, st[1])),
     el('h3', {}, p.titulo || 'Proposta'),
     p.dado ? el('p', { style: 'font-size:14px' }, p.dado) : null,
@@ -1612,9 +1681,11 @@ function renderProps() {
   const abertas = Object.entries(props).filter(([, p]) => ['pendente', 'ajuste'].includes(p.status))
   const esperando = abertas.filter(([, p]) => p.status === 'pendente').length
   const nb = $('nb-aprovar'); nb.textContent = String(esperando); nb.classList.toggle('hot', esperando > 0)
-  const lista = abertas.filter(([, p]) => filtro === 'todos' || p.tipo === filtro).sort((a, b) => String(b[1].criado_em || '').localeCompare(String(a[1].criado_em || '')))
-  if (!lista.length) box.append(el('div', { class: 'empty' }, filtro === 'todos' ? 'Nada esperando aprovação.' : 'Nenhuma proposta deste tipo agora.'))
-  for (const [id, p] of lista) box.append(cardProposta(id, p))
+  // Da mais antiga para a mais nova; as que pedi ajuste (esperando o Claude refazer) vão para o fim.
+  const lista = abertas.filter(([, p]) => filtro === 'todos' || p.tipo === filtro).sort((a, b) => (a[1].status === 'ajuste') - (b[1].status === 'ajuste') || String(a[1].criado_em || '').localeCompare(String(b[1].criado_em || '')))
+  if (!lista.length) box.append(el('div', { class: 'empty' }, filtro === 'todos' ? 'Nenhuma notificação. Tudo aprovado ou resolvido.' : 'Nenhuma notificação deste tipo agora.'))
+  const nPend = lista.filter(([, p]) => p.status === 'pendente').length
+  lista.forEach(([id, p], i) => box.append(cardProposta(id, p, '', p.status === 'pendente' ? (i + 1) + 'ª aprovação de ' + nPend : 'Ajuste pedido · esperando o Claude refazer')))
   const hb = $('h-box'); hb.textContent = ''
   const hist = Object.values(props).filter((p) => ['executado', 'recusado'].includes(p.status)).sort((a, b) => String(b.decidido_em || '').localeCompare(String(a.decidido_em || '')))
   if (!hist.length) hb.append(el('tr', {}, el('td', { colspan: '6', class: 'l muted' }, 'Nada decidido ainda.')))
@@ -3265,7 +3336,7 @@ renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); rend
   ;[db, user, mcp] = await Promise.all([c.use('db').catch(() => null), c.use('user').catch(() => null), c.use('mcp').catch(() => null)])
   if (user) { try { me = await user.id() } catch {} }
   c.use('downloads').then((x) => { DL = x }).catch(() => {})
-  if (mcp) { watchPeriodo(); rcWatch(); qWatch(); testesWatch(); vdCarregar() }
+  if (mcp) { watchPeriodo(); rcWatch(); qWatch(); testesWatch(); vdCarregar(); carregaLeads() }
   else { vdCarregar(); $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; $('m-sets').innerHTML = '<tr><td colspan="8" class="l muted">Os números ao vivo aparecem para quem tem os conectores do Meta e do Supabase.</td></tr>'; $('m-ads').innerHTML = '' }
   if (!db) { $('pr-state').textContent = 'entre na sua conta'; $('ch-state').textContent = 'entre na sua conta'; return }
   $('pr-state').textContent = 'aprovações salvas no painel'; $('ch-state').textContent = 'conversas salvas no painel'

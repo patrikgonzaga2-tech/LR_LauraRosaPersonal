@@ -1,0 +1,164 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Painel de Leads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: filtro de data fixo no topo, abas (Leads, Dores e objeções, Bots e grupos), funil do maior para o menor. */
+:root{--bg:#f4f6f2;--surface:#ffffff;--ink:#142018;--ink2:#46564b;--muted:#7b8a80;--line:#dce3dc;
+--green:#0f9d58;--green-soft:#e3f5ea;--orange:#f08a1c;--orange-soft:#fdf0dd;--lost:#c0392b;--open:#9fb0a5;
+--font-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;--font-mono:"DM Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1712;--surface:#17211b;--ink:#e9f1ea;--ink2:#b5c4b8;--muted:#8a9b8f;--line:#26352b;
+--green:#3ecf86;--green-soft:#173424;--orange:#ffa642;--orange-soft:#33240f;--lost:#ef6f61;--open:#5f7266;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1712;--surface:#17211b;--ink:#e9f1ea;--ink2:#b5c4b8;--muted:#8a9b8f;--line:#26352b;
+--green:#3ecf86;--green-soft:#173424;--orange:#ffa642;--orange-soft:#33240f;--lost:#ef6f61;--open:#5f7266;color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);padding-inline:max(16px,4vw);padding-block:24px 56px;line-height:1.5}
+main{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:22px}
+h1{font-size:clamp(1.5rem,3.4vw,2rem);font-weight:800;letter-spacing:-.015em;margin:0}
+h2{font-size:1.05rem;font-weight:800;margin:0 0 4px}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.sub{color:var(--ink2);max-width:64ch;margin:6px 0 0;font-size:.92rem}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+.bar label{display:flex;flex-direction:column;gap:3px;font-size:.72rem;color:var(--muted);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em}
+.bar input[type=date]{font:inherit;font-size:.9rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;min-width:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{font:inherit;font-size:.82rem;font-weight:600;background:var(--bg);color:var(--ink2);border:0;padding:8px 11px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--green);color:#fff}
+.seg button:focus-visible,.tabs button:focus-visible,.bar input:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.info{margin-left:auto;font-size:.8rem;color:var(--ink2);font-family:var(--font-mono)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{font:inherit;font-weight:700;font-size:.9rem;background:transparent;color:var(--ink2);border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--orange);border-color:var(--orange);color:#1b1206}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.kpi b{display:block;font-family:var(--font-mono);font-weight:500;font-size:1.75rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi span{color:var(--ink2);font-size:.84rem}
+.kpi.win b{color:var(--green)}
+section.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;min-width:0}
+.hint{color:var(--ink2);font-size:.86rem;margin:0 0 14px;max-width:72ch}
+.frow{display:grid;grid-template-columns:minmax(150px,230px) 1fr 200px;gap:10px;align-items:center;padding-block:5px}
+.fname{font-weight:700;font-size:.84rem;letter-spacing:.02em}
+.ftrack{height:22px;background:color-mix(in srgb,var(--line) 55%,transparent);border-radius:3px;min-width:0}
+.ffill{display:block;height:100%;border-radius:3px;background:var(--green)}
+.ffill.o{background:var(--orange)}
+.fval{font-family:var(--font-mono);font-size:.82rem;text-align:right;font-variant-numeric:tabular-nums}
+small{color:var(--muted);font-size:.78em}
+.sep{border:0;border-top:1px dashed var(--line);margin:8px 0}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:700px;font-size:.83rem;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,thead th:first-child{text-align:left}
+thead th{color:var(--ink2);font-weight:700;font-size:.72rem;letter-spacing:.03em}
+tbody tr:hover{background:var(--green-soft)}
+.brow{display:grid;grid-template-columns:minmax(150px,230px) 1fr 200px;gap:10px;align-items:center;padding-block:4px}
+.btrack{height:14px;background:color-mix(in srgb,var(--line) 55%,transparent);border-radius:2px;min-width:0}
+.bfill{display:block;height:100%;background:var(--green);border-radius:2px}
+.bfill.o{background:var(--orange)}
+.blabel{font-size:.88rem;min-width:0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.kpi span.big{display:block;font-family:var(--font-mono);font-size:1.9rem;font-weight:500;color:var(--orange);line-height:1.1}
+.note{background:var(--orange-soft);border:1px solid color-mix(in srgb,var(--orange) 45%,transparent);border-radius:8px;padding:14px 16px;font-size:.88rem}
+.note ul{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px;color:var(--ink2)}
+.empty{padding:18px;text-align:center;color:var(--muted)}
+footer{color:var(--muted);font-size:.8rem}
+[hidden]{display:none!important}
+@media (max-width:560px){.frow,.brow{grid-template-columns:1fr 110px;grid-template-areas:"l v" "t t"}.fname,.blabel{grid-area:l}.fval,.bval{grid-area:v}.ftrack,.btrack{grid-area:t}.info{margin-left:0;width:100%}}
+</style>
+<main>
+<header><span class="tag">Atualizado <span id="upd"></span></span>
+<h1>Painel de Leads</h1>
+<p class="sub">A mesma base do Painel de Leads da Aline, lida do banco do CRM. Escolha um período ou um dia específico. Não mostra nome nem telefone.</p></header>
+
+<div class="bar" role="group" aria-label="Filtro de data">
+<div class="seg" role="group" aria-label="Tipo de filtro"><button id="mPer" aria-pressed="true">Período</button><button id="mDia" aria-pressed="false">Dia específico</button></div>
+<label id="lA">De<input type="date" id="dA"></label>
+<label id="lB">Até<input type="date" id="dB"></label>
+<div class="seg" role="group" aria-label="Atalhos"><button id="qAll" aria-pressed="false">Tudo</button><button id="qOut" aria-pressed="true">Outubro</button><button id="q7" aria-pressed="false">7 dias</button></div>
+<span class="info" id="info"></span>
+</div>
+
+<div class="tabs" role="tablist"><button role="tab" id="t1" aria-selected="true">Leads</button><button role="tab" id="t2" aria-selected="false">Dores e objeções</button><button role="tab" id="t3" aria-selected="false">Bots e grupos</button></div>
+
+<div id="p1">
+<div class="kpis" id="kpis"></div>
+<section class="card"><h2>Funil, do maior para o menor</h2><p class="hint">Percentual sobre os leads do período. As etapas de follow-up correm em paralelo à compra: contam quem recebeu follow-up no mesmo dia da 1ª mensagem, quem chegou ao follow-up 2 e quem comprou depois de receber follow-up.</p><div id="funil"></div></section>
+<section class="card"><h2>Dia a dia</h2><p class="hint">Cada linha é o dia em que o lead mandou a 1ª mensagem. Dias recentes ainda estão em andamento, então a compra deles pode subir.</p><div class="scroll" id="dias"></div></section>
+<div class="cols"><section class="card"><h2>De onde vieram</h2><p class="hint">Origem pela mensagem inicial.</p><div id="orig"></div></section>
+<section class="card"><h2>Por que fecharam</h2><p class="hint">Motivo de compra entre quem comprou.</p><div id="mc"></div></section></div>
+</div>
+
+<div id="p2" hidden>
+<section class="card"><h2>Dores</h2><p class="hint">Um lead pode ter várias dores, então os percentuais somam mais de 100%. Percentual sobre os leads do período.</p><div class="scroll" id="dores"></div></section>
+<section class="card"><h2>Objeções e travas</h2><p class="hint">Um lead pode ter mais de uma objeção. "Compraram" mostra quem fechou apesar da objeção.</p><div class="scroll" id="objs"></div></section>
+<section class="card"><h2>Por que não fecharam</h2><p class="hint">Motivo principal entre quem perdeu o lead.</p><div id="mn"></div></section>
+</div>
+
+<div id="p3" hidden>
+<section class="card"><h2>Bots e grupos no total</h2><p class="hint">Conversas que não são lead de venda: grupos, bots, números da própria empresa, papo pessoal e disparos sem resposta. Não têm data de chegada, então este número não muda com o filtro de data.</p>
+<div class="kpis" id="bkp"></div><hr class="sep"><div class="scroll" id="bdia"></div></section>
+</div>
+
+<div class="note" id="avisos"></div>
+<footer>Dados do banco CRM Corpo Feliz. A rotina das 23:59 atualiza a base; esta aba lê a base toda vez que você abre.</footer>
+</main>
+<script>
+/*DADOS: chegam do painel principal (banco do CRM, atualizado pela rotina das 23:59)*/
+let UPD="carregando…";
+let DATA=[];
+let NAOLEAD=[];
+const L={manychat:"Many Chat",bio:"Bio",story:"Story",anuncio:"Anúncio",texto_livre:"Texto livre",seguidor:"Seguidor",outro:"Outro",
+barriga:"Barriga",flancos:"Flancos",culote_coxas:"Culote e coxas",bracos:"Braços",gluteos:"Glúteos",flacidez:"Flacidez",pos_parto:"Pós-parto",diastase:"Diástase",gordura_localizada:"Gordura localizada",emagrecer_peso:"Emagrecer (peso)",definicao_muscular:"Definição muscular",ganhar_massa:"Ganhar massa",sedentarismo:"Sedentarismo",desmotivacao_constancia:"Falta de constância",compulsao_ansiedade:"Compulsão e ansiedade",falta_tempo:"Falta de tempo",dificuldade_academia:"Dificuldade com academia",menopausa_hormonal:"Menopausa e hormônios",dor_articular_lesao:"Dor articular ou lesão",autoestima:"Autoestima",inchaco_retencao:"Inchaço e retenção",outra:"Outra",
+preco_alto:"Preço alto",sem_dinheiro_agora:"Sem dinheiro agora",cartao_sem_limite:"Cartão sem limite",esperar_data_pagamento:"Espera a data de pagamento",so_pix_ou_boleto:"Só Pix ou boleto",parcelamento_nao_serve:"Parcelamento não serve",vai_pensar:"Vai pensar",consultar_marido_familia:"Consultar marido ou família",desconfianca_golpe:"Desconfiança de golpe",nao_gosta_academia:"Não gosta de academia",ja_treina:"Já treina",duvida_plataforma_app:"Dúvida sobre a plataforma",quer_garantia_ou_teste:"Quer garantia ou teste",quer_plano_menor:"Quer plano menor",saude_medico:"Saúde ou médico",sumiu_antes_do_preco:"Sumiu antes do preço",so_curiosidade:"Só curiosidade",empresa_nao_atende_perfil:"Fora do perfil atendido",
+sem_dinheiro_cartao:"Sem dinheiro ou limite",achou_caro:"Achou caro",marido_decide:"Marido decide",desconfianca:"Desconfiança",sem_tempo:"Sem tempo",sumiu_sem_resposta:"Sumiu sem resposta",
+preco_acessivel:"Preço acessível",pix_simbolico:"Pix simbólico",parcelamento:"Parcelamento",prova_social:"Prova social",video_explicativo:"Vídeo explicativo",urgencia_oferta:"Urgência da oferta",confianca_na_laura:"Confiança na Laura",comunidade_acompanhamento:"Comunidade e acompanhamento"};
+const lab=k=>L[k]||String(k).replace(/_/g," ");
+const $=i=>document.getElementById(i);
+const pct=(n,t,d=1)=>t?(100*n/t).toFixed(d).replace(".",",")+"%":"0%";
+const fmtD=s=>s.slice(8,10)+"/"+s.slice(5,7);
+let days=[], first="2026-10-01", last="2026-10-01";
+let mode="per", a="2026-10-01", b=last, dia=last;
+function initDatas(){days=[...new Set(DATA.map(r=>r.d))].sort();first=days[0]||"2026-10-01";last=days[days.length-1]||"2026-10-01";b=last;dia=last;$("upd").textContent=UPD;$("dA").min=$("dB").min=first;$("dA").max=$("dB").max=last}
+initDatas();
+function flag(r,i){return r.f&&r.f[i]==="1"}
+function rows(){const lo=mode==="dia"?dia:a,hi=mode==="dia"?dia:b;return DATA.filter(r=>r.d>=lo&&r.d<=hi)}
+function bars(el,items,total,cls){const mx=Math.max(1,...items.map(x=>x[1]));el.innerHTML=items.length?items.map(([k,v])=>`<div class="brow"><span class="blabel">${lab(k)}</span><div class="btrack"><i class="bfill ${cls||""}" style="width:${100*v/mx}%"></i></div><span class="fval bval">${v} <small>${pct(v,total)}</small></span></div>`).join(""):'<div class="empty">Nada neste período.</div>'}
+function count(list,get){const m={};list.forEach(r=>{const v=get(r);(Array.isArray(v)?v:[v]).forEach(x=>{if(x)m[x]=(m[x]||0)+1})});return Object.entries(m).sort((x,y)=>y[1]-x[1])}
+function render(){
+const all=rows(), L1=all.filter(r=>r.t==="l"), n=L1.length;
+const lo=mode==="dia"?dia:a, hi=mode==="dia"?dia:b;
+$("info").textContent=n+" leads · "+(lo===hi?fmtD(lo):fmtD(lo)+" a "+fmtD(hi));
+const c=L1.filter(r=>r.r==="c").length, p=L1.filter(r=>r.r==="n").length, e=n-c-p, gt=L1.filter(r=>r.g==="t").length, gn=L1.filter(r=>r.g==="n").length;
+$("kpis").innerHTML=`<div class="kpi"><b>${n}</b><span>leads no período</span></div><div class="kpi win"><b>${c}</b><span>compraram · ${pct(c,n)}</span></div><div class="kpi"><b>${p}</b><span>perderam · ${pct(p,n)}</span></div><div class="kpi"><b>${e}</b><span>em andamento · ${pct(e,n)}</span></div><div class="kpi win"><b>${gt}/${gt+gn}</b><span>compras do CRM confirmadas na Greenn (${pct(gt,gt+gn,0)}); ${gn} não encontradas</span></div>`;
+const steps=[["LEAD",n],["ATENDIMENTO",L1.filter(r=>flag(r,0)).length],["CHEGOU NA OFERTA",L1.filter(r=>flag(r,1)).length],["RECEBEU LINK",L1.filter(r=>flag(r,2)).length],["COMPROU",c],["RECEBEU FOLLOW UP NO DIA",L1.filter(r=>flag(r,3)).length],["FOLLOW UP 2",L1.filter(r=>flag(r,4)).length],["COMPROU EM FOLLOW UP",L1.filter(r=>flag(r,5)).length]];
+$("funil").innerHTML=steps.map(([k,v],i)=>{const prev=i>0&&i<5?steps[i-1][1]:null;return (i===5?'<hr class="sep">':'')+`<div class="frow"><span class="fname">${k}</span><div class="ftrack"><i class="ffill ${i>=5?"o":""}" style="width:${n?100*v/n:0}%"></i></div><span class="fval">${v} <small>${pct(v,n)}${prev!==null&&prev?` · ${pct(v,prev,0)} da etapa anterior`:""}</small></span></div>`}).join("");
+const ds=[...new Set(L1.map(r=>r.d))].sort().reverse();
+$("dias").innerHTML=ds.length?`<table><thead><tr><th>Dia</th><th>Lead</th><th>Atendimento</th><th>Oferta</th><th>Link</th><th>Comprou</th><th>Follow-up no dia</th><th>Follow-up 2</th><th>Comprou em follow-up</th></tr></thead><tbody>`+ds.map(d=>{const x=L1.filter(r=>r.d===d),t=x.length,f=i=>x.filter(r=>flag(r,i)).length,cc=x.filter(r=>r.r==="c").length,cell=v=>`${v} <small>${pct(v,t,0)}</small>`;return `<tr><th scope="row">${fmtD(d)}</th><td>${t}</td><td>${cell(f(0))}</td><td>${cell(f(1))}</td><td>${cell(f(2))}</td><td>${cell(cc)}</td><td>${cell(f(3))}</td><td>${cell(f(4))}</td><td>${cell(f(5))}</td></tr>`}).join("")+"</tbody></table>":'<div class="empty">Nenhum lead neste período.</div>';
+bars($("orig"),count(L1,r=>r.o),n);
+bars($("mc"),count(L1.filter(r=>r.r==="c"),r=>r.mc),c,"o");
+const tb=(el,get)=>{const m={};L1.forEach(r=>{(get(r)||[]).forEach(k=>{m[k]=m[k]||[0,0];m[k][0]++;if(r.r==="c")m[k][1]++})});const it=Object.entries(m).sort((x,y)=>y[1][0]-x[1][0]);el.innerHTML=it.length?`<table><thead><tr><th>Item</th><th>Leads</th><th>% dos leads</th><th>Compraram</th></tr></thead><tbody>`+it.map(([k,[v,w]])=>`<tr><th scope="row">${lab(k)}</th><td>${v}</td><td>${pct(v,n)}</td><td>${w}</td></tr>`).join("")+"</tbody></table>":'<div class="empty">Nada neste período.</div>'};
+tb($("dores"),r=>r.dr);tb($("objs"),r=>r.ob);
+bars($("mn"),count(L1.filter(r=>r.r==="n"),r=>r.mn),p,"o");
+}
+function renderBots(){
+const tot=NAOLEAD.reduce((s,x)=>s+x.q,0), lidos=DATA.length, g=tot+lidos;
+const cat=k=>NAOLEAD.filter(x=>x.c===k).reduce((s,x)=>s+x.q,0);
+$("bkp").innerHTML=`<div class="kpi"><span class="big">${pct(tot,g)}</span><span>das conversas lidas não são lead</span></div><div class="kpi"><b>${pct(cat("bot_grupo_interno"),g)}</b><span>bots, grupos e números internos · ${cat("bot_grupo_interno")}</span></div><div class="kpi"><b>${pct(cat("disparo_sem_resposta"),g)}</b><span>disparos sem resposta · ${cat("disparo_sem_resposta")}</span></div><div class="kpi"><b>${g}</b><span>conversas lidas no total</span></div>`;
+const ds=[...new Set(NAOLEAD.map(x=>x.d))].sort().reverse();
+$("bdia").innerHTML=`<table><thead><tr><th>Dia da leitura</th><th>Bots, grupos e internos</th><th>Disparos sem resposta</th></tr></thead><tbody>`+ds.map(d=>`<tr><th scope="row">${fmtD(d)}</th><td>${NAOLEAD.filter(x=>x.d===d&&x.c==="bot_grupo_interno").reduce((s,x)=>s+x.q,0)}</td><td>${NAOLEAD.filter(x=>x.d===d&&x.c==="disparo_sem_resposta").reduce((s,x)=>s+x.q,0)}</td></tr>`).join("")+"</tbody></table>";
+}
+function setMode(m){mode=m;$("mPer").setAttribute("aria-pressed",m==="per");$("mDia").setAttribute("aria-pressed",m==="dia");$("lA").firstChild.textContent=m==="dia"?"Dia":"De";$("lB").hidden=m==="dia";$("dA").value=m==="dia"?dia:a;render()}
+function quick(id,lo,hi){["qAll","qOut","q7"].forEach(x=>$(x).setAttribute("aria-pressed",x===id));a=lo;b=hi;mode="per";$("dA").value=a;$("dB").value=b;setMode("per")}
+$("mPer").onclick=()=>setMode("per");$("mDia").onclick=()=>{dia=$("dA").value||last;setMode("dia")};
+$("dA").onchange=e=>{["qAll","qOut","q7"].forEach(x=>$(x).setAttribute("aria-pressed","false"));if(mode==="dia")dia=e.target.value;else a=e.target.value||first;render()};
+$("dB").onchange=e=>{["qAll","qOut","q7"].forEach(x=>$(x).setAttribute("aria-pressed","false"));b=e.target.value||last;render()};
+$("qAll").onclick=()=>quick("qAll",first,last);$("qOut").onclick=()=>quick("qOut","2026-10-01",last);
+$("q7").onclick=()=>{const d=new Date(last+"T12:00:00");d.setDate(d.getDate()-6);quick("q7",d.toISOString().slice(0,10),last)};
+[["t1","p1"],["t2","p2"],["t3","p3"]].forEach(([t,p])=>{$(t).onclick=()=>{[["t1","p1"],["t2","p2"],["t3","p3"]].forEach(([tt,pp])=>{$(tt).setAttribute("aria-selected",tt===t);$(pp).hidden=pp!==p})}});
+$("avisos").innerHTML="<b>Como ler</b><ul><li>Leads são conversas de pessoas interessadas em comprar. Bots, grupos, números da empresa e disparos sem resposta ficam na aba própria.</li><li>Quem chegou há poucos dias ainda aparece como em andamento, então a taxa de compra desses dias vai subir.</li><li>Dores e objeções vêm da leitura das conversas e podem ser várias por lead.</li><li>Compras confirmadas na Greenn: cruzamento por telefone com os pagamentos aprovados. As não encontradas precisam ser conferidas no painel da Greenn.</li></ul>";
+$("dA").value=a;$("dB").value=b;renderBots();render();
+// O painel principal lê o banco do CRM e manda os dados para cá (sem nome nem telefone).
+window.addEventListener("message",e=>{const m=e.data;if(!m||m.tipo!=="leads")return;if(m.erro){$("upd").textContent=m.erro;return}DATA=Array.isArray(m.data)?m.data:[];NAOLEAD=Array.isArray(m.naolead)?m.naolead:[];UPD=m.upd||"";initDatas();$("dA").value=a;$("dB").value=b;renderBots();render()});
+try{parent.postMessage({tipo:"leads-pronto"},"*")}catch(e){}
+</script>
+
+</body></html>
