@@ -128,6 +128,16 @@ export const CHECKOUT_HREF_GREENN =
 // Teste B (preço do Efeito Lipo, 09/10): braço B = R$ 47 (oferta gLO7Gm, mesmos 3 bumps da QN7gci).
 export const CHECKOUT_HREF_GREENN_B =
   'https://payfast.greenn.com.br/redirect/795991?utm_source=efeito-lipo-quiz'
+// Assinatura da Comunidade R$ 37/mês (oferta WOqOSI, recorrente, só cartão). Mesmos UTMs do EL.
+export const CHECKOUT_HREF_SUB =
+  'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597&utm_source=efeito-lipo-quiz'
+export function subscriptionHref(adId?: string | null, xcod?: string | null, fbclid?: string | null): string {
+  const extra: string[] = []
+  if (adId) extra.push(`utm_term=${encodeURIComponent(adId)}`)
+  if (xcod) extra.push(`utm_content=${encodeURIComponent(xcod)}`)
+  if (fbclid) extra.push(`fbclid=${encodeURIComponent(fbclid)}`)
+  return extra.length ? `${CHECKOUT_HREF_SUB}&${extra.join('&')}` : CHECKOUT_HREF_SUB
+}
 export const OFERTA_AB_KEY = 'el_oferta_ab'
 export type OfertaArm = 'A' | 'B'
 
@@ -555,9 +565,9 @@ export const ROTEIRO_21 = 'Um roteiro de 21 dias — não uma promessa de result
 export const RESULT_MARCOS = [
   { dia: 'Dia 01', fase: 'Ponto de partida', txt: 'Corpo inflamado — antes da limpeza', y: 8 },
   { dia: 'Dia 03', fase: 'Primeiros sinais', txt: 'Desinflame iniciando — roupas começam a ficar largas', y: 26 },
-  { dia: 'Dia 07', fase: 'Virada', txt: 'Limpeza completa — 2 a 4kg a menos', y: 48 },
+  { dia: 'Dia 07', fase: 'Virada', txt: 'Limpeza completa — corpo menos inchado e rotina pegando ritmo', y: 48 },
   { dia: 'Dia 14', fase: 'Aceleração', txt: 'Ativação metabólica respondendo', y: 74 },
-  { dia: 'Dia 21', fase: 'Transformação', txt: 'Queima Total — até 8kg e metabolismo no piloto automático', y: 98 },
+  { dia: 'Dia 21', fase: 'Transformação', txt: 'Queima Total — hábito formado, sem esperar a segunda-feira', y: 98 },
 ]
 
 export const SALES = {
