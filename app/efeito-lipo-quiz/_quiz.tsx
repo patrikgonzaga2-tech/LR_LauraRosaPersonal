@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
-  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
+  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, pickOfertaArm, OFERTA_AB_KEY, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
   PERFIS, perfilRecomeco, RESULT_MARCOS, ROTEIRO_21, SALES, STEPS,
 } from './_data'
 import type { ImgKey, Step } from './_data'
@@ -127,7 +127,7 @@ export default function QuizApp() {
     return <Intro onStart={() => { const intro_ab = (typeof window !== 'undefined' && sessionStorage.getItem(INTRO_AB_KEY)) || undefined; persist({ id: sidRef.current, action: 'start', intro_ab, ...captureContext() }); track('quiz_start', { intro_ab }); next() }} />
   }
   if (step.kind === 'sales') {
-    return <Sales perfil={perfil} onCheckout={() => { const arm = pickCheckoutArm(); persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: arm }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: arm }) }} />
+    return <Sales perfil={perfil} onCheckout={() => { const arm = pickCheckoutArm(); persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: arm === 'greenn' && (typeof window !== 'undefined' && sessionStorage.getItem(OFERTA_AB_KEY)) === 'B' ? 'greenn-B' : arm }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: arm }) }} />
   }
 
   const darkBg = step.kind === 'loading' || step.kind === 'result'
@@ -545,6 +545,11 @@ function useCountdown(start = 600) {
 
 function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckout: () => void }) {
   const timer = useCountdown(600)
+  // Teste B (09/10): preço do EL. Sorteado ao abrir a página de vendas (só no navegador).
+  const [oferta, setOferta] = useState<'A' | 'B'>('A')
+  useEffect(() => { setOferta(pickOfertaArm()) }, [])
+  const precoEL = oferta === 'B' ? '47' : '37'
+  const parcEL = oferta === 'B' ? '12x de R$ 4,83' : '12x de R$ 3,80'
 
   // Link de checkout com o id do anúncio (utm_term) no src. Começa com o link
   // fixo (igual no servidor, evita erro de hidratação) e, já no navegador,
@@ -567,9 +572,9 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
           <li key={i} className="flex justify-between" style={{ fontSize: 14.5, color: 'var(--ink)' }}><span>{n}</span><span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>{v}</span></li>
         ))}
         <li className="flex justify-between pt-2" style={{ borderTop: '1px solid rgba(0,0,0,.1)', fontSize: 14.5, fontWeight: 700 }}><span>Total real</span><span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span></li>
-        <li className="flex justify-between items-baseline pt-2 font-display"><span style={{ fontSize: 16, fontWeight: 800 }}>Hoje</span><span style={{ fontSize: 30, fontWeight: 800, color: 'var(--o)' }}>R$ 37</span></li>
+        <li className="flex justify-between items-baseline pt-2 font-display"><span style={{ fontSize: 16, fontWeight: 800 }}>Hoje</span><span style={{ fontSize: 30, fontWeight: 800, color: 'var(--o)' }}>R$ {precoEL}</span></li>
       </ul>
-      <p className="text-center" style={{ fontSize: 13, color: 'var(--sub)', marginTop: 6 }}>ou 12x de R$ 3,80</p>
+      <p className="text-center" style={{ fontSize: 13, color: 'var(--sub)', marginTop: 6 }}>ou {parcEL}</p>
     </div>
   )
 
@@ -682,7 +687,7 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
 
         {/* CTA final */}
         <div className="text-center mt-9">
-          <p className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>Roteiro De Volta ao Eixo <span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span> → <span style={{ color: 'var(--o)' }}>R$ 37 à vista</span></p>
+          <p className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>Roteiro De Volta ao Eixo <span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span> → <span style={{ color: 'var(--o)' }}>R$ {precoEL} à vista</span></p>
           <div className="mt-4"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow variant="green" dataLabel="final">Quero começar meu roteiro de 21 dias</CtaButton></a></div>
           <p style={{ fontSize: 12, color: 'var(--mute)', marginTop: 12, lineHeight: 1.6 }}>🔒 Pagamento 100% seguro · Acesso imediato após confirmação · Pix ou cartão</p>
         </div>

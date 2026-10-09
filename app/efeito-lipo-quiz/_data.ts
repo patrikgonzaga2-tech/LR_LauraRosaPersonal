@@ -125,6 +125,26 @@ export type CheckoutArm = 'hotmart' | 'greenn'
 export const CHECKOUT_HREF_GREENN =
   'https://payfast.greenn.com.br/redirect/297430?utm_source=efeito-lipo-quiz'
 
+// Teste B (preço do Efeito Lipo, 09/10): braço B = R$ 47 (oferta gLO7Gm, mesmos 3 bumps da QN7gci).
+export const CHECKOUT_HREF_GREENN_B =
+  'https://payfast.greenn.com.br/redirect/795991?utm_source=efeito-lipo-quiz'
+export const OFERTA_AB_KEY = 'el_oferta_ab'
+export type OfertaArm = 'A' | 'B'
+
+// Sorteia (ou relê da gaveta) o preço do EL desta sessão. Client-only; no servidor, 'A'.
+export function pickOfertaArm(): OfertaArm {
+  if (typeof window === 'undefined') return 'A'
+  try {
+    const saved = sessionStorage.getItem(OFERTA_AB_KEY)
+    if (saved === 'A' || saved === 'B') return saved
+    const arm: OfertaArm = Math.random() < 0.5 ? 'A' : 'B'
+    try { sessionStorage.setItem(OFERTA_AB_KEY, arm) } catch { /* ignore */ }
+    return arm
+  } catch {
+    return 'A'
+  }
+}
+
 // Sorteia (ou relê da gaveta) o braço do teste para ESTA sessão. Client-only:
 // roda só no navegador, então não há divergência de hidratação — o link inicial
 // no servidor é sempre o da Hotmart (CHECKOUT_HREF) e o braço é aplicado depois.
@@ -146,11 +166,12 @@ export function pickCheckoutArm(): CheckoutArm {
 // nomes UTM; Hotmart usa src/xcod — os dois caem no lugar certo no webhook.
 export function checkoutHrefFor(arm: CheckoutArm, adId?: string | null, xcod?: string | null, fbclid?: string | null): string {
   if (arm === 'greenn') {
+    const base = pickOfertaArm() === 'B' ? CHECKOUT_HREF_GREENN_B : CHECKOUT_HREF_GREENN
     const extra: string[] = []
     if (adId) extra.push(`utm_term=${encodeURIComponent(adId)}`)
     if (xcod) extra.push(`utm_content=${encodeURIComponent(xcod)}`)
     if (fbclid) extra.push(`fbclid=${encodeURIComponent(fbclid)}`)
-    return extra.length ? `${CHECKOUT_HREF_GREENN}&${extra.join('&')}` : CHECKOUT_HREF_GREENN
+    return extra.length ? `${base}&${extra.join('&')}` : base
   }
   return checkoutHref(adId, xcod)
 }

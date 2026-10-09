@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Painel Volta ao Eixo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -675,6 +676,32 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
 .rt-ref-a{font-weight:700;white-space:nowrap}
 .rt-cuidado{font-size:13.5px;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:8px 12px}
 .rt .btns .b{display:inline-flex;align-items:center;gap:6px}
+/* vídeos gerados pelo agente */
+.vd-tiles{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:760px){.vd-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.vd-filtros{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+.vd-f{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;min-width:0}
+.vd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:14px}
+.vd-card{display:flex;flex-direction:column;gap:10px}
+.vd-media{width:100%;margin-inline:auto;background:#16130F;border-radius:12px;overflow:hidden;display:grid;place-items:center;color:#fff;font-size:13px;text-align:center;padding:0}
+.vd-media.v916{aspect-ratio:9/16;max-width:270px;max-height:480px}
+.vd-media.v169{aspect-ratio:16/9}
+.vd-media video{width:100%;height:100%;object-fit:contain;display:block}
+.vd-card h3{overflow-wrap:anywhere}
+.vd-chips{display:flex;flex-wrap:wrap;gap:6px}
+.vd-info{font-size:13px;color:var(--sub);overflow-wrap:anywhere}
+.vd-leg summary{cursor:pointer;font-weight:700;font-size:13.5px;padding:4px 0}
+.vd-leg p{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13.5px;color:var(--sub);background:var(--pale);border-radius:10px;padding:9px 11px;margin-top:6px}
+.vd-card .btns .b,.vd-card .btns a.b{min-height:40px;justify-content:center}
+.vd-st{display:grid;gap:6px}
+.vd-st button.b[aria-pressed="true"]{background:var(--gd);border-color:var(--gd);color:#fff;opacity:1}
+.vd-fb{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.vd-fb textarea{min-height:64px}
+.vd-fb-salvo{font-size:13.5px;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:9px 11px;white-space:pre-wrap;overflow-wrap:anywhere}
+.vd-fb-salvo b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+button.b.bad{border-color:var(--bad);color:var(--bad)}
+button.b.bad:hover{background:var(--bad);color:#fff}
+.vd-media .vd-erro{padding:14px;display:grid;gap:10px;justify-items:center}
 </style>
 
 <div class="toast" id="toast" role="status" hidden></div>
@@ -695,6 +722,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
       <button role="tab" data-tab="meta" aria-selected="false">Meta ao vivo</button>
       <button role="tab" data-tab="otimizar" aria-selected="false">Otimizar <span class="badge" id="nb-ot">0</span></button>
       <button role="tab" data-tab="recuperar" aria-selected="false">Clicou e não comprou <span class="badge" id="nb-rc">0</span></button>
+      <button role="tab" data-tab="testes" aria-selected="false">Testes</button>
       <div class="navlbl">Ajuste do quiz</div>
       <button role="tab" data-tab="quiz" aria-selected="false">Sugestão quiz <span class="badge" id="nb-quiz">0</span></button>
       <button role="tab" data-tab="qz-estamos" aria-selected="false">Como está o quiz</button>
@@ -705,6 +733,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
       <div class="navlbl">Registro</div>
       <button role="tab" data-tab="historico" aria-selected="false">Histórico</button>
       <button role="tab" data-tab="criativos" aria-selected="false">Criativos</button>
+      <button role="tab" data-tab="videos" aria-selected="false">Vídeos <span class="badge" id="nb-videos">–</span></button>
       <button role="tab" data-tab="referencia" aria-selected="false">Referência</button>
       <button role="tab" data-tab="roteiros" aria-selected="false">Roteiros da Laura <span class="badge" id="nb-rot">0</span></button>
     </nav>
@@ -1120,6 +1149,11 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
     </section>
 
     <!-- SUGESTÃO QUIZ -->
+    <section class="tab" id="tab-testes" role="tabpanel" hidden>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Testes</h2><p>Cada teste do quiz, com a chance de cada versão ser a melhor. Conta só o que entrou depois do início do teste. Dá para decidir com pelo menos 100 visitas em cada versão e uma chance de 95% ou mais.</p></div></div>
+      <div id="testes-lista" style="display:grid;gap:14px"></div>
+      <p class="muted" id="testes-at"></p>
+    </section>
     <section class="tab" id="tab-quiz" role="tabpanel" hidden>
       <div class="pagehead"><div style="display:grid;gap:4px"><h2>Sugestão quiz</h2><p>O caminho do lead do anúncio até a compra, tela por tela, e o que eu mudaria no quiz para vender mais. Mudança no quiz: quando você aprova, eu preparo a mudança e abro o pedido de publicação no GitHub. Ela vai para o site quando você me pedir "pode publicar" ou mesclar o pedido.</p><button class="b pri" type="button" data-go="qz-editar" style="justify-self:start">Editar textos do quiz</button></div><span class="pill n" id="q-at">carregando…</span></div>
       <div class="row">
@@ -1194,6 +1228,27 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
       </details>
     </section>
 
+    <!-- VÍDEOS -->
+    <section class="tab" id="tab-videos" role="tabpanel" hidden>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Vídeos</h2><p>Os vídeos que o agente gerou. Assista (o botão "Assistir" abre o vídeo em outra aba), aprove, peça ajuste ou reprove escrevendo o que mudar. O agente lê o seu pedido e refaz.</p></div><div class="row"><span class="pill n" id="vd-at">–</span><button class="b" type="button" id="vd-atualizar">Atualizar lista</button></div></div>
+      <div class="tiles vd-tiles" id="vd-tiles"></div>
+      <div class="vd-filtros">
+        <div class="vd-f"><span class="k">Tipo</span><div class="seg" role="group" aria-label="Filtrar por tipo" id="vd-tipo">
+          <button type="button" data-v="todos" aria-pressed="true">Todos</button>
+          <button type="button" data-v="criativo" aria-pressed="false">Criativo</button>
+          <button type="button" data-v="aula" aria-pressed="false">Aula</button>
+          <button type="button" data-v="post" aria-pressed="false">Post</button>
+        </div></div>
+        <div class="vd-f"><span class="k">Lista</span><div class="seg" role="group" aria-label="Escolher a lista de vídeos" id="vd-st">
+          <button type="button" data-v="avaliar" aria-pressed="true">Para avaliar</button>
+          <button type="button" data-v="aprovados" aria-pressed="false">Aprovados</button>
+          <button type="button" data-v="reprovados" aria-pressed="false">Reprovados</button>
+        </div></div>
+      </div>
+      <div class="state" id="vd-err" role="alert" hidden></div>
+      <div class="vd-grid" id="vd-lista" aria-live="polite"></div>
+    </section>
+
     <section class="tab" id="tab-roteiros" role="tabpanel" hidden>
       <div class="pagehead"><div style="display:grid;gap:4px"><h2>Roteiros para a Laura gravar</h2><p>Cada roteiro diz por que gravar, o que fazer em cada cena e o texto completo para falar. Gravou? Mande os vídeos na pasta do Drive e toque em "Já gravei".</p></div></div>
       <div class="card rt-como">
@@ -1235,7 +1290,7 @@ const fmtD = (s) => { if (!s) return '–'; const d = new Date(String(s).length 
 let db = null, user = null, me = null, mcp = null
 
 // ── Abas ───────────────────────────────────────────────────────────
-const TABS = ['qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'referencia', 'roteiros']
+const TABS = ['testes', 'qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'videos', 'referencia', 'roteiros']
 function abrir(t, foco) {
   if (t === 'conversar') t = 'aprovar'
   if (!TABS.includes(t)) t = 'resumo'
@@ -1999,13 +2054,89 @@ $('ot-chips').querySelectorAll('button').forEach((b) => b.addEventListener('clic
 ;(() => { try { const v = JSON.parse(localStorage.getItem('painel_ot') || 'null'); if (v && v.id) otAlvo = v } catch {} })()
 document.querySelectorAll('#m-per button, #ot-per button').forEach((b) => b.addEventListener('click', () => {
   periodo = b.dataset.p; document.querySelectorAll('#m-per button, #ot-per button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.p === periodo)))
-  if (mcp) { watchPeriodo(); qWatch() }
+  if (mcp) { watchPeriodo(); qWatch(); testesWatch() }
 }))
 
 // ── Sugestão quiz: trajetória do lead ─────────────────────────────
 // Telas do quiz (de app/efeito-lipo-quiz/_data.ts, 08/10). reached_index = última tela respondida.
 const QSTEPS = [{"i": 0, "id": "intro", "k": "intro", "t": "Abertura", "o": []}, {"i": 1, "id": "idade", "k": "single", "t": "Qual a sua faixa etária?", "o": [["-29", "Menos de 29 anos"], ["29-39", "Entre 29 e 39 anos"], ["40-49", "Entre 40 e 49 anos"], ["50+", "50 anos ou mais"]]}, {"i": 2, "id": "laura", "k": "laura", "t": "Apresentação da Laura", "o": []}, {"i": 3, "id": "objetivo", "k": "single", "t": "Qual é o seu principal objetivo agora?", "o": [["barriga", "Secar a barriga de vez"], ["roupa", "Caber naquela roupa especial"], ["bracos", "Afinar os braços"], ["autoestima", "Recuperar minha autoestima"], ["tudo", "Tudo acima"]]}, {"i": 4, "id": "recomecos", "k": "single", "t": "Quantas vezes você já recomeçou?", "o": [["1-2", "Uma ou duas vezes"], ["varias", "Várias vezes"], ["perdi-conta", "Já perdi a conta"], ["comecando", "Ainda estou tentando começar"]]}, {"i": 5, "id": "rotina", "k": "single", "t": "Como é a sua rotina hoje?", "o": [["corrida", "Super corrida, mal tenho tempo pra mim"], ["equilibrada", "Equilibrada mas sem sobra"], ["casa", "Fico em casa mas nunca sobra tempo"], ["tempo", "Tenho tempo para me dedicar"]]}, {"i": 6, "id": "canetinha", "k": "single", "t": "Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?", "o": [["usei", "Sim, já usei"], ["usando", "Sim, estou usando"], ["considerando", "Sim, estou considerando"], ["nao-usar", "Pensei mas decidi não usar"], ["nunca", "Nunca considerei"]]}, {"i": 7, "id": "fisico", "k": "single", "t": "Como você descreveria seu corpo hoje?", "o": [["inchada", "Bem de peso, mas inchada e sem definição"], ["leve-acima", "Levemente acima do peso"], ["acima", "Acima do peso"], ["muito-acima", "Muito acima do peso"]]}, {"i": 8, "id": "prova", "k": "prova", "t": "Prova social", "o": []}, {"i": 9, "id": "corpo-sonhos", "k": "single", "t": "Qual é o corpo que você quer ter?", "o": [["seca", "Seca e definida"], ["lisa", "Barriga lisa e braços finos"], ["curvas", "Com curvas e sem inchaço"], ["leve", "Leve — me sentir bem no meu corpo"]]}, {"i": 10, "id": "alimentacao", "k": "single", "t": "Como você descreveria a sua alimentação hoje?", "o": [["exagero", "Tento comer bem, mas acabo exagerando"], ["dieta", "Faço dieta, mas não vejo resultado"], ["sem-controle", "Como de tudo sem muito controle"], ["desorganizada", "Completamente desorganizada"]]}, {"i": 11, "id": "sabotador", "k": "single", "t": "Qual é o seu maior sabotador?", "o": [["doce", "Doce e chocolate"], ["carbo", "Pão, massa e carboidrato"], ["ansiedade", "Ansiedade e estresse"], ["noite", "Belisco à noite"], ["delivery", "Delivery e fast food"]]}, {"i": 12, "id": "dia-dificil", "k": "single", "t": "Em que dia da semana fica mais difícil manter sua rotina?", "o": [["segunda", "Segunda"], ["terca", "Terça"], ["quarta", "Quarta"], ["quinta", "Quinta"], ["sexta", "Sexta"], ["fim-de-semana", "Fim de semana"], ["sem-dia", "Não tem um dia fixo"]]}, {"i": 13, "id": "sono", "k": "single", "t": "Como anda seu sono e seu inchaço?", "o": [["mal", "Durmo mal e acordo cansada"], ["inchada", "Durmo ok, mas acordo inchada"], ["sem-energia", "Durmo bem, mas sem energia"], ["bom", "Sono bom e energia ok"]]}, {"i": 14, "id": "insight", "k": "insight", "t": "Ciclo do recomeço", "o": [["faz-sentido", "Faz sentido — nunca tinha pensado assim"], ["novidade", "É novidade pra mim — quero entender melhor"]]}, {"i": 15, "id": "loading-1", "k": "loading", "t": "Carregando", "o": []}, {"i": 16, "id": "medo", "k": "single", "t": "Qual é o seu maior medo em relação a emagrecer?", "o": [["fracasso", "Medo de não conseguir de novo"], ["tempo", "Medo de não ter tempo"], ["dinheiro", "Medo de gastar e não ter resultado"], ["fome", "Medo de passar fome"], ["rebote", "Medo do efeito rebote"]]}, {"i": 17, "id": "pensamento", "k": "single", "t": "Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?", "o": [["bonita", "“Finalmente me sinto bonita de verdade”"], ["roupa", "“Vou usar aquela roupa que ficou guardada por meses”"], ["biquini", "“Não vou ter vergonha de colocar biquíni”"], ["foto", "“Vou querer tirar foto em tudo que é lugar”"], ["consegui", "“Consegui. Eu sabia que era capaz”"]]}, {"i": 18, "id": "regiao", "k": "multi", "t": "Qual região do seu corpo te incomoda mais?", "o": [["barriga", "Barriga e inchaço abdominal"], ["bracos", "Braços"], ["cintura", "Cintura e laterais"], ["quadril", "Quadril e coxas"], ["inteiro", "Corpo inteiro — tudo me incomoda"], ["nenhuma", "Não tenho queixa específica"]]}, {"i": 19, "id": "tempo-dia", "k": "single", "t": "Quanto tempo você consegue dedicar ao seu corpo por dia?", "o": [["10-15", "10 a 15 minutos"], ["15-20", "15 a 20 minutos"], ["20-30", "20 a 30 minutos"], ["30+", "Mais de 30 minutos"]]}, {"i": 20, "id": "motivo", "k": "multi", "t": "O que te fez chegar até aqui hoje?", "o": [["confianca", "Me sentir confiante no próprio corpo"], ["roupas", "Voltar a usar as roupas que eu amo"], ["saude", "Ter mais saúde e energia no dia a dia"], ["fotos", "Parar de me esconder nas fotos"], ["provar", "Provar pra mim mesma que consigo"]]}, {"i": 21, "id": "altura", "k": "input", "t": "Qual é a sua altura?", "o": []}, {"i": 22, "id": "peso", "k": "input", "t": "Qual é o seu peso atual?", "o": []}, {"i": 23, "id": "loading-2", "k": "loading", "t": "Carregando", "o": []}, {"i": 24, "id": "result", "k": "result", "t": "Resultado (perfil)", "o": []}, {"i": 25, "id": "sales", "k": "sales", "t": "Página de vendas", "o": []}]
 const QOPT = {}; for (const st of QSTEPS) for (const [id, lab] of st.o) QOPT[st.id + '|' + id] = lab
+// ── Testes do quiz: chance de cada versão ser a melhor ──────────────
+// Cada teste é uma coluna intro_ab / checkout_ab de quiz_sessions a partir da data "desde".
+// T1 = teste G (primeira tela). T2 em diante entram quando forem para o ar.
+const TESTE_MIN = 100
+const TESTES = [
+  { id: 'T1', nome: 'Primeira tela (teste G)', status: 'no ar desde 09/10', desde: '2026-10-09T13:40:00-03:00', arms: [['G-A', 'A · tela atual'], ['G-B', 'B · título de recomeço']] },
+  { id: 'T2', nome: 'Preço do Efeito Lipo (teste B)', status: 'aguardando link Greenn R$ 47' },
+  { id: 'T3', nome: 'Preço da mensal (teste C)', status: 'aguardando links Greenn' },
+  { id: 'T4', nome: 'Formato da assinatura (teste D)', status: 'a montar' },
+  { id: 'T5', nome: 'Com ou sem Efeito Lipo (teste E)', status: 'a montar' },
+  { id: 'T6', nome: 'Upsell pós-compra (teste F)', status: 'aguardando configuração Greenn' },
+]
+let testesUnsub = [], TESTE_D = {}
+const qTeste = (t) => `select coalesce(intro_ab,'') braco, count(*) visitas, count(*) filter (where status<>'pageview') comecou, count(*) filter (where reached_index>=24) resultado, count(*) filter (where checkout_clicked) comprar from quiz_sessions where intro_ab in (${t.arms.map((a) => "'" + a[0] + "'").join(',')}) and created_at >= '${t.desde}' group by 1`
+function testesWatch() {
+  for (const u of testesUnsub) { try { u() } catch {} }
+  testesUnsub = []; TESTE_D = {}
+  if (!mcp) { renderTestes(); return }
+  for (const t of TESTES.filter((x) => x.arms)) {
+    testesUnsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: qTeste(t) }, (ev) => {
+      if (ev.type === 'error') { TESTE_D[t.id] = { erro: ERRS[ev.error.code] || 'não consegui ler agora' }; renderTestes(); return }
+      if (ev.type !== 'data') return
+      const rows = parseRows(ev.result.payload); if (!rows) return
+      TESTE_D[t.id] = rows.map((r) => ({ braco: r.braco, visitas: Number(r.visitas) || 0, comecou: Number(r.comecou) || 0, resultado: Number(r.resultado) || 0, comprar: Number(r.comprar) || 0 }))
+      renderTestes()
+    }, { refetchInterval: 3600000 }))
+  }
+  renderTestes()
+}
+// Duas proporções (começou / visitas): z > 0 quer dizer que B está na frente. Φ(z) = chance de B ser a melhor.
+function zTeste(a, b) {
+  const pa = a.visitas ? a.comecou / a.visitas : 0, pb = b.visitas ? b.comecou / b.visitas : 0
+  const p = (a.comecou + b.comecou) / ((a.visitas + b.visitas) || 1)
+  const se = Math.sqrt(p * (1 - p) * (1 / (a.visitas || 1) + 1 / (b.visitas || 1)))
+  return se ? (pb - pa) / se : 0
+}
+function normCdf(z) { // Abramowitz & Stegun 26.2.17
+  const x = Math.abs(z), t = 1 / (1 + 0.2316419 * x), d = 0.3989423 * Math.exp(-x * x / 2)
+  const tail = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))))
+  return z >= 0 ? 1 - tail : tail
+}
+function renderTestes() {
+  const box = $('testes-lista'); if (!box) return
+  box.replaceChildren()
+  for (const t of TESTES) {
+    const card = el('div', { style: 'background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:10px' })
+    card.append(el('div', { style: 'display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline' }, el('strong', {}, t.id + ' · ' + t.nome), el('span', { class: 'muted' }, t.status)))
+    box.append(card)
+    if (!t.arms) { card.append(el('p', { class: 'muted' }, 'Ainda não está no ar.')); continue }
+    const d = TESTE_D[t.id]
+    if (!d) { card.append(el('p', { class: 'muted' }, mcp ? 'Lendo os números…' : 'Os números aparecem para quem tem o conector do Supabase.')); continue }
+    if (d.erro) { card.append(el('p', { class: 'muted' }, 'Supabase: ' + d.erro + '.')); continue }
+    const zero = { visitas: 0, comecou: 0, resultado: 0, comprar: 0 }
+    const linhas = t.arms.map(([k, nome]) => ({ k, nome, ...(d.find((x) => x.braco === k) || zero) }))
+    const [a, b] = linhas
+    const pB = normCdf(zTeste(a, b)), pA = 1 - pB
+    const chance = { [a.k]: pA, [b.k]: pB }
+    const pct = (n, m) => (m ? Math.round(100 * n / m) : 0) + '%'
+    card.append(el('div', { style: 'display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px' }, ...linhas.map((x) => el('div', { style: 'border-radius:10px;padding:12px;background:rgba(0,0,0,.03)' },
+      el('small', { class: 'muted' }, x.nome),
+      el('div', { style: 'font-size:30px;font-weight:800;line-height:1.1' }, Math.round(chance[x.k] * 100) + '%'),
+      el('small', { class: 'muted' }, 'chance de ser a melhor · ' + x.visitas + ' visitas')))))
+    const tabela = el('table', { style: 'width:100%;border-collapse:collapse;font-size:14px' },
+      el('thead', {}, el('tr', {}, ...['Versão', 'Visitas', 'Começou', 'Resultado', 'Comprar'].map((h) => el('th', { style: 'text-align:left;padding:6px;border-bottom:1px solid var(--line)' }, h)))),
+      el('tbody', {}, ...linhas.map((x) => el('tr', {},
+        el('td', { style: 'padding:6px' }, x.nome), el('td', { style: 'padding:6px' }, String(x.visitas)),
+        el('td', { style: 'padding:6px' }, pct(x.comecou, x.visitas)), el('td', { style: 'padding:6px' }, pct(x.resultado, x.visitas)), el('td', { style: 'padding:6px' }, pct(x.comprar, x.visitas))))))
+    card.append(tabela)
+    const menor = Math.min(a.visitas, b.visitas), lider = pB >= 0.5 ? b : a, chanceLider = Math.max(pA, pB)
+    card.append(el('p', { style: 'margin:0', class: 'muted' }, menor < TESTE_MIN
+      ? 'Ainda sem resposta: ' + menor + ' de ' + TESTE_MIN + ' visitas no braço menor. Quem está na frente hoje: ' + lider.nome + '.'
+      : 'Vencendo: ' + lider.nome + ', com ' + Math.round(chanceLider * 100) + '% de chance de ser a melhor.' + (chanceLider >= 0.95 ? ' Já dá para decidir.' : ' Ainda não é certeza (decide a partir de 95%).')))
+  }
+  const at = $('testes-at'); if (at) at.textContent = 'Atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+}
+
 const QUIZ_NOVO = '2026-10-08T11:10:00Z'
 // Filtro "Escolher datas" (de/até, horário de Brasília). Começa no dia do quiz novo (08/10).
 const DIA0 = '2026-10-08', okDia = (d) => /^\d{4}-\d{2}-\d{2}$/.test(d || '')
@@ -2783,6 +2914,139 @@ async function rtAjuste(id, r, nota, btn) {
 document.querySelectorAll('#rt-filtro button').forEach((b) => b.addEventListener('click', () => { rtFiltro = b.dataset.f; document.querySelectorAll('#rt-filtro button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); renderRoteiros() }))
 setInterval(renderRefStatus, 60000)
 
+// ── Vídeos (tabela public.videos_gerados, mesmo Supabase das outras abas) ──
+// Tudo que vem do banco é dado: entra na página só por textContent/atributos (el), nunca por innerHTML.
+const VD_STATUS = ['rascunho', 'aprovado', 'publicado', 'ajuste', 'reprovado']
+const VD_ROT = { rascunho: ['wait', 'Rascunho'], aprovado: ['o', 'Aprovado'], publicado: ['ok', 'Publicado'], ajuste: ['wait', 'Ajuste pedido'], reprovado: ['no', 'Reprovado'] }
+const VD_TIPO = { criativo: 'Criativo', aula: 'Aula', post: 'Post' }
+const VD_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+const VD_SQL = 'select id, created_at, produto, tipo, titulo, dia_aula, formato, plataforma, tags, legenda, url_publica, duracao_seg, status, feedback, feedback_em from public.videos_gerados order by created_at desc limit 100'
+const vdNotas = {}
+let VD = null, vdErro = '', vdCarregando = false, vdTipo = 'todos', vdSt = 'avaliar', vdEm = null, vdSeq = 0
+const VD_GRUPO = { rascunho: 'avaliar', ajuste: 'avaliar', aprovado: 'aprovados', publicado: 'aprovados', reprovado: 'reprovados' }
+const VD_LISTA = { avaliar: 'Para avaliar', aprovados: 'Aprovados', reprovados: 'Reprovados' }
+const vdBusy = new Set()
+const vdUrl = (u) => { try { const x = new URL(String(u || '')); return x.protocol === 'https:' || x.protocol === 'http:' ? x.href : '' } catch { return '' } }
+const vdErroTxt = (e) => e && e.code === 'tool_error' ? 'a consulta falhou no Supabase (' + (e.message || 'sem detalhe') + ')' : (e && ERRS[e.code]) || ('não consegui falar com o Supabase agora (' + ((e && (e.message || e.code)) || 'erro') + ')')
+async function vdCopiar(txt, ok) {
+  try { await navigator.clipboard.writeText(txt); toast(ok) }
+  catch { const t = el('textarea'); t.value = txt; document.body.append(t); t.select(); let feito = false; try { feito = document.execCommand('copy') } catch {} t.remove(); toast(feito ? ok : 'Não consegui copiar. Selecione o texto e copie à mão.') }
+}
+async function vdCarregar() {
+  if (!mcp) { vdErro = 'O conector do Supabase não está disponível nesta visualização, então a lista de vídeos não carrega.'; vdRender(); return }
+  const seq = ++vdSeq; vdCarregando = true; vdErro = ''; vdRender()
+  try {
+    const res = await mcp.callTool('Supabase', 'execute_sql', { project_id: PROJ, query: VD_SQL }, { cache: false })
+    if (seq !== vdSeq) return
+    const rows = parseRows(res.payload)
+    if (!rows) throw Object.assign(new Error('resposta em formato inesperado'), { code: 'formato' })
+    VD = rows.filter((r) => r && typeof r === 'object'); vdEm = Date.now()
+  } catch (e) { if (seq === vdSeq) vdErro = 'Não consegui carregar os vídeos: ' + vdErroTxt(e) + '.' }
+  finally { if (seq === vdSeq) { vdCarregando = false; vdRender() } }
+}
+const vdSql = (t) => String(t).replace(/\0/g, '').replace(/'/g, "''")
+async function vdMudar(v, novo, nota) {
+  const id = String(v.id || '')
+  if (!mcp || !VD_UUID.test(id) || !VD_STATUS.includes(novo)) { toast('Não consegui mudar o status deste vídeo.'); return }
+  if (vdBusy.has(id) || (v.status === novo && novo !== 'ajuste' && novo !== 'reprovado')) return
+  const texto = String(nota || '').trim().slice(0, 1500)
+  if (novo === 'ajuste' && !texto) { toast('Escreva o que precisa mudar no vídeo e clique em "Pedir ajuste".'); return }
+  vdBusy.add(id); vdRender(); vdFoco(id, novo)
+  try {
+    const fb = (novo === 'ajuste' || novo === 'reprovado') ? ", feedback = '" + vdSql(texto) + "', feedback_em = now()" : ''
+    const res = await mcp.callTool('Supabase', 'execute_sql', { project_id: PROJ, query: "update public.videos_gerados set status = '" + novo + "'" + fb + " where id::text = '" + id.toLowerCase() + "' returning id, status" }, { cache: false })
+    const rows = parseRows(res.payload)
+    if (rows && !rows.length) throw Object.assign(new Error('vídeo não encontrado na tabela'), { code: 'tool_error' })
+    v.status = novo
+    if (fb) { v.feedback = texto; v.feedback_em = new Date().toISOString(); delete vdNotas[id] }
+    toast('"' + (v.titulo || 'Vídeo') + '" agora está como ' + VD_ROT[novo][1].toLowerCase() + '.' + (fb ? ' O agente vai ler o seu pedido.' : ''))
+  } catch (e) { toast('Não consegui mudar o status: ' + vdErroTxt(e) + '.') }
+  finally { vdBusy.delete(id); vdRender(); vdFoco(id, novo) }
+}
+function vdFoco(id, st) { if (!VD_UUID.test(id) || !VD_STATUS.includes(st)) return; const b = document.querySelector('[data-vdid="' + id.toLowerCase() + '"][data-vds="' + st + '"]'); if (b) b.focus() }
+function vdBtn(v, id, okId, busy, rotulo, status, cls) {
+  const b = el('button', { class: 'b ' + (cls || ''), type: 'button', onclick: () => vdMudar(v, status) }, rotulo)
+  if (okId) { b.dataset.vdid = id.toLowerCase(); b.dataset.vds = status }
+  if (!okId || busy || !mcp) b.disabled = true
+  return b
+}
+function vdAcoes(v, id, okId, busy, titulo) {
+  const g = VD_GRUPO[v.status] || 'avaliar'
+  const lbl = (t) => el('span', { class: 'k' }, t)
+  const salvo = v.feedback ? el('div', { class: 'vd-fb-salvo' }, el('b', {}, 'Seu último pedido' + (v.feedback_em ? ' · ' + fmtDt(v.feedback_em) : '')), String(v.feedback)) : null
+  if (g === 'reprovados') return el('div', { class: 'vd-st' }, lbl('Reprovado'), salvo, el('div', { class: 'btns' }, vdBtn(v, id, okId, busy, 'Voltar para avaliação', 'rascunho')))
+  if (g === 'aprovados') return el('div', { class: 'vd-st' }, lbl(v.status === 'publicado' ? 'Aprovado e publicado' : 'Aprovado'),
+    el('p', { class: 'muted' }, 'O que fazer com os aprovados ainda vamos decidir juntos.'),
+    el('div', { class: 'btns' }, v.status === 'publicado' ? null : vdBtn(v, id, okId, busy, 'Marcar como publicado', 'publicado'), vdBtn(v, id, okId, busy, 'Voltar para avaliação', 'rascunho')))
+  return el('div', { class: 'vd-st' }, lbl('Sua decisão'), el('div', { class: 'btns' }, vdBtn(v, id, okId, busy, 'Aprovar', 'aprovado', 'ok')), vdFeedback(v, id, okId, busy, titulo))
+}
+function vdFeedback(v, id, okId, busy, titulo) {
+  const nota = el('textarea', { rows: '3', placeholder: 'O que precisa mudar? Ex.: trocar a voz, encurtar para 15 s, mudar a frase do começo…', 'aria-label': 'O que mudar em ' + titulo })
+  nota.value = vdNotas[id] || ''
+  nota.addEventListener('input', () => { vdNotas[id] = nota.value })
+  const bAj = el('button', { class: 'b', type: 'button', onclick: () => vdMudar(v, 'ajuste', nota.value) }, 'Pedir ajuste')
+  const bRep = el('button', { class: 'b bad', type: 'button', onclick: () => vdMudar(v, 'reprovado', nota.value) }, 'Reprovar')
+  for (const b of [bAj, bRep, nota]) if (!okId || busy || !mcp) b.disabled = true
+  return el('div', { class: 'vd-fb' },
+    el('span', { class: 'k' }, 'Pedir ajuste ou reprovar'),
+    v.feedback ? el('div', { class: 'vd-fb-salvo' }, el('b', {}, 'Seu último pedido' + (v.feedback_em ? ' · ' + fmtDt(v.feedback_em) : '')), String(v.feedback)) : null,
+    nota, el('div', { class: 'btns' }, bAj, bRep))
+}
+function vdCard(v) {
+  const id = String(v.id || ''), okId = VD_UUID.test(id), busy = vdBusy.has(id)
+  const url = vdUrl(v.url_publica), rot = VD_ROT[v.status] || ['n', v.status || '–']
+  const vert = String(v.formato || '').trim() === '9:16'
+  const titulo = v.titulo || 'Vídeo sem título'
+  const media = el('div', { class: 'vd-media ' + (vert ? 'v916' : 'v169') }, url ? el('video', { controls: '', preload: 'metadata', playsinline: '', src: url, 'aria-label': 'Prévia: ' + titulo }) : 'Sem link do vídeo ainda')
+  const vid = media.querySelector('video')
+  if (vid) vid.addEventListener('error', () => { media.textContent = ''; media.append(el('div', { class: 'vd-erro' }, el('span', {}, 'O painel não consegue tocar o vídeo aqui dentro.'), el('a', { class: 'b pri', href: url, target: '_blank', rel: 'noopener' }, 'Assistir em nova aba'))) }, { once: true })
+  const tags = Array.isArray(v.tags) ? v.tags.filter(Boolean) : []
+  const dur = Number(v.duracao_seg) > 0 ? Math.round(Number(v.duracao_seg)) + ' s' : ''
+  const info = [v.produto, v.dia_aula != null && v.dia_aula !== '' ? 'Dia da aula: ' + v.dia_aula : '', dur, fmtDt(v.created_at)].filter(Boolean).join(' · ')
+  const leg = v.legenda ? String(v.legenda) : ''
+  const card = el('article', { class: 'card vd-card' }, media,
+    el('div', { class: 'vd-chips' }, el('span', { class: 'pill o' }, VD_TIPO[v.tipo] || v.tipo || 'Vídeo'), v.formato ? el('span', { class: 'pill n' }, String(v.formato)) : null, v.plataforma ? el('span', { class: 'pill n' }, String(v.plataforma)) : null, el('span', { class: 'pill ' + rot[0] }, rot[1])),
+    el('h3', {}, titulo),
+    el('p', { class: 'vd-info' }, info),
+    tags.length ? el('div', { class: 'vd-chips', 'aria-label': 'Tags' }, ...tags.map((t) => el('span', { class: 'pill n' }, '#' + t))) : null,
+    leg ? el('details', { class: 'vd-leg', open: leg.length <= 140 ? '' : null }, el('summary', {}, 'Legenda'), el('p', {}, leg)) : el('p', { class: 'muted' }, 'Sem legenda.'),
+    el('div', { class: 'btns' },
+      leg ? el('button', { class: 'b', type: 'button', onclick: () => vdCopiar(leg, 'Legenda copiada.') }, 'Copiar legenda') : null,
+      url ? el('button', { class: 'b', type: 'button', onclick: () => vdCopiar(url, 'Link copiado.') }, 'Copiar link') : null,
+      url ? el('a', { class: 'b pri', href: url, target: '_blank', rel: 'noopener' }, 'Assistir') : null,
+      url ? el('a', { class: 'b', href: url, download: '', target: '_blank', rel: 'noopener' }, 'Baixar') : null),
+    vdAcoes(v, id, okId, busy, titulo))
+  return card
+}
+function vdRender() {
+  const lista = VD || [], cont = { rascunho: 0, aprovado: 0, publicado: 0, ajuste: 0, reprovado: 0 }
+  for (const v of lista) if (cont[v.status] != null) cont[v.status]++
+  const nb = $('nb-videos'); nb.textContent = VD ? String(cont.rascunho) : '–'; nb.classList.toggle('hot', cont.rascunho > 0)
+  $('vd-at').textContent = vdCarregando ? 'carregando…' : vdErro ? 'sem dados' : vdEm ? 'atualizado ' + new Date(vdEm).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '–'
+  $('vd-atualizar').disabled = vdCarregando
+  const tl = $('vd-tiles'); tl.textContent = ''
+  const n = (x) => VD ? String(x) : '–'
+  for (const [k, v, s, c] of [['Total de vídeos', n(lista.length), lista.length >= 100 ? 'os 100 mais recentes' : 'gerados pelo agente', ''], ['Rascunhos', n(cont.rascunho), 'esperando você', 'o'], ['Aprovados', n(cont.aprovado), 'prontos para publicar', 'gd'], ['Publicados', n(cont.publicado), 'já no ar', 'g'], ['Ajuste ou reprovado', n(cont.ajuste + cont.reprovado), 'o agente refaz', '']])
+    tl.append(el('div', { class: 'tile ' + c }, el('span', { class: 'k' }, k), el('span', { class: 'v' }, v), el('span', { class: 's' }, s)))
+  const er = $('vd-err'); er.textContent = ''; er.hidden = !vdErro
+  if (vdErro) er.append(vdErro + ' ', el('button', { class: 'b', type: 'button', onclick: () => vdCarregar() }, 'Tentar de novo'))
+  const contL = { avaliar: 0, aprovados: 0, reprovados: 0 }
+  for (const v of lista) contL[VD_GRUPO[v.status] || 'avaliar']++
+  document.querySelectorAll('#vd-st button').forEach((b) => { b.textContent = VD_LISTA[b.dataset.v] + (VD ? ' · ' + contL[b.dataset.v] : '') })
+  const box = $('vd-lista'); box.textContent = ''
+  const aviso = (t) => box.append(el('div', { class: 'empty', style: 'grid-column:1/-1' }, t))
+  if (!VD) { if (!vdErro) aviso(vdCarregando ? 'Carregando vídeos…' : 'Os vídeos aparecem aqui assim que a conexão com o Supabase estiver pronta.'); return }
+  if (!lista.length) { aviso('Nenhum vídeo ainda. Peça um criativo ao agente.'); return }
+  const vis = lista.filter((v) => (vdTipo === 'todos' || v.tipo === vdTipo) && (VD_GRUPO[v.status] || 'avaliar') === vdSt)
+  if (!vis.length) { aviso(vdSt === 'avaliar' ? 'Nenhum vídeo esperando a sua avaliação.' : vdSt === 'aprovados' ? 'Nenhum vídeo aprovado ainda.' : 'Nenhum vídeo reprovado.'); return }
+  for (const v of vis) box.append(vdCard(v))
+}
+function vdFiltro(grupo, set) { document.querySelectorAll('#' + grupo + ' button').forEach((b) => b.addEventListener('click', () => { set(b.dataset.v); document.querySelectorAll('#' + grupo + ' button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); vdRender() })) }
+vdFiltro('vd-tipo', (v) => { vdTipo = v }); vdFiltro('vd-st', (v) => { vdSt = v })
+$('vd-atualizar').addEventListener('click', () => vdCarregar())
+document.querySelector('nav [data-tab="videos"]').addEventListener('click', () => { if (mcp && (!vdEm || Date.now() - vdEm > 60000)) vdCarregar() })
+vdRender()
+
 // ── Arranque ───────────────────────────────────────────────────────
 renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); renderRcPlano(null); renderRef(); renderRoteiros()
 ;(async () => {
@@ -2791,8 +3055,8 @@ renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); rend
   ;[db, user, mcp] = await Promise.all([c.use('db').catch(() => null), c.use('user').catch(() => null), c.use('mcp').catch(() => null)])
   if (user) { try { me = await user.id() } catch {} }
   c.use('downloads').then((x) => { DL = x }).catch(() => {})
-  if (mcp) { watchPeriodo(); rcWatch(); qWatch() }
-  else { $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; $('m-sets').innerHTML = '<tr><td colspan="7" class="l muted">Os números ao vivo aparecem para quem tem os conectores do Meta e do Supabase.</td></tr>'; $('m-ads').innerHTML = '' }
+  if (mcp) { watchPeriodo(); rcWatch(); qWatch(); testesWatch(); vdCarregar() }
+  else { vdCarregar(); $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; $('m-sets').innerHTML = '<tr><td colspan="7" class="l muted">Os números ao vivo aparecem para quem tem os conectores do Meta e do Supabase.</td></tr>'; $('m-ads').innerHTML = '' }
   if (!db) { $('pr-state').textContent = 'entre na sua conta'; $('ch-state').textContent = 'entre na sua conta'; return }
   $('pr-state').textContent = 'aprovações salvas no painel'; $('ch-state').textContent = 'conversas salvas no painel'
   db.doc('status/rotina').onSnapshot((s) => { if (s.exists) renderStatus(s.data()) }, () => {})
@@ -3475,3 +3739,4 @@ renderSelect(); go(cur);
 })();
 </script>
 
+</body></html>
