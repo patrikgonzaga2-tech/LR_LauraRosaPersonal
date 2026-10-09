@@ -3,10 +3,11 @@ import { sbRpc, supabaseConfigured } from '@/lib/supabase'
 import Login from '../../efeito-lipo-quiz/dashboard/_login'
 import { PeriodFilter, resolvePeriod, type SearchParams } from '../../efeito-lipo-quiz/dashboard/_period'
 import { PainelShell } from '../_shell'
+import { assinantes } from '../_lib/dados'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Recorrência — Painel da Marca', robots: { index: false, follow: false } }
+export const metadata = { title: 'Recorrência — Painel Corpo Feliz', robots: { index: false, follow: false } }
 
 type Resumo = { assinantes: number; cobrancas: number; receita_coletada: number; mrr_estimado: number; arr_estimado: number; cancelados: number; pagantes_total: number; expirados: number }
 type Assinante = { nome: string; email: string; sub: string; cobrancas: number; total_pago: number; primeira: string; ultima: string; status: string; plano: string; mrr: number; vence_em: string }
@@ -56,6 +57,13 @@ export default async function RecorrenciaPage({ searchParams }: { searchParams: 
     sbRpc<Resumo>('recorrencia_resumo', { p_since: since, p_until: until }),
     sbRpc<Assinante>('recorrencia_lista', { p_limit: 100 }),
   ])
+  // Renovações: quem vence nos próximos 14 dias (avisar antes) e quem venceu há
+  // até 14 dias sem renovar (recuperar). Lê assinantes_norm (só leitura).
+  const todos = await assinantes()
+  const agoraMs = Date.now(), D = 86_400_000
+  const vence = (a: { vence_em: string | null }) => (a.vence_em ? new Date(a.vence_em).getTime() : NaN)
+  const aVencer = todos.filter((a) => a.status === 'ativo' && vence(a) >= agoraMs - D && vence(a) <= agoraMs + 14 * D).sort((x, y) => vence(x) - vence(y))
+  const venceram = todos.filter((a) => a.status !== 'ativo' && vence(a) < agoraMs && vence(a) >= agoraMs - 14 * D).sort((x, y) => vence(y) - vence(x))
   const d: Resumo = r ?? { assinantes: 0, cobrancas: 0, receita_coletada: 0, mrr_estimado: 0, arr_estimado: 0, cancelados: 0, pagantes_total: 0, expirados: 0 }
 
   const td: React.CSSProperties = { padding: '11px 14px', fontSize: 14, color: 'var(--ink)' }
@@ -78,8 +86,32 @@ export default async function RecorrenciaPage({ searchParams }: { searchParams: 
       </div>
 
       <div className="rounded-xl p-3 mt-4" style={{ fontSize: 12.5, background: 'rgba(245,113,0,.07)', color: 'var(--sub)', lineHeight: 1.55, border: '1px solid rgba(245,113,0,.18)' }}>
-        💡 O <strong>MRR normaliza cada plano pela sua duração</strong>: um anual de R$ 479 entra como R$ 39,92/mês, um mensal de R$ 87 entra como R$ 87. (Antes tudo era dividido por 6, como se todo mundo fosse semestral — o anual contava em dobro e o mensal por um sexto.) <strong>Cancelamento</strong> = quem <em>pagava</em> e cancelou; assinatura iniciada e nunca paga não é churn. Nenhum plano completou um ciclo ainda, então a <strong>primeira renovação</strong> é o teste real — por volta de 25/07.
+        💡 O <strong>MRR normaliza cada plano pela sua duração</strong>: um anual de R$ 479 entra como R$ 39,92/mês, um mensal de R$ 87 entra como R$ 87. (Antes tudo era dividido por 6, como se todo mundo fosse semestral — o anual contava em dobro e o mensal por um sexto.) <strong>Cancelamento</strong> = quem <em>pagava</em> e cancelou; assinatura iniciada e nunca paga não é churn. A lista <strong>A vencer</strong> abaixo é a fila de retenção: uma mensagem antes do vencimento segura a renovação (e evita perder por cartão recusado).
       </div>
+
+      <section className="mt-7">
+        <h2 className="font-display" style={{ fontSize: 18, fontWeight: 800, color: 'var(--ink)', marginBottom: 4 }}>Renovações: a vencer e vencidas</h2>
+        <p style={{ fontSize: 12.5, color: 'var(--sub)', marginBottom: 12 }}>{aVencer.length} vencem nos próximos 14 dias ({brl0(aVencer.reduce((s, a) => s + N(a.ultimo_valor), 0))}) · {venceram.length} venceram nos últimos 14 dias sem renovar ({brl0(venceram.reduce((s, a) => s + N(a.ultimo_valor), 0))}).</p>
+        <div className="rounded-2xl overflow-x-auto" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 640 }}>
+            <thead><tr style={{ borderBottom: '1px solid rgba(0,0,0,.08)' }}>
+              <th style={{ ...thR, textAlign: 'left' }}>Situação</th><th style={{ ...thR, textAlign: 'left' }}>Assinante</th><th style={{ ...thR, textAlign: 'left' }}>Plano</th><th style={thR}>Último valor</th><th style={thR}>Vence / venceu</th>
+            </tr></thead>
+            <tbody>
+              {[...aVencer.map((a) => ['a vencer', a] as const), ...venceram.map((a) => ['venceu', a] as const)].map(([sit, a], i) => (
+                <tr key={a.email + sit + i} style={{ borderTop: i ? '1px solid rgba(0,0,0,.05)' : 'none' }}>
+                  <td style={{ ...td, fontWeight: 700, color: sit === 'venceu' ? '#c0392b' : '#b9770e' }}>{sit}</td>
+                  <td style={td}><div style={{ fontWeight: 700 }}>{a.nome || '—'}</div><div style={{ fontSize: 11.5, color: 'var(--mute)' }}>{mask(a.email)}</div></td>
+                  <td style={{ ...td, color: 'var(--sub)' }}>{planoCurto(a.plano_nome)}</td>
+                  <td style={tdR}>{brl(N(a.ultimo_valor))}</td>
+                  <td style={{ ...tdR, color: 'var(--sub)' }}>{dt(a.vence_em || '')}</td>
+                </tr>
+              ))}
+              {aVencer.length + venceram.length === 0 && <tr><td colSpan={5} style={{ ...td, color: 'var(--mute)', textAlign: 'center' }}>Nenhuma renovação nas próximas 2 semanas.</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <section className="mt-7">
         <h2 className="font-display" style={{ fontSize: 18, fontWeight: 800, color: 'var(--ink)', marginBottom: 12 }}>Assinantes</h2>

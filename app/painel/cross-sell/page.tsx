@@ -6,7 +6,7 @@ import { PainelShell } from '../_shell'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Cross-sell — Painel da Marca', robots: { index: false, follow: false } }
+export const metadata = { title: 'Cross-sell — Painel Corpo Feliz', robots: { index: false, follow: false } }
 
 type Resumo = {
   clientes: number; multi_familia: number; clientes_el: number; clientes_com: number; el_e_com: number

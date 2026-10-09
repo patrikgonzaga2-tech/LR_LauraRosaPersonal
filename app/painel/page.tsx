@@ -1,214 +1,228 @@
-import { cookies } from 'next/headers'
-import { sbRpc, supabaseConfigured } from '@/lib/supabase'
-import Login from '../efeito-lipo-quiz/dashboard/_login'
-import { PeriodFilter, resolvePeriod, type SearchParams } from '../efeito-lipo-quiz/dashboard/_period'
+// COCKPIT DO DIA — a primeira tela do Painel Corpo Feliz.
+// Responde, nesta ordem: (1) vamos bater a meta de lucro do mês? (2) como foi
+// hoje × ontem × 7 dias? (3) o que eu faço agora? (4) de onde veio o dinheiro?
+import { META, custosDoMes, metaAtual } from './_config'
 import { PainelShell } from './_shell'
+import { bloqueio } from './_lib/acesso'
+import {
+  ATIVOS, PROBLEMA, assinantes, compras, contaCompras, historicoComunidade, metaAnuncios, metaAtualizadoEm, metaConjuntos,
+  metaStatus, montarAnuncios, origemDe, ORIGEM_COR, pendentes, sessoes, sinal, vendasRaw, visitaAnuncio, sessaoTeste, type Compra, type MetaLinha,
+} from './_lib/dados'
+import { brl, brl0, diaBR, div, horaBR, int, pct, plural } from './_lib/fmt'
+import { diaHoje, somaDias } from './_lib/periodo'
+import { Barra, Caixa, Grade, Pill, Secao, Tabela, Tile, Titulo, td, tdL, th, thL } from './_lib/ui'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Painel da Marca — Corpo Feliz', robots: { index: false, follow: false } }
+export const metadata = { title: 'Cockpit do dia — Painel Corpo Feliz', robots: { index: false, follow: false } }
 
-type Gateway = { gateway: string; vendas: number; itens: number; receita: number; liquido: number; reembolsos: number; reembolsos_valor: number }
-type Canal = { canal: string; vendas: number; itens: number; receita: number; liquido: number }
-type Prod = { produto: string; familia: string; tipo: string; gateway: string; vendas: number; receita: number; liquido: number; reembolsos: number }
-type Resumo = { spend: number }
+const DIA = 86_400_000
 
-const N = (v: unknown) => Number(v) || 0
-const brl = (n: number) => 'R$ ' + (Math.round(n * 100) / 100).toLocaleString('pt-BR', { minimumFractionDigits: n % 1 === 0 ? 0 : 2, maximumFractionDigits: 2 })
-const brl0 = (n: number) => 'R$ ' + Math.round(n).toLocaleString('pt-BR')
-const int = (n: number) => Math.round(n).toLocaleString('pt-BR')
-const pct1 = (n: number, d: number) => (d > 0 ? (Math.round((n / d) * 1000) / 10).toLocaleString('pt-BR') + '%' : '—')
-const div = (n: number, d: number) => (d > 0 ? n / d : 0)
+export default async function Cockpit() {
+  const b = await bloqueio('hoje')
+  if (b) return b
 
-const GW_LABEL: Record<string, string> = { hotmart: 'Hotmart', greenn: 'Greenn' }
-const CANAL_LABEL: Record<string, string> = { ads: 'Anúncios', comercial: 'Comercial / WhatsApp', organico: 'Orgânico', direto: 'Direto / sem rastreio' }
-const FAM_COR: Record<string, string> = { 'Efeito Lipo': 'var(--o)', 'Comunidade': 'var(--g)' }
+  const hoje = diaHoje()
+  const ontem = somaDias(hoje, -1)
+  const d7 = somaDias(hoje, -6)
+  const d3 = somaDias(hoje, -2)
+  const MA = metaAtual(hoje)
+  const mesIni = MA.inicio
+  const desde = d7 < mesIni ? d7 : mesIni
+  const agora = new Date().toISOString()
 
-function Card({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent?: string }) {
-  return (
-    <div className="rounded-2xl p-5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)', boxShadow: '0 4px 16px rgba(0,0,0,.04)' }}>
-      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase', color: 'var(--mute)' }}>{label}</div>
-      <div className="font-display" style={{ fontSize: 30, fontWeight: 800, color: accent || 'var(--ink)', lineHeight: 1.1, marginTop: 4 }}>{value}</div>
-      {sub && <div style={{ fontSize: 12.5, color: 'var(--sub)', marginTop: 2 }}>{sub}</div>}
-    </div>
-  )
-}
-
-export default async function PainelGeralPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  const jar = await cookies()
-  const pw = process.env.QUIZ_DASHBOARD_PASSWORD
-  if (!(Boolean(pw) && jar.get('qd_auth')?.value === pw)) return <Login configured={Boolean(pw)} />
-  if (!supabaseConfigured()) return <PainelShell active="marca-geral"><p style={{ color: 'var(--sub)' }}>Supabase não configurado.</p></PainelShell>
-
-  const sp = await searchParams
-  const { since, until, range, periodLabel } = resolvePeriod(sp)
-
-  const [gateways, canais, produtos, resumo] = await Promise.all([
-    sbRpc<Gateway>('marca_resumo', { p_since: since, p_until: until }),
-    sbRpc<Canal>('marca_por_canal', { p_since: since, p_until: until }),
-    sbRpc<Prod>('marca_por_produto', { p_since: since, p_until: until }),
-    sbRpc<Resumo>('funil_resumo', { p_since: since, p_until: until }), // spend (independe de gateway)
+  const [cs, conj, ads, st, raw, ses, hist, assin, metaEm] = await Promise.all([
+    compras(`${desde}T00:00:00-03:00`, agora),
+    metaConjuntos(desde, hoje),
+    metaAnuncios(d7, hoje),
+    metaStatus(),
+    vendasRaw(new Date(Date.now() - 3 * DIA).toISOString(), agora),
+    sessoes(`${desde}T00:00:00-03:00`, agora),
+    historicoComunidade(agora),
+    assinantes(),
+    metaAtualizadoEm(),
   ])
 
-  // Totais da marca (todos os gateways)
-  // vendas = PEDIDOS (dedup por cliente+dia) · itens = cada produto vendido.
-  // A tabela "por produto" soma itens; sem os dois nomes na tela, o leitor via
-  // 1.127 no card, somava a tabela e chegava em 1.350 sem entender por quê.
-  const vendas = gateways.reduce((a, g) => a + N(g.vendas), 0)
-  const itens = gateways.reduce((a, g) => a + N(g.itens), 0)
-  const receita = gateways.reduce((a, g) => a + N(g.receita), 0)
-  const liquido = gateways.reduce((a, g) => a + N(g.liquido), 0)
-  const reembolsos = gateways.reduce((a, g) => a + N(g.reembolsos), 0)
-  const reembValor = gateways.reduce((a, g) => a + N(g.reembolsos_valor), 0)
-  const spend = N(resumo?.[0]?.spend)
-  const lucro = liquido - spend
-  const ticket = div(receita, vendas)
-
-  // Duas perguntas diferentes, dois números:
-  //
-  // ROAS TOTAL — "quanto de faturamento o dinheiro de mídia trouxe?"
-  //   AQUISIÇÃO (bruto) ÷ investido. Tira a recorrência do numerador: assinatura
-  //   cobrada da base não foi comprada com o dinheiro do Meta. Com ela dentro o
-  //   card marcava 2,16x quando a aquisição real rendia 1,36x.
-  //
-  // ROI — "quanto de LUCRO sobrou sobre o que investi?"
-  //   (líquido do negócio inteiro − investido) ÷ investido. Aqui a recorrência
-  //   ENTRA: é caixa que o negócio recebeu no período. E usa o LÍQUIDO (após as
-  //   taxas dos gateways), não o bruto — senão não é lucro, é faturamento.
-  //   É o mesmo lucro do card ao lado, expresso como % do investimento.
-  //
-  // O "ROAS de anúncios" (só o canal ads) vive na aba Canais, junto do CAC.
-  const receitaRecorrencia = N(canais.find((c) => c.canal === 'recorrencia')?.receita)
-  const receitaAquisicao = receita - receitaRecorrencia
-  const roasTotal = div(receitaAquisicao, spend)
-  const roi = spend > 0 ? (lucro / spend) * 100 : 0
-
-  // Famílias (junta gateways): agrega por familia
-  const famMap = new Map<string, { vendas: number; receita: number; liquido: number }>()
-  for (const p of produtos) {
-    const f = famMap.get(p.familia) ?? { vendas: 0, receita: 0, liquido: 0 }
-    f.vendas += N(p.vendas); f.receita += N(p.receita); f.liquido += N(p.liquido)
-    famMap.set(p.familia, f)
+  // ── Recortes por dia ──
+  const noDia = (c: Compra, a: string, z: string) => { const d = diaBR(c.approved_at); return d >= a && d <= z }
+  const gastoEntre = (a: string, z: string, rows: MetaLinha[] = conj) => rows.filter((r) => r.date >= a && r.date <= z).reduce((s, r) => s + r.spend, 0)
+  const resumo = (a: string, z: string) => {
+    const l = cs.filter((c) => noDia(c, a, z))
+    const gasto = gastoEntre(a, z)
+    const liquido = l.reduce((s, c) => s + c.liquido, 0)
+    const receita = l.reduce((s, c) => s + c.price, 0)
+    return { itens: l.length, compras: contaCompras(l), receita, liquido, gasto, lucroAds: liquido - gasto }
   }
-  const familias = [...famMap.entries()].sort((a, b) => b[1].receita - a[1].receita)
+  const rHoje = resumo(hoje, hoje), rOntem = resumo(ontem, ontem), r7 = resumo(d7, hoje)
+  const mesFim = somaDias(mesIni, MA.dias - 1)
+  const rMes = resumo(mesIni, mesFim)
 
-  const td: React.CSSProperties = { padding: '11px 14px', fontSize: 14, color: 'var(--ink)' }
-  const tdR: React.CSSProperties = { ...td, textAlign: 'right' }
-  const thR: React.CSSProperties = { ...tdR, fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--mute)' }
+  // ── Meta do mês (lucro = líquido − Meta − outros custos) ──
+  const custos = custosDoMes()
+  const custoDia = custos / MA.dias
+  const t0 = new Date(`${mesIni}T00:00:00-03:00`).getTime()
+  const passados = Math.min(MA.dias, Math.max(0, (Date.now() - t0) / DIA))
+  const resta = Math.max(0, MA.dias - passados)
+  const lucro = rMes.lucroAds - custos
+  const lucroAteHoje = rMes.lucroAds - custoDia * passados // custos rateados até agora
+  const pctTempo = passados / MA.dias
+  const pctMeta = div(Math.max(0, lucroAteHoje), META.lucro)
+  const ritmoMes = passados >= 1 ? rMes.lucroAds / passados : 0
+  const r7c = resumo(somaDias(hoje, -7), ontem) // 7 dias completos (sem o hoje parcial)
+  const ritmo7 = r7c.lucroAds / 7
+  const projMes = rMes.lucroAds + ritmoMes * resta - custos
+  const proj7 = rMes.lucroAds + ritmo7 * resta - custos
+  const falta = Math.max(0, META.lucro - lucro)
+  const precisaDia = resta > 0.01 ? falta / resta : falta // lucro dos anúncios (líquido − Meta) por dia
+  const estado: ['ok' | 'wait' | 'no' | 'n', string] =
+    lucro >= META.lucro ? ['ok', 'Meta batida'] : pctTempo < 0.03 ? ['n', 'Começando'] : pctMeta >= pctTempo ? ['ok', 'No ritmo'] : pctMeta >= pctTempo * 0.6 ? ['wait', 'Abaixo do ritmo'] : ['no', 'Bem abaixo do ritmo']
+
+  // Meta diária reversa em vendas: quantas anuais (ou Comunidade) por dia fecham a conta.
+  const comMes = cs.filter((c) => c.familia === 'Comunidade' && noDia(c, mesIni, mesFim))
+  const liqCom = div(comMes.reduce((s, c) => s + c.liquido, 0), comMes.length)
+  const elMes = cs.filter((c) => c.familia === 'Efeito Lipo' && noDia(c, mesIni, mesFim))
+  const liqEl = div(elMes.reduce((s, c) => s + c.liquido, 0), contaCompras(elMes))
+  const comPorDia = liqCom > 0 ? precisaDia / liqCom : null
+
+  // ── Origem do dinheiro no mês ──
+  const xcodsQuiz = new Set(ses.map((s) => s.xcod).filter(Boolean) as string[])
+  const origens = new Map<string, { itens: number; liquido: number }>()
+  for (const c of cs.filter((c) => noDia(c, mesIni, mesFim))) {
+    const o = origemDe(c, xcodsQuiz, hist)
+    const x = origens.get(o) ?? { itens: 0, liquido: 0 }
+    x.itens++; x.liquido += c.liquido
+    origens.set(o, x)
+  }
+  const origensL = [...origens.entries()].sort((a, b) => b[1].liquido - a[1].liquido)
+
+  // ── O que fazer agora (regras, sem IA) ──
+  const acoes: { tipo: 'ok' | 'wait' | 'no' | 'n'; titulo: string; texto: string; href?: string }[] = []
+  const pend = pendentes(raw).filter((p) => Date.now() - new Date(p.quando).getTime() < 2 * DIA)
+  if (pend.length) acoes.push({ tipo: 'no', titulo: `Chamar ${plural(pend.length, 'pessoa', 'pessoas')} com pagamento parado (${brl0(pend.reduce((s, p) => s + p.valor, 0))})`, texto: `Pix/boleto gerado e não pago${pend.some((p) => p.tipo === 'atrasada') ? ' ou assinatura com cobrança atrasada' : ''} nas últimas 48 h. Chamar no WhatsApp em até 1 hora recupera boa parte.`, href: '/painel/recuperar' })
+
+  const conj3 = conj.filter((r) => r.date >= d3)
+  const ads3 = ads.filter((r) => r.date >= d3)
+  const ses3 = ses.filter((s) => diaBR(s.created_at) >= d3)
+  const cs3 = cs.filter((c) => diaBR(c.approved_at) >= d3)
+  const { conjuntos: L3 } = montarAnuncios(conj3, ads3, st, ses3, cs3)
+  for (const l of L3.filter((l) => ATIVOS.has(l.status))) {
+    const s = sinal(l)
+    if (s.rotulo === 'Pausar?') acoes.push({ tipo: 'no', titulo: `Pausar? conjunto "${l.nome}"`, texto: `${s.motivo} (3 dias).`, href: '/painel/anuncios?p=3d&nivel=conjunto' })
+    if (s.rotulo === 'Escalar') acoes.push({ tipo: 'ok', titulo: `Escalar conjunto "${l.nome}"`, texto: `${s.motivo} (3 dias). Custo por compra ${brl(div(l.gasto, l.vendas))}.`, href: '/painel/anuncios?p=3d&nivel=conjunto' })
+    const cr = div(l.lp, l.cliques)
+    if (l.cliques >= 20 && cr < 0.7) acoes.push({ tipo: 'wait', titulo: `Página lenta? "${l.nome}"`, texto: `Só ${pct(l.lp, l.cliques, 0)} de quem clicou abriu a página (bom é acima de 70%). Conferir velocidade e link.` })
+  }
+  const adSet = new Map<string, string>()
+  for (const r of ads) if (r.adset_id) adSet.set(r.ad_id, r.adset_id)
+  const comProblema = [...new Set(ads.map((r) => r.ad_id))].filter((id) => PROBLEMA.has(st.get(id)?.status || '') && ATIVOS.has(st.get(adSet.get(id) || '')?.status || ''))
+  if (comProblema.length) acoes.push({ tipo: 'no', titulo: `${plural(comProblema.length, 'anúncio reprovado ou com problema', 'anúncios reprovados ou com problema')} em conjunto ativo`, texto: 'Abrir no Gerenciador do Meta e corrigir ou trocar o criativo.', href: '/painel/anuncios?p=7d&nivel=anuncio' })
+
+  const sesHoje = ses.filter((s) => diaBR(s.created_at) === hoje && visitaAnuncio(s) && !sessaoTeste(s))
+  const ses7 = ses.filter((s) => diaBR(s.created_at) >= d7 && visitaAnuncio(s) && !sessaoTeste(s))
+  const comecou7 = ses7.filter((s) => s.status !== 'pageview').length
+  if (ses7.length >= 40 && div(comecou7, ses7.length) < 0.32) acoes.push({ tipo: 'wait', titulo: 'A 1ª tela do quiz está perdendo gente', texto: `Nos últimos 7 dias só ${pct(comecou7, ses7.length, 0)} das visitas do anúncio começaram o quiz (régua: 32%). O teste T1 mede a tela nova.`, href: '/painel/testes' })
+
+  const em7 = Date.now() + 7 * DIA
+  const vencendo = assin.filter((a) => a.status === 'ativo' && a.vence_em && new Date(a.vence_em).getTime() <= em7 && new Date(a.vence_em).getTime() >= Date.now() - DIA)
+  if (vencendo.length) acoes.push({ tipo: 'wait', titulo: `${plural(vencendo.length, 'assinatura vence', 'assinaturas vencem')} nos próximos 7 dias`, texto: `Valem ${brl0(vencendo.reduce((s, a) => s + a.ultimo_valor, 0))}. Uma mensagem antes do vencimento segura a renovação (e evita cancelamento por cartão recusado).`, href: '/painel/recorrencia' })
+
+  if (estado[0] === 'no' || estado[0] === 'wait') acoes.push({ tipo: estado[0], titulo: `Meta: ${estado[1].toLowerCase()}`, texto: `Para fechar R$ ${int(META.lucro)} faltam ${brl0(falta)}: ${brl0(precisaDia)} de lucro dos anúncios por dia${comPorDia ? ` (≈ ${comPorDia.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} vendas da Comunidade por dia)` : ''}.` })
+  if (!acoes.length) acoes.push({ tipo: 'ok', titulo: 'Nada urgente agora', texto: 'Sem Pix parado, sem anúncio com problema e nenhum conjunto pedindo pausa ou escala.' })
+
+  const varia = (a: number, b: number) => (b ? `${a >= b ? '▲' : '▼'} ${pct(Math.abs(a - b), Math.abs(b), 0)} vs ontem` : 'ontem: —')
+  const lucroDia = (r: typeof rHoje) => r.lucroAds - custoDia
 
   return (
-    <PainelShell active="marca-geral">
-      <h1 className="font-display" style={{ fontSize: 26, fontWeight: 800, color: 'var(--ink)', marginBottom: 4 }}>Visão Geral da Marca</h1>
-      <p style={{ fontSize: 13.5, color: 'var(--sub)', marginBottom: 18 }}>Resultado de <strong>toda a marca</strong> — Hotmart + Greenn, todos os produtos e canais. É a verdade do caixa do negócio inteiro.</p>
+    <PainelShell active="hoje">
+      <Titulo titulo="Cockpit do dia" sub={<>Meta, resultado de hoje e o que fazer agora. Dinheiro = vendas aprovadas e vivas da Greenn e da Hotmart (sem reembolso nem teste). Meta Ads atualizado {metaEm ? horaBR(metaEm) : '—'} (robô de hora em hora).</>} />
 
-      <PeriodFilter range={range} from={sp.from} to={sp.to} periodLabel={periodLabel} />
-
-      {/* Macro da marca */}
-      <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(165px, 1fr))' }}>
-        <Card label="Faturamento" value={brl0(receita)} sub="bruto · todos os gateways" accent="var(--g)" />
-        <Card label="Líquido" value={brl0(liquido)} sub="após taxas dos gateways" accent="var(--g)" />
-        <Card label="Compras" value={int(vendas)} sub={`${int(itens)} itens — é o nº que fecha com a Greenn`} accent="var(--g)" />
-        <Card label="Ticket médio" value={vendas > 0 ? brl(ticket) : '—'} sub="faturamento ÷ compras" />
-        <Card label="Investido" value={brl0(spend)} sub="Meta Ads" />
-        <Card label="Lucro" value={brl0(lucro)} sub="líquido − investido" accent={lucro >= 0 ? 'var(--g)' : '#c0392b'} />
-        <Card label="ROAS total" value={spend > 0 ? roasTotal.toFixed(2) + 'x' : '—'} sub="aquisição ÷ investido · sem recorrência" accent={spend > 0 ? (roasTotal >= 1 ? 'var(--g)' : '#c0392b') : 'var(--mute)'} />
-        <Card label="ROI" value={spend > 0 ? (roi >= 0 ? '+' : '') + roi.toLocaleString('pt-BR', { maximumFractionDigits: 0 }) + '%' : '—'} sub="lucro ÷ investido · com recorrência" accent={spend > 0 ? (roi >= 0 ? 'var(--g)' : '#c0392b') : 'var(--mute)'} />
-        <Card label="Reembolsos" value={int(reembolsos)} sub={`${reembValor > 0 ? brl0(reembValor) + ' · ' : ''}${pct1(reembolsos, itens)} dos itens`} accent="#c0392b" />
+      {/* META DO MÊS */}
+      <div className="rounded-2xl p-5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)', boxShadow: '0 4px 16px rgba(0,0,0,.04)' }}>
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <div className="font-display" style={{ fontSize: 17, fontWeight: 800 }}>{META.texto}</div>
+          <Pill tipo={estado[0]}>{estado[1]}</Pill>
+          <div style={{ marginLeft: 'auto', fontSize: 12.5, color: 'var(--mute)' }}>dia {Math.min(MA.dias, Math.floor(passados) + 1)} de {MA.dias} · faltam {Math.ceil(resta)} dias</div>
+        </div>
+        <Barra valor={pctMeta} marca={pctTempo} cor={estado[0] === 'ok' ? 'var(--g)' : estado[0] === 'wait' ? '#b9770e' : '#c0392b'} />
+        <div style={{ fontSize: 12.5, color: 'var(--sub)', marginTop: 6 }}>Lucro até agora, com os custos fixos rateados pelos dias: <strong>{brl0(lucroAteHoje)}</strong> ({pct(Math.max(0, lucroAteHoje), META.lucro, 0)} da meta). A linha preta é onde deveria estar hoje ({pct(passados, MA.dias, 0)}).</div>
+        {MA.desatualizada && <div className="mt-2"><Caixa tom="alerta">A meta e os custos fixos em <code>app/painel/_config.ts</code> são de outro mês. Estou usando os mesmos valores para este mês: confirme com o Patrik e atualize.</Caixa></div>}
+        <div className="mt-4"><Grade min={175}>
+          <Tile label="Lucro final do mês, hoje" value={brl0(lucro)} sub={`líquido ${brl0(rMes.liquido)} − Meta ${brl0(rMes.gasto)} − custos ${brl0(custos)}`} cor={lucro >= 0 ? 'var(--g)' : '#c0392b'} />
+          <Tile label="Se continuar como no mês" value={brl0(projMes)} sub={`ritmo ${brl0(ritmoMes)}/dia de lucro dos anúncios`} cor={projMes >= META.lucro ? 'var(--g)' : '#c0392b'} />
+          <Tile label="Se continuar como em 7 dias" value={brl0(proj7)} sub={`ritmo ${brl0(ritmo7)}/dia (7 dias completos)`} cor={proj7 >= META.lucro ? 'var(--g)' : '#c0392b'} />
+          <Tile destaque label="Precisa por dia" value={brl0(precisaDia)} sub={comPorDia ? `≈ ${comPorDia.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} vendas da Comunidade/dia (líquido médio ${brl0(liqCom)})` : 'de líquido − Meta, até o fim do mês'} />
+        </Grade></div>
       </div>
 
-      <div className="rounded-xl p-3 mt-4" style={{ fontSize: 12.5, background: 'rgba(245,113,0,.07)', color: 'var(--sub)', lineHeight: 1.55, border: '1px solid rgba(245,113,0,.18)' }}>
-        💡 <strong>Compras</strong> = carrinhos (quem leva o principal + 2 bumps conta 1). <strong>Itens</strong> = cada produto vendido — <strong>é este que bate com o relatório da Greenn e da Hotmart</strong>, e com a tabela por produto abaixo. Se você conferir o painel contra o gateway, compare <em>itens</em>, não compras.
-        <br /><br />
-        Todo valor aqui é de <strong>compra viva</strong>: venda devolvida sai do faturamento e do líquido (antes o dinheiro reembolsado era contado como receita), e o reembolso é datado pelo <strong>dia da devolução</strong>. Compras de teste ficam de fora.
-        <br /><br />
-        <strong>ROAS total</strong> responde &quot;quanto de <em>faturamento</em> a mídia trouxe?&quot;: divide a <strong>aquisição</strong> (anúncios + orgânico + comercial + direto, no bruto) pelo investido. Deixa a recorrência de fora — assinatura cobrada da base não foi comprada com o dinheiro do Meta, e somá-la fazia o retorno parecer quase o dobro do real.
-        <br /><br />
-        <strong>ROI</strong> responde &quot;quanto de <em>lucro</em> sobrou sobre o que investi?&quot;: pega o <strong>líquido do negócio inteiro</strong> — já sem as taxas dos gateways e <strong>com a recorrência junto</strong>, que é caixa que entrou —, subtrai o investido e divide pelo investido. É o card <strong>Lucro</strong> ao lado, escrito como porcentagem. +100% significa que cada R$ 1 investido virou R$ 1 de lucro.
-        <br /><br />
-        O <strong>ROAS de anúncios</strong> (só o canal pago, sem os outros) e o <strong>CAC</strong> ficam na aba <strong>Canais</strong>. Greenn capturada desde <strong>25/06</strong>; Hotmart desde 19/06.
-      </div>
+      {/* HOJE × ONTEM × 7 DIAS */}
+      <Secao titulo="Hoje" sub={`Lucro do dia = líquido − Meta − custos fixos do dia (${brl0(custoDia)}). Compras = carrinho (principal + bumps contam 1).`}>
+        <Grade min={160}>
+          <Tile label="Gasto no Meta" value={brl0(rHoje.gasto)} sub={`ontem ${brl0(rOntem.gasto)} · 7d ${brl0(r7.gasto / 7)}/dia`} />
+          <Tile label="Compras" value={int(rHoje.compras)} sub={`${int(rHoje.itens)} itens · ${varia(rHoje.compras, rOntem.compras)}`} cor="var(--g)" />
+          <Tile label="Líquido" value={brl0(rHoje.liquido)} sub={`ontem ${brl0(rOntem.liquido)} · 7d ${brl0(r7.liquido / 7)}/dia`} cor="var(--g)" />
+          <Tile label="Lucro do dia" value={brl0(lucroDia(rHoje))} sub={`ontem ${brl0(lucroDia(rOntem))}`} cor={lucroDia(rHoje) >= 0 ? 'var(--g)' : '#c0392b'} />
+          <Tile label="ROI dos 7 dias" value={r7.gasto ? (r7.liquido / r7.gasto).toFixed(2).replace('.', ',') : '—'} sub="líquido total ÷ gasto (1 = empate)" cor={r7.liquido >= r7.gasto ? 'var(--g)' : '#c0392b'} />
+          <Tile label="Visitas do anúncio no quiz" value={int(sesHoje.length)} sub={`${pct(sesHoje.filter((s) => s.status !== 'pageview').length, sesHoje.length, 0)} começaram · ${int(sesHoje.filter((s) => s.checkout_clicked).length)} clicaram comprar`} />
+        </Grade>
+      </Secao>
 
-      {/* Por gateway */}
-      <section className="mt-7">
-        <h2 className="font-display" style={{ fontSize: 18, fontWeight: 800, color: 'var(--ink)', marginBottom: 12 }}>Por gateway</h2>
-        <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
-          {gateways.sort((a, b) => N(b.receita) - N(a.receita)).map((g) => (
-            <div key={g.gateway} className="rounded-2xl p-5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
-              <div className="font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink)' }}>{GW_LABEL[g.gateway] || g.gateway}</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--g)', marginTop: 6 }} className="font-display">{brl0(N(g.receita))}</div>
-              <div style={{ fontSize: 12.5, color: 'var(--sub)', marginTop: 2 }}>{int(N(g.itens))} itens · {int(N(g.vendas))} compras · {brl0(N(g.liquido))} líquido</div>
-              <div style={{ fontSize: 12, color: 'var(--mute)', marginTop: 6 }}>{pct1(N(g.receita), receita)} do faturamento da marca</div>
+      {/* O QUE FAZER AGORA */}
+      <Secao titulo="O que fazer agora" sub="Regras fixas, em ordem de dinheiro na mesa. Mudança em preço, oferta, checkout ou verba passa pelo Patrik.">
+        <div className="grid gap-2">
+          {acoes.map((a, i) => (
+            <div key={i} className="rounded-xl p-3 flex gap-3 items-start" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
+              <div style={{ fontWeight: 800, color: 'var(--mute)', minWidth: 18 }}>{i + 1}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 800, fontSize: 14 }}><Pill tipo={a.tipo}>{a.tipo === 'ok' ? 'oportunidade' : a.tipo === 'no' ? 'urgente' : a.tipo === 'wait' ? 'atenção' : 'info'}</Pill> <span style={{ marginLeft: 6 }}>{a.titulo}</span></div>
+                <div style={{ fontSize: 13, color: 'var(--sub)', marginTop: 3 }}>{a.texto}</div>
+              </div>
+              {a.href && <a href={a.href} style={{ fontSize: 13, fontWeight: 800, color: 'var(--o)', whiteSpace: 'nowrap' }}>abrir →</a>}
             </div>
           ))}
         </div>
-      </section>
+      </Secao>
 
-      {/* Por canal */}
-      <section className="mt-7">
-        <h2 className="font-display" style={{ fontSize: 18, fontWeight: 800, color: 'var(--ink)', marginBottom: 4 }}>Por canal</h2>
-        <p style={{ fontSize: 12.5, color: 'var(--sub)', marginBottom: 12 }}>De onde veio cada venda. Conforme a Greenn cresce (orgânico, comercial, WhatsApp), este recorte fica mais rico.</p>
-        <div className="rounded-2xl overflow-x-auto" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 480 }}>
-            <thead><tr style={{ borderBottom: '1px solid rgba(0,0,0,.08)' }}>
-              <th style={{ ...thR, textAlign: 'left' }}>Canal</th>
-              <th style={thR}>Compras</th>
-              <th style={thR}>Itens</th>
-              <th style={thR}>Faturamento</th>
-              <th style={thR}>Líquido</th>
-              <th style={thR}>% do faturamento</th>
-            </tr></thead>
+      {/* A CONTA DO LUCRO (DRE) */}
+      <Secao titulo="A conta do lucro do mês" sub="Faturamento até agora, menos o que não é nosso. Os custos fixos entram inteiros (são do mês).">
+        <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px,100%),1fr))' }}>
+          <Tabela min={300}>
             <tbody>
-              {canais.map((c, i) => (
-                <tr key={c.canal} style={{ borderTop: i ? '1px solid rgba(0,0,0,.05)' : 'none' }}>
-                  <td style={{ ...td, fontWeight: 700 }}>{CANAL_LABEL[c.canal] || c.canal}</td>
-                  <td style={tdR}>{int(N(c.vendas))}</td>
-                  <td style={tdR}>{int(N(c.itens))}</td>
-                  <td style={tdR}>{brl0(N(c.receita))}</td>
-                  <td style={{ ...tdR, color: 'var(--g)', fontWeight: 700 }}>{brl0(N(c.liquido))}</td>
-                  <td style={tdR}>{pct1(N(c.receita), receita)}</td>
-                </tr>
+              {([
+                ['Faturamento (bruto)', rMes.receita, ''],
+                ['− Taxas dos gateways', -(rMes.receita - rMes.liquido), ''],
+                ['= Líquido', rMes.liquido, 'b'],
+                ['− Meta Ads', -rMes.gasto, ''],
+                ...META.custos.map((c) => [`− ${c.nome}`, -c.valor, ''] as [string, number, string]),
+                ['= Lucro final', lucro, 'b'],
+              ] as [string, number, string][]).map(([k, v, bold]) => (
+                <tr key={k}><td style={{ ...tdL, fontWeight: bold ? 800 : 500 }}>{k}</td><td style={{ ...td, fontWeight: bold ? 800 : 500, color: v < 0 ? '#c0392b' : 'var(--ink)' }}>{brl0(v)}</td></tr>
               ))}
             </tbody>
-          </table>
+          </Tabela>
+          <div>
+            <Tabela min={300}>
+              <thead><tr><th style={thL}>De onde veio (mês)</th><th style={th}>Itens</th><th style={th}>Líquido</th><th style={th}>%</th></tr></thead>
+              <tbody>
+                {origensL.map(([o, v]) => (
+                  <tr key={o}><td style={tdL}><span style={{ display: 'inline-block', width: 9, height: 9, borderRadius: 9, background: ORIGEM_COR[o] || 'var(--mute)', marginRight: 7 }} />{o}</td><td style={td}>{int(v.itens)}</td><td style={{ ...td, fontWeight: 700, color: 'var(--g)' }}>{brl0(v.liquido)}</td><td style={td}>{pct(v.liquido, rMes.liquido, 0)}</td></tr>
+                ))}
+              </tbody>
+            </Tabela>
+            <p style={{ fontSize: 12, color: 'var(--mute)', marginTop: 6, lineHeight: 1.5 }}>&quot;WhatsApp (Aline)&quot; = Comunidade nova na Greenn sem rastreio (é por onde ela vende; provável). &quot;Hotmart (link direto)&quot; = vendas da Hotmart sem rastreio, de fora do WhatsApp. Detalhe em <a href="/painel/comercial" style={{ color: 'var(--o)', fontWeight: 700 }}>Origem e comercial</a>.</p>
+          </div>
         </div>
-      </section>
+      </Secao>
 
-      {/* Por produto / família */}
-      <section className="mt-7">
-        <h2 className="font-display" style={{ fontSize: 18, fontWeight: 800, color: 'var(--ink)', marginBottom: 4 }}>Por produto</h2>
-        <p style={{ fontSize: 12.5, color: 'var(--sub)', marginBottom: 12 }}>Catálogo unificado: o mesmo produto vendido em gateways diferentes aparece com nome único. Famílias destacadas.</p>
-        <div className="rounded-2xl overflow-x-auto" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 560 }}>
-            <thead><tr style={{ borderBottom: '1px solid rgba(0,0,0,.08)' }}>
-              <th style={{ ...thR, textAlign: 'left' }}>Produto</th>
-              <th style={{ ...thR, textAlign: 'left' }}>Família</th>
-              <th style={{ ...thR, textAlign: 'left' }}>Tipo</th>
-              <th style={{ ...thR, textAlign: 'left' }}>Gateway</th>
-              <th style={thR}>Itens</th>
-              <th style={thR}>Faturamento</th>
-              <th style={thR}>Líquido</th>
-            </tr></thead>
-            <tbody>
-              {produtos.map((p, i) => (
-                <tr key={`${p.produto}-${p.gateway}-${i}`} style={{ borderTop: i ? '1px solid rgba(0,0,0,.05)' : 'none' }}>
-                  <td style={{ ...td, fontWeight: 700 }}>{p.produto}</td>
-                  <td style={td}><span style={{ fontSize: 12, fontWeight: 700, padding: '2px 8px', borderRadius: 6, color: '#fff', background: FAM_COR[p.familia] || 'var(--mute)' }}>{p.familia}</span></td>
-                  <td style={{ ...td, color: 'var(--sub)', textTransform: 'capitalize' }}>{p.tipo}</td>
-                  <td style={{ ...td, color: 'var(--sub)' }}>{GW_LABEL[p.gateway] || p.gateway}</td>
-                  <td style={tdR}>{int(N(p.vendas))}</td>
-                  <td style={tdR}>{brl0(N(p.receita))}</td>
-                  <td style={{ ...tdR, color: 'var(--g)', fontWeight: 700 }}>{brl0(N(p.liquido))}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {familias.length > 1 && (
-          <p style={{ fontSize: 12.5, color: 'var(--mute)', marginTop: 10 }}>
-            Por família: {familias.map(([f, v]) => `${f} ${brl0(v.receita)} (${int(v.vendas)} itens)`).join(' · ')}.
-          </p>
-        )}
-      </section>
+      <Secao titulo="Números que decidem a verba" sub="CPA máximo = quanto posso pagar por uma compra de anúncio sem perder dinheiro no dia da compra (o lucro vem da Comunidade depois).">
+        <Grade min={190}>
+          <Tile label="Líquido médio por compra do Efeito Lipo" value={elMes.length ? brl(liqEl) : '—'} sub={`${int(contaCompras(elMes))} compras no mês (com bumps)`} />
+          <Tile label="Líquido médio da Comunidade" value={comMes.length ? brl0(liqCom) : '—'} sub={`${int(comMes.length)} vendas no mês`} cor="var(--g)" />
+          <Tile label="Custo por compra (7 dias, todas)" value={r7.compras ? brl(div(r7.gasto, r7.compras)) : '—'} sub={`${brl0(r7.gasto)} ÷ ${int(r7.compras)} compras de todas as origens`} />
+          <Tile label="Custos fixos por dia" value={brl0(custoDia)} sub={`${brl0(custos)} no mês · atualizados em ${META.custosAtualizadosEm.split('-').reverse().slice(0, 2).join('/')}`} />
+        </Grade>
+        <div className="mt-3"><Caixa>💡 Regra de escala: só subir a verba de um conjunto com 2+ compras e ROI acima de 1 nos últimos 3 dias, no máximo 20% a cada 2–3 dias (subir mais reinicia o aprendizado do Meta). Pausar o que gastou R$ 40 sem ninguém clicar em comprar.</Caixa></div>
+      </Secao>
+
     </PainelShell>
   )
 }
