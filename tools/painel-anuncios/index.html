@@ -930,7 +930,7 @@ button.b.bad:hover{background:var(--bad);color:#fff}
         <tbody id="m-ads"><tr><td colspan="8" class="l muted">Carregando do Meta…</td></tr></tbody>
       </table></div></div>
       <div class="rc-sec"><div class="row"><h3>Como melhorar os resultados</h3><button class="b" type="button" data-go="criativos">Ver criativos novos para aprovar</button></div><div class="rc-acoes" id="m-sug"></div></div>
-      <p class="muted"><b>ROI</b> = (receita líquida − gasto) ÷ gasto: +50% quer dizer que cada R$ 1 no anúncio voltou R$ 1,50 na conta. <b>Receita líquida</b> = o que cai na conta depois das taxas da Greenn/Hotmart, contando o produto e os bumps de quem veio daquele anúncio. <b>Sinal</b>: <b>Escalar</b> = 2 ou mais compras com ROI positivo · <b>Lucrando</b> = 1 compra com ROI positivo · <b>Prejuízo</b> = vendeu, mas gastou mais do que voltou · <b>Pausar?</b> = R$ 40 gastos e ninguém clicou em comprar · <b>Trocar criativo</b> = menos de 1,5% clicam · <b>Pouco dado</b> = menos de R$ 10 gastos. "3 dias" e "7 dias" incluem hoje. A Comunidade vendida pela Aline no WhatsApp não entra aqui, porque não tem anúncio ligado.</p>
+      <p class="muted"><b>ROI</b> = receita líquida ÷ gasto: ROI 29 quer dizer que cada R$ 1 no anúncio voltou R$ 29 na conta. Acima de 1 é lucro; abaixo de 1 é prejuízo. <b>Receita líquida</b> = o que cai na conta depois das taxas da Greenn/Hotmart, contando o produto e os bumps de quem veio daquele anúncio. <b>Sinal</b>: <b>Escalar</b> = 2 ou mais compras com ROI acima de 1 · <b>Lucrando</b> = 1 compra com ROI acima de 1 · <b>Prejuízo</b> = vendeu, mas gastou mais do que voltou · <b>Pausar?</b> = R$ 40 gastos e ninguém clicou em comprar · <b>Trocar criativo</b> = menos de 1,5% clicam · <b>Pouco dado</b> = menos de R$ 10 gastos. "3 dias" e "7 dias" incluem hoje. A Comunidade vendida pela Aline no WhatsApp não entra aqui, porque não tem anúncio ligado.</p>
       <div class="state" id="m-err" hidden></div>
     </section>
 
@@ -1764,17 +1764,17 @@ function linhaCamp(c) {
 }
 const V0 = () => ({ vendas: 0, receita: 0, liq: 0 })
 const somaV = (a, b) => { a = a || V0(); return b ? { vendas: a.vendas + b.vendas, receita: a.receita + b.receita, liq: a.liq + b.liq } : a }
-// ROI = (receita líquida − gasto) ÷ gasto. +50% = cada R$ 1 no anúncio voltou R$ 1,50 líquido.
+// ROI = receita líquida ÷ gasto (pedido do Patrik): gastei R$ 1 e voltou R$ 29 → ROI 29. Acima de 1 = lucro; abaixo de 1 = prejuízo.
 const comVendas = (r, v) => v == null ? Object.assign(r, { vendas: null, receita: null, liq: null, lucro: null, roi: null, cpv: null })
-  : Object.assign(r, { vendas: v.vendas, receita: v.receita, liq: v.liq, lucro: v.liq - r.gasto, roi: r.gasto > 0 ? (v.liq - r.gasto) / r.gasto : null, cpv: v.vendas > 0 ? r.gasto / v.vendas : null })
-const fmtRoi = (x) => x == null || !isFinite(x) ? '–' : (x >= 0 ? '+' : '−') + Math.abs(Math.round(x * 100)).toLocaleString('pt-BR') + '%'
+  : Object.assign(r, { vendas: v.vendas, receita: v.receita, liq: v.liq, lucro: v.liq - r.gasto, roi: r.gasto > 0 ? v.liq / r.gasto : null, cpv: v.vendas > 0 ? r.gasto / v.vendas : null })
+const fmtRoi = (x) => x == null || !isFinite(x) ? '–' : x.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 function linhaSet(s) { const q = (Q.porSet && Q.porSet[s.id]) || null; return comVendas({ nivel: 'conjunto', id: s.id, name: s.name, camp: s.campaign_name || '–', campId: s.campaign_id, st: s.effective_status, budget: N(s.daily_budget), gasto: N(s.amount_spent), cliques: N(s.link_click), lp: N(s.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porSet, ev: evento(s.results) }, Q.vendSet ? (Q.vendSet[s.id] || V0()) : null) }
 function linhaAd(a) { const q = Q.porAd && (Q.porAd[(a.adset_id || '') + '|' + a.name] || Q.porAd['|' + a.name]), va = Q.vendAd; return comVendas({ nivel: 'anúncio', id: a.id, name: a.name, set: a.adset_name || '', setId: a.adset_id, camp: a.campaign_name || '–', campId: a.campaign_id, st: a.effective_status, gasto: N(a.amount_spent), ctr: N(a.ctr), cpm: N(a.cpm), cliques: N(a.link_click), lp: N(a.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porAd, ev: evento(a.results) }, va ? (va[(a.adset_id || '') + '|' + a.name] || V0()) : null) }
 // Sinal para decidir rápido: primeiro o ROI; sem venda, o clique (CTR) e o gasto dizem o que fazer.
 function sinal(r) {
   if (r.vendas == null) return null
-  if (r.vendas > 0 && r.roi >= 0) return r.vendas >= 2 ? ['ok', 'Escalar', plural(r.vendas, 'compra', 'compras') + ' com ROI ' + fmtRoi(r.roi) + ': subir a verba aos poucos (20% a cada 2 dias)'] : ['ok', 'Lucrando', '1 compra com ROI ' + fmtRoi(r.roi) + '; com 2 vira "Escalar"']
-  if (r.vendas > 0) return ['wait', 'Prejuízo', 'vendeu, mas o ROI está em ' + fmtRoi(r.roi) + ' (custo por compra ' + brl(r.cpv) + ')']
+  if (r.vendas > 0 && r.roi >= 1) return r.vendas >= 2 ? ['ok', 'Escalar', plural(r.vendas, 'compra', 'compras') + ' com ROI ' + fmtRoi(r.roi) + ': subir a verba aos poucos (20% a cada 2 dias)'] : ['ok', 'Lucrando', '1 compra com ROI ' + fmtRoi(r.roi) + ' (voltou mais do que gastou); com 2 vira "Escalar"']
+  if (r.vendas > 0) return ['wait', 'Prejuízo', 'vendeu, mas o ROI está em ' + fmtRoi(r.roi) + ': cada R$ 1 voltou ' + brl(r.roi) + ' (custo por compra ' + brl(r.cpv) + ')']
   if (r.gasto >= 40 && r.comprar === 0) return ['no', 'Pausar?', brl(r.gasto) + ' gastos e ninguém clicou em comprar']
   if (r.nivel === 'anúncio' && r.gasto >= 8 && r.ctr > 0 && r.ctr < 1.5) return ['no', 'Trocar criativo', 'só ' + r.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% clicam (bom é acima de 3%)']
   if (r.gasto < 10) return ['n', 'Pouco dado', 'menos de R$ 10 gastos']
@@ -1807,9 +1807,9 @@ function celOtimiza(r) {
 }
 // Colunas: nome · gasto · cliques · começaram o quiz · compras · receita líquida · ROI · sinal.
 function numerosLinha(r) {
-  const cor = r.roi == null || !r.vendas ? '' : r.roi >= 0 ? 'color:var(--gd);font-weight:800' : 'color:var(--bad);font-weight:800'
+  const cor = r.roi == null || !r.vendas ? '' : r.roi >= 1 ? 'color:var(--gd);font-weight:800' : 'color:var(--bad);font-weight:800'
   return [el('td', { style: 'white-space:nowrap' }, brl(r.gasto)), el('td', {}, String(r.cliques || 0)), el('td', {}, r.temQ ? String(r.sessoes) + (r.comprar ? ' · ' + r.comprar + ' no checkout' : '') : '–'),
-    el('td', {}, r.vendas == null ? '–' : String(r.vendas)), el('td', { style: 'white-space:nowrap' }, r.liq == null ? '–' : brl(r.liq)), el('td', { style: 'white-space:nowrap;' + cor }, r.vendas == null ? '–' : r.vendas ? fmtRoi(r.roi) : (r.gasto > 0 ? '−100%' : '–'))]
+    el('td', {}, r.vendas == null ? '–' : String(r.vendas)), el('td', { style: 'white-space:nowrap' }, r.liq == null ? '–' : brl(r.liq)), el('td', { style: 'white-space:nowrap;' + cor }, r.vendas == null ? '–' : r.vendas ? fmtRoi(r.roi) : (r.gasto > 0 ? '0,00' : '–'))]
 }
 function linhaTabela(r, cols, key, primeira) {
   const st = STATUS[r.st] || ['n', r.st]
@@ -1859,10 +1859,10 @@ const PER_NOME = { today: 'hoje', yesterday: 'ontem', last_3d: 'nos últimos 3 d
 function renderRoi() {
   const box = $('m-roi'); if (!box) return
   if (!M.camps || !Q.vendas) { box.replaceChildren(el('span', { class: 'muted' }, 'Calculando o ROI…')); return }
-  const gasto = M.camps.reduce((a, c) => a + N(c.amount_spent), 0), v = Q.vendas, lucro = v.liq - gasto, roi = gasto > 0 ? lucro / gasto : null
+  const gasto = M.camps.reduce((a, c) => a + N(c.amount_spent), 0), v = Q.vendas, lucro = v.liq - gasto, roi = gasto > 0 ? v.liq / gasto : null
   const volta = gasto > 0 ? v.liq / gasto : 0
   box.replaceChildren(
-    el('div', { class: 'roi-top' }, el('div', { style: 'display:grid;gap:2px' }, el('span', { class: 'k' }, 'ROI dos anúncios ' + PER_NOME[periodo]), el('span', { class: 'roi-v ' + (roi == null ? '' : roi >= 0 ? 'pos' : 'neg') }, fmtRoi(roi))),
+    el('div', { class: 'roi-top' }, el('div', { style: 'display:grid;gap:2px' }, el('span', { class: 'k' }, 'ROI dos anúncios ' + PER_NOME[periodo]), el('span', { class: 'roi-v ' + (roi == null ? '' : roi >= 1 ? 'pos' : 'neg') }, fmtRoi(roi))),
       el('p', { style: 'max-width:46ch;font-size:14.5px' }, gasto > 0 ? 'Cada R$ 1,00 no anúncio voltou ' + brl(volta) + ' na conta. ' + (lucro >= 0 ? 'Sobrou ' + brl(lucro) + '.' : 'Faltam ' + brl(-lucro) + ' para empatar.') : 'Sem gasto no período.')),
     el('div', { class: 'roi-nums' },
       el('div', {}, el('b', {}, brl(gasto)), el('span', {}, 'gasto no Meta')),
@@ -1876,9 +1876,9 @@ function renderSug() {
   if (!M.sets || !M.ads || !Q.vendSet) { box.replaceChildren(el('div', { class: 'empty' }, 'Lendo os números…')); return }
   const sets = M.sets.map(linhaSet).filter((r) => ativoEnt(r.st, r.campId)), ads = M.ads.map(linhaAd).filter((r) => ativoEnt(r.st, r.campId, r.setId))
   const L = [], bt = (t, fn, pri) => el('button', { class: 'b' + (pri ? ' pri' : ''), type: 'button', onclick: fn }, t)
-  const bons = sets.filter((r) => r.vendas > 0 && r.roi >= 0).sort((a, b) => b.roi - a.roi)
+  const bons = sets.filter((r) => r.vendas > 0 && r.roi >= 1).sort((a, b) => b.roi - a.roi)
   for (const r of bons.slice(0, 2)) L.push({ cls: 'ok', t: 'Subir a verba de "' + r.name + '"', d: plural(r.vendas, 'compra', 'compras') + ', ROI ' + fmtRoi(r.roi) + ' ' + PER_NOME[periodo] + '. Subir 20% (de ' + brl(r.budget) + ' para ' + brl(r.budget * 1.2) + '/dia) e olhar de novo em 2 dias.', b: bt('Otimizar →', () => abrirOtimizar(r), true) })
-  for (const r of sets.filter((r) => r.vendas > 0 && r.roi < 0)) L.push({ cls: 'urg', t: '"' + r.name + '" vende, mas dá prejuízo', d: 'ROI ' + fmtRoi(r.roi) + ': cada compra custou ' + brl(r.cpv) + '. Ver se o anúncio mais caro do conjunto puxa o custo para cima.', b: bt('Otimizar →', () => abrirOtimizar(r), true) })
+  for (const r of sets.filter((r) => r.vendas > 0 && r.roi < 1)) L.push({ cls: 'urg', t: '"' + r.name + '" vende, mas dá prejuízo', d: 'ROI ' + fmtRoi(r.roi) + ': cada compra custou ' + brl(r.cpv) + '. Ver se o anúncio mais caro do conjunto puxa o custo para cima.', b: bt('Otimizar →', () => abrirOtimizar(r), true) })
   for (const r of sets.filter((r) => r.vendas === 0 && r.gasto >= 40 && r.comprar === 0)) L.push({ cls: 'urg', t: 'Pausar "' + r.name + '"?', d: brl(r.gasto) + ' gastos ' + PER_NOME[periodo] + ' e ninguém clicou em comprar.', b: bt('Otimizar →', () => abrirOtimizar(r), true) })
   const ruins = ads.filter((r) => r.gasto >= 8 && r.ctr > 0 && r.ctr < 1.5)
   const melhor = ads.filter((r) => r.gasto >= 3 && r.ctr > 0).sort((a, b) => b.ctr - a.ctr)[0]
