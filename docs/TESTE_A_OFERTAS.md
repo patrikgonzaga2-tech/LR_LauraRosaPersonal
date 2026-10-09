@@ -48,6 +48,7 @@ Status: só o **Teste A** está feito. Os outros esperam sua aprovação e os li
 - **Teste F: Upsell pós-compra** (`/acompanhamento-up`). Assinatura R$ 37/mês × trimestral R$ 97.
 - **Teste G: Primeira tela do quiz (T1).** Atual (recomeço) × "efeito imediato / sinta na 1ª semana".
 - **Substituído:** o desenho de 5 braços A a E do esboço da T26 some. Ele vira os Testes B, C e D.
+- **Aprovado (09/10): popup de 20% (EFEITOLIPO20) vale em todos os braços dos testes.**
 - **Medida em todos:** receita por visita na T26 (inclui a 1ª mensalidade).
 
 Nada disso muda preço, checkout ou link até você aprovar e criar as ofertas na Greenn (CLAUDE.md).
