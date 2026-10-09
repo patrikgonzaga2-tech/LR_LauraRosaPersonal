@@ -2084,7 +2084,7 @@ const TESTES = [
     sobre: 'Metade vê a página de hoje (Efeito Lipo + Comunidade). A outra metade vê só a Comunidade Corpo Feliz a R$ 37/mês, com os entregáveis que a Aline apresenta e o Efeito Lipo incluso. Mede receita por visita na página de oferta. O preço do Efeito Lipo (T2) segue sorteando só na metade A.',
     arms: [['E-A', 'A · Efeito Lipo + Comunidade'], ['E-B', 'B · só Comunidade R$ 37/mês']],
     base: 'visitas', pos: 'vendas', cols: [['Viram a oferta', 'visitas', null], ['Clicaram comprar', 'clicks', 'visitas'], ['Compraram', 'vendas', 'visitas'], ['Receita (R$)', 'receita', null]],
-    sql: (d) => `with e as (select distinct on (session_id) session_id, answer braco from quiz_events where event='oferta' and created_at >= '${d}' order by session_id, created_at) select e.braco, count(*) visitas, count(*) filter (where s.checkout_clicked) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas, coalesce(sum((select sum(v.price) from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))),0) receita from e join quiz_sessions s on s.id = e.session_id where coalesce(s.utm_source,'')<>'qa-painel' group by 1`,
+    sql: (d) => `with e as (select distinct on (session_id) session_id, split_part(answer, ':', 1) braco from quiz_events where event='oferta' and created_at >= '${d}' order by session_id, created_at) select e.braco, count(*) visitas, count(*) filter (where s.checkout_clicked) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas, coalesce(sum((select sum(v.price) from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))),0) receita from e join quiz_sessions s on s.id = e.session_id where coalesce(s.utm_source,'')<>'qa-painel' group by 1`,
     links: [{ rot: 'Abrir A aqui (com Efeito Lipo)', frame: 'v/v9/t4-a.html?step=25' }, { rot: 'Abrir B aqui (só Comunidade)', frame: 'v/v9/t4-b.html?step=25' }, { rot: 'Checkout da Comunidade (R$ 37/mês)', url: 'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597' }] },
   { id: 'T3', grupo: 'ideia', nome: 'Preço da Comunidade: R$ 37 × R$ 27 por mês', status: 'falta o link de R$ 27 na Greenn',
     sobre: 'Testar se a mensal mais barata vende mais. Falta você criar na Greenn a assinatura de R$ 27/mês (recorrente, só cartão, mesmo produto da WOqOSI). Cuidado: R$ 27/mês fica perto da anual (R$ 297 = R$ 24,75/mês), que é a que mais vende.' },
@@ -2103,7 +2103,7 @@ const sqlAgora = (d) => `with s as (select q.*, upper(coalesce(q.utm_source,''))
 o as (select distinct on (session_id) session_id, answer from quiz_events where event='oferta' and created_at >= '${d}' order by session_id, created_at)
 select count(*) visitas, count(*) filter (where ad) anuncio, count(*) filter (where ad and rl) reais,
  count(*) filter (where intro_ab='G-A') t1a, count(*) filter (where intro_ab='G-B') t1b, count(*) filter (where status<>'pageview') comecou,
- count(o.session_id) oferta, count(*) filter (where o.answer='E-A') ea, count(*) filter (where o.answer='E-B') eb,
+ count(o.session_id) oferta, count(*) filter (where split_part(o.answer, ':', 1)='E-A') ea, count(*) filter (where o.answer='E-B') eb, count(*) filter (where o.answer='E-A:A') v37, count(*) filter (where o.answer='E-A:B') v47,
  count(*) filter (where checkout_ab='greenn') c37, count(*) filter (where checkout_ab='greenn-B') c47,
  count(*) filter (where checkout_ab='assinatura-37') csa, count(*) filter (where checkout_ab='E-B-assinatura') csb,
  count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas
@@ -2125,9 +2125,9 @@ function renderAgora() {
     tile('Visitas reais do anúncio', a.reais, a.anuncio + ' do anúncio · ' + a.visitas + ' no total', 'o'),
     tile('T1 · 1ª tela', a.t1a + ' × ' + a.t1b, 'A ' + pc(a.t1a, a.t1a + a.t1b) + ' · B ' + pc(a.t1b, a.t1a + a.t1b) + ' · ' + a.comecou + ' começaram', 'gd'),
     tile('T4 · viram a oferta', a.ea + ' × ' + a.eb, 'A (com EL) ' + pc(a.ea, a.oferta) + ' · B (só Comunidade) ' + pc(a.eb, a.oferta), 'gd'),
-    tile('T2 · clicaram no EL', a.c37 + ' × ' + a.c47, 'R$ 37 × R$ 47 (só dentro do A do T4)', 'gd'),
+    tile('T2 · viram o preço', a.v37 + ' × ' + a.v47, 'R$ 37 ' + pc(a.v37, a.v37 + a.v47) + ' · R$ 47 ' + pc(a.v47, a.v37 + a.v47) + ' · cliques ' + a.c37 + ' × ' + a.c47, 'gd'),
     tile('Vendas', a.vendas, (a.c37 + a.c47 + a.csa + a.csb) + ' cliques em comprar · ' + (a.csa + a.csb) + ' na Comunidade', 'g')))
-  card.append(el('p', { class: 'muted', style: 'margin:0' }, '"Visitas reais" = vindas do anúncio (utm FB/IG), sem a coluna da direita nem a revisão do Meta. No T2 o site só registra o braço quando a pessoa clica; por isso aqui aparecem os cliques, não as visitas.'))
+  card.append(el('p', { class: 'muted', style: 'margin:0' }, '"Visitas reais" = vindas do anúncio (utm FB/IG), sem a coluna da direita nem a revisão do Meta. O T2 conta quem viu cada preço na página de oferta (só dentro do A do T4).'))
 }
 let testesUnsub = [], TESTE_D = {}
 function testesWatch() {

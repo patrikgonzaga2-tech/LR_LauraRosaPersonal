@@ -563,8 +563,9 @@ function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['
   const [of, setOf] = useState<Oferta>(OFERTAS.A)
   useEffect(() => {
     const e = pickComElArm()
-    setOf(e === 'E-B' ? { ...OFERTAS.A, id: 'E', el: null } : OFERTAS[pickOfertaArm()])
-    onOferta(e)
+    const b = e === 'E-B' ? null : pickOfertaArm()
+    setOf(b ? OFERTAS[b] : { ...OFERTAS.A, id: 'E', el: null })
+    onOferta(b ? e + ':' + b : e) // E-A:A / E-A:B (T2 dentro do A do T4) ou E-B
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const soAssinatura = !of.el
 
