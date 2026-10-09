@@ -49,6 +49,7 @@ Status: só o **Teste A** está feito. Os outros esperam sua aprovação e os li
 - **Teste G: Primeira tela do quiz (T1).** Atual (recomeço) × "efeito imediato / sinta na 1ª semana".
 - **Substituído:** o desenho de 5 braços A a E do esboço da T26 some. Ele vira os Testes B, C e D.
 - **Teste G (T1), decidido em 09/10:** braço A = T1 atual; braço B = mesma foto da Laura, título "Descubra seu perfil de recomeço em 2 minutos e o primeiro passo para sentir o corpo menos inchado" (sem prazo de resultado, por risco de reprovação no Meta). Botão igual nos dois braços ("Quero descobrir meu perfil"). Falta só o esboço antes × depois (a troca é o título em `app/efeito-lipo-quiz/_quiz.tsx`, `IntroB`, linhas 728 e 731).
+- **T1 B aprovada no esboço (09/10), com o subtítulo "Descubra o porquê em 2 minutos." tirado.** A (no ar) = v7 + fbclid (main `56b52b9`). Imagem: `tools/quiz-revisao/esbocos/img/cmp-T1-antes-depois.jpg`.
 - **Aprovado (09/10): popup de 20% (EFEITOLIPO20) vale em todos os braços dos testes.**
 - **Medida em todos:** receita por visita na T26 (inclui a 1ª mensalidade).
 
