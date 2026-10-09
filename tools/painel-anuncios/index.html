@@ -2079,7 +2079,7 @@ const TESTES = [
     base: 'clicks', pos: 'vendas', cols: [['Clicaram comprar', 'clicks', null], ['Venderam', 'vendas', 'clicks']],
     sql: (d) => `select checkout_ab braco, count(*) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas from quiz_sessions s where checkout_ab in ('greenn','greenn-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
     links: [{ rot: 'Ver checkout A (R$ 37)', url: 'https://payfast.greenn.com.br/redirect/297430' }, { rot: 'Ver checkout B (R$ 47)', url: 'https://payfast.greenn.com.br/redirect/795991' }] },
-  { id: 'T4', grupo: 'pronto', nome: 'Página de oferta: com Efeito Lipo × só a Comunidade', status: 'pronto · falta você dizer "publicar"', desde: '2026-10-09T23:59:00-03:00',
+  { id: 'T4', grupo: 'ar', nome: 'Página de oferta: com Efeito Lipo × só a Comunidade', status: 'no ar desde 09/10 16h15', desde: '2026-10-09T16:15:00-03:00',
     sobre: 'Metade vê a página de hoje (Efeito Lipo + Comunidade). A outra metade vê só a Comunidade Corpo Feliz a R$ 37/mês, com os entregáveis que a Aline apresenta e o Efeito Lipo incluso. Mede receita por visita na página de oferta. O preço do Efeito Lipo (T2) segue sorteando só na metade A.',
     arms: [['E-A', 'A · Efeito Lipo + Comunidade'], ['E-B', 'B · só Comunidade R$ 37/mês']],
     base: 'visitas', pos: 'vendas', cols: [['Viram a oferta', 'visitas', null], ['Clicaram comprar', 'clicks', 'visitas'], ['Compraram', 'vendas', 'visitas'], ['Receita (R$)', 'receita', null]],

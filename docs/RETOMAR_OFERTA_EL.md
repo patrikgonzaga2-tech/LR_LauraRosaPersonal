@@ -43,7 +43,7 @@ Meta Ads: nada muda sem aprovação. Apagar artefato: só com minha confirmaçã
   do repositório (que já está igual ao publicado) e publicar o mesmo arquivo.
 - Proposta da T1 B registrada em `propostas/p-2026-10-09-t1-b-recomeco`.
 
-## Teste E (T4 no painel): PRONTO, esperando "publicar" (09/10, noite)
+## Teste E (T4 no painel): NO AR desde 09/10 16h15 (PR #21, merge a82fb3e, deploy READY)
 
 - E-A = página de hoje (EL + Comunidade, com o teste B dentro). E-B = só a Comunidade Corpo Feliz R$ 37/mês
   (WOqOSI), com os entregáveis que a Aline apresenta no WhatsApp e o EL como "Incluso". Botão do topo no E-B abre
@@ -52,7 +52,6 @@ Meta Ads: nada muda sem aprovação. Apagar artefato: só com minha confirmaçã
   assinatura no E-B grava `checkout_ab = E-B-assinatura` (não mistura com o T3).
 - O cartão da Comunidade no E-A também passou a usar a lista da Aline (aprovado).
 - Esboço: `tools/quiz-revisao/esbocos/img/cmp-T26-testeE.jpg` e `T26-testeE-cartao-comunidade.jpg`.
-- Ao publicar: trocar no painel o T4 de `grupo: 'pronto'` para `'ar'` e acertar `desde` com a hora do deploy.
 
 ## Painel: aba Testes em 3 grupos (versão 46)
 
