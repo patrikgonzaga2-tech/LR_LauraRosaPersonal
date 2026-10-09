@@ -596,6 +596,81 @@ tr.lead-det td{background:#FFFBF6;text-align:left}
 .ccard .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
 ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;max-width:84ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* referência + roteiros da Laura */
+.rf{display:grid;gap:22px}
+.rf-head{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.rf-head p{color:var(--sub);font-size:14px}
+.rf-bt{display:grid;gap:6px;justify-items:end}
+@media (max-width:600px){.rf-bt{justify-items:start}}
+.rf-go{all:unset;cursor:pointer;background:var(--o);color:#000;font:800 15px var(--body);letter-spacing:.04em;border-radius:12px;padding:13px 20px;display:inline-flex;gap:10px;align-items:center;box-shadow:0 4px 14px rgba(245,113,0,.3)}
+.rf-go:focus-visible{outline:2px solid var(--gd);outline-offset:2px}
+.rf-go[aria-disabled="true"]{opacity:.55;cursor:default}
+.rf-st{font-size:13px;color:var(--mute)}
+.rf-resumo{border-left:5px solid var(--o);display:grid;gap:8px}
+.rf-resumo ol{margin:0;padding-left:20px;display:grid;gap:4px;font-size:14.5px}
+.rf h3 small{font:600 13px var(--body);color:var(--mute);margin-left:6px;letter-spacing:0}
+.rf-sec{display:grid;gap:10px}
+.rf-sec>.lead{color:var(--sub);font-size:14px;max-width:84ch}
+.rf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:12px}
+.rf-c{background:var(--wh);border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0}
+.rf-c .t{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.rf-c .rf-n{font:800 20px var(--display);font-variant-numeric:tabular-nums}
+.rf-c .rf-n i{font:600 12.5px var(--body);font-style:normal;color:var(--mute)}
+.rf-c q{font-size:14px;color:var(--ink);overflow-wrap:anywhere}
+.rf-c .why{font-size:13.5px;color:var(--gd);background:var(--g-soft);border-radius:9px;padding:7px 10px}
+.rf-c .idea{font-size:13.5px;background:var(--o-soft);border-radius:9px;padding:7px 10px}
+.rf-c .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.rf-c .acts a,.rf-c .acts button{all:unset;cursor:pointer;font-weight:700;font-size:13px;border-radius:9px;padding:7px 12px;border:1px solid var(--line);background:var(--wh);color:var(--ink)}
+.rf-c .acts a:focus-visible,.rf-c .acts button:focus-visible{outline:2px solid var(--o);outline-offset:2px}
+.rf-c .acts .dl{background:var(--gd);border-color:var(--gd);color:#fff}
+.rf-c .acts .ap{background:var(--o);border-color:var(--o);color:#000}
+.rf-c .acts [aria-disabled="true"]{opacity:.5;cursor:default}
+.rf-thumb{position:relative;border-radius:10px;overflow:hidden;background:var(--pale);aspect-ratio:4/5}
+.rf-thumb img,.rf-thumb video{width:100%;height:100%;object-fit:cover;display:block}
+.rf-thumb .ty{position:absolute;left:8px;top:8px;background:rgba(0,0,0,.72);color:#fff;font-size:11.5px;font-weight:700;border-radius:99px;padding:3px 9px}
+.rf-thumb.vazio{aspect-ratio:auto;min-height:130px;display:grid;place-items:center;grid-template-columns:minmax(0,1fr);text-align:center;color:var(--sub);font-size:13px;padding:16px;border:2px dashed var(--line);background:var(--wh)}
+.rf-thumb.vazio b{display:block;font-size:28px;margin-bottom:4px}
+.rf-padrao{background:var(--o-soft);border-radius:14px;padding:14px 16px;display:grid;gap:6px}
+.rf-padrao>b{color:var(--od)}
+.rf-padrao ul{margin:0;padding-left:18px;display:grid;gap:3px;font-size:14px}
+.rf-padrao .obs{font-size:13.5px;color:var(--sub)}
+.rf-c .pg{font-weight:800}
+.rf-c .mt{font-size:12.5px;color:var(--mute)}
+.rf-c textarea{min-height:60px}
+.rf-need li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;list-style:none}
+.rf-need ul{padding-left:0}
+.rf-old summary{cursor:pointer;font-weight:700;padding:4px 0}
+.rf-old[open] summary{margin-bottom:10px}
+.rt-como{display:grid;gap:10px}
+.rt-como ul{margin:0;padding-left:18px;display:grid;gap:3px;font-size:14px}
+.rt-lista{display:grid;gap:16px}
+.rt{display:grid;gap:12px;border-left:5px solid var(--o)}
+.rt.gravado{border-left-color:var(--g)}
+.rt.ajuste{border-left-color:#E0A100}
+.rt-top{display:flex;gap:12px;align-items:flex-start}
+.rt-top .num{flex-shrink:0;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:800 16px var(--display);background:var(--o);color:#000}
+.rt.gravado .rt-top .num{background:var(--g);color:#fff}
+.rt-top h3{font-size:19px}
+.rt-top .t{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.rt-why{font-size:14px;background:var(--g-soft);color:var(--ink);border-radius:10px;padding:9px 12px}
+.rt-why b{color:var(--gd)}
+.rt-cols{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:900px){.rt-cols{grid-template-columns:minmax(0,1fr)}}
+.rt-cenas{display:grid;gap:8px}
+.rt-cena{display:grid;grid-template-columns:62px minmax(0,1fr);gap:4px 10px;background:var(--pale);border-radius:10px;padding:9px 11px;font-size:13.5px}
+.rt-cena .tm{font:800 12.5px var(--body);color:var(--od);grid-row:span 3}
+.rt-cena .faz{color:var(--sub)}
+.rt-cena .fala{font-weight:700;color:var(--ink)}
+.rt-cena .tela{font-size:12.5px;color:var(--sub)}
+.rt-cena .tela b{color:var(--ink);background:#FFF;border:1px solid var(--line);border-radius:6px;padding:0 5px;font-weight:700}
+.rt-texto{background:#FFFDF9;border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:10px}
+.rt-texto .k{color:var(--od)}
+.rt-texto .fala{font-size:17px;line-height:1.55;display:grid;gap:6px}
+.rt-texto .leg{font-size:13.5px;color:var(--sub);white-space:pre-wrap;border-top:1px solid var(--line);padding-top:8px}
+.rt-info{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--sub)}
+.rt-info b{color:var(--ink)}
+.rt-cuidado{font-size:13.5px;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:8px 12px}
+.rt .btns .b{display:inline-flex;align-items:center;gap:6px}
 </style>
 
 <div class="toast" id="toast" role="status" hidden></div>
@@ -627,6 +702,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
       <button role="tab" data-tab="historico" aria-selected="false">Histórico</button>
       <button role="tab" data-tab="criativos" aria-selected="false">Criativos</button>
       <button role="tab" data-tab="referencia" aria-selected="false">Referência</button>
+      <button role="tab" data-tab="roteiros" aria-selected="false">Roteiros da Laura <span class="badge" id="nb-rot">0</span></button>
     </nav>
     <div class="side-links" aria-label="Painéis ligados">
       <div class="navlbl" style="padding:6px 0 2px">Ligados</div>
@@ -1071,8 +1147,32 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
     </section>
 
     <!-- REFERÊNCIA -->
-    <section class="tab" id="tab-referencia" role="tabpanel" hidden>
-      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Referência</h2><p>Fotos, pixel e pendências, como estavam em 08/10.</p></div></div>
+    <section class="tab rf" id="tab-referencia" role="tabpanel" hidden>
+      <div class="rf-head">
+        <div style="display:grid;gap:4px"><h2>Referência</h2><p>O que está funcionando no Instagram da Laura e no mercado, e peças prontas para subir.</p></div>
+        <div class="rf-bt"><button class="rf-go" type="button" id="rf-buscar">🔎 BUSCAR REFERÊNCIAS</button><span class="rf-st" id="rf-st" aria-live="polite">–</span></div>
+      </div>
+      <div class="card rf-resumo" id="rf-resumo" hidden></div>
+      <div class="rf-sec">
+        <h3>1. O que funcionou no Instagram da Laura <small id="rf-ig-sub"></small></h3>
+        <div class="rf-padrao" id="rf-padrao" hidden></div>
+        <div class="rf-grid" id="rf-ig"></div>
+      </div>
+      <div class="rf-sec">
+        <h3>2. O que os concorrentes estão anunciando <small>Biblioteca de Anúncios do Meta · Brasil · ativos</small></h3>
+        <p class="lead" id="rf-merc-lead"></p>
+        <div class="rf-grid" id="rf-merc"></div>
+      </div>
+      <div class="rf-sec">
+        <h3>3. Peças produzidas a partir disso <small>baixe, peça ajuste ou mande subir</small></h3>
+        <div class="rf-grid" id="rf-pecas"></div>
+      </div>
+      <div class="card rf-need">
+        <h3>O que já funciona e o que precisa conectar</h3>
+        <ul class="clean" id="rf-con"></ul>
+        <p class="muted" style="margin-top:8px">Passo a passo para conectar: <a href="https://github.com/patrikgonzaga2-tech/LR_LauraRosaPersonal/blob/claude/relaxed-cray-r4bnc9/docs/GUIA_CONEXOES.md" target="_blank" rel="noopener">Guia de conexões</a>.</p>
+      </div>
+      <details class="card rf-old"><summary>Fotos autorizadas e pendências antigas (pixel, Compra Realizada, vídeos)</summary>
       <div class="tbl"><table>
         <thead><tr><th>Pasta de fotos</th><th class="l">Autorização</th><th class="l">Uso em anúncio</th></tr></thead>
         <tbody>
@@ -1087,6 +1187,28 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
         <li><span class="pill wait">Pendente</span> Laura gravar os vídeos: <a href="https://claude.ai/code/artifact/57d716fe-6b07-459f-860c-60610ab47371" target="_blank" rel="noopener">roteiros com storyboard</a>.</li>
         <li><span class="pill wait">Pendente</span> A pasta "LAURA FOTOS" está como "qualquer pessoa com o link pode editar".</li>
       </ul></div>
+      </details>
+    </section>
+
+    <section class="tab" id="tab-roteiros" role="tabpanel" hidden>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Roteiros para a Laura gravar</h2><p>Cada roteiro diz por que gravar, o que fazer em cada cena e o texto completo para falar. Gravou? Mande os vídeos na pasta do Drive e toque em "Já gravei".</p></div></div>
+      <div class="card rt-como">
+        <h3>Como gravar (vale para todos)</h3>
+        <ul>
+          <li><b>Celular em pé</b> (vertical), na altura dos olhos, apoiado. Câmera de trás se tiver alguém ajudando; de frente se estiver sozinha.</li>
+          <li><b>Luz de frente</b>: de frente para a janela. Nada de janela atrás.</li>
+          <li><b>Os 3 primeiros segundos decidem tudo</b>: comece já falando a primeira frase, sem "oi, gente".</li>
+          <li>Grave <b>cada cena 2 vezes</b>, sem música e sem legenda. A edição, o texto na tela e a música a gente coloca.</li>
+          <li>Pode ler o texto daqui (ou do WhatsApp) e falar do seu jeito: o importante é a ideia de cada cena.</li>
+        </ul>
+        <p style="font-size:14px"><b>Onde mandar:</b> na pasta <a href="https://drive.google.com/drive/folders/10KpvJsEZsSbHWWKr1LjtmzynlPnclgdG" target="_blank" rel="noopener">LAURA IA CLAUDE</a> do Drive, com o nome do roteiro no arquivo (ex.: "r1 cardio cena 2").</p>
+      </div>
+      <div class="seg" id="rt-filtro" role="group" aria-label="Filtrar roteiros">
+        <button type="button" data-f="gravar" aria-pressed="true">Para gravar <span class="ct" id="rt-c-gravar"></span></button>
+        <button type="button" data-f="gravado" aria-pressed="false">Gravados <span class="ct" id="rt-c-gravado"></span></button>
+        <button type="button" data-f="todos" aria-pressed="false">Todos</button>
+      </div>
+      <div class="rt-lista" id="rt-lista"><div class="empty">Carregando roteiros…</div></div>
     </section>
 
   </div></main>
@@ -1109,7 +1231,7 @@ const fmtD = (s) => { if (!s) return '–'; const d = new Date(String(s).length 
 let db = null, user = null, me = null, mcp = null
 
 // ── Abas ───────────────────────────────────────────────────────────
-const TABS = ['qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'referencia']
+const TABS = ['qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'referencia', 'roteiros']
 function abrir(t, foco) {
   if (t === 'conversar') t = 'aprovar'
   if (!TABS.includes(t)) t = 'resumo'
@@ -2461,13 +2583,197 @@ $('rc-pedir').addEventListener('click', (e) => {
 ligarPeriodo('rc', (p, a, z) => { rcPer = p; if (p === 'datas') { rcDe = a; rcAte = z } rcWatch() })
 
 setInterval(() => { if (Object.values(msgs).some((m) => m.papel !== 'claude' && !m.respondido)) { renderChat(); renderOtChat(); renderObChat(); renderRcChat() } }, 30000)
+// ── Referência: Instagram da Laura, concorrentes e peças prontas ───
+// Dados: referencias/atual (instagram, mercado, conexoes, resumo), referencias_pecas/<id>, config/referencias (pedido_em).
+// O botão BUSCAR REFERÊNCIAS chama a rotina com "PEDIDO: referencias".
+let REF = null, refPedido = null, DL = null
+const PECAS = {}, ROTS = {}
+let rtFiltro = 'gravar'
+const numBRi = (n) => (Number(n) || 0).toLocaleString('pt-BR')
+const linkFora = (href, txt, cls) => el('a', { href, target: '_blank', rel: 'noopener', class: cls || '' }, txt)
+function renderRefStatus() {
+  const st = $('rf-st'), bt = $('rf-buscar')
+  const pedido = refPedido && refPedido.pedido_em, feito = REF && REF.em
+  const buscando = pedido && (!feito || new Date(pedido) > new Date(feito)) && (Date.now() - new Date(pedido)) < 30 * 60000
+  bt.setAttribute('aria-disabled', String(!!buscando))
+  st.textContent = buscando ? 'Buscando… pedido às ' + fmtDt(pedido) + ' · leva uns 5 minutos' : feito ? 'Última busca: ' + fmtDt(feito) : 'Ainda não buscou'
+}
+function renderRef() {
+  renderRefStatus()
+  const r = REF || {}
+  const res = $('rf-resumo'); res.textContent = ''
+  if (r.resumo || (r.fazer && r.fazer.length)) {
+    res.hidden = false
+    res.append(el('h3', {}, 'O que fazer com isso'), r.resumo ? el('p', {}, r.resumo) : null)
+    if (r.fazer && r.fazer.length) { const ol = el('ol'); for (const f of r.fazer) ol.append(el('li', {}, f)); res.append(ol) }
+  } else res.hidden = true
+  // 1. Instagram
+  const ig = r.instagram || {}
+  $('rf-ig-sub').textContent = ig.sub || ''
+  const pd = $('rf-padrao'); pd.textContent = ''
+  if (ig.padrao && ig.padrao.length) {
+    pd.hidden = false; const ul = el('ul'); for (const p of ig.padrao) ul.append(el('li', {}, p))
+    pd.append(el('b', {}, 'Padrão encontrado'), ul, ig.obs ? el('p', { class: 'obs' }, ig.obs) : null)
+  } else pd.hidden = true
+  const igb = $('rf-ig'); igb.textContent = ''
+  if (!(ig.posts || []).length) igb.append(el('div', { class: 'empty', style: 'grid-column:1/-1' }, 'Toque em BUSCAR REFERÊNCIAS para analisar os posts da Laura.'))
+  ;(ig.posts || []).forEach((p, i) => {
+    igb.append(el('div', { class: 'rf-c' },
+      el('div', { class: 't' }, el('span', { class: 'pill n' }, (p.tipo || 'Post') + (p.dur ? ' · ' + p.dur + 's' : '')), el('span', { class: 'pill o' }, (i + 1) + 'º'), el('span', { class: 'rf-st' }, p.data || '')),
+      el('div', { class: 'rf-n' }, numBRi(p.curtidas), ' ', el('i', {}, 'curtidas'), ' · ', numBRi(p.coment), ' ', el('i', {}, 'coment.')),
+      p.legenda ? el('q', {}, p.legenda) : null,
+      p.porque ? el('div', { class: 'why' }, el('b', {}, 'Por que funcionou: '), p.porque) : null,
+      p.ideia ? el('div', { class: 'idea' }, el('b', {}, 'Como vira anúncio: '), p.ideia) : null,
+      el('div', { class: 'acts' }, p.link ? linkFora(p.link, 'Abrir no Instagram') : null,
+        el('button', { type: 'button', class: 'ap', onclick: (e) => pedirCriativo('Transforme o post do Instagram de ' + (p.data || '') + ' ("' + (p.legenda || '').slice(0, 80) + '", ' + (p.link || '') + ') em anúncio para o quiz. ' + (p.ideia || ''), e.currentTarget) }, 'Virar anúncio'))))
+  })
+  // 2. Mercado
+  $('rf-merc-lead').textContent = r.mercado_lead || ''
+  const mb = $('rf-merc'); mb.textContent = ''
+  if (!(r.mercado || []).length) mb.append(el('div', { class: 'empty', style: 'grid-column:1/-1' }, 'Sem referências de mercado ainda.'))
+  for (const m of r.mercado || []) {
+    const tag = { quiz: ['o', 'Funil de quiz'], antigo: ['ok', 'No ar há muito tempo'], escala: ['wait', 'Muitas versões'], whats: ['n', 'Leva para o WhatsApp'], mesmo: ['n', 'Mesmo modelo da Laura'], gancho: ['o', 'Gancho forte'] }[m.tag] || ['n', m.tag || 'Referência']
+    mb.append(el('div', { class: 'rf-c' },
+      el('div', { class: 't' }, el('span', { class: 'pill ' + tag[0] }, tag[1])),
+      el('div', { class: 'pg' }, m.pagina || '–'),
+      m.titulo ? el('q', {}, m.titulo) : null,
+      el('div', { class: 'mt' }, [m.dias != null ? 'no ar há ' + m.dias + (m.dias === 1 ? ' dia' : ' dias') : '', m.ativos != null ? numBRi(m.ativos) + ' anúncios ativos' : ''].filter(Boolean).join(' · ')),
+      m.leitura ? el('div', { class: 'why' }, el('b', {}, 'Leitura: '), m.leitura) : null,
+      el('div', { class: 'acts' }, m.link ? linkFora(m.link, m.video ? 'Ver vídeo' : 'Ver anúncio') : null)))
+  }
+  // conexões
+  const cb = $('rf-con'); cb.textContent = ''
+  for (const c of r.conexoes || []) cb.append(el('li', {}, el('span', { class: 'pill ' + ({ ok: 'ok', falta: 'wait', no: 'no' }[c.st] || 'n') }, { ok: 'Já funciona', falta: 'Falta', no: 'Falta' }[c.st] || c.st), el('span', {}, c.t)))
+  renderPecas()
+}
+function renderPecas() {
+  const box = $('rf-pecas'); box.textContent = ''
+  const lista = Object.entries(PECAS).filter(([, p]) => p.status !== 'descartada').sort((a, b) => (a[1].ordem ?? 99) - (b[1].ordem ?? 99))
+  if (!lista.length) box.append(el('div', { class: 'empty', style: 'grid-column:1/-1' }, 'Nenhuma peça ainda. Toque em BUSCAR REFERÊNCIAS.'))
+  for (const [id, p] of lista) {
+    const thumb = p.thumb
+      ? el('div', { class: 'rf-thumb' }, el('img', { src: p.thumb, alt: p.titulo || 'Peça', loading: 'lazy' }), el('span', { class: 'ty' }, p.formato || p.tipo || ''))
+      : el('div', { class: 'rf-thumb vazio' }, el('div', {}, el('b', {}, p.tipo === 'video' ? '🎬' : '🖼️'), p.vazio || 'Sem prévia'))
+    const st = { pronta: ['ok', 'Pronta'], subir: ['o', 'Pedido para subir'], ajuste: ['wait', 'Ajuste pedido'], editar: ['wait', p.precisa || 'Falta liberar'] }[p.status] || ['n', p.status || '–']
+    const acts = el('div', { class: 'acts' })
+    for (const a of p.arquivos || []) acts.append(el('button', { type: 'button', class: 'dl', onclick: (e) => baixar(a, e.currentTarget) }, '⬇ ' + (a.rotulo || 'Baixar')))
+    if (p.status === 'pronta' || p.status === 'ajuste') acts.append(el('button', { type: 'button', class: 'ap', onclick: (e) => pecaSubir(id, p, e.currentTarget) }, 'Quero subir'))
+    const nota = el('textarea', { rows: '2', placeholder: 'O que mudar? (Ctrl+Enter envia)', 'aria-label': 'Ajuste para ' + (p.titulo || 'a peça'), hidden: '' })
+    const bAj = el('button', { type: 'button', onclick: (e) => { if (nota.hidden) { nota.hidden = false; nota.focus() } else pecaAjuste(id, p, nota.value.trim(), e.currentTarget) } }, 'Pedir ajuste')
+    nota.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); bAj.click() } })
+    acts.append(bAj)
+    box.append(el('div', { class: 'rf-c' }, thumb,
+      el('div', { class: 't' }, el('span', { class: 'pill ' + st[0] }, st[1])),
+      el('b', {}, p.titulo || '–'),
+      p.porque ? el('div', { class: 'rf-st' }, p.porque) : null,
+      p.texto ? el('div', { class: 'idea' }, el('b', {}, 'Texto do anúncio: '), p.texto) : null,
+      p.nota ? el('div', { class: 'mt' }, 'Seu pedido: ' + p.nota) : null,
+      nota, acts))
+  }
+}
+async function baixar(a, btn) {
+  if (!a || !a.url) return
+  if (!DL) { window.open(a.url, '_blank', 'noopener'); return }
+  btn.setAttribute('aria-disabled', 'true')
+  try {
+    const r = await fetch(a.url); if (!r.ok) throw new Error('http')
+    await DL.save({ filename: a.nome || 'peca', data: await r.blob() })
+  } catch (e) {
+    if (!(e && e.code === 'declined')) { toast('Abrindo o arquivo para você salvar…'); window.open(a.url, '_blank', 'noopener') }
+  } finally { btn.removeAttribute('aria-disabled') }
+}
+async function pedirCriativo(texto, btn) {
+  if (!db) { toast('Entre na sua conta para pedir.'); return }
+  btn && btn.setAttribute('aria-disabled', 'true')
+  try {
+    await db.collection('chat').add({ canal: 'criativo', conversa: convAtual.criativo, papel: 'patrik', texto, em: new Date().toISOString(), respondido: false, por: me || '' })
+    const r = await chamarClaude('chat'); toast(AVISO[r] || 'Pedido salvo.')
+  } catch (e) { toast(e && e.code === 'not_granted' ? 'Você só pode ver esta página.' : 'Não consegui enviar. Tente de novo.') }
+  finally { btn && btn.removeAttribute('aria-disabled') }
+}
+async function pecaSubir(id, p, btn) {
+  try { await db.collection('referencias_pecas').doc(id).update({ status: 'subir', pedido_em: new Date().toISOString() }) } catch {}
+  pedirCriativo('Pode subir a peça "' + (p.titulo || id) + '" (referencias_pecas/' + id + ') no Meta: monte a proposta de criativo com estes arquivos, texto e o conjunto onde entra, para eu aprovar.', btn)
+}
+async function pecaAjuste(id, p, nota, btn) {
+  if (!nota) { toast('Escreva o que mudar.'); return }
+  try { await db.collection('referencias_pecas').doc(id).update({ status: 'ajuste', nota }) } catch {}
+  pedirCriativo('Ajuste na peça "' + (p.titulo || id) + '" (referencias_pecas/' + id + '): ' + nota + '. Refaça os arquivos e atualize a peça.', btn)
+}
+$('rf-buscar').addEventListener('click', async (e) => {
+  const bt = e.currentTarget; if (bt.getAttribute('aria-disabled') === 'true') return
+  if (!db) { toast('Entre na sua conta para buscar.'); return }
+  try { await db.doc('config/referencias').set({ pedido_em: new Date().toISOString(), por: me || '' }) } catch { toast('Você só pode ver esta página.'); return }
+  const r = await chamarClaude('referencias')
+  toast(r === 'ok' ? 'Buscando referências. Leva uns 5 minutos; a aba atualiza sozinha.' : (AVISO[r] || 'Pedido salvo.'))
+})
+
+// ── Roteiros da Laura ──────────────────────────────────────────────
+function textoRoteiro(r) {
+  return '🎬 ' + (r.titulo || '') + ' (' + (r.dur || '') + ')\n\n' + (r.cenas || []).map((c) => '[' + c.t + '] ' + c.faz + '\nFALA: "' + c.fala + '"' + (c.tela ? '\nTEXTO NA TELA: ' + c.tela : '')).join('\n\n') + (r.onde ? '\n\nOnde: ' + r.onde : '') + (r.roupa ? '\nRoupa: ' + r.roupa : '') + (r.cuidado ? '\nCuidado: ' + r.cuidado : '')
+}
+async function copiar(txt) {
+  try { await navigator.clipboard.writeText(txt); toast('Texto copiado.') }
+  catch { const t = el('textarea'); t.value = txt; document.body.append(t); t.select(); let ok = false; try { ok = document.execCommand('copy') } catch {} t.remove(); toast(ok ? 'Texto copiado.' : 'Não consegui copiar; use "Mandar no WhatsApp".') }
+}
+function renderRoteiros() {
+  const lista = Object.entries(ROTS).sort((a, b) => (a[1].ordem ?? 99) - (b[1].ordem ?? 99))
+  const n = { gravar: 0, gravado: 0 }; for (const [, r] of lista) { if (r.status === 'gravado') n.gravado++; else n.gravar++ }
+  $('rt-c-gravar').textContent = n.gravar ? '· ' + n.gravar : ''; $('rt-c-gravado').textContent = n.gravado ? '· ' + n.gravado : ''
+  const nb = $('nb-rot'); nb.textContent = String(n.gravar); nb.classList.toggle('hot', n.gravar > 0)
+  const box = $('rt-lista'); box.textContent = ''
+  const vis = lista.filter(([, r]) => rtFiltro === 'todos' || (rtFiltro === 'gravado' ? r.status === 'gravado' : r.status !== 'gravado'))
+  if (!vis.length) box.append(el('div', { class: 'empty' }, rtFiltro === 'gravado' ? 'Nenhum roteiro marcado como gravado ainda.' : lista.length ? 'Tudo gravado. 🎉' : 'Nenhum roteiro ainda. Eles aparecem quando o Claude busca referências.'))
+  for (const [id, r] of vis) {
+    const cenas = el('div', { class: 'rt-cenas' }, el('span', { class: 'k' }, 'Cena a cena'))
+    for (const c of r.cenas || []) cenas.append(el('div', { class: 'rt-cena' }, el('span', { class: 'tm' }, c.t), el('span', { class: 'faz' }, c.faz), el('span', { class: 'fala' }, '"' + c.fala + '"'), c.tela ? el('span', { class: 'tela' }, 'Na tela: ', el('b', {}, c.tela)) : null))
+    const fala = el('div', { class: 'fala' }); for (const c of r.cenas || []) fala.append(el('p', {}, c.fala))
+    const texto = el('div', { class: 'rt-texto' }, el('span', { class: 'k' }, 'Texto completo para falar'), fala, r.legenda ? el('div', { class: 'leg' }, el('b', {}, 'Legenda do anúncio: '), r.legenda) : null)
+    const nota = el('textarea', { rows: '2', placeholder: 'O que mudar neste roteiro? (Ctrl+Enter envia)', 'aria-label': 'Ajuste no roteiro ' + (r.titulo || ''), hidden: '' })
+    const bAj = el('button', { class: 'b', type: 'button', onclick: (e) => { if (nota.hidden) { nota.hidden = false; nota.focus() } else rtAjuste(id, r, nota.value.trim(), e.currentTarget) } }, 'Pedir ajuste')
+    nota.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); bAj.click() } })
+    const st = r.status === 'gravado' ? ['ok', 'Gravado' + (r.gravado_em ? ' em ' + fmtD(r.gravado_em) : '')] : r.status === 'ajuste' ? ['wait', 'Ajuste pedido'] : ['o', 'Para gravar']
+    box.append(el('article', { class: 'card rt ' + (r.status || 'gravar') },
+      el('div', { class: 'rt-top' }, el('span', { class: 'num' }, String(r.ordem ?? '•')), el('div', {}, el('h3', {}, r.titulo || '–'),
+        el('div', { class: 't' }, el('span', { class: 'pill ' + st[0] }, st[1]), r.dur ? el('span', { class: 'pill n' }, '⏱ ' + r.dur) : null, r.precisa_ok ? el('span', { class: 'pill no' }, 'Esperar OK do Patrik') : null))),
+      r.porque ? el('div', { class: 'rt-why' }, el('b', {}, 'Por que gravar: '), r.porque) : null,
+      el('div', { class: 'rt-cols' }, cenas, texto),
+      el('div', { class: 'rt-info' }, r.onde ? el('span', {}, el('b', {}, 'Onde: '), r.onde) : null, r.roupa ? el('span', {}, el('b', {}, 'Roupa: '), r.roupa) : null),
+      r.cuidado ? el('div', { class: 'rt-cuidado' }, '⚠️ ', r.cuidado) : null,
+      r.nota ? el('p', { class: 'muted' }, 'Ajuste pedido: ' + r.nota) : null,
+      nota,
+      el('div', { class: 'btns' },
+        el('button', { class: 'b', type: 'button', onclick: () => copiar(textoRoteiro(r)) }, '📋 Copiar texto'),
+        el('a', { class: 'b', href: 'https://wa.me/?text=' + encodeURIComponent(textoRoteiro(r)), target: '_blank', rel: 'noopener' }, '💬 Mandar no WhatsApp'),
+        r.status === 'gravado'
+          ? el('button', { class: 'b ghost', type: 'button', onclick: (e) => rtStatus(id, 'gravar', e.currentTarget) }, 'Desmarcar')
+          : el('button', { class: 'b ok', type: 'button', onclick: (e) => rtStatus(id, 'gravado', e.currentTarget) }, '✓ Já gravei'),
+        bAj)))
+  }
+}
+async function rtStatus(id, status, btn) {
+  if (!db) { toast('Entre na sua conta.'); return }
+  btn.disabled = true
+  try { await db.collection('roteiros').doc(id).update(status === 'gravado' ? { status, gravado_em: new Date().toISOString(), por: me || '' } : { status }); if (status === 'gravado') toast('Marcado. Agora é só mandar os vídeos na pasta do Drive.') }
+  catch (e) { toast(e && e.code === 'not_granted' ? 'Você só pode ver esta página.' : 'Não consegui salvar. Tente de novo.') }
+  finally { btn.disabled = false }
+}
+async function rtAjuste(id, r, nota, btn) {
+  if (!nota) { toast('Escreva o que mudar.'); return }
+  try { await db.collection('roteiros').doc(id).update({ status: 'ajuste', nota }) } catch {}
+  pedirCriativo('Ajuste no roteiro "' + (r.titulo || id) + '" (roteiros/' + id + '): ' + nota + '. Reescreva o roteiro e volte para "gravar".', btn)
+}
+document.querySelectorAll('#rt-filtro button').forEach((b) => b.addEventListener('click', () => { rtFiltro = b.dataset.f; document.querySelectorAll('#rt-filtro button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); renderRoteiros() }))
+setInterval(renderRefStatus, 60000)
+
 // ── Arranque ───────────────────────────────────────────────────────
-renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); renderRcPlano(null)
+renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); renderRcPlano(null); renderRef(); renderRoteiros()
 ;(async () => {
   const c = window.claude
   if (!c) { $('pr-state').textContent = 'abra no claude.ai'; $('ch-state').textContent = 'abra no claude.ai'; $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; return }
   ;[db, user, mcp] = await Promise.all([c.use('db').catch(() => null), c.use('user').catch(() => null), c.use('mcp').catch(() => null)])
   if (user) { try { me = await user.id() } catch {} }
+  c.use('downloads').then((x) => { DL = x }).catch(() => {})
   if (mcp) { watchPeriodo(); rcWatch(); qWatch() }
   else { $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; $('m-sets').innerHTML = '<tr><td colspan="7" class="l muted">Os números ao vivo aparecem para quem tem os conectores do Meta e do Supabase.</td></tr>'; $('m-ads').innerHTML = '' }
   if (!db) { $('pr-state').textContent = 'entre na sua conta'; $('ch-state').textContent = 'entre na sua conta'; return }
@@ -2480,6 +2786,10 @@ renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); rend
   db.collection('recuperacao_feitos').onSnapshot((snap) => { rcFeitos.clear(); snap.docs.forEach((d) => rcFeitos.set(d.id, d.data())); renderRec() }, () => {})
   db.doc('recuperacao/atual').onSnapshot((d) => { rcPlano = d.exists ? d.data() : null; renderRcPlano(rcPlano) }, () => {})
   db.doc('meta_plano/atual').onSnapshot((d) => { obPlano = d.exists ? d.data() : null; renderObPlano(obPlano) }, () => {})
+  db.doc('referencias/atual').onSnapshot((d) => { REF = d.exists ? d.data() : null; renderRef() }, () => {})
+  db.doc('config/referencias').onSnapshot((d) => { refPedido = d.exists ? d.data() : null; renderRefStatus() }, () => {})
+  db.collection('referencias_pecas').onSnapshot((snap) => { for (const k of Object.keys(PECAS)) delete PECAS[k]; snap.docs.forEach((d) => { PECAS[d.id] = d.data() }); renderPecas() }, () => {})
+  db.collection('roteiros').onSnapshot((snap) => { for (const k of Object.keys(ROTS)) delete ROTS[k]; snap.docs.forEach((d) => { ROTS[d.id] = d.data() }); renderRoteiros() }, () => {})
   db.doc('config/chat').onSnapshot((d) => { if (d.exists) { const v = d.data(); for (const c of CANAIS) if (v[c]) convAtual[c] = v[c]; renderChat() } }, () => {})
   db.collection('chat').orderBy('em', 'desc').limit(600).onSnapshot((snap) => { for (const k of Object.keys(msgs)) delete msgs[k]; snap.docs.forEach((d) => { msgs[d.id] = d.data() }); renderChat(); renderProps(); renderOtChat(); renderObChat(); renderRcChat() }, () => { $('ch-state').textContent = 'fora do ar; recarregue' })
   renderProps(); renderChat()

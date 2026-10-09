@@ -49,6 +49,14 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
   `otimizar_id` ou `alvo.ids` daquele item e um chat (mensagens com `alvo_id`, `alvo_nivel`, `alvo_nome`, conversa
   `ot-<id>`). Item "Com problema"/"Reprovado": o selo é clicável e abre o cartão Problema (motivo lido do Meta com
   `ads_get_errors`, explicado em Motivo / Sugestão / Como) e o botão "Pedir para o Claude resolver".
+- **Referência**: botão BUSCAR REFERÊNCIAS (grava `config/referencias.pedido_em` e chama a rotina com `PEDIDO: referencias`).
+  Mostra "O que fazer com isso", os posts da Laura que mais engajaram (com "Por que funcionou" e "Como vira anúncio"),
+  anúncios concorrentes da Biblioteca (dias no ar, versões ativas, link do vídeo), peças prontas com Baixar (capacidade
+  `downloads`; arquivos nos assets do painel) / Quero subir / Pedir ajuste (vão pelo chat "criativo"), e o que falta
+  conectar (docs/GUIA_CONEXOES.md). A tabela antiga de fotos e pendências fica recolhida no fim.
+- **Roteiros da Laura**: roteiros em `roteiros/<id>` com por que gravar, cena a cena (tempo, o que fazer, fala, texto na
+  tela), texto completo, legenda, onde, roupa e cuidado. Botões Copiar texto, Mandar no WhatsApp, Já gravei (status
+  `gravado`) e Pedir ajuste (status `ajuste` + chat "criativo"). Número no menu = roteiros para gravar.
 
 ## Banco do painel (ArtifactData, url acima)
 | Coleção | Campos |
@@ -61,6 +69,10 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
 | `config/meta` | tipo (lucro, faturamento, vendas), valor, dias, inicio (AAAA-MM-DD), escopo (lowticket, marca, efeito), texto, custos [{nome, valor}] (outros custos da empresa no período, já acumulados até hoje), custos_em (quando o Patrik atualizou os custos) |
 | `meta_plano/atual` | em, resumo, pct_meta, pct_prazo, falta_por_dia, acoes [{titulo, porque, como, impacto, proposta_id}] |
 | `recuperacao/atual` | em, resumo, numeros, motivos [{motivo, dado}], acoes [{tipo (anuncio, mudanca, rmkt, campanha, automacao), titulo, porque, como, proposta_id}] |
+| `referencias/atual` | em, resumo, fazer[], instagram {sub, padrao[], obs, posts [{data, tipo, dur, curtidas, coment, legenda, link, porque, ideia}]}, mercado_lead, mercado [{pagina, titulo, dias, ativos, tag (antigo, quiz, escala, mesmo, gancho, whats), link, video, leitura}], conexoes [{st (ok, falta, no), t}] |
+| `config/referencias` | pedido_em, por (botão BUSCAR REFERÊNCIAS) |
+| `referencias_pecas/<id>` | ordem, tipo (foto, video), formato, titulo, status (pronta, subir, ajuste, editar, descartada), precisa, vazio, thumb, porque, texto, nota, arquivos [{rotulo, nome, url}] (url = `/_blob/<id do asset>`), criado_em |
+| `roteiros/<id>` | ordem, titulo, dur, porque, onde, roupa, cenas [{t, faz, fala, tela}], texto, legenda, cuidado, precisa_ok, como_gravar, status (gravar, gravado, ajuste), gravado_em, nota, criado_em |
 | `criativos`, `sugestoes` | aprovações antigas (antes de 08/10) |
 
 ## Regras
@@ -71,6 +83,12 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
 - Conta Meta 1094091162588572. Régua: custo por venda até R$ 37; T1 32%; clicar comprar 18,7% das sessões.
 
 ## Diário
+- **09/10/2026 (3)**: aba **Referência** refeita com dados reais e botão BUSCAR REFERÊNCIAS; nova aba **Roteiros da Laura**
+  (5 roteiros: só cardio, se matar de treinar, recomeços, medo de gastar [espera OK: garantia], depois dos 40). Peças
+  I "Pare de fazer só cardio" (feed/stories) e J "Só esteira e nada muda?" (vídeo 10s) nos assets do painel. Baixar usa a
+  capacidade `downloads`. Instagram: os reels de 8–18s engajam até 10× mais que as versões longas do mesmo texto. Biblioteca
+  (BR): anúncio mais antigo do nicho com 90 dias; a ferramenta não traz vídeo nem texto. Rede bloqueia Instagram, Facebook,
+  Drive, HeyGen e ElevenLabs; mLabs não tem conector nem API → Metricool (grátis). Passo a passo em `docs/GUIA_CONEXOES.md`.
 - **09/10/2026 (2), 08h50**: **Resumo** ganhou "O que fazer hoje" (Pix a chamar, conjunto com R$ 40+ sem clique em comprar,
   anúncio reprovado em campanha ligada, propostas esperando, resultado a conferir, custos desatualizados, meta abaixo do ritmo,
   conjunto pronto para escalar). **Meta ao vivo**: colunas Gasto · Começaram o quiz · Clicaram comprar · Vendas · Custo por
