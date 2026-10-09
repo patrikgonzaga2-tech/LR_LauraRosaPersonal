@@ -35,6 +35,15 @@ nav button[aria-selected="true"]{background:var(--o);color:#000}
 nav button:focus-visible{outline:2px solid #fff;outline-offset:1px}
 .badge{min-width:22px;text-align:center;font-size:12px;border-radius:99px;padding:1px 7px;background:rgba(255,255,255,.18);color:#fff}
 nav button[aria-selected="true"] .badge{background:#000;color:#fff}
+.badge:empty{display:none}
+/* Sub-abas da seção aberta (pílulas no topo do conteúdo) */
+.subnav{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.subnav button{font:700 13.5px var(--body);border-radius:999px;border:1px solid var(--line);background:var(--wh);color:var(--sub);padding:7px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.subnav button[aria-selected="true"]{background:var(--gd);border-color:var(--gd);color:#fff}
+.subnav button:focus-visible{outline:2px solid var(--o);outline-offset:2px}
+.subnav .badge{background:var(--pale);color:var(--sub);border:1px solid var(--line)}
+.subnav .badge.hot{background:#FFC53D;color:#000;border-color:#FFC53D}
+.subnav button[aria-selected="true"] .badge{background:#fff;color:var(--gd);border-color:#fff}
 .badge.hot{background:#FFC53D;color:#000}
 .side-foot{margin-top:auto;padding:14px 20px;font-size:12px;color:rgba(255,255,255,.6);display:grid;gap:4px}
 .side-foot b{color:#fff}
@@ -367,6 +376,15 @@ tr.lead-det td{background:#FFFBF6;text-align:left}
   .rc-t tr.lead-det{display:block;padding:0}
   .rc-t tr.lead-det td{display:block;padding:10px 14px}
 }
+.roi-card{border-left:5px solid var(--o);display:grid;gap:12px}
+.roi-top{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
+.roi-v{font:800 40px/1 var(--display);font-variant-numeric:tabular-nums}
+.roi-v.pos{color:var(--g)} .roi-v.neg{color:var(--bad)}
+.roi-nums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.roi-nums div{background:var(--pale);border-radius:10px;padding:8px 10px;min-width:0}
+.roi-nums b{display:block;font:800 18px var(--display);font-variant-numeric:tabular-nums}
+.roi-nums span{font-size:12px;color:var(--sub)}
+@media (max-width:640px){.roi-nums{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .wa{font:700 12px var(--body);border-radius:8px;border:1px solid var(--g);background:var(--g-soft);color:var(--gd);padding:4px 9px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
 .wa:hover{background:var(--g);color:#fff}
 
@@ -708,44 +726,49 @@ button.b.bad:hover{background:var(--bad);color:#fff}
 <div class="app">
   <aside>
     <button type="button" class="menu-btn" id="menu-btn" aria-label="Abrir o menu" aria-expanded="false" aria-controls="gaveta"><i></i><i></i><i></i></button>
-    <div class="brand">Painel de <span>Anúncios</span><small>Quiz De Volta ao Eixo · Meta</small><b class="aba-atual" id="aba-atual"></b></div>
+    <div class="brand">Painel <span>Volta ao Eixo</span><small>Meta de outubro · anúncios · quiz</small><b class="aba-atual" id="aba-atual"></b></div>
     <div class="veu" id="veu"></div>
     <div class="gaveta" id="gaveta">
     <div class="gaveta-top"><span>Menu</span><button type="button" class="menu-fechar" id="menu-fechar" aria-label="Fechar o menu">✕</button></div>
     <nav role="tablist" aria-label="Seções do painel">
-      <div class="navlbl">Hoje</div>
-      <button role="tab" data-tab="objetivo" aria-selected="false">Meta do painel <span class="badge" id="nb-obj">–</span></button>
-      <button role="tab" data-tab="resumo" aria-selected="true">Resumo</button>
-      <button role="tab" data-tab="aprovar" aria-selected="false">Aprovar e conversar <span class="badge" id="nb-aprovar">0</span></button>
-      <button role="tab" data-tab="aprovados" aria-selected="false">Aprovados <span class="badge" id="nb-aprovados">0</span></button>
-      <div class="navlbl">Números</div>
-      <button role="tab" data-tab="meta" aria-selected="false">Meta ao vivo</button>
-      <button role="tab" data-tab="otimizar" aria-selected="false">Otimizar <span class="badge" id="nb-ot">0</span></button>
-      <button role="tab" data-tab="recuperar" aria-selected="false">Clicou e não comprou <span class="badge" id="nb-rc">0</span></button>
-      <button role="tab" data-tab="testes" aria-selected="false">Testes</button>
-      <div class="navlbl">Ajuste do quiz</div>
-      <button role="tab" data-tab="quiz" aria-selected="false">Sugestão quiz <span class="badge" id="nb-quiz">0</span></button>
-      <button role="tab" data-tab="qz-estamos" aria-selected="false">Como está o quiz</button>
-      <button role="tab" data-tab="qz-versoes" aria-selected="false">Versões <span class="badge" id="nb-versoes">–</span></button>
-      <button role="tab" data-tab="qz-comparar" aria-selected="false">Comparar versões</button>
-      <button role="tab" data-tab="qz-marca" aria-selected="false">Marca <span class="badge" id="nb-marca">–</span></button>
-      <button role="tab" data-tab="qz-editar" aria-selected="false">Editar textos <span class="badge" id="nb-fila">0</span></button>
-      <div class="navlbl">Registro</div>
-      <button role="tab" data-tab="historico" aria-selected="false">Histórico</button>
-      <button role="tab" data-tab="criativos" aria-selected="false">Criativos</button>
-      <button role="tab" data-tab="videos" aria-selected="false">Vídeos <span class="badge" id="nb-videos">–</span></button>
-      <button role="tab" data-tab="referencia" aria-selected="false">Referência</button>
-      <button role="tab" data-tab="roteiros" aria-selected="false">Roteiros da Laura <span class="badge" id="nb-rot">0</span></button>
+      <button role="tab" data-grupo="hoje" aria-selected="true">Hoje <span class="badge" id="ng-hoje"></span></button>
+      <button role="tab" data-grupo="anuncios" aria-selected="false">Anúncios <span class="badge" id="ng-anuncios"></span></button>
+      <button role="tab" data-grupo="quiz" aria-selected="false">Quiz e testes <span class="badge" id="ng-quiz"></span></button>
+      <button role="tab" data-grupo="conteudo" aria-selected="false">Conteúdo da Laura <span class="badge" id="ng-conteudo"></span></button>
+      <button role="tab" data-grupo="aprovar" aria-selected="false">Aprovar e conversar <span class="badge" id="ng-aprovar"></span></button>
     </nav>
     <div class="side-links" aria-label="Painéis ligados">
       <div class="navlbl" style="padding:6px 0 2px">Ligados</div>
       <a href="https://www.laurarosapersonal.com/efeito-lipo-quiz" target="_blank" rel="noopener">Quiz no ar <span aria-hidden="true">↗</span></a>
+      <a href="https://claude.ai/artifact/8Ys79EhBMSiRkDqm3n6QbG" target="_blank" rel="noopener">Leads da Aline <span aria-hidden="true">↗</span></a>
+      <a href="https://claude.ai/artifact/Br7unX3TmXKevyrEoZD1EY" target="_blank" rel="noopener">Roteiros de vídeo <span aria-hidden="true">↗</span></a>
     </div>
     <div class="side-foot"><span>Análise automática: <b>todo dia às 7h</b></span><span>Números do Meta: <b>a cada 1 hora</b></span><span>Mudanças no Meta: <b>só com sua aprovação</b></span></div>
     </div>
   </aside>
 
   <main><div class="inner">
+    <div class="subnav" id="subnav" role="tablist" aria-label="Partes desta seção">
+      <button type="button" role="tab" data-grupo="hoje" data-tab="resumo">O que fazer hoje</button>
+      <button type="button" role="tab" data-grupo="hoje" data-tab="objetivo">Meta do mês <span class="badge" id="nb-obj">–</span></button>
+      <button type="button" role="tab" data-grupo="anuncios" data-tab="meta">Gerenciador e ROI</button>
+      <button type="button" role="tab" data-grupo="anuncios" data-tab="otimizar">Otimizar <span class="badge" id="nb-ot">0</span></button>
+      <button type="button" role="tab" data-grupo="anuncios" data-tab="criativos">Criativos</button>
+      <button type="button" role="tab" data-grupo="quiz" data-tab="testes">Testes</button>
+      <button type="button" role="tab" data-grupo="quiz" data-tab="quiz">Funil do quiz <span class="badge" id="nb-quiz">0</span></button>
+      <button type="button" role="tab" data-grupo="quiz" data-tab="recuperar">Clicou e não comprou <span class="badge" id="nb-rc">0</span></button>
+      <button type="button" role="tab" data-grupo="quiz" data-tab="qz-estamos">Versão no ar</button>
+      <button type="button" role="tab" data-grupo="quiz" data-tab="qz-versoes">Versões <span class="badge" id="nb-versoes">–</span></button>
+      <button type="button" role="tab" data-grupo="quiz" data-tab="qz-comparar">Comparar</button>
+      <button type="button" role="tab" data-grupo="quiz" data-tab="qz-marca">Marca <span class="badge" id="nb-marca">–</span></button>
+      <button type="button" role="tab" data-grupo="quiz" data-tab="qz-editar">Editar textos <span class="badge" id="nb-fila">0</span></button>
+      <button type="button" role="tab" data-grupo="conteudo" data-tab="referencia">O que está funcionando</button>
+      <button type="button" role="tab" data-grupo="conteudo" data-tab="roteiros">Roteiros da Laura <span class="badge" id="nb-rot">0</span></button>
+      <button type="button" role="tab" data-grupo="conteudo" data-tab="videos">Vídeos <span class="badge" id="nb-videos">–</span></button>
+      <button type="button" role="tab" data-grupo="aprovar" data-tab="aprovar">Para aprovar <span class="badge" id="nb-aprovar">0</span></button>
+      <button type="button" role="tab" data-grupo="aprovar" data-tab="aprovados">Aprovados <span class="badge" id="nb-aprovados">0</span></button>
+      <button type="button" role="tab" data-grupo="aprovar" data-tab="historico">Histórico</button>
+    </div>
 
     <!-- META DO PAINEL -->
     <section class="tab" id="tab-objetivo" role="tabpanel" hidden>
@@ -858,7 +881,7 @@ button.b.bad:hover{background:var(--bad);color:#fff}
 
     <!-- META -->
     <section class="tab" id="tab-meta" role="tabpanel" hidden>
-      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Meta ao vivo</h2><p>Filtre por status ou por palavra. Clique numa linha para ver o caminho até a compra; clique em "Otimizar" para ver o que eu mudaria e conversar sobre aquela campanha ou conjunto.</p></div><span class="pill n" id="m-at">carregando…</span></div>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Gerenciador de anúncios</h2><p>Quanto cada campanha, conjunto e anúncio gastou e quanto voltou em vendas. Embaixo, o que fazer para melhorar. Nada muda no Meta sem o seu "Aprovar".</p></div><span class="pill n" id="m-at">carregando…</span></div>
       <div class="filtros card">
         <div class="seg" role="group" aria-label="Período" id="m-per">
           <button type="button" data-p="today" aria-pressed="true">Hoje</button>
@@ -878,29 +901,36 @@ button.b.bad:hover{background:var(--bad);color:#fff}
           <label class="muted">Anúncio <select id="m-ad"><option value="">Todos</option></select></label>
         </div>
       </div>
-      <div class="tiles">
+      <div class="card roi-card" id="m-roi"><span class="muted">Calculando o ROI…</span></div>
+      <div class="tiles" hidden>
         <div class="tile o"><span class="k">Gasto</span><span class="v" id="m-gasto">–</span><span class="s" id="m-gasto-s">&nbsp;</span></div>
         <div class="tile"><span class="k">Cliques no link</span><span class="v" id="m-cliq">–</span><span class="s" id="m-cliq-s">&nbsp;</span></div>
         <div class="tile"><span class="k">Sessões no quiz</span><span class="v" id="m-sess">–</span><span class="s" id="m-sess-s">vindas do Meta</span></div>
         <div class="tile gd"><span class="k">Clicaram comprar</span><span class="v" id="m-ck">–</span><span class="s" id="m-ck-s">régua 18,7%</span></div>
         <div class="tile g"><span class="k">Vendas</span><span class="v" id="m-v">–</span><span class="s" id="m-v-s">custo por venda: –</span></div>
       </div>
-      <h3>Campanhas</h3>
+      <div class="row"><div class="seg" role="group" aria-label="Nível" id="m-nivel">
+          <button type="button" data-n="camps" aria-pressed="true">Campanhas</button>
+          <button type="button" data-n="sets" aria-pressed="false">Conjuntos</button>
+          <button type="button" data-n="ads" aria-pressed="false">Anúncios</button>
+        </div><span class="muted" style="font-size:12.5px">Toque numa linha para ver o caminho até a compra · "Otimizar →" abre as sugestões daquele item</span></div>
+      <div class="nivel" data-n="camps"><h3 class="sr">Campanhas</h3>
       <div class="tbl"><table id="t-camps">
-        <thead><tr><th class="sort" data-k="name">Campanha</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="sessoes">Começaram o quiz</th><th class="sort" data-k="comprar">Clicaram comprar</th><th class="sort" data-k="vendas">Vendas</th><th class="sort" data-k="cpv">Custo por venda</th><th class="l">Sinal</th></tr></thead>
-        <tbody id="m-camps"><tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr></tbody>
-      </table></div>
-      <h3>Conjuntos</h3>
+        <thead><tr><th class="sort" data-k="name">Campanha</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="cliques">Cliques</th><th class="sort" data-k="sessoes">No quiz</th><th class="sort" data-k="vendas">Compras</th><th class="sort" data-k="liq">Receita líquida</th><th class="sort" data-k="roi">ROI</th><th class="l">Sinal</th></tr></thead>
+        <tbody id="m-camps"><tr><td colspan="8" class="l muted">Carregando do Meta…</td></tr></tbody>
+      </table></div></div>
+      <div class="nivel" data-n="sets" hidden><h3 class="sr">Conjuntos</h3>
       <div class="tbl"><table id="t-sets">
-        <thead><tr><th class="sort" data-k="name">Conjunto</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="sessoes">Começaram o quiz</th><th class="sort" data-k="comprar">Clicaram comprar</th><th class="sort" data-k="vendas">Vendas</th><th class="sort" data-k="cpv">Custo por venda</th><th class="l">Sinal</th></tr></thead>
-        <tbody id="m-sets"><tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr></tbody>
-      </table></div>
-      <h3>Anúncios</h3>
+        <thead><tr><th class="sort" data-k="name">Conjunto</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="cliques">Cliques</th><th class="sort" data-k="sessoes">No quiz</th><th class="sort" data-k="vendas">Compras</th><th class="sort" data-k="liq">Receita líquida</th><th class="sort" data-k="roi">ROI</th><th class="l">Sinal</th></tr></thead>
+        <tbody id="m-sets"><tr><td colspan="8" class="l muted">Carregando do Meta…</td></tr></tbody>
+      </table></div></div>
+      <div class="nivel" data-n="ads" hidden><h3 class="sr">Anúncios</h3>
       <div class="tbl"><table id="t-ads">
-        <thead><tr><th class="sort" data-k="name">Anúncio</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="sessoes">Começaram o quiz</th><th class="sort" data-k="comprar">Clicaram comprar</th><th class="sort" data-k="vendas">Vendas</th><th class="sort" data-k="cpv">Custo por venda</th><th class="l">Sinal</th></tr></thead>
-        <tbody id="m-ads"><tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr></tbody>
-      </table></div>
-      <p class="muted"><b>Sinal</b> (régua: custo por venda até R$ 37): <b>Escalar</b> = 3 ou mais vendas dentro da régua · <b>Vendendo</b> = já vendeu dentro da régua · <b>Caro</b> = vendeu, mas acima de R$ 37 · <b>Pausar?</b> = R$ 40 ou mais gastos e ninguém clicou em comprar · <b>Pouco dado</b> = menos de R$ 10 gastos. <b>Vendas</b>: oferta do quiz na Greenn (QN7gci), ligadas ao conjunto e ao anúncio de onde a pessoa veio. Toque numa linha para ver o caminho inteiro (cliques → página → quiz → comprar). "3 dias" e "7 dias" incluem hoje. <b>Ativas</b> = campanha, conjunto e anúncio ligados.</p>
+        <thead><tr><th class="sort" data-k="name">Anúncio</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="cliques">Cliques</th><th class="sort" data-k="sessoes">No quiz</th><th class="sort" data-k="vendas">Compras</th><th class="sort" data-k="liq">Receita líquida</th><th class="sort" data-k="roi">ROI</th><th class="l">Sinal</th></tr></thead>
+        <tbody id="m-ads"><tr><td colspan="8" class="l muted">Carregando do Meta…</td></tr></tbody>
+      </table></div></div>
+      <div class="rc-sec"><div class="row"><h3>Como melhorar os resultados</h3><button class="b" type="button" data-go="criativos">Ver criativos novos para aprovar</button></div><div class="rc-acoes" id="m-sug"></div></div>
+      <p class="muted"><b>ROI</b> = (receita líquida − gasto) ÷ gasto: +50% quer dizer que cada R$ 1 no anúncio voltou R$ 1,50 na conta. <b>Receita líquida</b> = o que cai na conta depois das taxas da Greenn/Hotmart, contando o produto e os bumps de quem veio daquele anúncio. <b>Sinal</b>: <b>Escalar</b> = 2 ou mais compras com ROI positivo · <b>Lucrando</b> = 1 compra com ROI positivo · <b>Prejuízo</b> = vendeu, mas gastou mais do que voltou · <b>Pausar?</b> = R$ 40 gastos e ninguém clicou em comprar · <b>Trocar criativo</b> = menos de 1,5% clicam · <b>Pouco dado</b> = menos de R$ 10 gastos. "3 dias" e "7 dias" incluem hoje. A Comunidade vendida pela Aline no WhatsApp não entra aqui, porque não tem anúncio ligado.</p>
       <div class="state" id="m-err" hidden></div>
     </section>
 
@@ -1292,16 +1322,36 @@ let db = null, user = null, me = null, mcp = null
 
 // ── Abas ───────────────────────────────────────────────────────────
 const TABS = ['testes', 'qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'videos', 'referencia', 'roteiros']
+// 5 seções; cada uma abre na última parte que você usou nela.
+const GRUPO_NOME = { hoje: 'Hoje', anuncios: 'Anúncios', quiz: 'Quiz e testes', conteudo: 'Conteúdo da Laura', aprovar: 'Aprovar e conversar' }
+const SUBS = [...document.querySelectorAll('#subnav [data-tab]')]
+const GRUPO = Object.fromEntries(SUBS.map((b) => [b.dataset.tab, b.dataset.grupo]))
+const ultimaDe = {}
+try { Object.assign(ultimaDe, JSON.parse(localStorage.getItem('painel_ultima') || '{}')) } catch {}
 function abrir(t, foco) {
   if (t === 'conversar') t = 'aprovar'
+  if (GRUPO_NOME[t] && !TABS.includes(t)) t = ultimaDe[t] || (SUBS.find((b) => b.dataset.grupo === t) || {}).dataset.tab
   if (!TABS.includes(t)) t = 'resumo'
-  document.querySelectorAll('nav [role="tab"]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === t)))
+  const g = GRUPO[t] || 'hoje'
+  ultimaDe[g] = t
+  document.querySelectorAll('nav [data-grupo]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.grupo === g)))
+  SUBS.forEach((b) => { b.hidden = b.dataset.grupo !== g; b.setAttribute('aria-selected', String(b.dataset.tab === t)) })
+  $('subnav').hidden = SUBS.filter((b) => b.dataset.grupo === g).length < 2
   for (const x of TABS) $('tab-' + x).hidden = x !== t
-  const bt = document.querySelector('nav [data-tab="' + t + '"]'); $('aba-atual').textContent = bt ? bt.firstChild.textContent.trim() : ''
-  try { localStorage.setItem('painel_tab', t) } catch {}
+  const bt = SUBS.find((b) => b.dataset.tab === t); $('aba-atual').textContent = GRUPO_NOME[g] + (bt ? ' · ' + bt.firstChild.textContent.trim() : '')
+  try { localStorage.setItem('painel_tab', t); localStorage.setItem('painel_ultima', JSON.stringify(ultimaDe)) } catch {}
   window.scrollTo({ top: 0 })
   if (foco) setTimeout(() => { const f = $(foco); if (f) { f.focus(); f.setSelectionRange && f.setSelectionRange(f.value.length, f.value.length) } }, 50)
 }
+// Número em cima de cada seção = soma dos avisos das partes dela.
+function somaGrupos() {
+  for (const g of Object.keys(GRUPO_NOME)) {
+    let n = 0, hot = false
+    for (const b of SUBS.filter((x) => x.dataset.grupo === g)) { const bd = b.querySelector('.badge'); if (!bd || bd.id === 'nb-versoes' || bd.id === 'nb-marca' || bd.id === 'nb-obj' || bd.id === 'nb-videos') continue; const v = parseInt(bd.textContent, 10); if (v > 0) n += v; if (bd.classList.contains('hot')) hot = true }
+    const el = $('ng-' + g); el.textContent = n ? String(n) : ''; el.classList.toggle('hot', hot)
+  }
+}
+setInterval(somaGrupos, 2000)
 // ── Menu do celular (☰): as abas abrem numa gaveta à esquerda ──────
 const CELULAR = window.matchMedia('(max-width:860px)')
 function menu(aberto) {
@@ -1318,7 +1368,9 @@ $('veu').addEventListener('click', () => menu(false))
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.body.classList.contains('menu-aberto')) menu(false) })
 CELULAR.addEventListener('change', () => menu(false))
 menu(false)
-document.querySelectorAll('nav [role="tab"]').forEach((b) => b.addEventListener('click', () => { abrir(b.dataset.tab); if (CELULAR.matches) menu(false) }))
+const abrirGrupo = (g) => abrir(ultimaDe[g] || SUBS.find((b) => b.dataset.grupo === g).dataset.tab)
+document.querySelectorAll('nav [data-grupo]').forEach((b) => b.addEventListener('click', () => { abrirGrupo(b.dataset.grupo); if (CELULAR.matches) menu(false) }))
+SUBS.forEach((b) => b.addEventListener('click', () => abrir(b.dataset.tab)))
 document.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => abrir(b.dataset.go)))
 ;(() => { let t = (location.hash || '').slice(1); if (t === 'conversar') t = 'aprovar'; if (!TABS.includes(t)) { try { t = localStorage.getItem('painel_tab') || 'resumo' } catch { t = 'resumo' } } abrir(t) })()
 
@@ -1706,20 +1758,27 @@ function linhaCamp(c) {
   const q = vazioQ(); let temQ = false
   for (const st of M.sets || []) if (st.campaign_id === c.id) { const x = Q.porSet && Q.porSet[st.id]; if (x) { temQ = true; q.sessoes += x.sessoes; q.t1 += x.t1; q.res += x.res; q.comprar += x.comprar } }
   const budgetSets = (M.sets || []).filter((st) => st.campaign_id === c.id && ATIVOS.includes(st.effective_status)).reduce((a, st) => a + N(st.daily_budget), 0)
-  const vendas = Q.vendSet ? (M.sets || []).filter((st) => st.campaign_id === c.id).reduce((a, st) => a + (Q.vendSet[st.id] || 0), 0) : null
+  let vendas = null
+  if (Q.vendSet) { vendas = (M.sets || []).filter((st) => st.campaign_id === c.id).reduce((a, st) => somaV(a, Q.vendSet[st.id]), V0()); for (const [k, x] of Object.entries(Q.vendCamp || {})) if (k && (c.name.startsWith(k) || k.startsWith(c.name))) vendas = somaV(vendas, x) }
   return comVendas({ nivel: 'campanha', id: c.id, name: c.name, camp: c.name, st: c.effective_status, budget: N(c.daily_budget) || budgetSets, gasto: N(c.amount_spent), cliques: N(c.link_click), lp: N(c.omni_landing_page_view), ...q, temQ: temQ || !!Q.porSet, ev: '' }, vendas)
 }
-const comVendas = (r, vendas) => Object.assign(r, { vendas, cpv: vendas > 0 ? r.gasto / vendas : null })
-function linhaSet(s) { const q = (Q.porSet && Q.porSet[s.id]) || null; return comVendas({ nivel: 'conjunto', id: s.id, name: s.name, camp: s.campaign_name || '–', campId: s.campaign_id, st: s.effective_status, budget: N(s.daily_budget), gasto: N(s.amount_spent), cliques: N(s.link_click), lp: N(s.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porSet, ev: evento(s.results) }, Q.vendSet ? (Q.vendSet[s.id] || 0) : null) }
-function linhaAd(a) { const q = Q.porAd && (Q.porAd[(a.adset_id || '') + '|' + a.name] || Q.porAd['|' + a.name]), va = Q.vendAd; return comVendas({ nivel: 'anúncio', id: a.id, name: a.name, set: a.adset_name || '', setId: a.adset_id, camp: a.campaign_name || '–', campId: a.campaign_id, st: a.effective_status, gasto: N(a.amount_spent), ctr: N(a.ctr), cpm: N(a.cpm), cliques: N(a.link_click), lp: N(a.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porAd, ev: evento(a.results) }, va ? (va[(a.adset_id || '') + '|' + a.name] || va['|' + a.name] || 0) : null) }
-// Sinal para decidir rápido (régua do quiz: custo por venda até R$ 37; corte: R$ 40 sem clique em comprar).
+const V0 = () => ({ vendas: 0, receita: 0, liq: 0 })
+const somaV = (a, b) => { a = a || V0(); return b ? { vendas: a.vendas + b.vendas, receita: a.receita + b.receita, liq: a.liq + b.liq } : a }
+// ROI = (receita líquida − gasto) ÷ gasto. +50% = cada R$ 1 no anúncio voltou R$ 1,50 líquido.
+const comVendas = (r, v) => v == null ? Object.assign(r, { vendas: null, receita: null, liq: null, lucro: null, roi: null, cpv: null })
+  : Object.assign(r, { vendas: v.vendas, receita: v.receita, liq: v.liq, lucro: v.liq - r.gasto, roi: r.gasto > 0 ? (v.liq - r.gasto) / r.gasto : null, cpv: v.vendas > 0 ? r.gasto / v.vendas : null })
+const fmtRoi = (x) => x == null || !isFinite(x) ? '–' : (x >= 0 ? '+' : '−') + Math.abs(Math.round(x * 100)).toLocaleString('pt-BR') + '%'
+function linhaSet(s) { const q = (Q.porSet && Q.porSet[s.id]) || null; return comVendas({ nivel: 'conjunto', id: s.id, name: s.name, camp: s.campaign_name || '–', campId: s.campaign_id, st: s.effective_status, budget: N(s.daily_budget), gasto: N(s.amount_spent), cliques: N(s.link_click), lp: N(s.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porSet, ev: evento(s.results) }, Q.vendSet ? (Q.vendSet[s.id] || V0()) : null) }
+function linhaAd(a) { const q = Q.porAd && (Q.porAd[(a.adset_id || '') + '|' + a.name] || Q.porAd['|' + a.name]), va = Q.vendAd; return comVendas({ nivel: 'anúncio', id: a.id, name: a.name, set: a.adset_name || '', setId: a.adset_id, camp: a.campaign_name || '–', campId: a.campaign_id, st: a.effective_status, gasto: N(a.amount_spent), ctr: N(a.ctr), cpm: N(a.cpm), cliques: N(a.link_click), lp: N(a.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porAd, ev: evento(a.results) }, va ? (va[(a.adset_id || '') + '|' + a.name] || V0()) : null) }
+// Sinal para decidir rápido: primeiro o ROI; sem venda, o clique (CTR) e o gasto dizem o que fazer.
 function sinal(r) {
   if (r.vendas == null) return null
-  if (r.vendas > 0 && r.cpv <= 37) return r.vendas >= 3 ? ['ok', 'Escalar', r.vendas + ' vendas a ' + brl(r.cpv) + ' cada: dentro da régua de R$ 37'] : ['ok', 'Vendendo', 'vendeu dentro da régua; com 3 vendas vira "Escalar"']
-  if (r.vendas > 0) return ['wait', 'Caro', 'custo por venda de ' + brl(r.cpv) + ', acima da régua de R$ 37']
+  if (r.vendas > 0 && r.roi >= 0) return r.vendas >= 2 ? ['ok', 'Escalar', plural(r.vendas, 'compra', 'compras') + ' com ROI ' + fmtRoi(r.roi) + ': subir a verba aos poucos (20% a cada 2 dias)'] : ['ok', 'Lucrando', '1 compra com ROI ' + fmtRoi(r.roi) + '; com 2 vira "Escalar"']
+  if (r.vendas > 0) return ['wait', 'Prejuízo', 'vendeu, mas o ROI está em ' + fmtRoi(r.roi) + ' (custo por compra ' + brl(r.cpv) + ')']
   if (r.gasto >= 40 && r.comprar === 0) return ['no', 'Pausar?', brl(r.gasto) + ' gastos e ninguém clicou em comprar']
+  if (r.nivel === 'anúncio' && r.gasto >= 8 && r.ctr > 0 && r.ctr < 1.5) return ['no', 'Trocar criativo', 'só ' + r.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% clicam (bom é acima de 3%)']
   if (r.gasto < 10) return ['n', 'Pouco dado', 'menos de R$ 10 gastos']
-  return ['n', 'Acompanhar', 'ainda sem venda; ' + (r.comprar ? plural(r.comprar, 'pessoa clicou', 'pessoas clicaram') + ' em comprar' : 'ninguém clicou em comprar')]
+  return ['n', 'Acompanhar', 'ainda sem compra; ' + (r.comprar ? plural(r.comprar, 'pessoa clicou', 'pessoas clicaram') + ' em comprar' : 'ninguém clicou em comprar')]
 }
 function ordenar(lista, s) { return lista.sort((a, b) => { const x = a[s.k], y = b[s.k]; return typeof x === 'string' ? s.dir * x.localeCompare(y) : s.dir * ((x || 0) - (y || 0)) }) }
 function funil(r) {
@@ -1746,10 +1805,11 @@ function celOtimiza(r) {
   return el('td', { class: 'l' }, s ? el('span', { class: 'pill ' + s[0], title: s[2] }, s[1]) : null, s ? el('br') : null,
     el('button', { class: 'otbtn', type: 'button', title: 'Ver o que eu mudaria e conversar', onclick: (e) => { e.stopPropagation(); abrirOtimizar(alvo) } }, 'Otimizar →', tem ? el('span', { class: 'dot', title: 'Tem sugestão esperando você' }) : null))
 }
-// Colunas: nome (verba/dia ou CTR embaixo) · gasto · começaram o quiz · clicaram comprar · vendas · custo por venda · sinal.
+// Colunas: nome · gasto · cliques · começaram o quiz · compras · receita líquida · ROI · sinal.
 function numerosLinha(r) {
-  return [el('td', { style: 'white-space:nowrap' }, brl(r.gasto)), el('td', {}, r.temQ ? String(r.sessoes) : '–'), el('td', {}, r.temQ ? r.comprar + (r.sessoes ? ' · ' + pct(r.comprar, r.sessoes) : '') : '–'),
-    el('td', {}, r.vendas == null ? '–' : String(r.vendas)), el('td', { style: 'white-space:nowrap;' + (r.cpv > 37 ? 'color:var(--bad);font-weight:700' : r.cpv ? 'color:var(--gd);font-weight:700' : '') }, r.cpv ? brl(r.cpv) : '–')]
+  const cor = r.roi == null || !r.vendas ? '' : r.roi >= 0 ? 'color:var(--gd);font-weight:800' : 'color:var(--bad);font-weight:800'
+  return [el('td', { style: 'white-space:nowrap' }, brl(r.gasto)), el('td', {}, String(r.cliques || 0)), el('td', {}, r.temQ ? String(r.sessoes) + (r.comprar ? ' · ' + r.comprar + ' no checkout' : '') : '–'),
+    el('td', {}, r.vendas == null ? '–' : String(r.vendas)), el('td', { style: 'white-space:nowrap' }, r.liq == null ? '–' : brl(r.liq)), el('td', { style: 'white-space:nowrap;' + cor }, r.vendas == null ? '–' : r.vendas ? fmtRoi(r.roi) : (r.gasto > 0 ? '−100%' : '–'))]
 }
 function linhaTabela(r, cols, key, primeira) {
   const st = STATUS[r.st] || ['n', r.st]
@@ -1769,8 +1829,8 @@ function render() {
   if (M.camps) {
     const rows = ordenar(M.camps.map(linhaCamp).filter((r) => passaStatus(r.st) && (!campAlvo || r.id === campAlvo) && passaBusca(r.name)), sortSt.camps)
     const tb = $('m-camps'); tb.textContent = ''
-    for (const r of rows) tb.append(...linhaTabela(r, 7, 'c' + r.id, ''))
-    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhuma campanha com esse filtro.')))
+    for (const r of rows) tb.append(...linhaTabela(r, 8, 'c' + r.id, ''))
+    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '8', class: 'l muted' }, 'Nenhuma campanha com esse filtro.')))
   }
   if (M.sets) {
     const rows = ordenar(M.sets.map(linhaSet).filter((r) => passaStatus(r.st, r.campId) && (!campAlvo || r.campId === campAlvo) && (!setAlvo || r.id === setAlvo) && passaBusca(r.name, r.camp)), sortSt.sets)
@@ -1778,22 +1838,66 @@ function render() {
     let gasto = 0, cliq = 0, verba = 0
     for (const r of rows) {
       gasto += r.gasto; cliq += r.cliques; if (ATIVOS.includes(r.st)) verba += r.budget
-      tb.append(...linhaTabela(r, 7, 's' + r.id, r.camp))
+      tb.append(...linhaTabela(r, 8, 's' + r.id, r.camp))
     }
-    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhum conjunto com esse filtro.')))
+    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '8', class: 'l muted' }, 'Nenhum conjunto com esse filtro.')))
     $('m-gasto').textContent = brl(gasto); $('m-gasto-s').textContent = 'verba ativa: ' + brl(verba) + '/dia'
     $('m-cliq').textContent = String(cliq); $('m-cliq-s').textContent = gasto > 0 && cliq > 0 ? brl(gasto / cliq) + ' por clique' : ' '
-    if (Q.vendas) { $('m-v').textContent = String(Q.vendas.vendas); $('m-v-s').textContent = 'custo por venda: ' + (Q.vendas.vendas > 0 ? brl(gasto / Q.vendas.vendas) : '–') + ' · régua R$ 37' }
+    if (Q.vendas) { $('m-v').textContent = String(Q.vendas.vendas); $('m-v-s').textContent = 'receita líquida ' + brl(Q.vendas.liq) }
   }
   if (M.ads) {
     const rows = ordenar(M.ads.map(linhaAd).filter((r) => passaStatus(r.st, r.campId, r.setId) && (!campAlvo || r.campId === campAlvo) && (!setAlvo || r.setId === setAlvo) && (!adSel || r.id === adSel) && passaBusca(r.name, r.set, r.camp)), sortSt.ads)
     const tb = $('m-ads'); tb.textContent = ''
-    for (const r of rows) tb.append(...linhaTabela(r, 7, 'a' + r.id, r.set))
-    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhum anúncio com esse filtro.')))
+    for (const r of rows) tb.append(...linhaTabela(r, 8, 'a' + r.id, r.set))
+    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '8', class: 'l muted' }, 'Nenhum anúncio com esse filtro.')))
   }
   if (Q.total) { const t = Q.total; $('m-sess').textContent = String(t.sessoes); $('m-sess-s').textContent = t.t1 + ' passaram da 1ª tela (' + pct(t.t1, t.sessoes) + ')'; $('m-ck').textContent = String(t.comprar); $('m-ck-s').textContent = pct(t.comprar, t.sessoes) + ' das sessões · régua 18,7%' }
-  renderResumo(); renderOtSel(); if (otAlvo) renderOtimizar()
+  renderResumo(); renderOtSel(); if (otAlvo) renderOtimizar(); renderRoi(); renderSug()
 }
+// ── ROI dos anúncios no período (conta inteira do Meta × vendas que vieram de anúncio) ──
+const PER_NOME = { today: 'hoje', yesterday: 'ontem', last_3d: 'nos últimos 3 dias', last_7d: 'nos últimos 7 dias' }
+function renderRoi() {
+  const box = $('m-roi'); if (!box) return
+  if (!M.camps || !Q.vendas) { box.replaceChildren(el('span', { class: 'muted' }, 'Calculando o ROI…')); return }
+  const gasto = M.camps.reduce((a, c) => a + N(c.amount_spent), 0), v = Q.vendas, lucro = v.liq - gasto, roi = gasto > 0 ? lucro / gasto : null
+  const volta = gasto > 0 ? v.liq / gasto : 0
+  box.replaceChildren(
+    el('div', { class: 'roi-top' }, el('div', { style: 'display:grid;gap:2px' }, el('span', { class: 'k' }, 'ROI dos anúncios ' + PER_NOME[periodo]), el('span', { class: 'roi-v ' + (roi == null ? '' : roi >= 0 ? 'pos' : 'neg') }, fmtRoi(roi))),
+      el('p', { style: 'max-width:46ch;font-size:14.5px' }, gasto > 0 ? 'Cada R$ 1,00 no anúncio voltou ' + brl(volta) + ' na conta. ' + (lucro >= 0 ? 'Sobrou ' + brl(lucro) + '.' : 'Faltam ' + brl(-lucro) + ' para empatar.') : 'Sem gasto no período.')),
+    el('div', { class: 'roi-nums' },
+      el('div', {}, el('b', {}, brl(gasto)), el('span', {}, 'gasto no Meta')),
+      el('div', {}, el('b', {}, brl(v.liq)), el('span', {}, 'receita líquida (' + brl(v.receita) + ' bruta)')),
+      el('div', {}, el('b', { style: 'color:' + (lucro >= 0 ? 'var(--gd)' : 'var(--bad)') }, (lucro < 0 ? '− ' : '') + brl(Math.abs(lucro))), el('span', {}, 'lucro dos anúncios')),
+      el('div', {}, el('b', {}, String(v.vendas)), el('span', {}, v.vendas ? (v.vendas === 1 ? 'compra · custou ' : 'compras · ') + brl(gasto / v.vendas) + (v.vendas === 1 ? '' : ' cada') : 'compras pelo anúncio'))))
+}
+// ── Como melhorar: sugestões tiradas dos números (o Claude detalha em "Otimizar →") ──
+function renderSug() {
+  const box = $('m-sug'); if (!box) return
+  if (!M.sets || !M.ads || !Q.vendSet) { box.replaceChildren(el('div', { class: 'empty' }, 'Lendo os números…')); return }
+  const sets = M.sets.map(linhaSet).filter((r) => ativoEnt(r.st, r.campId)), ads = M.ads.map(linhaAd).filter((r) => ativoEnt(r.st, r.campId, r.setId))
+  const L = [], bt = (t, fn, pri) => el('button', { class: 'b' + (pri ? ' pri' : ''), type: 'button', onclick: fn }, t)
+  const bons = sets.filter((r) => r.vendas > 0 && r.roi >= 0).sort((a, b) => b.roi - a.roi)
+  for (const r of bons.slice(0, 2)) L.push({ cls: 'ok', t: 'Subir a verba de "' + r.name + '"', d: plural(r.vendas, 'compra', 'compras') + ', ROI ' + fmtRoi(r.roi) + ' ' + PER_NOME[periodo] + '. Subir 20% (de ' + brl(r.budget) + ' para ' + brl(r.budget * 1.2) + '/dia) e olhar de novo em 2 dias.', b: bt('Otimizar →', () => abrirOtimizar(r), true) })
+  for (const r of sets.filter((r) => r.vendas > 0 && r.roi < 0)) L.push({ cls: 'urg', t: '"' + r.name + '" vende, mas dá prejuízo', d: 'ROI ' + fmtRoi(r.roi) + ': cada compra custou ' + brl(r.cpv) + '. Ver se o anúncio mais caro do conjunto puxa o custo para cima.', b: bt('Otimizar →', () => abrirOtimizar(r), true) })
+  for (const r of sets.filter((r) => r.vendas === 0 && r.gasto >= 40 && r.comprar === 0)) L.push({ cls: 'urg', t: 'Pausar "' + r.name + '"?', d: brl(r.gasto) + ' gastos ' + PER_NOME[periodo] + ' e ninguém clicou em comprar.', b: bt('Otimizar →', () => abrirOtimizar(r), true) })
+  const ruins = ads.filter((r) => r.gasto >= 8 && r.ctr > 0 && r.ctr < 1.5)
+  const melhor = ads.filter((r) => r.gasto >= 3 && r.ctr > 0).sort((a, b) => b.ctr - a.ctr)[0]
+  if (ruins.length) L.push({ cls: 'urg', t: plural(ruins.length, 'anúncio com pouco clique', 'anúncios com pouco clique'), d: ruins.map((r) => r.name + ' (' + r.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%)').join(' · ') + '. Trocar o criativo' + (melhor ? ' por um no estilo de "' + melhor.name + '", o que mais faz clicar (' + melhor.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%).' : '.'), b: bt('Pedir criativo novo', () => preencher('criativo', 'Faça 2 criativos novos no estilo do anúncio "' + (melhor ? melhor.name : '') + '", que é o que mais faz clicar, para trocar: ' + ruins.map((r) => r.name).join(', ') + '. '), true) })
+  else if (melhor) L.push({ t: 'Criativo que mais faz clicar: "' + melhor.name + '"', d: melhor.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% clicam. Peça variações dele para testar.', b: bt('Pedir variações', () => preencher('criativo', 'Faça 2 variações do anúncio "' + melhor.name + '", que é o que mais faz clicar. ')) })
+  const cliq = sets.reduce((a, r) => a + r.cliques, 0), quiz = sets.reduce((a, r) => a + r.sessoes, 0)
+  if (cliq >= 20 && quiz < cliq * 0.5) L.push({ t: 'Metade dos cliques não chega ao quiz', d: cliq + ' cliques no Meta e ' + quiz + ' pessoas começaram o quiz ' + PER_NOME[periodo] + '. Conferir se todo anúncio leva para o quiz com os UTMs e se a página carrega rápido no celular.' })
+  if (!L.length) L.push({ cls: 'ok', t: 'Nada para mexer agora', d: 'Sem compra e sem gasto alto ainda. Quando aparecer algo para decidir, fica aqui.' })
+  box.replaceChildren(...L.map((x, i) => el('div', { class: 'card rc-acao ' + (x.cls || '') }, el('span', { class: 'num' }, String(i + 1)), el('h4', {}, x.t), el('p', {}, x.d), x.b ? el('div', { class: 'btns' }, x.b) : null)))
+}
+// Nível do gerenciador: campanhas, conjuntos ou anúncios (um de cada vez, como no Gerenciador do Meta).
+let mNivel = 'camps'
+try { const n = localStorage.getItem('painel_nivel'); if (['camps', 'sets', 'ads'].includes(n)) mNivel = n } catch {}
+function pintaNivel() {
+  document.querySelectorAll('#m-nivel button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.n === mNivel)))
+  document.querySelectorAll('#tab-meta .nivel').forEach((d) => { d.hidden = d.dataset.n !== mNivel })
+}
+document.querySelectorAll('#m-nivel button').forEach((b) => b.addEventListener('click', () => { mNivel = b.dataset.n; try { localStorage.setItem('painel_nivel', mNivel) } catch {} pintaNivel() }))
+pintaNivel()
 function renderResumo() {
   const s = hoje.sets && hoje.sets.filter((x) => ATIVOS.includes(x.effective_status) || N(x.amount_spent) > 0), q = hoje.quiz, v = hoje.vendas
   if (s) { const g = s.reduce((a, x) => a + N(x.amount_spent), 0), b = s.filter((x) => ATIVOS.includes(x.effective_status)).reduce((a, x) => a + N(x.daily_budget), 0); $('r-gasto').textContent = brl(g); $('r-gasto-s').textContent = 'de ' + brl(b) + ' de verba ativa/dia'; if (v) $('r-v-s').textContent = 'custo por venda: ' + (v.vendas > 0 ? brl(g / v.vendas) : '–') + ' · régua R$ 37' }
@@ -1860,10 +1964,15 @@ function porQuiz(rows) {
 }
 const HORA = 3600000
 const qQuiz = (p) => { const [ini, fim] = janelaSQL(p); return `select coalesce(utm_term,'') conjunto, coalesce(utm_content,'') anuncio, count(*) filter (where status<>'pageview') sessoes, count(*) filter (where reached_index>=1) t1, count(*) filter (where reached_index>=24) res, count(*) filter (where checkout_clicked) comprar from quiz_sessions where created_at>=${ini} and created_at<${fim} and utm_source='FB' group by 1,2` }
-const qVendas = (p) => { const [ini, fim] = janelaSQL(p); return `with v as (select distinct on (coalesce(transaction,hotmart_event_id)) * from vendas where received_at>=${ini} and received_at<${fim} order by coalesce(transaction,hotmart_event_id), received_at desc) select count(*) filter (where offer_code='QN7gci' and status in ('APPROVED','COMPLETED')) vendas, coalesce(sum(full_price) filter (where offer_code='QN7gci' and status in ('APPROVED','COMPLETED')),0) receita from v` }
-// Vendas da oferta do quiz por conjunto (tracking_src) e por anúncio (utm_content da sessão do quiz ligada pelo xcod).
-const qVendasPor = (p) => { const [ini, fim] = janelaSQL(p); return `with v as (select distinct on (coalesce(transaction,hotmart_event_id)) * from vendas where received_at>=${ini} and received_at<${fim} order by coalesce(transaction,hotmart_event_id), received_at desc)
-select coalesce(v.tracking_src,'') conjunto, coalesce((select q.utm_content from quiz_sessions q where v.tracking_xcod is not null and q.xcod = v.tracking_xcod order by (q.checkout_at is null), q.created_at desc limit 1),'') anuncio, count(*) vendas from v where v.offer_code='QN7gci' and v.status in ('APPROVED','COMPLETED') group by 1,2` }
+// Vendas que vieram de anúncio: conjunto do Meta no tracking_src (quiz) ou "FB|campanha" no sck (página direta).
+// Um pedido = a compra principal + bumps (mesmo xcod). Receita líquida = o que cai na conta (producer_value).
+const vendasAd = (p) => { const [ini, fim] = janelaSQL(p); return `with v as (select distinct on (coalesce(transaction,hotmart_event_id)) * from vendas where received_at>=${ini} and received_at<${fim} order by coalesce(transaction,hotmart_event_id), received_at desc),
+a as (select v.*, coalesce(v.tracking_xcod, v.transaction, v.hotmart_event_id) ped from v where v.status in ('APPROVED','COMPLETED') and (coalesce(v.tracking_src,'') ~ '^[0-9]{12,}$' or coalesce(v.tracking_sck,'') like 'FB|%'))` }
+const qVendas = (p) => vendasAd(p) + ` select count(distinct ped) vendas, coalesce(sum(price),0) receita, coalesce(sum(producer_value),0) liq from a`
+const qVendasPor = (p) => vendasAd(p) + `
+select case when tracking_src ~ '^[0-9]{12,}$' then tracking_src else '' end conjunto, case when tracking_sck like 'FB|%' then substr(tracking_sck, 4) else '' end sck,
+ coalesce((select q.utm_content from quiz_sessions q where a.tracking_xcod is not null and q.xcod = a.tracking_xcod order by (q.checkout_at is null), q.created_at desc limit 1),'') anuncio,
+ count(distinct ped) vendas, coalesce(sum(price),0) receita, coalesce(sum(producer_value),0) liq from a group by 1,2,3`
 const diaBR = (menos) => { const d = new Date(Date.now() - menos * 86400000); return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d) }
 const DIAS = { last_3d: 2, last_7d: 6 }
 const baseIn = (p) => ({ ad_account_id: ACCOUNT, ...(DIAS[p] != null ? { time_range: JSON.stringify({ since: diaBR(DIAS[p]), until: diaBR(0) }) } : { date_preset: p }), include_additional_context: false, client_conversation_id: CONV })
@@ -1873,10 +1982,10 @@ const inAds = (p) => ({ ...baseIn(p), level: 'ad', fields: ['id', 'name', 'effec
 function watchPeriodo() {
   for (const u of unsub) { try { u() } catch {} }
   unsub = []; M = { camps: null, sets: null, ads: null }; Q = { porAd: null, porSet: null, vendas: null, total: null, vendSet: null, vendAd: null }; abertoKey = null
-  for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr>'
+  for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="8" class="l muted">Carregando do Meta…</td></tr>'
   $('m-err').hidden = true
   const onMeta = (k) => (ev) => {
-    if (ev.type === 'error') { if (ev.error.code === 'server_not_connected' && META === METAS[0]) { META = METAS[1]; watchPeriodo(); return } showErr('Meta', ev.error); if (ERRS[ev.error.code]) for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="7" class="l muted">Sem acesso ao Meta.</td></tr>'; return }
+    if (ev.type === 'error') { if (ev.error.code === 'server_not_connected' && META === METAS[0]) { META = METAS[1]; watchPeriodo(); return } showErr('Meta', ev.error); if (ERRS[ev.error.code]) for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="8" class="l muted">Sem acesso ao Meta.</td></tr>'; return }
     const rows = parseMeta(ev.result.payload); if (!rows) { showErr('Meta', { code: 'formato', message: 'resposta em formato inesperado' }); return }
     M[k] = rows; if (periodo === 'today' && k === 'sets') hoje.sets = rows
     stamp = ev.result.cache && ev.result.cache.storedAt ? new Date(ev.result.cache.storedAt) : new Date(); render()
@@ -1892,14 +2001,18 @@ function watchPeriodo() {
   unsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: qVendasPor(periodo) }, (ev) => {
     if (ev.type === 'error') return
     const rows = parseRows(ev.result.payload); if (!rows) return
-    const vs = {}, va = {}
-    for (const r of rows) { const n = Number(r.vendas) || 0, st = r.conjunto || '', nome = dec(r.anuncio); vs[st] = (vs[st] || 0) + n; if (nome) va[st + '|' + nome] = (va[st + '|' + nome] || 0) + n }
-    Q.vendSet = vs; Q.vendAd = va; render()
+    const vs = {}, va = {}, vc = {}
+    for (const r of rows) {
+      const x = { vendas: Number(r.vendas) || 0, receita: Number(r.receita) || 0, liq: Number(r.liq) || 0 }, st = r.conjunto || '', nome = dec(r.anuncio)
+      if (st) { vs[st] = somaV(vs[st], x); if (nome) va[st + '|' + nome] = somaV(va[st + '|' + nome], x) }
+      if (r.sck) vc[r.sck.trim()] = somaV(vc[r.sck.trim()], x)
+    }
+    Q.vendSet = vs; Q.vendAd = va; Q.vendCamp = vc; render()
   }, { refetchInterval: HORA }))
   unsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: qVendas(periodo) }, (ev) => {
     if (ev.type === 'error') return
     const rows = parseRows(ev.result.payload); if (!rows || !rows[0]) return
-    Q.vendas = { vendas: Number(rows[0].vendas) || 0, receita: Number(rows[0].receita) || 0 }; if (periodo === 'today') hoje.vendas = Q.vendas; render()
+    Q.vendas = { vendas: Number(rows[0].vendas) || 0, receita: Number(rows[0].receita) || 0, liq: Number(rows[0].liq) || 0 }; if (periodo === 'today') hoje.vendas = Q.vendas; render()
   }, { refetchInterval: HORA }))
   if (periodo !== 'today') {
     unsub.push(mcp.watchTool(META, 'ads_get_ad_entities', inSets('today'), (ev) => { if (ev.type === 'data') { const r = parseMeta(ev.result.payload); if (r) { hoje.sets = r; renderResumo() } } }, { refetchInterval: HORA }))
@@ -2014,11 +2127,11 @@ function tabelaFilhos(titulo, rows, pre, col2) {
   ordenar(rows, { k: 'gasto', dir: -1 })
   const filtro = { ativas: 'ativos', pausadas: 'pausados', todas: 'todos' }[stFiltro]
   const tb = el('tbody', {})
-  for (const r of rows) tb.append(...linhaTabela(r, 7, pre + r.id, r.nivel === 'anúncio' && otAlvo.nivel === 'campanha' ? r.set : ''))
-  if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhum ' + filtro.replace(/s$/, '') + ' aqui. Troque o filtro em Meta ao vivo (Ativas/Pausadas/Todas).')))
+  for (const r of rows) tb.append(...linhaTabela(r, 8, pre + r.id, r.nivel === 'anúncio' && otAlvo.nivel === 'campanha' ? r.set : ''))
+  if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '8', class: 'l muted' }, 'Nenhum ' + filtro.replace(/s$/, '') + ' aqui. Troque o filtro em Meta ao vivo (Ativas/Pausadas/Todas).')))
   const th = (t) => el('th', {}, t)
   return el('div', { class: 'ot-filhos' }, el('h3', {}, titulo + ' · ' + filtro),
-    el('div', { class: 'tbl' }, el('table', {}, el('thead', {}, el('tr', {}, el('th', {}, pre === 'os' ? 'Conjunto' : 'Anúncio'), th('Gasto'), th('Começaram o quiz'), th('Clicaram comprar'), th('Vendas'), th('Custo por venda'), el('th', { class: 'l' }, 'Sinal'))), tb)))
+    el('div', { class: 'tbl' }, el('table', {}, el('thead', {}, el('tr', {}, el('th', {}, pre === 'os' ? 'Conjunto' : 'Anúncio'), th('Gasto'), th('Cliques'), th('No quiz'), th('Compras'), th('Receita líquida'), th('ROI'), el('th', { class: 'l' }, 'Sinal'))), tb)))
 }
 const otConv = () => otAlvo ? 'ot-' + otAlvo.id : null
 function renderOtChat() {
@@ -3139,7 +3252,7 @@ function vdRender() {
 function vdFiltro(grupo, set) { document.querySelectorAll('#' + grupo + ' button').forEach((b) => b.addEventListener('click', () => { set(b.dataset.v); document.querySelectorAll('#' + grupo + ' button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); vdRender() })) }
 vdFiltro('vd-tipo', (v) => { vdTipo = v }); vdFiltro('vd-st', (v) => { vdSt = v })
 $('vd-atualizar').addEventListener('click', () => vdCarregar())
-document.querySelector('nav [data-tab="videos"]').addEventListener('click', () => { if (mcp && (!vdEm || Date.now() - vdEm > 60000)) vdCarregar() })
+document.querySelector('#subnav [data-tab="videos"]').addEventListener('click', () => { if (mcp && (!vdEm || Date.now() - vdEm > 60000)) vdCarregar() })
 vdRender()
 
 // ── Arranque ───────────────────────────────────────────────────────
@@ -3151,7 +3264,7 @@ renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); rend
   if (user) { try { me = await user.id() } catch {} }
   c.use('downloads').then((x) => { DL = x }).catch(() => {})
   if (mcp) { watchPeriodo(); rcWatch(); qWatch(); testesWatch(); vdCarregar() }
-  else { vdCarregar(); $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; $('m-sets').innerHTML = '<tr><td colspan="7" class="l muted">Os números ao vivo aparecem para quem tem os conectores do Meta e do Supabase.</td></tr>'; $('m-ads').innerHTML = '' }
+  else { vdCarregar(); $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; $('m-sets').innerHTML = '<tr><td colspan="8" class="l muted">Os números ao vivo aparecem para quem tem os conectores do Meta e do Supabase.</td></tr>'; $('m-ads').innerHTML = '' }
   if (!db) { $('pr-state').textContent = 'entre na sua conta'; $('ch-state').textContent = 'entre na sua conta'; return }
   $('pr-state').textContent = 'aprovações salvas no painel'; $('ch-state').textContent = 'conversas salvas no painel'
   db.doc('status/rotina').onSnapshot((s) => { if (s.exists) renderStatus(s.data()) }, () => {})
