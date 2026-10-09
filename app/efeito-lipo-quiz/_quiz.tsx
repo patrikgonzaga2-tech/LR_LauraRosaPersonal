@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
-  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, pickOfertaArm, CHECKOUT_HREF_SUB, subscriptionHref, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
+  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, pickOfertaArm, pickComElArm, CHECKOUT_HREF_SUB, subscriptionHref, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
   PERFIS, perfilRecomeco, RESULT_MARCOS, ROTEIRO_21, SALES, STEPS,
 } from './_data'
 import type { ImgKey, Step } from './_data'
@@ -127,7 +127,7 @@ export default function QuizApp() {
     return <Intro onStart={() => { const intro_ab = (typeof window !== 'undefined' && sessionStorage.getItem(INTRO_AB_KEY)) || undefined; persist({ id: sidRef.current, action: 'start', intro_ab, ...captureContext() }); track('quiz_start', { intro_ab }); next() }} />
   }
   if (step.kind === 'sales') {
-    return <Sales perfil={perfil} answers={answers} onCheckout={(tipo) => { const arm = pickCheckoutArm(); const ab = tipo === 'sub' ? 'assinatura-37' : arm === 'greenn' && pickOfertaArm() === 'B' ? 'greenn-B' : arm; persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: ab }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: ab }) }} />
+    return <Sales perfil={perfil} answers={answers} onOferta={(oferta_ab) => persist({ id: sidRef.current, action: 'oferta', oferta_ab })} onCheckout={(tipo) => { const arm = pickCheckoutArm(); const ab = tipo === 'sub' ? (pickComElArm() === 'E-B' ? 'E-B-assinatura' : 'assinatura-37') : arm === 'greenn' && pickOfertaArm() === 'B' ? 'greenn-B' : arm; persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: ab }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: ab }) }} />
   }
 
   const darkBg = step.kind === 'loading' || step.kind === 'result'
@@ -535,13 +535,14 @@ function useCountdown(start = 600) {
 
 // T26 — Efeito Lipo em destaque (compra por impulso) + assinatura da Comunidade como
 // alternativa. Preço do EL pelo teste B (A = R$ 37, B = R$ 47), sorteado em pickOfertaArm().
+// Teste E (pickComElArm): no E-B sai o EL e a Comunidade vira o cartão principal.
 type Oferta = { id: string; el: null | { preco: string; parc: string; dia: string }; sub: { preco: string; per: string; nota: string; parcCurta: string } }
 const OFERTAS: Record<'A' | 'B', Oferta> = {
   A: { id: 'A', el: { preco: '37', parc: '12x de R$ 3,80', dia: '1,76' }, sub: { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' } },
   B: { id: 'B', el: { preco: '47', parc: '12x de R$ 4,83', dia: '2,24' }, sub: { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' } },
 }
 
-function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; answers?: InnerProps['answers']; onCheckout: (tipo?: 'sub') => void }) {
+function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['perfil']; answers?: InnerProps['answers']; onOferta: (arm: string) => void; onCheckout: (tipo?: 'sub') => void }) {
   const timer = useCountdown(600)
   const [href, setHref] = useState(CHECKOUT_HREF)
   const buildHref = () => checkoutHrefFor(pickCheckoutArm(), readAdId(), readXcod(), readFbclid())
@@ -558,9 +559,13 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
     try { e.currentTarget.href = buildHrefSub() } catch { /* mantém o href do estado */ }
     onCheckout('sub')
   }
-  // Teste B: o preço do EL desta sessão (começa em A no servidor e troca no navegador).
+  // Teste E (com ou sem EL) e, dentro do E-A, teste B (preço do EL). Começa em A no servidor e troca no navegador.
   const [of, setOf] = useState<Oferta>(OFERTAS.A)
-  useEffect(() => { setOf(OFERTAS[pickOfertaArm()]) }, [])
+  useEffect(() => {
+    const e = pickComElArm()
+    setOf(e === 'E-B' ? { ...OFERTAS.A, id: 'E', el: null } : OFERTAS[pickOfertaArm()])
+    onOferta(e)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const soAssinatura = !of.el
 
   const Check = ({ ok = true }: { ok?: boolean }) => (
@@ -609,29 +614,31 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
     </div>
   )
 
-  // Assinatura: alternativa (braços A–D) ou cartão principal (braço E)
+  // Comunidade: alternativa (teste E-A) ou cartão principal (teste E-B)
   const CardSub = ({ pos, principal }: { pos: string; principal?: boolean }) => (
     <div id={principal ? undefined : 'assinatura'} className="relative rounded-2xl p-5" style={{ background: '#fff', border: principal ? '2.5px solid var(--g)' : '1.5px solid rgba(28,135,60,.35)', boxShadow: principal ? '0 16px 44px rgba(28,135,60,.2)' : 'none' }}>
       <span className="inline-block font-display" style={{ fontSize: 11.5, fontWeight: 800, color: '#fff', background: 'var(--g)', padding: '4px 12px', borderRadius: 99 }}>{principal ? '⚡ Acesso na hora · comece hoje' : 'Com a Laura do seu lado'}</span>
-      <div className="font-display" style={{ fontSize: principal ? 23 : 20, fontWeight: 800, color: 'var(--ink)', lineHeight: 1.15, marginTop: 10 }}>{principal ? 'Efeito Lipo 21D + a Laura do seu lado' : 'Comunidade Corpo Feliz'}</div>
-      <div style={{ fontSize: 13.5, color: 'var(--sub)', marginTop: 2 }}>{principal ? 'Os 21 dias para desinchar e voltar ao eixo, com a Laura te acompanhando todo dia.' : 'Tudo do Efeito Lipo + a Laura te acompanhando todo dia, para não recomeçar de novo.'}</div>
+      <div className="font-display" style={{ fontSize: principal ? 23 : 20, fontWeight: 800, color: 'var(--ink)', lineHeight: 1.15, marginTop: 10 }}>Comunidade Corpo Feliz</div>
+      <div style={{ fontSize: 13.5, color: 'var(--sub)', marginTop: 2 }}>{principal ? 'Treinos para secar e definir, plano alimentar e a Laura te acompanhando todo dia.' : 'Tudo do Efeito Lipo + a Laura te acompanhando todo dia, para não recomeçar de novo.'}</div>
       <div className="flex items-baseline gap-2 mt-3">
         <span style={{ fontSize: 15, color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 97/mês</span>
         <span className="font-display" style={{ fontSize: principal ? 40 : 32, fontWeight: 800, color: 'var(--g)', lineHeight: 1 }}>R$ {of.sub.preco}</span>
         <span style={{ fontSize: 14, color: 'var(--sub)', fontWeight: 700 }}>{of.sub.per}</span>
       </div>
       <div style={{ fontSize: 12.5, color: 'var(--sub)' }}>{of.sub.nota} · no cartão</div>
+      {/* Entregáveis como a Aline apresenta a Comunidade no WhatsApp (aprovado pelo Patrik em 09/10) */}
       <ul className="space-y-2 mt-4">
-        {principal ? <ItensEL /> : <Item><b>Tudo do Efeito Lipo 21D</b> (roteiro, treinos e bônus)</Item>}
-        <Item>Acompanhamento diário da Laura no WhatsApp exclusivo</Item>
-        <Item>Grupo das Musas no Telegram: rede de apoio todo dia</Item>
-        <Item>Treinos novos todo mês e todos os desafios do ano</Item>
-        <Item>Plano alimentar flexível</Item>
-        <Item>Diástase e vácuo abdominal, Jump, Flux e planilha de corrida</Item>
+        <Item><b>App da Comunidade</b> com treinos para secar e definir, em casa ou na academia</Item>
+        <Item><b>Treinos hormonais</b> para o seu objetivo: emagrecer, definir, ganhar massa ou firmeza</Item>
+        <Item><b>Plano alimentar</b> flexível, alinhado ao seu treino</Item>
+        <Item>Módulo de <b>LPF e ativação abdominal</b> (diástase), com professora especializada</Item>
+        <Item><b>Mobilidade</b> e <b>desafios</b> o ano todo, com treinos novos todo mês</Item>
+        <Item><b>Acompanhamento diário da Profe Laura</b> no WhatsApp + Grupo das Musas</Item>
+        <Item>Incluso: <b>Efeito Lipo 21D</b>, o roteiro de 21 dias para começar desinchando</Item>
       </ul>
       <a href={hrefSub} onClick={onBuySub} target="_blank" rel="noopener noreferrer" className="block mt-5" style={{ textDecoration: 'none' }}>
         {principal
-          ? <CtaButton full glow variant="green" dataLabel={`sub-${pos}`}>Quero começar com a Laura</CtaButton>
+          ? <CtaButton full glow variant="green" dataLabel={`sub-${pos}`}>Quero entrar na Comunidade</CtaButton>
           : <span className="block text-center font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--g)', border: '2px solid var(--g)', borderRadius: 999, padding: '14px 18px' }}>Quero a Laura do meu lado</span>}
       </a>
     </div>
@@ -670,7 +677,7 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
             </div>
           ))}
         </div>
-        <div className="mt-7"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow dataLabel="topo">Quero meu protocolo agora</CtaButton></a></div>
+        <div className="mt-7"><a href={soAssinatura ? hrefSub : href} onClick={soAssinatura ? onBuySub : onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow dataLabel="topo">Quero meu protocolo agora</CtaButton></a></div>
 
         <SectionTitle>Antes e depois de voltar ao eixo</SectionTitle>
         <div className="space-y-2.5">

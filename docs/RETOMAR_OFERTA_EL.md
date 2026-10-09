@@ -43,6 +43,22 @@ Meta Ads: nada muda sem aprovação. Apagar artefato: só com minha confirmaçã
   do repositório (que já está igual ao publicado) e publicar o mesmo arquivo.
 - Proposta da T1 B registrada em `propostas/p-2026-10-09-t1-b-recomeco`.
 
+## Teste E (T4 no painel): PRONTO, esperando "publicar" (09/10, noite)
+
+- E-A = página de hoje (EL + Comunidade, com o teste B dentro). E-B = só a Comunidade Corpo Feliz R$ 37/mês
+  (WOqOSI), com os entregáveis que a Aline apresenta no WhatsApp e o EL como "Incluso". Botão do topo no E-B abre
+  a assinatura. Sorteio em `pickComElArm` (`_data.ts`, sessionStorage `el_com_ab`). A T26 grava
+  `quiz_events.event='oferta'` com `answer` = E-A/E-B (API `action: 'oferta'`, sem mudar o banco). Clique na
+  assinatura no E-B grava `checkout_ab = E-B-assinatura` (não mistura com o T3).
+- O cartão da Comunidade no E-A também passou a usar a lista da Aline (aprovado).
+- Esboço: `tools/quiz-revisao/esbocos/img/cmp-T26-testeE.jpg` e `T26-testeE-cartao-comunidade.jpg`.
+- Ao publicar: trocar no painel o T4 de `grupo: 'pronto'` para `'ar'` e acertar `desde` com a hora do deploy.
+
+## Painel: aba Testes em 3 grupos (versão 46)
+
+No ar (T1, T2) · Prontos esperando publicar (T4) · Ideias para criar (T3 R$ 27, T5 trimestral, T6 upsell).
+Campo `grupo` em cada objeto de `TESTES`.
+
 ## Fila (próximo = item 4)
 
 4. **Teste C (assinatura R$ 37 × R$ 27)**: Patrik cria na Greenn a assinatura R$ 27/mês (recorrente, só cartão,

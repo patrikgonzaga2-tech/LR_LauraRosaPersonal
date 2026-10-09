@@ -155,6 +155,23 @@ export function pickOfertaArm(): OfertaArm {
   }
 }
 
+// Teste E (com ou sem Efeito Lipo, 09/10): E-A = cartão do EL (preço do teste B) + Comunidade;
+// E-B = só a Comunidade Corpo Feliz R$ 37/mês (WOqOSI). O teste B só roda dentro do E-A.
+export const COM_EL_AB_KEY = 'el_com_ab'
+export type ComElArm = 'E-A' | 'E-B'
+export function pickComElArm(): ComElArm {
+  if (typeof window === 'undefined') return 'E-A'
+  try {
+    const saved = sessionStorage.getItem(COM_EL_AB_KEY)
+    if (saved === 'E-A' || saved === 'E-B') return saved
+    const arm: ComElArm = Math.random() < 0.5 ? 'E-A' : 'E-B'
+    try { sessionStorage.setItem(COM_EL_AB_KEY, arm) } catch { /* ignore */ }
+    return arm
+  } catch {
+    return 'E-A'
+  }
+}
+
 // Sorteia (ou relê da gaveta) o braço do teste para ESTA sessão. Client-only:
 // roda só no navegador, então não há divergência de hidratação — o link inicial
 // no servidor é sempre o da Hotmart (CHECKOUT_HREF) e o braço é aplicado depois.

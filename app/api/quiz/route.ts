@@ -5,10 +5,11 @@ export const dynamic = 'force-dynamic'
 
 type Body = {
   id?: string
-  action?: 'pageview' | 'start' | 'step' | 'complete' | 'checkout'
+  action?: 'pageview' | 'start' | 'step' | 'complete' | 'oferta' | 'checkout'
   variante?: string
   intro_ab?: string // teste A/B da 1ª tela: 'A' (original) | 'B' (nova)
   checkout_ab?: string // teste A/B de checkout: 'hotmart' | 'greenn'
+  oferta_ab?: string // teste E na T26: 'E-A' | 'E-B'
   utm_source?: string; utm_medium?: string; utm_campaign?: string; utm_content?: string; utm_term?: string
   xcod?: string // id de dedup do Meta (user_id_purchase) — ponte venda↔anúncio
   sck?: string; referrer?: string; user_agent?: string
@@ -66,6 +67,9 @@ export async function POST(req: Request) {
         answers: b.answers ?? {}, completed_at: now, updated_at: now,
       })
       await sbInsert('quiz_events', { session_id: id, event: 'complete' })
+    } else if (action === 'oferta') {
+      // Braço do teste E visto na T26 (E-A com EL / E-B só Comunidade): base do painel.
+      await sbInsert('quiz_events', { session_id: id, event: 'oferta', step_id: 'sales', answer: b.oferta_ab ?? null })
     } else if (action === 'checkout') {
       // No clique de compra o xcod (user_id_purchase) já existe — é o mesmo que
       // segue pra Hotmart no link. Gravamos aqui pra ligar a venda ao anúncio.
