@@ -299,14 +299,67 @@ tr.lead-det td{background:#FFFBF6;text-align:left}
 .ob-dre .tot{border-top:1px solid var(--line);padding-top:6px;margin-top:2px;font-size:15.5px}
 .ob-aviso{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:700}
 /* clicou e não comprou */
+.rc-sec{display:grid;gap:12px;scroll-margin-top:76px}
+.rc-top{display:grid;gap:12px}
+.rc-frase{font:800 19px/1.3 var(--display);letter-spacing:-.01em}
+.rc-frase em{font-style:normal;color:var(--od)}
+.rc-barra{display:flex;gap:2px;height:18px;border-radius:99px;overflow:hidden;background:var(--pale)}
+.rc-barra i{display:block;height:100%;min-width:6px}
+.rc-leg{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--sub)}
+.rc-leg span{display:inline-flex;align-items:center;gap:6px}
+.rc-leg b{color:var(--ink);font-variant-numeric:tabular-nums}
+.cor{display:inline-block;width:11px;height:11px;border-radius:3px;flex-shrink:0}
+.c-comprou{background:var(--g)} .c-pix{background:#E0A100} .c-saiu{background:#D9897F}
+.rc-acoes{display:grid;gap:10px}
+.rc-acao{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:14px 16px;border-left:5px solid var(--line)}
+.rc-acao .num{grid-row:span 2;align-self:start;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:800 14px var(--display);background:var(--pale);color:var(--sub)}
+.rc-acao h4{font:800 16px/1.3 var(--display);margin:0}
+.rc-acao p{font-size:14px;color:var(--sub);grid-column:2}
+.rc-acao .btns{grid-column:3;grid-row:1/span 2;justify-content:flex-end}
+.rc-acao.urg{border-left-color:#E0A100;background:#FFFBF0}
+.rc-acao.urg .num{background:#E0A100;color:#000}
+.rc-acao.ok{border-left-color:var(--g)}
+.rc-acao.ok .num{background:var(--g);color:#fff}
+.rc-acao.info{border-left-color:var(--line);background:var(--pale);box-shadow:none}
+@media (max-width:640px){.rc-acao{grid-template-columns:30px minmax(0,1fr)}.rc-acao .btns{grid-column:2;grid-row:auto;justify-content:flex-start;margin-top:6px}}
+.seg .ct{font-weight:800;opacity:.75;margin-left:2px}
+.rc-t tr.feito td{opacity:.6}
+.rc-det{padding:0}
+.rc-det summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px}
+.rc-det summary::-webkit-details-marker{display:none}
+.rc-sum{display:grid;gap:2px}
+.rc-sum b{font:800 16px var(--display)}
+.rc-abrir{font:700 13.5px var(--body);color:var(--od);white-space:nowrap}
+.rc-det[open] .rc-abrir{font-size:0}
+.rc-det[open] .rc-abrir::after{content:"Fechar ▴";font-size:13.5px}
+#rc-motivos{display:grid;gap:14px;padding:0 20px 20px}
+.rc-ajuda{background:var(--pale);border-radius:12px;padding:12px 14px;font-size:14px;display:grid;gap:4px}
 .rc-cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:980px){.rc-cmp{grid-template-columns:1fr}}
-.rc-cmp .card{display:grid;gap:8px}
-.rc-cmp .card h4{font-size:15px}
-.rc-l{display:grid;grid-template-columns:minmax(0,1fr) 54px 54px;gap:4px 10px;font-size:13.5px;align-items:center}
-.rc-l .h{font-size:11.5px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.04em}
-.rc-l .n{text-align:right;font-variant-numeric:tabular-nums}
-.rc-l .n.hi{color:var(--bad);font-weight:700}
+.rc-cmp .q{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:8px;min-width:0}
+.rc-cmp h4{font-size:15px;margin:0}
+.rc-cmp .leit{font-size:13.5px;color:var(--ink);background:var(--o-soft);border-radius:8px;padding:6px 9px}
+.rc-l{display:grid;grid-template-columns:minmax(0,1fr) 92px 92px;gap:6px 10px;font-size:13.5px;align-items:center}
+.rc-l .h{font-size:11.5px;font-weight:700;color:var(--sub);text-align:right;line-height:1.25}
+.rc-l .n{display:grid;gap:3px;justify-items:end;font-variant-numeric:tabular-nums;color:var(--sub)}
+.rc-l .n b{color:var(--ink)}
+.rc-l .n i{display:block;width:100%;height:5px;border-radius:3px;background:var(--pale);position:relative;overflow:hidden}
+.rc-l .n i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:#D9897F;border-radius:3px}
+.rc-l .n.sim i::after{background:var(--g)}
+.rc-l .n.top b{color:var(--bad)}
+@media (max-width:420px){.rc-l{grid-template-columns:minmax(0,1fr) 74px 74px}}
+@media (max-width:700px){
+  .rc-t{min-width:0}
+  .rc-t thead{display:none}
+  .rc-t tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .rc-t td{border:0;padding:0;text-align:left}
+  .rc-t td.q-quando{grid-column:2;grid-row:1;font-size:12.5px;color:var(--mute)}
+  .rc-t td.q-pessoa{grid-column:1;grid-row:1;font-weight:700}
+  .rc-t td.q-sit,.rc-t td.q-perfil,.rc-t td.q-origem,.rc-t td.q-acao{grid-column:1/-1;font-size:13.5px}
+  .rc-t td.q-acao{margin-top:6px}
+  .rc-t tr.lead-det{display:block;padding:0}
+  .rc-t tr.lead-det td{display:block;padding:10px 14px}
+}
 .wa{font:700 12px var(--body);border-radius:8px;border:1px solid var(--g);background:var(--g-soft);color:var(--gd);padding:4px 9px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
 .wa:hover{background:var(--g);color:#fff}
 
@@ -809,13 +862,22 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
 
     <!-- CLICOU E NÃO COMPROU -->
     <section class="tab" id="tab-recuperar" role="tabpanel" hidden>
-      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Clicou em comprar e não comprou</h2><p>Quem chegou no botão de compra e parou. Eu cruzo com as respostas do quiz para descobrir por quê e sugiro como trazer de volta: anúncio, mudança, remarketing ou automação de recuperação.</p></div><span class="pill n" id="rc-at">carregando…</span></div>
-      <div class="filtros card"><div class="seg" role="group" aria-label="Período" id="rc-per"><button type="button" data-p="today" aria-pressed="false">Hoje</button><button type="button" data-p="last_7d" aria-pressed="false">7 dias</button><button type="button" data-p="novo" aria-pressed="true">Desde o quiz novo</button></div><span class="muted">Todas as origens (anúncio, Instagram, WhatsApp). Quiz novo desde 08/10 08:10.</span></div>
-      <div class="tiles" id="rc-tiles"></div>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Clicou em comprar e não comprou</h2><p>Quem chegou no botão de compra e parou. Aqui você vê o que fazer agora, quem chamar e o que as respostas do quiz dizem.</p></div><span class="pill n" id="rc-at">carregando…</span></div>
+      <div class="seg" role="group" aria-label="Período" id="rc-per"><button type="button" data-p="today" aria-pressed="false">Hoje</button><button type="button" data-p="last_7d" aria-pressed="false">7 dias</button><button type="button" data-p="novo" aria-pressed="true">Desde o quiz novo (08/10)</button></div>
+      <div class="card rc-top" id="rc-top"><span class="muted">Carregando…</span></div>
+      <div class="rc-sec"><h3>O que fazer agora</h3><div class="rc-acoes" id="rc-acoes"></div></div>
+      <div class="rc-sec" id="rc-pessoas-box">
+        <div class="row"><h3>Pessoas</h3><div class="seg" role="group" aria-label="Mostrar" id="rc-sit"></div></div>
+        <div class="tbl"><table class="rc-t"><thead><tr><th class="l">Quando</th><th class="l">Pessoa</th><th class="l">Situação</th><th class="l">Perfil e maior medo</th><th class="l">Veio de</th><th class="l">O que fazer</th></tr></thead><tbody id="rc-pessoas"><tr><td colspan="6" class="l muted">Carregando…</td></tr></tbody></table></div>
+        <p class="muted">O botão <b>WhatsApp</b> abre a mensagem pronta para você revisar e enviar (nada sai sozinho). Depois toque em <b>Já chamei ✓</b>. Toque na linha para ver todas as respostas do quiz da pessoa.</p>
+      </div>
+      <details class="card rc-det" id="rc-det">
+        <summary><span class="rc-sum"><b>Por que não compram?</b><span class="muted" id="rc-det-s">Respostas do quiz de quem comprou × quem não comprou</span></span><span class="rc-abrir" aria-hidden="true">Ver ▾</span></summary>
+        <div id="rc-motivos"></div>
+      </details>
       <div class="ob-grid">
         <div class="ob-sug">
-          <div class="row"><h3>Por que não compraram</h3><button class="b pri" type="button" id="rc-pedir">Pedir plano de recuperação ao Claude</button></div>
-          <div id="rc-motivos"></div>
+          <div class="row"><h3>Plano de recuperação</h3><button class="b pri" type="button" id="rc-pedir">Pedir plano ao Claude</button></div>
           <div id="rc-plano"></div>
         </div>
         <aside class="card chat" aria-label="Conversa sobre recuperação">
@@ -826,10 +888,6 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
           <form id="rc-chat-form"><textarea id="rc-chat-t" rows="2" placeholder="Pergunte sobre quem não comprou… (Ctrl+Enter envia)" aria-label="Mensagem sobre recuperação"></textarea><button class="b pri" type="submit">Enviar</button></form>
         </aside>
       </div>
-      <h3>Pessoas</h3>
-      <div class="filtros card"><div class="seg" role="group" aria-label="Situação" id="rc-sit"><button type="button" data-s="nao" aria-pressed="true">Não compraram</button><button type="button" data-s="pix" aria-pressed="false">Pix/boleto sem pagar</button><button type="button" data-s="saiu" aria-pressed="false">Saíram do checkout</button><button type="button" data-s="todas" aria-pressed="false">Todas</button></div></div>
-      <div class="tbl"><table><thead><tr><th class="l">Quando</th><th class="l">Pessoa</th><th class="l">Situação</th><th class="l">Perfil</th><th class="l">Maior medo</th><th class="l">Anúncio</th><th class="l">Checkout</th><th class="l">Recuperar</th></tr></thead><tbody id="rc-pessoas"><tr><td colspan="8" class="l muted">Carregando…</td></tr></tbody></table></div>
-      <p class="muted"><b>Pix/boleto sem pagar</b>: preencheu o checkout e gerou o pagamento, mas não pagou (temos nome e WhatsApp). <b>Saiu do checkout</b>: clicou em comprar e saiu sem preencher (só dá para alcançar por remarketing no Meta). O botão WhatsApp abre uma mensagem pronta para você revisar e enviar; nada é enviado sozinho. Depois clique em <b>Já chamei ✓</b>: o número no menu conta só quem ainda falta chamar. Clique na linha para ver as respostas do quiz.</p>
       <div class="state" id="rc-err" hidden></div>
     </section>
 
@@ -2125,7 +2183,7 @@ function rcJanela() {
   return "s.created_at >= greatest(" + ini + ", '" + QUIZ_NOVO + "'::timestamptz)"
 }
 // Ligação quiz ↔ venda pelo xcod (tracking_xcod), qualquer oferta/gateway.
-const qRec = () => `with q as (select s.id, s.created_at, s.checkout_at, s.utm_source, s.utm_content, s.answers, s.checkout_ab, s.xcod, ${perfilSQL} perfil from quiz_sessions s where ${rcJanela()} and s.checkout_clicked),
+const qRec = () => `with q as (select s.id, s.created_at, s.checkout_at, s.utm_source, s.utm_content, s.answers, s.checkout_ab, s.xcod, ${perfilSQL} perfil from quiz_sessions s where ${rcJanela()} and s.checkout_clicked and coalesce(s.utm_source,'') not ilike '%tagassistant%' and coalesce(s.referrer,'') not ilike '%tagassistant%'),
 v as (select v.tracking_xcod x, bool_or(v.status in ('APPROVED','COMPLETED')) pagou, bool_or(v.status not in ('APPROVED','COMPLETED','REFUNDED','CHARGEBACK','CANCELED','CANCELLED')) pendente, max(v.payment_method) metodo, max(split_part(trim(coalesce(v.buyer_name,'')),' ',1)) nome, max(v.buyer_phone) tel, max(v.received_at) ult from vendas v where v.tracking_xcod in (select xcod from q where xcod is not null) group by 1)
 select q.id, q.created_at, q.checkout_at, q.utm_source, q.utm_content, q.answers, q.checkout_ab, q.perfil, coalesce(v.pagou,false) pagou, coalesce(v.pendente,false) pendente, v.metodo, v.nome, v.tel, v.ult from q left join v on v.x = q.xcod order by q.created_at desc limit 500`
 function rcWatch() {
@@ -2139,7 +2197,7 @@ function rcWatch() {
     RC = rows; $('rc-at').textContent = 'atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); renderRec()
   }, { refetchInterval: HORA })
 }
-const SIT = { comprou: ['ok', 'Comprou'], pix: ['wait', 'Pix/boleto sem pagar'], saiu: ['no', 'Saiu do checkout'] }
+const SIT = { comprou: ['ok', 'Comprou'], pix: ['wait', 'Pix/boleto sem pagar'], saiu: ['no', 'Saiu do checkout'] }  // ordem e textos usados também na barra do topo
 const telBR = (t) => { let d = String(t || '').replace(/\D/g, ''); if (!d) return ''; if (d.length <= 11) d = '55' + d; return d }
 const telMask = (t) => { const d = telBR(t); return d.length >= 12 ? '(' + d.slice(2, 4) + ') ' + d.slice(4, 5) + '••••-' + d.slice(-4) : '' }
 function msgRec(r) {
@@ -2149,25 +2207,94 @@ function msgRec(r) {
   return 'Oi' + nome + '! Aqui é da equipe da Laura Rosa 💚 Você fez o quiz De Volta ao Eixo' + perfil + '. ' + ab
 }
 function contar(rows, f) { const m = {}; for (const r of rows) { const ks = [].concat(f(r)).filter(Boolean); for (const k of ks) m[k] = (m[k] || 0) + 1 } return m }
-function cmpCard(titulo, nao, sim, f, rotulo) {
-  const a = contar(nao, f), b = contar(sim, f), ks = [...new Set([...Object.keys(a), ...Object.keys(b)])].sort((x, y) => (a[y] || 0) - (a[x] || 0)).slice(0, 6)
-  if (!ks.length) return null
-  const g = el('div', { class: 'rc-l' }, el('span', { class: 'h' }, ''), el('span', { class: 'h n' }, 'Não'), el('span', { class: 'h n' }, 'Sim'))
-  for (const k of ks) { const pn = nao.length ? (a[k] || 0) / nao.length : 0, ps = sim.length ? (b[k] || 0) / sim.length : 0; g.append(el('span', {}, rotulo(k)), el('span', { class: 'n' + (nao.length >= 3 && pn - ps >= 0.2 ? ' hi' : '') }, pctN(pn)), el('span', { class: 'n' }, sim.length ? pctN(ps) : '–')) }
-  return el('div', { class: 'card' }, el('h4', {}, titulo), g)
+const SIT_ORD = { pix: 0, saiu: 1, comprou: 2 }
+// Ordena respostas: mais comum em quem não comprou primeiro; no empate, a que menos aparece em quem comprou (a que mais diferencia).
+const ordemNao = (a, b) => (x, y) => (a[y] || 0) - (a[x] || 0) || (b[x] || 0) - (b[y] || 0)
+const plural = (n, um, varios) => n + ' ' + (n === 1 ? um : varios)
+const origem = (r) => r.utm_source === 'FB' ? (dec(r.utm_content) || 'Anúncio') : r.utm_source === 'direto' ? 'Direto (sem anúncio)' : (r.utm_source || 'Sem origem')
+// Dica de mensagem/remarketing para o medo mais comum de quem não comprou (sem mudar oferta nem preço).
+const DICA_MEDO = {
+  dinheiro: 'Na mensagem e no remarketing, lembre que tem garantia de 7 dias: se não gostar, recebe o dinheiro de volta.',
+  fracasso: 'Fale de recomeço sem culpa: é um roteiro de 21 dias, um passo por dia, e um dia ruim não estraga tudo.',
+  tempo: 'Mostre que os treinos são curtos e em casa, feitos para a rotina corrida.',
+  fome: 'Reforce: sem dieta maluca e sem passar fome, comida de verdade.',
+  rebote: 'Mostre que o roteiro cria hábito, não é dieta de choque que volta tudo depois.',
 }
+// Bloco "Por que não compram": cada resposta do quiz com quantas pessoas de cada grupo marcaram.
+function cmpCard(titulo, nao, sim, f, rotulo) {
+  const a = contar(nao, f), b = contar(sim, f), ks = [...new Set([...Object.keys(a), ...Object.keys(b)])].sort(ordemNao(a, b)).slice(0, 6)
+  if (ks.length < 2) return null   // uma resposta só (ex.: todo mundo no mesmo checkout) não ajuda a decidir
+  const top = ks[0], g = el('div', { class: 'rc-l' }, el('span', {}), el('span', { class: 'h' }, 'Não compraram (' + nao.length + ')'), el('span', { class: 'h' }, 'Compraram (' + sim.length + ')'))
+  const cel = (n, tot, cls) => el('span', { class: 'n ' + cls, title: n + ' de ' + tot }, el('b', {}, tot ? n + ' de ' + tot : '–'), el('i', { style: '--w:' + (tot ? Math.round(100 * n / tot) : 0) + '%' }))
+  for (const k of ks) g.append(el('span', {}, rotulo(k)), cel(a[k] || 0, nao.length, 'nao' + (k === top && a[k] ? ' top' : '')), cel(b[k] || 0, sim.length, 'sim'))
+  const leit = a[top] ? 'Mais comum em quem não comprou: ' + rotulo(top) + ' (' + a[top] + ' de ' + nao.length + ').' : null
+  return el('div', { class: 'q' }, el('h4', {}, titulo), leit ? el('p', { class: 'leit' }, leit) : null, g)
+}
+function irPessoas(sit) { rcSit = sit; renderRec(); $('rc-pessoas-box').scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 function renderRec() {
-  const tiles = $('rc-tiles'); if (!tiles) return
-  tiles.textContent = ''
-  const tb = $('rc-pessoas'), mot = $('rc-motivos')
-  if (!RC) { tb.innerHTML = '<tr><td colspan="8" class="l muted">' + (mcp ? 'Carregando…' : 'Os dados aparecem para quem tem o conector do Supabase.') + '</td></tr>'; mot.textContent = ''; renderRcChat(); return }
+  const top = $('rc-top'); if (!top) return
+  const tb = $('rc-pessoas'), mot = $('rc-motivos'), acoes = $('rc-acoes'), sitBox = $('rc-sit')
+  if (!RC) { top.innerHTML = '<span class="muted">' + (mcp ? 'Carregando…' : 'Os dados aparecem para quem tem o conector do Supabase.') + '</span>'; acoes.textContent = ''; tb.innerHTML = '<tr><td colspan="6" class="l muted">' + (mcp ? 'Carregando…' : '–') + '</td></tr>'; mot.textContent = ''; renderRcChat(); return }
   const ck = RC.length, comp = RC.filter((r) => r.sit === 'comprou'), pix = RC.filter((r) => r.sit === 'pix'), saiu = RC.filter((r) => r.sit === 'saiu'), nao = [...pix, ...saiu]
-  const comTel = pix.filter((r) => telBR(r.tel)).length, aChamar = pix.filter((r) => !rcFeitos.has(r.id)).length
-  for (const [k, v, sub, cls] of [['Clicaram comprar', ck, 'no período', 'o'], ['Compraram', comp.length, pctN(ck ? comp.length / ck : null) + ' de quem clicou', 'g'], ['Não compraram', nao.length, pctN(ck ? nao.length / ck : null) + ' de quem clicou', ''], ['Pix/boleto sem pagar', pix.length, aChamar ? aChamar + ' para chamar no WhatsApp' : (pix.length ? 'todas já chamadas ✓' : 'ninguém agora'), 'gd'], ['Saíram do checkout', saiu.length, 'só remarketing alcança', '']])
-    tiles.append(el('div', { class: 'tile ' + cls }, el('span', { class: 'k' }, k), el('span', { class: 'v' }, String(v)), el('span', { class: 's' }, sub)))
+  const aChamar = pix.filter((r) => !rcFeitos.has(r.id)).length
   const nb = $('nb-rc'); nb.textContent = String(aChamar); nb.classList.toggle('hot', aChamar > 0)
-  // por que não compraram: respostas de quem NÃO comprou × quem comprou
+  const PER = { today: 'Hoje', last_7d: 'Nos últimos 7 dias', novo: 'Desde o quiz novo (08/10)' }[rcPer]
+  // 1 · A situação numa frase + barra
+  top.textContent = ''
+  if (!ck) top.append(el('p', { class: 'rc-frase' }, PER + ', ninguém clicou em comprar ainda.'))
+  else {
+    top.append(el('p', { class: 'rc-frase' }, PER + ', ', el('em', {}, plural(ck, 'pessoa clicou', 'pessoas clicaram')), ' em comprar e ', el('em', {}, plural(comp.length, 'comprou', 'compraram')), ' (' + pctN(comp.length / ck) + ').'))
+    const seg = [['comprou', comp.length, 'Comprou'], ['pix', pix.length, 'Gerou Pix/boleto e não pagou'], ['saiu', saiu.length, 'Saiu do checkout sem preencher']]
+    top.append(el('div', { class: 'rc-barra', role: 'img', 'aria-label': seg.map(([, n, t]) => t + ': ' + n).join(', ') }, ...seg.filter(([, n]) => n).map(([k, n]) => el('i', { class: 'c-' + k, style: 'width:' + (100 * n / ck) + '%' }))),
+      el('div', { class: 'rc-leg' }, ...seg.map(([k, n, t]) => el('span', {}, el('i', { class: 'cor c-' + k }), el('b', {}, String(n)), t))))
+  }
+  // 2 · O que fazer agora (em ordem de prioridade)
+  acoes.textContent = ''
+  const lista = []
+  if (pix.length) lista.push(aChamar
+    ? { cls: 'urg', t: aChamar === 1 ? 'Chamar no WhatsApp 1 pessoa que gerou Pix e não pagou' : 'Chamar no WhatsApp ' + aChamar + ' pessoas que geraram Pix e não pagaram', d: 'É a venda mais fácil de recuperar: tem nome e WhatsApp. A mensagem já está pronta; mande em até 1 hora.', b: el('button', { class: 'b pri', type: 'button', onclick: () => irPessoas('pix') }, 'Ver quem chamar ↓') }
+    : { cls: 'ok', t: 'Todas que geraram Pix já foram chamadas ✓', d: 'Se alguma pagar, ela passa para "Comprou" aqui.' })
+  if (saiu.length) {
+    const rmkt = Object.values(props).find((p) => /remarketing/i.test(p.titulo || '') && ['executado', 'aprovado', 'preparando'].includes(p.status))
+    lista.push({ cls: rmkt ? 'ok' : '', t: plural(saiu.length, 'pessoa saiu', 'pessoas saíram') + ' do checkout sem deixar contato', d: 'Não dá para chamar no WhatsApp: só o remarketing no Meta alcança essas pessoas.' + (rmkt ? (rmkt.status === 'executado' ? ' O remarketing já está no ar ✓' : ' O remarketing está sendo preparado.') : ''),
+      b: rmkt ? el('button', { class: 'b', type: 'button', onclick: () => { $('m-busca').value = 'RMKT'; busca = 'rmkt'; abrir('meta'); render() } }, 'Ver o remarketing') : el('button', { class: 'b pri', type: 'button', onclick: (e) => enviarRc('Crie um anúncio de remarketing para quem clicou em comprar e saiu do checkout sem preencher.', e.currentTarget) }, 'Pedir remarketing') })
+  }
+  const fMedo = (r) => r.answers && r.answers.medo, medos = contar(nao, fMedo), mk = Object.keys(medos).sort(ordemNao(medos, contar(comp, fMedo)))[0], tm = mk && [mk, medos[mk]]
+  if (tm && nao.length >= 2) lista.push({ t: 'O que mais segura quem não comprou: medo de "' + (MEDO[tm[0]] || tm[0]).toLowerCase() + '" (' + tm[1] + ' de ' + nao.length + ')', d: DICA_MEDO[tm[0]] || 'Responda esse medo na mensagem e no remarketing.' })
+  if (ck && comp.length < 5) lista.push({ cls: 'info', t: 'Ainda é cedo para saber o que diferencia quem compra', d: 'Só ' + plural(comp.length, 'compra', 'compras') + ' no período. A comparação fica confiável com umas 10. Até lá, o que mais rende é chamar quem gerou Pix.' })
+  if (!lista.length) lista.push({ cls: 'ok', t: 'Nada para fazer agora ✓', d: ck ? 'Quem clicou em comprar comprou.' : 'Quando alguém clicar em comprar e não comprar, aparece aqui.' })
+  lista.forEach((x, i) => acoes.append(el('div', { class: 'card rc-acao ' + (x.cls || '') }, el('span', { class: 'num' }, String(i + 1)), el('h4', {}, x.t), el('p', {}, x.d), x.b ? el('div', { class: 'btns' }, x.b) : null)))
+  // 3 · Pessoas
+  const FILTROS = [['nao', 'Não compraram', nao.length], ['pix', 'Pix sem pagar', pix.length], ['saiu', 'Saíram do checkout', saiu.length], ['comprou', 'Compraram', comp.length], ['todas', 'Todas', ck]]
+  sitBox.textContent = ''
+  for (const [k, t, n] of FILTROS) sitBox.append(el('button', { type: 'button', 'aria-pressed': String(rcSit === k), onclick: () => { rcSit = k; renderRec() } }, t + ' ', el('span', { class: 'ct' }, String(n))))
+  tb.textContent = ''
+  const pessoas = RC.filter((r) => rcSit === 'todas' ? true : rcSit === 'nao' ? r.sit !== 'comprou' : r.sit === rcSit)
+    .sort((a, b) => (SIT_ORD[a.sit] - SIT_ORD[b.sit]) || (rcFeitos.has(a.id) - rcFeitos.has(b.id)) || String(b.checkout_at || b.created_at).localeCompare(String(a.checkout_at || a.created_at)))
+  for (const r of pessoas) {
+    const st = SIT[r.sit], tel = telBR(r.tel), medo = MEDO[r.answers && r.answers.medo]
+    const tr = el('tr', { class: 'click' + (rcAberto === r.id ? ' open' : '') + (r.sit === 'pix' && rcFeitos.has(r.id) ? ' feito' : ''), tabindex: '0' },
+      el('td', { class: 'l q-quando' }, fmtDt(r.checkout_at || r.created_at)),
+      el('td', { class: 'l q-pessoa' }, r.nome || (r.sit === 'saiu' ? 'Sem nome (não preencheu)' : '–'), tel ? el('span', { class: 'muted' }, ' ' + telMask(r.tel)) : null),
+      el('td', { class: 'l q-sit' }, el('span', { class: 'pill ' + st[0] }, st[1])),
+      el('td', { class: 'l q-perfil' }, (PERFIL[r.perfil] || '–') + (medo ? ' · medo: ' + medo.toLowerCase() : '')),
+      el('td', { class: 'l q-origem' }, origem(r)),
+      el('td', { class: 'l q-acao' }, r.sit === 'pix' ? acoesPix(r, tel) : r.sit === 'saiu' ? el('span', { class: 'muted' }, 'Só remarketing alcança') : el('span', { class: 'muted' }, 'Nada a fazer ✓')))
+    const tog = () => { rcAberto = rcAberto === r.id ? null : r.id; renderRec() }
+    tr.addEventListener('click', tog); tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tog() } })
+    tb.append(tr)
+    if (rcAberto === r.id) {
+      const g = el('div', { class: 'resps' })
+      for (const q of QSTEPS) { const v = r.answers && r.answers[q.id]; if (v == null || v === '') continue; g.append(el('div', {}, el('span', {}, 'T' + (q.i + 1) + ' · ' + q.t + ': '), (Array.isArray(v) ? v : [v]).map((x) => QOPT[q.id + '|' + x] || x).join(', '))) }
+      if (r.checkout_ab) g.append(el('div', {}, el('span', {}, 'Checkout: '), ({ greenn: 'Greenn', hotmart: 'Hotmart' }[r.checkout_ab] || r.checkout_ab)))
+      if (tel && r.sit !== 'comprou') g.append(el('div', {}, el('span', {}, 'Mensagem sugerida: '), msgRec(r)))
+      tb.append(el('tr', { class: 'lead-det' }, el('td', { colspan: '6' }, g.children.length ? g : el('span', { class: 'muted' }, 'Sem respostas gravadas.'))))
+    }
+  }
+  if (!pessoas.length) tb.append(el('tr', {}, el('td', { colspan: '6', class: 'l muted' }, 'Ninguém nesta situação no período.')))
+  // 4 · Por que não compram (comparação, recolhida)
   mot.textContent = ''
+  $('rc-det-s').textContent = comp.length < 5 ? 'Respostas do quiz de quem comprou × quem não comprou · ainda pouca venda, use como pista' : 'Respostas do quiz de quem comprou × quem não comprou'
   const ans = (k) => (r) => { const v = r.answers && r.answers[k]; return v == null ? null : v }
   const opt = (id) => (k) => QOPT[id + '|' + k] || k
   const cards = [
@@ -2176,40 +2303,10 @@ function renderRec() {
     cmpCard('Canetinha (T7)', nao, comp, ans('canetinha'), opt('canetinha')),
     cmpCard('Quantas vezes recomeçou (T5)', nao, comp, ans('recomecos'), opt('recomecos')),
     cmpCard('Checkout que abriu', nao, comp, (r) => r.checkout_ab || 'sem registro', (k) => ({ greenn: 'Greenn', hotmart: 'Hotmart' }[k] || k)),
-    cmpCard('Anúncio', nao, comp, (r) => dec(r.utm_content) || (r.utm_source ? r.utm_source : 'sem anúncio'), (k) => k)].filter(Boolean)
-  const leit = []
-  if (saiu.length > pix.length) leit.push('A maioria sai do checkout sem preencher nada (' + saiu.length + ' de ' + nao.length + '): o problema está entre o botão e o formulário (preço visto na hora, confiança, página lenta ou checkout diferente do esperado). Esse grupo só volta por remarketing no Meta.')
-  if (pix.length) leit.push((pix.length === 1 ? '1 pessoa gerou Pix ou boleto e não pagou' : pix.length + ' pessoas geraram Pix ou boleto e não pagaram') + ': é o grupo mais fácil de recuperar. Uma mensagem no WhatsApp em até 1 hora costuma trazer parte dessas vendas de volta.')
-  const medoNao = contar(nao, ans('medo')), topMedo = Object.entries(medoNao).sort((a, b) => b[1] - a[1])[0]
-  if (topMedo && nao.length >= 3) leit.push('O medo mais comum de quem não comprou é "' + (MEDO[topMedo[0]] || topMedo[0]) + '" (' + pctN(topMedo[1] / nao.length) + '). A recuperação e o remarketing devem responder exatamente isso.')
-  if (nao.length < 5) leit.push('Ainda são poucas pessoas (' + nao.length + '), então as porcentagens mudam rápido. Use como pista, não como regra.')
-  mot.append(el('div', { class: 'card' }, el('h4', {}, 'O que os dados dizem'), el('ul', { class: 'clean' }, ...leit.map((t) => el('li', {}, t))), el('span', { class: 'muted', style: 'font-size:12.5px' }, 'Abaixo: % de quem NÃO comprou × % de quem comprou em cada resposta. Em vermelho, o que aparece bem mais em quem não comprou.')))
-  if (cards.length) mot.append(el('div', { class: 'rc-cmp' }, ...cards))
-  // pessoas
-  tb.textContent = ''
-  const lista = RC.filter((r) => rcSit === 'todas' ? true : rcSit === 'nao' ? r.sit !== 'comprou' : r.sit === rcSit)
-  for (const r of lista) {
-    const st = SIT[r.sit], tel = telBR(r.tel)
-    const tr = el('tr', { class: 'click' + (rcAberto === r.id ? ' open' : ''), tabindex: '0' },
-      el('td', { class: 'l' }, fmtDt(r.checkout_at || r.created_at)),
-      el('td', { class: 'l' }, r.nome || '–', tel ? el('br') : null, tel ? el('span', { class: 'muted' }, telMask(r.tel)) : null),
-      el('td', { class: 'l' }, el('span', { class: 'pill ' + st[0] }, st[1]), r.metodo && r.sit !== 'saiu' ? el('span', { class: 'muted' }, ' ' + String(r.metodo).toLowerCase()) : null),
-      el('td', { class: 'l' }, PERFIL[r.perfil] || '–'),
-      el('td', { class: 'l' }, MEDO[r.answers && r.answers.medo] || '–'),
-      el('td', { class: 'l' }, dec(r.utm_content) || (r.utm_source || '–')),
-      el('td', { class: 'l' }, ({ greenn: 'Greenn', hotmart: 'Hotmart' }[r.checkout_ab] || '–')),
-      el('td', { class: 'l' }, r.sit === 'pix' ? acoesPix(r, tel) : r.sit === 'saiu' ? el('span', { class: 'muted' }, 'remarketing') : '–'))
-    const tog = () => { rcAberto = rcAberto === r.id ? null : r.id; renderRec() }
-    tr.addEventListener('click', tog); tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tog() } })
-    tb.append(tr)
-    if (rcAberto === r.id) {
-      const g = el('div', { class: 'resps' })
-      for (const q of QSTEPS) { const v = r.answers && r.answers[q.id]; if (v == null || v === '') continue; g.append(el('div', {}, el('span', {}, 'T' + (q.i + 1) + ' · ' + q.t + ': '), (Array.isArray(v) ? v : [v]).map((x) => QOPT[q.id + '|' + x] || x).join(', '))) }
-      if (tel && r.sit !== 'comprou') g.append(el('div', {}, el('span', {}, 'Mensagem sugerida: '), msgRec(r)))
-      tb.append(el('tr', { class: 'lead-det' }, el('td', { colspan: '8' }, g.children.length ? g : el('span', { class: 'muted' }, 'Sem respostas gravadas.'))))
-    }
-  }
-  if (!lista.length) tb.append(el('tr', {}, el('td', { colspan: '8', class: 'l muted' }, 'Ninguém nesta situação no período.')))
+    cmpCard('De onde veio', nao, comp, origem, (k) => k)].filter(Boolean)
+  mot.append(el('div', { class: 'rc-ajuda' }, el('b', {}, 'Como ler'), el('span', {}, 'Cada linha é uma resposta do quiz. "4 de 8" quer dizer que 4 das 8 pessoas daquele grupo marcaram essa resposta. Em vermelho, a resposta mais comum de quem não comprou.'),
+    comp.length < 5 ? el('span', {}, 'Atenção: só ' + plural(comp.length, 'pessoa comprou', 'pessoas compraram') + ' no período, então a coluna "Compraram" ainda não diz muito. Fica confiável com umas 10 compras.') : null))
+  if (cards.length) mot.append(el('div', { class: 'rc-cmp' }, ...cards)); else mot.append(el('p', { class: 'muted' }, 'Ainda sem respostas suficientes para comparar.'))
   renderRcChat()
 }
 function acoesPix(r, tel) {
@@ -2227,7 +2324,7 @@ async function marcarFeito(id, sim, btn) {
 }
 function renderRcPlano(v) {
   const box = $('rc-plano'); box.textContent = ''
-  if (!v || !Array.isArray(v.acoes) || !v.acoes.length) { box.append(el('div', { class: 'empty' }, 'O plano de recuperação do Claude chega na análise das 7h (anúncio, mudança, remarketing, campanha ou automação). Para receber agora, clique em "Pedir plano de recuperação ao Claude".')); return }
+  if (!v || !Array.isArray(v.acoes) || !v.acoes.length) { box.append(el('div', { class: 'empty' }, 'O plano de recuperação do Claude chega na análise das 7h (anúncio, mudança, remarketing, campanha ou automação). Para receber agora, toque em "Pedir plano ao Claude".')); return }
   const TIPO = { anuncio: 'Anúncio', mudanca: 'Mudança', rmkt: 'Remarketing', campanha: 'Campanha', automacao: 'Automação' }
   box.append(el('div', { class: 'row' }, el('h4', {}, 'Plano de recuperação do Claude'), el('span', { class: 'pill n' }, fmtDt(v.em))))
   if (v.resumo) box.append(el('p', {}, v.resumo))
@@ -2266,7 +2363,6 @@ $('rc-pedir').addEventListener('click', (e) => {
   enviarRc('Descubra por que quem clicou em comprar não comprou e monte o plano de recuperação.' + est + ' Use as respostas do quiz delas. Sugira o que você achar que faz essa pessoa comprar: anúncio de remarketing, mudança no checkout ou na página, campanha nova e automação de recuperação no WhatsApp. Cada mudança como proposta para eu aprovar.', e.currentTarget)
 })
 document.querySelectorAll('#rc-per button').forEach((b) => b.addEventListener('click', () => { rcPer = b.dataset.p; document.querySelectorAll('#rc-per button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); rcWatch() }))
-document.querySelectorAll('#rc-sit button').forEach((b) => b.addEventListener('click', () => { rcSit = b.dataset.s; document.querySelectorAll('#rc-sit button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); renderRec() }))
 
 setInterval(() => { if (Object.values(msgs).some((m) => m.papel !== 'claude' && !m.respondido)) { renderChat(); renderOtChat(); renderObChat(); renderRcChat() } }, 30000)
 // ── Arranque ───────────────────────────────────────────────────────

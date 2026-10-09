@@ -71,6 +71,12 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
 - Conta Meta 1094091162588572. Régua: custo por venda até R$ 37; T1 32%; clicar comprar 18,7% das sessões.
 
 ## Diário
+- **09/10/2026, 08h40**: aba **Clicou e não comprou** refeita para decidir rápido: (1) uma frase + barra (comprou / Pix sem pagar /
+  saiu do checkout); (2) **O que fazer agora**, numerado por prioridade (chamar Pix no WhatsApp, remarketing para quem saiu,
+  medo mais comum de quem não comprou com a dica de mensagem, aviso de "ainda é cedo" com menos de 5 compras); (3) **Pessoas**
+  com filtros que mostram a contagem, Pix primeiro, e no celular cada pessoa vira um cartão; (4) **Por que não compram?**
+  recolhido, com "Como ler", colunas "Não compraram (n)" / "Compraram (n)" e valores "4 de 8" no lugar de "Não/Sim" e %.
+  Some o cartão que só tem uma resposta (ex.: checkout Greenn 100%). Sessões de teste do Google Tag Assistant ficam fora da conta.
 - **08/10/2026 (4), 18h05**: **menu ☰ no celular** (até 860 px as abas abrem numa gaveta à esquerda; nada de faixa rolando de lado)
   e **outros custos da empresa** na Meta do painel: em "Editar meta" / "Atualizar custos" o Patrik digita quanto já gastou no
   período com comercial, planilha, IA, WhatsApp etc. (`config/meta.custos`). Lucro final = líquido − Meta − outros custos; a
