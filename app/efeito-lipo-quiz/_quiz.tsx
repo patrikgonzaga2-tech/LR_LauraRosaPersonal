@@ -672,6 +672,22 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
 
         <div className="mt-7"><Principal pos="topo" /></div>
 
+        <SectionTitle>Antes e depois de voltar ao eixo</SectionTitle>
+        <div className="space-y-2.5">
+          {SALES.beforeAfter.map(([a, b], i) => (
+            <div key={i} className="grid grid-cols-2 gap-2.5">
+              <div className="rounded-xl p-3.5" style={{ background: 'rgba(197,57,0,.06)', border: '1px solid rgba(197,57,0,.14)' }}>
+                <div style={{ fontSize: 11, fontWeight: 800, color: '#c0392b', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 4 }}>✗ Antes</div>
+                <div style={{ fontSize: 13.5, lineHeight: 1.4, color: 'var(--sub)' }}>{a}</div>
+              </div>
+              <div className="rounded-xl p-3.5" style={{ background: 'rgba(28,135,60,.07)', border: '1px solid rgba(28,135,60,.16)' }}>
+                <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--g)', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 4 }}>✓ Depois</div>
+                <div style={{ fontSize: 13.5, lineHeight: 1.4, color: 'var(--ink)' }}>{b}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
         <SectionTitle>Por que começar pelo efeito rápido</SectionTitle>
         <div className="rounded-2xl p-5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
           <ul className="space-y-2.5">
@@ -697,22 +713,6 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
             <div key={i} className="relative rounded-xl overflow-hidden" style={{ boxShadow: '0 4px 16px rgba(0,0,0,.1)' }}>
               <Photo img={g.img} alt={g.alt} ratio="3 / 4" />
               {g.tag && <span className="absolute top-1.5 left-1.5 font-display" style={{ fontSize: 10, fontWeight: 800, color: '#000', background: '#FFC53D', padding: '2px 7px', borderRadius: 99 }}>{g.tag}</span>}
-            </div>
-          ))}
-        </div>
-
-        <SectionTitle>Antes e depois de voltar ao eixo</SectionTitle>
-        <div className="space-y-2.5">
-          {SALES.beforeAfter.map(([a, b], i) => (
-            <div key={i} className="grid grid-cols-2 gap-2.5">
-              <div className="rounded-xl p-3.5" style={{ background: 'rgba(197,57,0,.06)', border: '1px solid rgba(197,57,0,.14)' }}>
-                <div style={{ fontSize: 11, fontWeight: 800, color: '#c0392b', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 4 }}>✗ Antes</div>
-                <div style={{ fontSize: 13.5, lineHeight: 1.4, color: 'var(--sub)' }}>{a}</div>
-              </div>
-              <div className="rounded-xl p-3.5" style={{ background: 'rgba(28,135,60,.07)', border: '1px solid rgba(28,135,60,.16)' }}>
-                <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--g)', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 4 }}>✓ Depois</div>
-                <div style={{ fontSize: 13.5, lineHeight: 1.4, color: 'var(--ink)' }}>{b}</div>
-              </div>
             </div>
           ))}
         </div>
