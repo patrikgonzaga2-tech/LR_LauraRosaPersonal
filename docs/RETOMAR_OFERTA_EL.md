@@ -48,12 +48,16 @@ Meta Ads: nada muda sem aprovação. Apagar artefato: só com minha confirmaçã
 - E-A = página de hoje (EL + Comunidade, com o teste B dentro). E-B = só a Comunidade Corpo Feliz R$ 37/mês
   (WOqOSI), com os entregáveis que a Aline apresenta no WhatsApp e o EL como "Incluso". Botão do topo no E-B abre
   a assinatura. Sorteio em `pickComElArm` (`_data.ts`, sessionStorage `el_com_ab`). A T26 grava
-  `quiz_events.event='oferta'` com `answer` = E-A/E-B (API `action: 'oferta'`, sem mudar o banco). Clique na
+  `quiz_events.event='oferta'` com `answer` = E-A:A / E-A:B (preço do teste B visto) / E-B (desde PR #22, 09/10 ~16h40) (API `action: 'oferta'`, sem mudar o banco). Clique na
   assinatura no E-B grava `checkout_ab = E-B-assinatura` (não mistura com o T3).
 - O cartão da Comunidade no E-A também passou a usar a lista da Aline (aprovado).
 - Esboço: `tools/quiz-revisao/esbocos/img/cmp-T26-testeE.jpg` e `T26-testeE-cartao-comunidade.jpg`.
 
-## Painel: aba Testes em 3 grupos (versão 46)
+## Painel: aba Testes (versão 50)
+
+Quadro "Quem está entrando desde 09/10 16h30" (`CONTA_DESDE`): os testes são em camadas, T1 100% · T4 quem chega à oferta · T2 só no A do T4. Cards T1/T2/T4 contam a partir de 16h30.
+
+### Grupos
 
 No ar (T1, T2) · Prontos esperando publicar (T4) · Ideias para criar (T3 R$ 27, T5 trimestral, T6 upsell).
 Campo `grupo` em cada objeto de `TESTES`.
