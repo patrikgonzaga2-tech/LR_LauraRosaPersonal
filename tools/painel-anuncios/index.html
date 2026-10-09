@@ -669,6 +669,10 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
 .rt-texto .leg{font-size:13.5px;color:var(--sub);white-space:pre-wrap;border-top:1px solid var(--line);padding-top:8px}
 .rt-info{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--sub)}
 .rt-info b{color:var(--ink)}
+.rt-ref{font-size:14px;background:var(--o-soft);border-radius:10px;padding:9px 12px;display:grid;gap:4px}
+.rt-ref b{color:var(--od)}
+.rt-ref q{color:var(--ink)}
+.rt-ref-a{font-weight:700;white-space:nowrap}
 .rt-cuidado{font-size:13.5px;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:8px 12px}
 .rt .btns .b{display:inline-flex;align-items:center;gap:6px}
 </style>
@@ -2620,7 +2624,10 @@ function renderRef() {
   ;(ig.posts || []).forEach((p, i) => {
     igb.append(el('div', { class: 'rf-c' },
       el('div', { class: 't' }, el('span', { class: 'pill n' }, (p.tipo || 'Post') + (p.dur ? ' · ' + p.dur + 's' : '')), el('span', { class: 'pill o' }, (i + 1) + 'º'), el('span', { class: 'rf-st' }, p.data || '')),
-      el('div', { class: 'rf-n' }, numBRi(p.curtidas), ' ', el('i', {}, 'curtidas'), ' · ', numBRi(p.coment), ' ', el('i', {}, 'coment.')),
+      p.alcance != null
+        ? el('div', { class: 'rf-n' }, numBRi(p.alcance), ' ', el('i', {}, 'alcance'), ' · ', numBRi(p.salvos), ' ', el('i', {}, 'salvos'))
+        : el('div', { class: 'rf-n' }, numBRi(p.curtidas), ' ', el('i', {}, 'curtidas'), ' · ', numBRi(p.coment), ' ', el('i', {}, 'coment.')),
+      p.alcance != null ? el('div', { class: 'mt' }, numBRi(p.curtidas) + ' curtidas · ' + numBRi(p.compart) + ' compartilhamentos' + (p.assistido ? ' · assistem ' + p.assistido + 's em média' : '')) : null,
       p.legenda ? el('q', {}, p.legenda) : null,
       p.porque ? el('div', { class: 'why' }, el('b', {}, 'Por que funcionou: '), p.porque) : null,
       p.ideia ? el('div', { class: 'idea' }, el('b', {}, 'Como vira anúncio: '), p.ideia) : null,
@@ -2737,6 +2744,7 @@ function renderRoteiros() {
       el('div', { class: 'rt-top' }, el('span', { class: 'num' }, String(r.ordem ?? '•')), el('div', {}, el('h3', {}, r.titulo || '–'),
         el('div', { class: 't' }, el('span', { class: 'pill ' + st[0] }, st[1]), r.dur ? el('span', { class: 'pill n' }, '⏱ ' + r.dur) : null, r.precisa_ok ? el('span', { class: 'pill no' }, 'Esperar OK do Patrik') : null))),
       r.porque ? el('div', { class: 'rt-why' }, el('b', {}, 'Por que gravar: '), r.porque) : null,
+      refRoteiro(r.referencia),
       el('div', { class: 'rt-cols' }, cenas, texto),
       el('div', { class: 'rt-info' }, r.onde ? el('span', {}, el('b', {}, 'Onde: '), r.onde) : null, r.roupa ? el('span', {}, el('b', {}, 'Roupa: '), r.roupa) : null),
       r.cuidado ? el('div', { class: 'rt-cuidado' }, '⚠️ ', r.cuidado) : null,
@@ -2750,6 +2758,15 @@ function renderRoteiros() {
           : el('button', { class: 'b ok', type: 'button', onclick: (e) => rtStatus(id, 'gravado', e.currentTarget) }, '✓ Já gravei'),
         bAj)))
   }
+}
+function refRoteiro(f) {
+  if (!f) return null
+  if (typeof f === 'string') return el('div', { class: 'rt-ref' }, el('b', {}, 'Referência: '), f)
+  return el('div', { class: 'rt-ref' },
+    el('div', { class: 'rt-ref-t' }, el('b', {}, 'Referência: '), (f.titulo || '') + ' ', f.link ? linkFora(f.link, 'Ver referência ↗', 'rt-ref-a') : null),
+    f.legenda_original ? el('q', {}, f.legenda_original) : null,
+    f.o_que_copiar ? el('p', {}, el('b', {}, 'O que copiar: '), f.o_que_copiar) : null,
+    f.comparacao ? el('p', { class: 'muted' }, f.comparacao) : null)
 }
 async function rtStatus(id, status, btn) {
   if (!db) { toast('Entre na sua conta.'); return }
