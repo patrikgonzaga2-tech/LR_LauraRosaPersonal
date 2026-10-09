@@ -2070,7 +2070,7 @@ const TESTES = [
     arms: [['G-A', 'A · tela atual (v7)'], ['G-B', 'B · título de recomeço']],
     base: 'visitas', pos: 'comecou', cols: [['Visitas', 'visitas', null], ['Começaram', 'comecou', 'visitas'], ['Chegaram ao resultado', 'resultado', 'visitas'], ['Clicaram comprar', 'comprar', 'visitas']],
     sql: (d) => `select coalesce(intro_ab,'') braco, count(*) visitas, count(*) filter (where status<>'pageview') comecou, count(*) filter (where reached_index>=24) resultado, count(*) filter (where checkout_clicked) comprar from quiz_sessions where intro_ab in ('G-A','G-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
-    links: [{ rot: 'Ver A (v7) em Versões', tab: 'qz-versoes' }, { rot: 'Ver o quiz no ar (janela anônima)', url: 'https://www.laurarosapersonal.com/efeito-lipo-quiz' }] },
+    links: [{ rot: 'Ver versão A (tela atual)', url: 'v/v8/t1-a.html' }, { rot: 'Ver versão B (título de recomeço)', url: 'v/v8/t1-b.html' }] },
   { id: 'T2', nome: 'Preço do Efeito Lipo (teste B)', status: 'no ar desde 09/10 15h28', desde: '2026-10-09T15:28:00-03:00',
     arms: [['greenn', 'A · R$ 37 (QN7gci)'], ['greenn-B', 'B · R$ 47 (gLO7Gm)']],
     base: 'clicks', pos: 'vendas', cols: [['Clicaram comprar', 'clicks', null], ['Venderam', 'vendas', 'clicks']],
@@ -2134,8 +2134,8 @@ function renderTestes() {
       ? 'Ainda sem resposta: ' + menor + ' de ' + TESTE_MIN + ' no braço menor. Quem está na frente hoje: ' + lider.nome + '.'
       : 'Vencendo: ' + lider.nome + ', com ' + Math.round(chanceLider * 100) + '% de chance de ser a melhor.' + (chanceLider >= 0.95 ? ' Já dá para decidir.' : ' Ainda não é certeza (decide a partir de 95%).')))
     card.append(el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap' }, ...t.links.map((l) => l.tab
-      ? el('button', { class: 'b', type: 'button', onclick: () => abrir(l.tab) }, l.rot)
-      : el('a', { class: 'b', href: l.url, target: '_blank', rel: 'noopener' }, l.rot + ' ↗'))))
+      ? el('button', { class: 'b pri', type: 'button', onclick: () => abrir(l.tab) }, l.rot)
+      : el('a', { class: 'b pri', href: l.url, target: '_blank', rel: 'noopener' }, l.rot + ' ↗'))))
   }
   const at = $('testes-at'); if (at) at.textContent = 'Atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 }
