@@ -30,6 +30,13 @@ Apagar artefato: só com minha confirmação, um por um.
 
 ## Estado em 09/10, fim da noite
 
+**Painel Corpo Feliz publicado (09/10 ~18h, PR #23, deploy READY):** laurarosapersonal.com/painel (mesma senha do
+dashboard) junta o Painel da Marca com a parte analítica deste painel do claude.ai: Cockpit do dia (meta de lucro),
+Anúncios e ROI, Criativos, Funil do quiz, Testes A/B, Recuperar vendas, Origem e comercial, Marca/Canais/Cross-sell/
+Recorrência. Só leitura no banco. Meta e custos em `app/painel/_config.ts`. Doc: `docs/PAINEL_CORPO_FELIZ.md`.
+Continuam aqui no claude.ai: aprovar/conversar, roteiros, vídeos, editar textos do quiz, Leads da Aline.
+Falta para o CRM aparecer lá: `CRM_SUPABASE_URL` e `CRM_SUPABASE_KEY` na Vercel.
+
 **No ar no site (v9, desde 15h46; números contam desde 16h30):** T1 (1ª tela G-A × G-B, 100% das visitas),
 T4/teste E (oferta com Efeito Lipo × só Comunidade, 50/50), T2/teste B (Efeito Lipo R$ 37 × R$ 47, só dentro do E-A).
 
