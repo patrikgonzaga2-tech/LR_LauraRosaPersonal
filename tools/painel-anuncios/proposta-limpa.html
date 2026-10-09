@@ -51,9 +51,9 @@ section{display:grid;gap:16px}
 .acao.urg{border-left-color:var(--o)}.acao.bom{border-left-color:var(--g)}
 .acao .num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:800 13px var(--display);background:var(--pale)}
 .acao.urg .num{background:var(--o);color:#000}.acao.bom .num{background:var(--g);color:#fff}
-.acao h4{font-size:16px}.acao p{font-size:14px;color:var(--sub)}
+.acao .num{grid-row:span 2}.acao h4{font-size:16px;grid-column:2}.acao p{font-size:14px;color:var(--sub);grid-column:2}
 .acao .btn{grid-column:3;grid-row:1/span 2}
-@media (max-width:640px){.acao{grid-template-columns:28px minmax(0,1fr)}.acao .btn{grid-column:2;grid-row:auto}}
+@media (max-width:640px){.acao{grid-template-columns:28px minmax(0,1fr)}.acao .num{grid-row:auto}.acao .btn{grid-column:2;grid-row:auto;justify-self:start}}
 .btn{font:700 13.5px var(--body);border-radius:10px;border:1px solid var(--line);background:var(--wh);color:var(--ink);padding:8px 13px;cursor:pointer;white-space:nowrap}
 .btn.pri{background:var(--o);border-color:var(--o);color:#000}
 .btn:focus-visible{outline:2px solid var(--o);outline-offset:2px}
@@ -103,20 +103,20 @@ td b{font-weight:700}
     <div class="card meta">
       <div class="meta-top"><h2>R$ 10 mil de lucro em outubro</h2><span class="pill no">Bem abaixo do ritmo</span></div>
       <div class="bar" role="img" aria-label="1% da meta com 29% do mês"><i style="width:1.4%"></i><b style="left:29%"></b></div>
-      <p class="muted">A linha preta é onde deveríamos estar hoje (dia 9 de 31). Faltam R$ 9.865 em 22 dias: R$ 448 de lucro por dia.</p>
+      <p class="muted">A linha preta é onde deveríamos estar hoje (dia 9 de 31). Se continuar assim, o mês fecha com uns R$ 500 de lucro, porque os outros custos crescem uns R$ 700 por dia.</p>
       <div class="conta">
         <div><strong>R$ 6.620</strong><span>Comunidade líquido · 25 vendas</span></div>
         <div><strong>R$ 278</strong><span>Efeito Lipo e bumps · 12 vendas</span></div>
         <div><strong>− R$ 463</strong><span>Anúncios no Meta</span></div>
-        <div><strong>− R$ 6.300</strong><span>Outros custos (confirmar)</span></div>
+        <div><strong>− R$ 6.300</strong><span>Outros custos até hoje (≈ R$ 21.700 no mês)</span></div>
       </div>
       <p style="font-size:14px"><b>Lucro até agora: R$ 135.</b> Quem paga as contas é a Comunidade vendida pela Aline. O Efeito Lipo vendeu 3.032 em julho e 12 em outubro.</p>
     </div>
 
     <h3>Faça hoje</h3>
     <div class="acoes">
-      <div class="acao urg"><span class="num">1</span><h4>Pôr mais verba nos posts da Laura que viram clique</h4><p>Os posts orgânicos (3 Pilares, 1802…6874, 1800…3180) dão 7% a 11% de cliques. As artes A a I dão 1% a 4%. Proposta: tirar R$ 15/dia das artes e pôr nos posts.</p><button class="btn pri" type="button">Ver proposta</button></div>
-      <div class="acao urg"><span class="num">2</span><h4>Comunidade: 2,8 vendas por dia, precisa de 4</h4><p>Para bater a meta só com a Comunidade (R$ 265 líquido por venda), faltam cerca de 37 vendas em 22 dias. A Aline tem leads quentes parados em "Follow up".</p><button class="btn" type="button">Ver plano</button></div>
+      <div class="acao urg"><span class="num">1</span><h4>Pôr mais verba nos posts da Laura que viram clique</h4><p>Os posts orgânicos (3 Pilares, 1802…6874, 1800…3180) dão 7% a 11% de cliques. As artes A a I dão 1% a 4%. Proposta: tirar R$ 20/dia das artes e pôr nos posts, sem mudar a verba total.</p><button class="btn pri" type="button">Ver proposta</button></div>
+      <div class="acao urg"><span class="num">2</span><h4>Comunidade: 2,8 vendas por dia, precisa de 4,4</h4><p>Cada venda deixa R$ 265 líquido. Para o mês fechar com R$ 10 mil de lucro, faltam cerca de 36 vendas além do ritmo de hoje (1,6 a mais por dia). A Aline tem leads quentes parados em "Follow up".</p><button class="btn" type="button">Ver plano</button></div>
       <div class="acao"><span class="num">3</span><h4>Testes: nada para decidir hoje</h4><p>T1, T2 e T4 têm menos de 100 pessoas por versão. Volte amanhã.</p><button class="btn" type="button">Ver testes</button></div>
     </div>
 
@@ -184,6 +184,7 @@ td b{font-weight:700}
     </div>
 
     <div class="grid2">
+      <div class="card"><h3>Leads da Aline</h3><p style="font-size:14px">O "Painel de Leads" entra aqui: quem está em Lead Quente e Follow up, com o próximo passo de cada um.</p></div>
       <div class="card"><h3>Clicou e não comprou</h3><p style="font-size:14px">1 pessoa desde 13h40, saiu do checkout sem deixar contato. Só remarketing alcança.</p></div>
       <div class="card"><h3>Mudanças no quiz</h3><p style="font-size:14px">Versões, comparar e editar textos ficam num botão "Histórico do quiz", fora da vista do dia.</p></div>
     </div>
@@ -205,13 +206,13 @@ td b{font-weight:700}
           <li>Cena a cena, com o texto completo para ler.</li>
           <li>Botões: copiar, mandar no WhatsApp, "já gravei".</li>
         </ul>
-        <p class="muted">Junta as abas Referência, Roteiros da Laura, Vídeos e o painel "Roteiros de vídeo — Laura".</p></div>
+        <p class="muted">Junta as abas Referência, Roteiros da Laura e Vídeos, mais o painel "Roteiros de vídeo — Laura".</p></div>
     </div>
   </section>
 
   <!-- CONVERSAR -->
   <section id="conversar" role="tabpanel" hidden>
-    <div class="card"><h3>Uma fila só para aprovar</h3><p style="font-size:14px">Anúncio, criativo, quiz e oferta numa lista, com antes e depois e um botão Aprovar. À direita, um chat só, que entende o assunto de cada proposta. O que foi aprovado vai para "Feito" e some depois de 24 horas.</p></div>
+    <div class="card"><h3>Uma fila só para aprovar</h3><p style="font-size:14px">Já tem 1 esperando: "Passar R$ 20/dia das artes para os posts da Laura". Anúncio, criativo, quiz e oferta numa lista, com antes e depois e um botão Aprovar. À direita, um chat só, que entende o assunto de cada proposta. O que foi aprovado vai para "Feito" e some depois de 24 horas.</p></div>
   </section>
 </main>
 
