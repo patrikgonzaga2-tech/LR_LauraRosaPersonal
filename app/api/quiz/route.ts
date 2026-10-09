@@ -9,7 +9,7 @@ type Body = {
   variante?: string
   intro_ab?: string // teste A/B da 1ª tela: 'A' (original) | 'B' (nova)
   checkout_ab?: string // teste A/B de checkout: 'hotmart' | 'greenn'
-  oferta_ab?: string // teste E na T26: 'E-A' | 'E-B'
+  oferta_ab?: string // teste E na T26: 'E-A:A' | 'E-A:B' (com o braço do teste B) | 'E-B'
   utm_source?: string; utm_medium?: string; utm_campaign?: string; utm_content?: string; utm_term?: string
   xcod?: string // id de dedup do Meta (user_id_purchase) — ponte venda↔anúncio
   sck?: string; referrer?: string; user_agent?: string
