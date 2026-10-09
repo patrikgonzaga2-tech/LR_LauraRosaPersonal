@@ -709,9 +709,21 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 export const INTRO_AB_KEY = 'el_intro_ab'
 
 // Teste G (09/10): 'G-A' = tela no ar hoje; 'G-B' = título de recomeço sem subtítulo.
-// O braço é sorteado no page.tsx (pageview) e gravado em sessionStorage.
+// O braço é sorteado AQUI, na hora de desenhar a 1ª tela, e gravado em sessionStorage.
+// O beacon do page.tsx só lê esse valor (e sorteia só se estiver vazio), assim o que
+// a pessoa vê e o que fica registrado são sempre o mesmo braço.
+function armaIntro(): string {
+  try {
+    const a = sessionStorage.getItem(INTRO_AB_KEY)
+    if (a === 'G-A' || a === 'G-B') return a
+    const n = Math.random() < 0.5 ? 'G-A' : 'G-B'
+    sessionStorage.setItem(INTRO_AB_KEY, n)
+    return n
+  } catch { return 'G-A' }
+}
+
 function Intro({ onStart }: { onStart: () => void }) {
-  const arm = (typeof window !== 'undefined' && sessionStorage.getItem(INTRO_AB_KEY)) || 'G-A'
+  const arm = typeof window !== 'undefined' ? armaIntro() : 'G-A'
   return <IntroB onStart={onStart} novo={arm === 'G-B'} />
 }
 
