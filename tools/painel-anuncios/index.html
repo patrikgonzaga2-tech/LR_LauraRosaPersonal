@@ -1290,7 +1290,7 @@ const fmtD = (s) => { if (!s) return '–'; const d = new Date(String(s).length 
 let db = null, user = null, me = null, mcp = null
 
 // ── Abas ───────────────────────────────────────────────────────────
-const TABS = ['qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'videos', 'referencia', 'roteiros']
+const TABS = ['testes', 'qz-estamos', 'qz-versoes', 'qz-comparar', 'qz-marca', 'qz-editar', 'objetivo', 'resumo', 'aprovar', 'aprovados', 'meta', 'otimizar', 'recuperar', 'quiz', 'historico', 'criativos', 'videos', 'referencia', 'roteiros']
 function abrir(t, foco) {
   if (t === 'conversar') t = 'aprovar'
   if (!TABS.includes(t)) t = 'resumo'
