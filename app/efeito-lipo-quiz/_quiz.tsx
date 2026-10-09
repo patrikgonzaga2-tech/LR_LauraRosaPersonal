@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
-  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, pickOfertaArm, OFERTA_AB_KEY, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
+  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, pickOfertaArm, CHECKOUT_HREF_SUB, subscriptionHref, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
   PERFIS, perfilRecomeco, RESULT_MARCOS, ROTEIRO_21, SALES, STEPS,
 } from './_data'
 import type { ImgKey, Step } from './_data'
@@ -127,7 +127,7 @@ export default function QuizApp() {
     return <Intro onStart={() => { const intro_ab = (typeof window !== 'undefined' && sessionStorage.getItem(INTRO_AB_KEY)) || undefined; persist({ id: sidRef.current, action: 'start', intro_ab, ...captureContext() }); track('quiz_start', { intro_ab }); next() }} />
   }
   if (step.kind === 'sales') {
-    return <Sales perfil={perfil} onCheckout={() => { const arm = pickCheckoutArm(); persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: arm === 'greenn' && (typeof window !== 'undefined' && sessionStorage.getItem(OFERTA_AB_KEY)) === 'B' ? 'greenn-B' : arm }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: arm }) }} />
+    return <Sales perfil={perfil} answers={answers} onCheckout={(tipo) => { const arm = pickCheckoutArm(); const ab = tipo === 'sub' ? 'assinatura-37' : arm === 'greenn' && pickOfertaArm() === 'B' ? 'greenn-B' : arm; persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: ab }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: ab }) }} />
   }
 
   const darkBg = step.kind === 'loading' || step.kind === 'result'
@@ -460,20 +460,6 @@ function Result({ perfil, answers, onNext, onReady }: { perfil: InnerProps['perf
           Probabilidade de resultado com o De Volta ao Eixo, baseada em mulheres com perfil parecido com o seu.
         </p>
 
-        {perfil.hasPeso && (
-          <div className="flex items-center justify-center gap-4 mt-6 mb-2 rounded-2xl py-4" style={{ background: 'var(--pale)' }}>
-            <div className="text-center">
-              <div className="font-display" style={{ fontSize: 26, fontWeight: 800, color: 'var(--mute)' }}>{perfil.peso}<span style={{ fontSize: 14 }}>kg</span></div>
-              <div style={{ fontSize: 11, color: 'var(--mute)', textTransform: 'uppercase', letterSpacing: '.06em' }}>hoje</div>
-            </div>
-            <div style={{ color: 'var(--o)' }}><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></div>
-            <div className="text-center">
-              <div className="font-display" style={{ fontSize: 30, fontWeight: 800, color: 'var(--g)' }}>~<CountUp to={perfil.meta} duration={1600} /><span style={{ fontSize: 14 }}>kg</span></div>
-              <div style={{ fontSize: 11, color: 'var(--g)', textTransform: 'uppercase', letterSpacing: '.06em', fontWeight: 700 }}>em 21 dias</div>
-            </div>
-          </div>
-        )}
-
         <h3 className="font-display text-center mt-7" style={{ fontSize: 17, fontWeight: 800, color: 'var(--ink)' }}>Sua jornada de transformação</h3>
         <p className="text-center mb-4" style={{ fontSize: 12.5, color: 'var(--mute)', marginTop: 4 }}>{ROTEIRO_21}</p>
         <Chart />
@@ -493,7 +479,11 @@ function Result({ perfil, answers, onNext, onReady }: { perfil: InnerProps['perf
           ))}
         </div>
 
-        <div className="mt-7"><CtaButton full glow onClick={onNext}>Acessar meu protocolo</CtaButton></div>
+        <div className="mt-6 rounded-2xl p-4 text-left" style={{ background: 'rgba(245,113,0,.07)', border: '1px solid rgba(245,113,0,.25)' }}>
+          <div className="font-display" style={{ fontSize: 14, fontWeight: 800, color: 'var(--od)' }}>O que mais ajuda o seu perfil</div>
+          <p style={{ fontSize: 14, lineHeight: 1.5, color: 'var(--ink)', marginTop: 4 }}>Mulheres que já recomeçaram várias vezes vão mais longe quando não fazem sozinhas. Na próxima tela você escolhe: fazer o roteiro no seu ritmo ou com a Laura te acompanhando.</p>
+        </div>
+        <div className="mt-6"><CtaButton full glow onClick={onNext}>Ver como começar</CtaButton></div>
       </div>
     </div>
   )
@@ -543,52 +533,124 @@ function useCountdown(start = 600) {
   return `${mm}:${ss}`
 }
 
-function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckout: () => void }) {
-  const timer = useCountdown(600)
-  // Teste B (09/10): preço do EL. Sorteado ao abrir a página de vendas (só no navegador).
-  const [oferta, setOferta] = useState<'A' | 'B'>('A')
-  useEffect(() => { setOferta(pickOfertaArm()) }, [])
-  const precoEL = oferta === 'B' ? '47' : '37'
-  const parcEL = oferta === 'B' ? '12x de R$ 4,83' : '12x de R$ 3,80'
+// T26 — Efeito Lipo em destaque (compra por impulso) + assinatura da Comunidade como
+// alternativa. Preço do EL pelo teste B (A = R$ 37, B = R$ 47), sorteado em pickOfertaArm().
+type Oferta = { id: string; el: null | { preco: string; parc: string; dia: string }; sub: { preco: string; per: string; nota: string; parcCurta: string } }
+const OFERTAS: Record<'A' | 'B', Oferta> = {
+  A: { id: 'A', el: { preco: '37', parc: '12x de R$ 3,80', dia: '1,76' }, sub: { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' } },
+  B: { id: 'B', el: { preco: '47', parc: '12x de R$ 4,83', dia: '2,24' }, sub: { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' } },
+}
 
-  // Link de checkout com o id do anúncio (utm_term) no src. Começa com o link
-  // fixo (igual no servidor, evita erro de hidratação) e, já no navegador,
-  // acrescenta o src quando o anúncio trouxe o id na URL.
+function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; answers?: InnerProps['answers']; onCheckout: (tipo?: 'sub') => void }) {
+  const timer = useCountdown(600)
   const [href, setHref] = useState(CHECKOUT_HREF)
   const buildHref = () => checkoutHrefFor(pickCheckoutArm(), readAdId(), readXcod(), readFbclid())
   useEffect(() => { setHref(buildHref()) }, [])
-  // No clique, remonta o link com o rastreio mais fresco (gaveta do navegador) e
-  // atualiza o próprio <a> ANTES da navegação — elimina a corrida com a
-  // hidratação lenta no in-app, que fazia o toque ir sem o id do anúncio.
   const onBuy = (e: React.MouseEvent<HTMLAnchorElement>) => {
     try { e.currentTarget.href = buildHref() } catch { /* mantém o href do estado */ }
     onCheckout()
   }
+  // Assinatura da Comunidade (R$ 37/mês, oferta WOqOSI): link próprio, com o mesmo rastreio do EL.
+  const [hrefSub, setHrefSub] = useState(CHECKOUT_HREF_SUB)
+  const buildHrefSub = () => subscriptionHref(readAdId(), readXcod(), readFbclid())
+  useEffect(() => { setHrefSub(buildHrefSub()) }, [])
+  const onBuySub = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    try { e.currentTarget.href = buildHrefSub() } catch { /* mantém o href do estado */ }
+    onCheckout('sub')
+  }
+  // Teste B: o preço do EL desta sessão (começa em A no servidor e troca no navegador).
+  const [of, setOf] = useState<Oferta>(OFERTAS.A)
+  useEffect(() => { setOf(OFERTAS[pickOfertaArm()]) }, [])
+  const soAssinatura = !of.el
 
-  const Price = () => (
-    <div className="mx-auto rounded-2xl p-5" style={{ maxWidth: 360, background: 'rgba(245,113,0,.06)', border: '1px solid rgba(245,113,0,.2)' }}>
-      <ul className="space-y-2">
-        {SALES.stack.map(([n, v], i) => (
-          <li key={i} className="flex justify-between" style={{ fontSize: 14.5, color: 'var(--ink)' }}><span>{n}</span><span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>{v}</span></li>
-        ))}
-        <li className="flex justify-between pt-2" style={{ borderTop: '1px solid rgba(0,0,0,.1)', fontSize: 14.5, fontWeight: 700 }}><span>Total real</span><span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span></li>
-        <li className="flex justify-between items-baseline pt-2 font-display"><span style={{ fontSize: 16, fontWeight: 800 }}>Hoje</span><span style={{ fontSize: 30, fontWeight: 800, color: 'var(--o)' }}>R$ {precoEL}</span></li>
-      </ul>
-      <p className="text-center" style={{ fontSize: 13, color: 'var(--sub)', marginTop: 6 }}>ou {parcEL}</p>
+  const Check = ({ ok = true }: { ok?: boolean }) => (
+    <span style={{ color: ok ? 'var(--g)' : '#c0392b', flexShrink: 0, marginTop: 1 }}>
+      {ok
+        ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+        : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>}
+    </span>
+  )
+  const Item = ({ ok = true, children }: { ok?: boolean; children: React.ReactNode }) => (
+    <li className="flex gap-2" style={{ fontSize: 14, lineHeight: 1.4, color: ok ? 'var(--ink)' : 'var(--mute)' }}><Check ok={ok} /><span>{children}</span></li>
+  )
+  const ItensEL = () => (
+    <>
+      <Item><b>Roteiro de 21 dias</b> em 3 fases: Limpeza, Ativação e Queima Total</Item>
+      <Item><b>21 Treinos Hormonais</b> de 15 minutos, em casa, sem equipamento</Item>
+      <Item>Módulo <b>Comece por Aqui</b> + autoavaliação inicial e final</Item>
+      <Item>Bônus: aula do <b>Ciclo Menstrual</b> e e-book <b>Anti-Pelanquinha</b></Item>
+    </>
+  )
+
+  // Cartão principal: Efeito Lipo (compra por impulso, sem pensar)
+  const CardEL = ({ pos }: { pos: string }) => of.el && (
+    <div className="relative rounded-2xl p-5" style={{ background: '#fff', border: '2.5px solid var(--o)', boxShadow: '0 16px 44px rgba(245,113,0,.22)' }}>
+      <span className="inline-block font-display" style={{ fontSize: 11.5, fontWeight: 800, color: '#000', background: '#FFC53D', padding: '4px 12px', borderRadius: 99 }}>⚡ Acesso na hora · comece hoje</span>
+      <div className="font-display" style={{ fontSize: 23, fontWeight: 800, color: 'var(--ink)', lineHeight: 1.15, marginTop: 10 }}>Efeito Lipo 21D</div>
+      <div style={{ fontSize: 13.5, color: 'var(--sub)', marginTop: 2 }}>O passo a passo para desinchar já na 1ª semana e voltar ao eixo.</div>
+      <div className="flex items-baseline gap-2 mt-3">
+        <span className="font-display" style={{ fontSize: 40, fontWeight: 800, color: 'var(--o)', lineHeight: 1 }}>R$ {of.el.preco}</span>
+        <span style={{ fontSize: 14, color: 'var(--ink)', fontWeight: 800 }}>uma vez só</span>
+      </div>
+      <div style={{ fontSize: 13, color: 'var(--ink)', fontWeight: 700, marginTop: 2 }}>Sem mensalidade · R$ {of.el.dia} por dia nos 21 dias</div>
+      <div style={{ fontSize: 12.5, color: 'var(--sub)' }}>Pix ou cartão · ou {of.el.parc}</div>
+      <ul className="space-y-2 mt-4"><ItensEL /></ul>
+      <a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block mt-5" style={{ textDecoration: 'none' }}><CtaButton full glow dataLabel={`el-${pos}`}>Quero meu Efeito Lipo agora</CtaButton></a>
+      <div className="flex gap-2.5 items-start rounded-xl p-3 mt-3" style={{ background: 'rgba(28,135,60,.08)', border: '1px solid rgba(28,135,60,.2)' }}>
+        <span style={{ fontSize: 20, lineHeight: 1 }}>🛡️</span>
+        <span style={{ fontSize: 13.5, lineHeight: 1.45, color: 'var(--ink)' }}><b>Risco zero:</b> se em 7 dias você não sentir o corpo menos inchado, devolvemos seus R$ {of.el.preco}. É só pedir.</span>
+      </div>
+      <a href="#assinatura" className="block text-center mt-3" style={{ fontSize: 13.5, color: 'var(--g)', fontWeight: 700, textDecoration: 'none' }}>
+        Prefere fazer com a Laura do lado? Assinatura a partir de {of.sub.parcCurta} ↓
+      </a>
     </div>
   )
 
+  // Assinatura: alternativa (braços A–D) ou cartão principal (braço E)
+  const CardSub = ({ pos, principal }: { pos: string; principal?: boolean }) => (
+    <div id={principal ? undefined : 'assinatura'} className="relative rounded-2xl p-5" style={{ background: '#fff', border: principal ? '2.5px solid var(--g)' : '1.5px solid rgba(28,135,60,.35)', boxShadow: principal ? '0 16px 44px rgba(28,135,60,.2)' : 'none' }}>
+      <span className="inline-block font-display" style={{ fontSize: 11.5, fontWeight: 800, color: '#fff', background: 'var(--g)', padding: '4px 12px', borderRadius: 99 }}>{principal ? '⚡ Acesso na hora · comece hoje' : 'Com a Laura do seu lado'}</span>
+      <div className="font-display" style={{ fontSize: principal ? 23 : 20, fontWeight: 800, color: 'var(--ink)', lineHeight: 1.15, marginTop: 10 }}>{principal ? 'Efeito Lipo 21D + a Laura do seu lado' : 'Comunidade Corpo Feliz'}</div>
+      <div style={{ fontSize: 13.5, color: 'var(--sub)', marginTop: 2 }}>{principal ? 'Os 21 dias para desinchar e voltar ao eixo, com a Laura te acompanhando todo dia.' : 'Tudo do Efeito Lipo + a Laura te acompanhando todo dia, para não recomeçar de novo.'}</div>
+      <div className="flex items-baseline gap-2 mt-3">
+        <span style={{ fontSize: 15, color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 97/mês</span>
+        <span className="font-display" style={{ fontSize: principal ? 40 : 32, fontWeight: 800, color: 'var(--g)', lineHeight: 1 }}>R$ {of.sub.preco}</span>
+        <span style={{ fontSize: 14, color: 'var(--sub)', fontWeight: 700 }}>{of.sub.per}</span>
+      </div>
+      <div style={{ fontSize: 12.5, color: 'var(--sub)' }}>{of.sub.nota} · no cartão</div>
+      <ul className="space-y-2 mt-4">
+        {principal ? <ItensEL /> : <Item><b>Tudo do Efeito Lipo 21D</b> (roteiro, treinos e bônus)</Item>}
+        <Item>Acompanhamento diário da Laura no WhatsApp exclusivo</Item>
+        <Item>Grupo das Musas no Telegram: rede de apoio todo dia</Item>
+        <Item>Treinos novos todo mês e todos os desafios do ano</Item>
+        <Item>Plano alimentar flexível</Item>
+        <Item>Diástase e vácuo abdominal, Jump, Flux e planilha de corrida</Item>
+      </ul>
+      <a href={hrefSub} onClick={onBuySub} target="_blank" rel="noopener noreferrer" className="block mt-5" style={{ textDecoration: 'none' }}>
+        {principal
+          ? <CtaButton full glow variant="green" dataLabel={`sub-${pos}`}>Quero começar com a Laura</CtaButton>
+          : <span className="block text-center font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--g)', border: '2px solid var(--g)', borderRadius: 999, padding: '14px 18px' }}>Quero a Laura do meu lado</span>}
+      </a>
+    </div>
+  )
+  const Principal = ({ pos }: { pos: string }) => soAssinatura ? <CardSub principal pos={pos} /> : <CardEL pos={pos} />
+
+  const semanas: [string, string, string][] = [
+    ['Semana 1', 'Limpeza', 'Corpo menos inchado e roupa mais solta'],
+    ['Semana 2', 'Ativação', 'Mais disposição e rotina pegando ritmo'],
+    ['Semana 3', 'Queima Total', 'Hábito formado, sem esperar a segunda'],
+  ]
+
   return (
     <div style={{ background: 'var(--pale)' }}>
-      {/* Top bar */}
       <header className="sticky top-0 z-30 text-center py-2.5 px-4" style={{ background: 'var(--gd)', color: '#fff' }}>
-        <span style={{ fontSize: 13, fontWeight: 600 }}>⏳ Sua condição especial expira em <strong className="font-display" style={{ color: '#FFC53D' }}>{timer}</strong></span>
+        <span style={{ fontSize: 13, fontWeight: 600 }}>⏳ Sua condição do quiz expira em <strong className="font-display" style={{ color: '#FFC53D' }}>{timer}</strong></span>
       </header>
 
       <div className="mx-auto px-5 py-8" style={{ maxWidth: 600 }}>
         <div className="text-center"><Logo size="lg" /></div>
 
-        {/* Resultado personalizado */}
+        {/* Topo igual à T26 que estava no ar (modelo aprovado pelo Patrik em 09/10): fica em todos os braços */}
         <h1 className="font-display text-center mt-5" style={{ fontSize: 'clamp(25px,5.4vw,38px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
           Seu roteiro de 21 dias<br /><span style={{ color: 'var(--o)' }}>para voltar ao eixo</span>
         </h1>
@@ -607,7 +669,6 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
         </div>
         <div className="mt-7"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow dataLabel="topo">Quero meu protocolo agora</CtaButton></a></div>
 
-        {/* Antes / Depois */}
         <SectionTitle>Antes e depois de voltar ao eixo</SectionTitle>
         <div className="space-y-2.5">
           {SALES.beforeAfter.map(([a, b], i) => (
@@ -624,7 +685,6 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
           ))}
         </div>
 
-        {/* Galeria */}
         <SectionTitle>Resultados reais de alunas</SectionTitle>
         <div className="grid grid-cols-3 gap-2">
           {SALES.gallery.map((g, i) => (
@@ -635,65 +695,71 @@ function Sales({ perfil, onCheckout }: { perfil: InnerProps['perfil']; onCheckou
           ))}
         </div>
 
-        {/* Entregáveis */}
-        <SectionTitle>🎁 Seu protocolo está pronto — você já pode começar hoje</SectionTitle>
-        <div className="space-y-2.5">
-          {SALES.entregaveis.map(([t, d], i) => (
-            <div key={i} className="flex gap-3 rounded-xl p-3.5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
-              <span style={{ color: 'var(--g)', flexShrink: 0, marginTop: 1 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
-              <div><div className="font-display" style={{ fontWeight: 700, fontSize: 15, color: 'var(--ink)' }}>{t}</div><div style={{ fontSize: 13.5, color: 'var(--sub)', lineHeight: 1.45, marginTop: 2 }}>{d}</div></div>
+        {/* Oferta: Efeito Lipo (preço do teste B) */}
+        <div className="mt-8"><Principal pos="oferta" /></div>
+
+
+        <SectionTitle>Por que começar pelo efeito rápido</SectionTitle>
+        <div className="rounded-2xl p-5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
+          <ul className="space-y-2.5">
+            <Item>Você não desiste por falta de força de vontade. Desiste porque <b>não vê resultado</b> e a semana aperta.</Item>
+            <Item>No Efeito Lipo, a 1ª semana é feita para você <b>sentir a diferença</b>: barriga menos estufada, roupa mais solta.</Item>
+            <Item>Quando o corpo responde, a sexta-feira deixa de ser o dia de largar. <b>É assim que você volta ao eixo.</b></Item>
+          </ul>
+        </div>
+
+        <SectionTitle>O que você sente em cada semana</SectionTitle>
+        <div className="space-y-2">
+          {semanas.map(([s, f, d], i) => (
+            <div key={s} className="flex items-center gap-3 rounded-xl p-3.5" style={{ background: '#fff', border: '1px solid rgba(245,113,0,.2)' }}>
+              <div className="grid place-items-center font-display rounded-full" style={{ width: 38, height: 38, flexShrink: 0, background: i === 0 ? 'var(--o)' : 'rgba(245,113,0,.12)', color: i === 0 ? '#000' : 'var(--od)', fontWeight: 800 }}>{i + 1}</div>
+              <div><div className="font-display" style={{ fontSize: 14, fontWeight: 800, color: 'var(--od)' }}>{s} · {f}</div><div style={{ fontSize: 14, color: 'var(--ink)', marginTop: 1 }}>{d}</div></div>
             </div>
           ))}
         </div>
 
-        {/* Bônus */}
-        <SectionTitle>Bônus exclusivos</SectionTitle>
-        <div className="space-y-2.5">
-          {SALES.bonus.map((b, i) => (
-            <div key={i} className="rounded-xl p-4" style={{ background: '#fff', border: '1px solid rgba(245,113,0,.2)' }}>
-              <div className="flex flex-wrap items-baseline justify-between gap-1 mb-1.5">
-                <span className="font-display" style={{ fontWeight: 800, fontSize: 15, color: 'var(--ink)' }}>🎁 {b.nome}</span>
-                <span><span style={{ fontSize: 13, color: 'var(--mute)', textDecoration: 'line-through' }}>{b.de}</span> <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--g)' }}>→ GRÁTIS</span></span>
-              </div>
-              <p style={{ fontSize: 13.5, color: 'var(--sub)', lineHeight: 1.45 }}>{b.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Prova social */}
         <div className="text-center mt-9">
           <div style={{ fontSize: 22, letterSpacing: 2 }}>⭐⭐⭐⭐⭐</div>
-          <p className="font-display" style={{ fontWeight: 800, fontSize: 14, color: 'var(--ink)', marginTop: 6 }}>Baseado em mais de 5.000 transformações reais</p>
+          <p className="font-display" style={{ fontWeight: 800, fontSize: 14, color: 'var(--ink)', marginTop: 6 }}>Mais de 5.000 alunas da Laura</p>
           <p style={{ fontSize: 13.5, color: 'var(--sub)', maxWidth: 420, margin: '6px auto 0', lineHeight: 1.5 }}>Mulheres com filho, rotina impossível, SOP, acima dos 40 — que já tentaram de tudo e achavam que não conseguiriam.</p>
         </div>
 
-        {/* Preço + urgência */}
         <div className="text-center mt-9">
-          <div className="inline-block mb-4" style={{ fontSize: 13, fontWeight: 800, color: '#c0392b', background: 'rgba(197,57,0,.08)', padding: '7px 16px', borderRadius: 99 }}>🔴 Válido apenas enquanto esta página estiver aberta · {timer}</div>
+          <div className="inline-block mb-5" style={{ fontSize: 13, fontWeight: 800, color: '#c0392b', background: 'rgba(197,57,0,.08)', padding: '7px 16px', borderRadius: 99 }}>🔴 Condição do quiz válida enquanto esta página estiver aberta · {timer}</div>
         </div>
-        <Price />
-        <div className="mt-6"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow dataLabel="preco">Quero meu protocolo agora</CtaButton></a></div>
-        <p className="text-center" style={{ fontSize: 12, color: 'var(--mute)', marginTop: 12, lineHeight: 1.6 }}>🔒 Pagamento 100% seguro · Acesso imediato · Pix ou cartão</p>
+        <Principal pos="preco" />
 
-        {/* Garantia */}
+        {!soAssinatura && (<>
+          <SectionTitle>Quer ir além dos 21 dias?</SectionTitle>
+          <CardSub pos="alt" />
+        </>)}
+
         <div className="mt-9 rounded-2xl p-6 text-center" style={{ background: 'rgba(28,135,60,.06)', border: '1px solid rgba(28,135,60,.15)' }}>
           <div className="mx-auto mb-3 grid place-items-center rounded-full" style={{ width: 52, height: 52, background: 'var(--gd)', color: '#fff' }}>
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M9 12l2 2 4-4" /></svg>
           </div>
           <h3 className="font-display" style={{ fontSize: 20, fontWeight: 800, color: 'var(--ink)' }}>Garantia de 7 dias</h3>
-          <p style={{ fontSize: 14, color: 'var(--sub)', lineHeight: 1.6, marginTop: 8 }}>Comece o protocolo hoje. Se em até 7 dias você sentir que não é pra você, é só entrar em contato e devolvemos 100% do seu investimento. Sem perguntas, sem burocracia.</p>
-          <p className="font-display" style={{ fontSize: 14.5, fontWeight: 700, color: 'var(--ink)', marginTop: 10 }}>A responsabilidade é toda minha. O risco é zero para você.</p>
+          <p style={{ fontSize: 14, color: 'var(--sub)', lineHeight: 1.6, marginTop: 8 }}>Comece hoje. Se em 7 dias você não sentir o corpo menos inchado — ou sentir que não é pra você — é só pedir e devolvemos 100% do valor. Sem perguntas, sem burocracia.</p>
         </div>
 
-        {/* CTA final */}
-        <div className="text-center mt-9">
-          <p className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>Roteiro De Volta ao Eixo <span style={{ color: 'var(--mute)', textDecoration: 'line-through' }}>R$ 4.535</span> → <span style={{ color: 'var(--o)' }}>R$ {precoEL} à vista</span></p>
-          <div className="mt-4"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow variant="green" dataLabel="final">Quero começar meu roteiro de 21 dias</CtaButton></a></div>
-          <p style={{ fontSize: 12, color: 'var(--mute)', marginTop: 12, lineHeight: 1.6 }}>🔒 Pagamento 100% seguro · Acesso imediato após confirmação · Pix ou cartão</p>
+        <SectionTitle>Perguntas rápidas</SectionTitle>
+        <div className="space-y-2.5">
+          {([
+            ['Quando eu recebo?', 'Na hora. Assim que o pagamento é confirmado, o acesso chega no seu e-mail e você já faz o primeiro treino hoje.'],
+            soAssinatura
+              ? ['Como funciona a assinatura?', `R$ ${of.sub.preco} por mês no cartão, sem fidelidade: cancele quando quiser.`]
+              : ['Qual a diferença para a assinatura?', `O Efeito Lipo é pagamento único e você faz no seu ritmo. Na assinatura (${of.sub.parcCurta}) você tem tudo isso + a Laura te acompanhando e treinos novos depois dos 21 dias.`],
+            ['Posso pagar no Pix?', soAssinatura ? 'A assinatura é no cartão.' : 'O Efeito Lipo sim, Pix ou cartão. A assinatura é no cartão.'],
+          ] as [string, string][]).map(([q, a], i) => (
+            <div key={i} className="rounded-xl p-4" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
+              <div className="font-display" style={{ fontWeight: 800, fontSize: 14.5, color: 'var(--ink)' }}>{q}</div>
+              <p style={{ fontSize: 13.5, color: 'var(--sub)', lineHeight: 1.5, marginTop: 4 }}>{a}</p>
+            </div>
+          ))}
         </div>
 
         <footer className="text-center mt-10 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,.08)' }}>
-          <p style={{ fontSize: 11.5, color: 'var(--mute)', lineHeight: 1.7 }}>Copyright © 2026, todos os direitos reservados.<br />De Volta ao Eixo, por Laüra Rosa.</p>
+          <p style={{ fontSize: 11.5, color: 'var(--mute)', lineHeight: 1.7 }}>Copyright © 2026, todos os direitos reservados.<br />Efeito Lipo 21D · De Volta ao Eixo, por Laüra Rosa.</p>
         </footer>
       </div>
     </div>

@@ -1151,8 +1151,8 @@ button.b.bad:hover{background:var(--bad);color:#fff}
     <!-- SUGESTÃO QUIZ -->
     <section class="tab" id="tab-testes" role="tabpanel" hidden>
       <div class="pagehead"><div style="display:grid;gap:4px"><h2>Testes</h2><p>Cada teste do quiz, com a chance de cada versão ser a melhor. Conta só o que entrou depois do início do teste. Dá para decidir com pelo menos 100 visitas em cada versão e uma chance de 95% ou mais.</p></div></div>
+      <div class="row"><button class="b pri" type="button" id="testes-atualizar">Recarregar números</button><span class="muted" id="testes-at"></span></div>
       <div id="testes-lista" style="display:grid;gap:14px"></div>
-      <p class="muted" id="testes-at"></p>
     </section>
     <section class="tab" id="tab-quiz" role="tabpanel" hidden>
       <div class="pagehead"><div style="display:grid;gap:4px"><h2>Sugestão quiz</h2><p>O caminho do lead do anúncio até a compra, tela por tela, e o que eu mudaria no quiz para vender mais. Mudança no quiz: quando você aprova, eu preparo a mudança e abro o pedido de publicação no GitHub. Ela vai para o site quando você me pedir "pode publicar" ou mesclar o pedido.</p><button class="b pri" type="button" data-go="qz-editar" style="justify-self:start">Editar textos do quiz</button></div><span class="pill n" id="q-at">carregando…</span></div>
@@ -2062,39 +2062,43 @@ document.querySelectorAll('#m-per button, #ot-per button').forEach((b) => b.addE
 const QSTEPS = [{"i": 0, "id": "intro", "k": "intro", "t": "Abertura", "o": []}, {"i": 1, "id": "idade", "k": "single", "t": "Qual a sua faixa etária?", "o": [["-29", "Menos de 29 anos"], ["29-39", "Entre 29 e 39 anos"], ["40-49", "Entre 40 e 49 anos"], ["50+", "50 anos ou mais"]]}, {"i": 2, "id": "laura", "k": "laura", "t": "Apresentação da Laura", "o": []}, {"i": 3, "id": "objetivo", "k": "single", "t": "Qual é o seu principal objetivo agora?", "o": [["barriga", "Secar a barriga de vez"], ["roupa", "Caber naquela roupa especial"], ["bracos", "Afinar os braços"], ["autoestima", "Recuperar minha autoestima"], ["tudo", "Tudo acima"]]}, {"i": 4, "id": "recomecos", "k": "single", "t": "Quantas vezes você já recomeçou?", "o": [["1-2", "Uma ou duas vezes"], ["varias", "Várias vezes"], ["perdi-conta", "Já perdi a conta"], ["comecando", "Ainda estou tentando começar"]]}, {"i": 5, "id": "rotina", "k": "single", "t": "Como é a sua rotina hoje?", "o": [["corrida", "Super corrida, mal tenho tempo pra mim"], ["equilibrada", "Equilibrada mas sem sobra"], ["casa", "Fico em casa mas nunca sobra tempo"], ["tempo", "Tenho tempo para me dedicar"]]}, {"i": 6, "id": "canetinha", "k": "single", "t": "Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?", "o": [["usei", "Sim, já usei"], ["usando", "Sim, estou usando"], ["considerando", "Sim, estou considerando"], ["nao-usar", "Pensei mas decidi não usar"], ["nunca", "Nunca considerei"]]}, {"i": 7, "id": "fisico", "k": "single", "t": "Como você descreveria seu corpo hoje?", "o": [["inchada", "Bem de peso, mas inchada e sem definição"], ["leve-acima", "Levemente acima do peso"], ["acima", "Acima do peso"], ["muito-acima", "Muito acima do peso"]]}, {"i": 8, "id": "prova", "k": "prova", "t": "Prova social", "o": []}, {"i": 9, "id": "corpo-sonhos", "k": "single", "t": "Qual é o corpo que você quer ter?", "o": [["seca", "Seca e definida"], ["lisa", "Barriga lisa e braços finos"], ["curvas", "Com curvas e sem inchaço"], ["leve", "Leve — me sentir bem no meu corpo"]]}, {"i": 10, "id": "alimentacao", "k": "single", "t": "Como você descreveria a sua alimentação hoje?", "o": [["exagero", "Tento comer bem, mas acabo exagerando"], ["dieta", "Faço dieta, mas não vejo resultado"], ["sem-controle", "Como de tudo sem muito controle"], ["desorganizada", "Completamente desorganizada"]]}, {"i": 11, "id": "sabotador", "k": "single", "t": "Qual é o seu maior sabotador?", "o": [["doce", "Doce e chocolate"], ["carbo", "Pão, massa e carboidrato"], ["ansiedade", "Ansiedade e estresse"], ["noite", "Belisco à noite"], ["delivery", "Delivery e fast food"]]}, {"i": 12, "id": "dia-dificil", "k": "single", "t": "Em que dia da semana fica mais difícil manter sua rotina?", "o": [["segunda", "Segunda"], ["terca", "Terça"], ["quarta", "Quarta"], ["quinta", "Quinta"], ["sexta", "Sexta"], ["fim-de-semana", "Fim de semana"], ["sem-dia", "Não tem um dia fixo"]]}, {"i": 13, "id": "sono", "k": "single", "t": "Como anda seu sono e seu inchaço?", "o": [["mal", "Durmo mal e acordo cansada"], ["inchada", "Durmo ok, mas acordo inchada"], ["sem-energia", "Durmo bem, mas sem energia"], ["bom", "Sono bom e energia ok"]]}, {"i": 14, "id": "insight", "k": "insight", "t": "Ciclo do recomeço", "o": [["faz-sentido", "Faz sentido — nunca tinha pensado assim"], ["novidade", "É novidade pra mim — quero entender melhor"]]}, {"i": 15, "id": "loading-1", "k": "loading", "t": "Carregando", "o": []}, {"i": 16, "id": "medo", "k": "single", "t": "Qual é o seu maior medo em relação a emagrecer?", "o": [["fracasso", "Medo de não conseguir de novo"], ["tempo", "Medo de não ter tempo"], ["dinheiro", "Medo de gastar e não ter resultado"], ["fome", "Medo de passar fome"], ["rebote", "Medo do efeito rebote"]]}, {"i": 17, "id": "pensamento", "k": "single", "t": "Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?", "o": [["bonita", "“Finalmente me sinto bonita de verdade”"], ["roupa", "“Vou usar aquela roupa que ficou guardada por meses”"], ["biquini", "“Não vou ter vergonha de colocar biquíni”"], ["foto", "“Vou querer tirar foto em tudo que é lugar”"], ["consegui", "“Consegui. Eu sabia que era capaz”"]]}, {"i": 18, "id": "regiao", "k": "multi", "t": "Qual região do seu corpo te incomoda mais?", "o": [["barriga", "Barriga e inchaço abdominal"], ["bracos", "Braços"], ["cintura", "Cintura e laterais"], ["quadril", "Quadril e coxas"], ["inteiro", "Corpo inteiro — tudo me incomoda"], ["nenhuma", "Não tenho queixa específica"]]}, {"i": 19, "id": "tempo-dia", "k": "single", "t": "Quanto tempo você consegue dedicar ao seu corpo por dia?", "o": [["10-15", "10 a 15 minutos"], ["15-20", "15 a 20 minutos"], ["20-30", "20 a 30 minutos"], ["30+", "Mais de 30 minutos"]]}, {"i": 20, "id": "motivo", "k": "multi", "t": "O que te fez chegar até aqui hoje?", "o": [["confianca", "Me sentir confiante no próprio corpo"], ["roupas", "Voltar a usar as roupas que eu amo"], ["saude", "Ter mais saúde e energia no dia a dia"], ["fotos", "Parar de me esconder nas fotos"], ["provar", "Provar pra mim mesma que consigo"]]}, {"i": 21, "id": "altura", "k": "input", "t": "Qual é a sua altura?", "o": []}, {"i": 22, "id": "peso", "k": "input", "t": "Qual é o seu peso atual?", "o": []}, {"i": 23, "id": "loading-2", "k": "loading", "t": "Carregando", "o": []}, {"i": 24, "id": "result", "k": "result", "t": "Resultado (perfil)", "o": []}, {"i": 25, "id": "sales", "k": "sales", "t": "Página de vendas", "o": []}]
 const QOPT = {}; for (const st of QSTEPS) for (const [id, lab] of st.o) QOPT[st.id + '|' + id] = lab
 // ── Testes do quiz: chance de cada versão ser a melhor ──────────────
-// Cada teste é uma coluna intro_ab / checkout_ab de quiz_sessions a partir da data "desde".
-// T1 = teste G (primeira tela). T2 em diante entram quando forem para o ar.
+// Cada teste: braços (valor gravado no banco), colunas da tabela, consulta e links para conferir.
+// Sessões de teste (utm_source=qa-painel) ficam de fora.
 const TESTE_MIN = 100
 const TESTES = [
-  { id: 'T1', nome: 'Primeira tela (teste G)', status: 'no ar desde 09/10', desde: '2026-10-09T13:40:00-03:00', arms: [['G-A', 'A · tela atual'], ['G-B', 'B · título de recomeço']] },
-  { id: 'T2', nome: 'Preço do Efeito Lipo (teste B)', status: 'aguardando link Greenn R$ 47' },
-  { id: 'T3', nome: 'Preço da mensal (teste C)', status: 'aguardando links Greenn' },
-  { id: 'T4', nome: 'Formato da assinatura (teste D)', status: 'a montar' },
-  { id: 'T5', nome: 'Com ou sem Efeito Lipo (teste E)', status: 'a montar' },
-  { id: 'T6', nome: 'Upsell pós-compra (teste F)', status: 'aguardando configuração Greenn' },
+  { id: 'T1', nome: 'Primeira tela (teste G)', status: 'no ar desde 09/10 13h40', desde: '2026-10-09T13:40:00-03:00',
+    arms: [['G-A', 'A · tela atual (v7)'], ['G-B', 'B · título de recomeço']],
+    base: 'visitas', pos: 'comecou', cols: [['Visitas', 'visitas', null], ['Começaram', 'comecou', 'visitas'], ['Chegaram ao resultado', 'resultado', 'visitas'], ['Clicaram comprar', 'comprar', 'visitas']],
+    sql: (d) => `select coalesce(intro_ab,'') braco, count(*) visitas, count(*) filter (where status<>'pageview') comecou, count(*) filter (where reached_index>=24) resultado, count(*) filter (where checkout_clicked) comprar from quiz_sessions where intro_ab in ('G-A','G-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
+    links: [{ rot: 'Ver versão A (tela atual)', frame: 'v/v8/t1-a.html' }, { rot: 'Ver versão B (título de recomeço)', frame: 'v/v8/t1-b.html' }] },
+  { id: 'T2', nome: 'Preço do Efeito Lipo (teste B)', status: 'no ar desde 09/10 15h28', desde: '2026-10-09T15:28:00-03:00',
+    arms: [['greenn', 'A · R$ 37 (QN7gci)'], ['greenn-B', 'B · R$ 47 (gLO7Gm)']],
+    base: 'clicks', pos: 'vendas', cols: [['Clicaram comprar', 'clicks', null], ['Venderam', 'vendas', 'clicks']],
+    sql: (d) => `select checkout_ab braco, count(*) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas from quiz_sessions s where checkout_ab in ('greenn','greenn-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
+    links: [{ rot: 'Ver checkout A (R$ 37)', url: 'https://payfast.greenn.com.br/redirect/297430' }, { rot: 'Ver checkout B (R$ 47)', url: 'https://payfast.greenn.com.br/redirect/795991' }] },
 ]
 let testesUnsub = [], TESTE_D = {}
-const qTeste = (t) => `select coalesce(intro_ab,'') braco, count(*) visitas, count(*) filter (where status<>'pageview') comecou, count(*) filter (where reached_index>=24) resultado, count(*) filter (where checkout_clicked) comprar from quiz_sessions where intro_ab in (${t.arms.map((a) => "'" + a[0] + "'").join(',')}) and created_at >= '${t.desde}' group by 1`
 function testesWatch() {
   for (const u of testesUnsub) { try { u() } catch {} }
   testesUnsub = []; TESTE_D = {}
   if (!mcp) { renderTestes(); return }
-  for (const t of TESTES.filter((x) => x.arms)) {
-    testesUnsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: qTeste(t) }, (ev) => {
+  const at = $('testes-at'); if (at) at.textContent = 'Atualizando…'
+  for (const t of TESTES) {
+    testesUnsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: t.sql(t.desde) }, (ev) => {
       if (ev.type === 'error') { TESTE_D[t.id] = { erro: ERRS[ev.error.code] || 'não consegui ler agora' }; renderTestes(); return }
       if (ev.type !== 'data') return
       const rows = parseRows(ev.result.payload); if (!rows) return
-      TESTE_D[t.id] = rows.map((r) => ({ braco: r.braco, visitas: Number(r.visitas) || 0, comecou: Number(r.comecou) || 0, resultado: Number(r.resultado) || 0, comprar: Number(r.comprar) || 0 }))
+      TESTE_D[t.id] = rows.map((r) => ({ braco: r.braco, visitas: Number(r.visitas) || 0, comecou: Number(r.comecou) || 0, resultado: Number(r.resultado) || 0, comprar: Number(r.comprar) || 0, clicks: Number(r.clicks) || 0, vendas: Number(r.vendas) || 0 }))
       renderTestes()
     }, { refetchInterval: 3600000 }))
   }
   renderTestes()
 }
-// Duas proporções (começou / visitas): z > 0 quer dizer que B está na frente. Φ(z) = chance de B ser a melhor.
-function zTeste(a, b) {
-  const pa = a.visitas ? a.comecou / a.visitas : 0, pb = b.visitas ? b.comecou / b.visitas : 0
-  const p = (a.comecou + b.comecou) / ((a.visitas + b.visitas) || 1)
-  const se = Math.sqrt(p * (1 - p) * (1 / (a.visitas || 1) + 1 / (b.visitas || 1)))
+// Duas proporções (pos / base): z > 0 quer dizer que B está na frente. Φ(z) = chance de B ser a melhor.
+function zTeste(a, b, t) {
+  const pa = a[t.base] ? a[t.pos] / a[t.base] : 0, pb = b[t.base] ? b[t.pos] / b[t.base] : 0
+  const p = (a[t.pos] + b[t.pos]) / ((a[t.base] + b[t.base]) || 1)
+  const se = Math.sqrt(p * (1 - p) * (1 / (a[t.base] || 1) + 1 / (b[t.base] || 1)))
   return se ? (pb - pa) / se : 0
 }
 function normCdf(z) { // Abramowitz & Stegun 26.2.17
@@ -2109,33 +2113,43 @@ function renderTestes() {
     const card = el('div', { style: 'background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:10px' })
     card.append(el('div', { style: 'display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline' }, el('strong', {}, t.id + ' · ' + t.nome), el('span', { class: 'muted' }, t.status)))
     box.append(card)
-    if (!t.arms) { card.append(el('p', { class: 'muted' }, 'Ainda não está no ar.')); continue }
     const d = TESTE_D[t.id]
     if (!d) { card.append(el('p', { class: 'muted' }, mcp ? 'Lendo os números…' : 'Os números aparecem para quem tem o conector do Supabase.')); continue }
     if (d.erro) { card.append(el('p', { class: 'muted' }, 'Supabase: ' + d.erro + '.')); continue }
-    const zero = { visitas: 0, comecou: 0, resultado: 0, comprar: 0 }
+    const zero = { visitas: 0, comecou: 0, resultado: 0, comprar: 0, clicks: 0, vendas: 0 }
     const linhas = t.arms.map(([k, nome]) => ({ k, nome, ...(d.find((x) => x.braco === k) || zero) }))
     const [a, b] = linhas
-    const pB = normCdf(zTeste(a, b)), pA = 1 - pB
+    const pB = normCdf(zTeste(a, b, t)), pA = 1 - pB
     const chance = { [a.k]: pA, [b.k]: pB }
-    const pct = (n, m) => (m ? Math.round(100 * n / m) : 0) + '%'
+    const fmtCel = (x, base, n) => base == null ? String(x[n]) : x[n] + ' (' + (x[base] ? Math.round(100 * x[n] / x[base]) : 0) + '%)'
     card.append(el('div', { style: 'display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px' }, ...linhas.map((x) => el('div', { style: 'border-radius:10px;padding:12px;background:rgba(0,0,0,.03)' },
       el('small', { class: 'muted' }, x.nome),
       el('div', { style: 'font-size:30px;font-weight:800;line-height:1.1' }, Math.round(chance[x.k] * 100) + '%'),
-      el('small', { class: 'muted' }, 'chance de ser a melhor · ' + x.visitas + ' visitas')))))
-    const tabela = el('table', { style: 'width:100%;border-collapse:collapse;font-size:14px' },
-      el('thead', {}, el('tr', {}, ...['Versão', 'Visitas', 'Começou', 'Resultado', 'Comprar'].map((h) => el('th', { style: 'text-align:left;padding:6px;border-bottom:1px solid var(--line)' }, h)))),
-      el('tbody', {}, ...linhas.map((x) => el('tr', {},
-        el('td', { style: 'padding:6px' }, x.nome), el('td', { style: 'padding:6px' }, String(x.visitas)),
-        el('td', { style: 'padding:6px' }, pct(x.comecou, x.visitas)), el('td', { style: 'padding:6px' }, pct(x.resultado, x.visitas)), el('td', { style: 'padding:6px' }, pct(x.comprar, x.visitas))))))
-    card.append(tabela)
-    const menor = Math.min(a.visitas, b.visitas), lider = pB >= 0.5 ? b : a, chanceLider = Math.max(pA, pB)
+      el('small', { class: 'muted' }, 'chance de ser a melhor')))))
+    card.append(el('table', { style: 'width:100%;border-collapse:collapse;font-size:14px' },
+      el('thead', {}, el('tr', {}, el('th', { style: 'text-align:left;padding:6px;border-bottom:1px solid var(--line)' }, 'Versão'), ...t.cols.map(([h]) => el('th', { style: 'text-align:left;padding:6px;border-bottom:1px solid var(--line)' }, h)))),
+      el('tbody', {}, ...linhas.map((x) => el('tr', {}, el('td', { style: 'padding:6px' }, x.nome), ...t.cols.map(([, key, base]) => el('td', { style: 'padding:6px;font-variant-numeric:tabular-nums' }, fmtCel(x, base, key))))))))
+    const menor = Math.min(a[t.base], b[t.base]), lider = pB >= 0.5 ? b : a, chanceLider = Math.max(pA, pB)
     card.append(el('p', { style: 'margin:0', class: 'muted' }, menor < TESTE_MIN
-      ? 'Ainda sem resposta: ' + menor + ' de ' + TESTE_MIN + ' visitas no braço menor. Quem está na frente hoje: ' + lider.nome + '.'
+      ? 'Ainda sem resposta: ' + menor + ' de ' + TESTE_MIN + ' no braço menor. Quem está na frente hoje: ' + lider.nome + '.'
       : 'Vencendo: ' + lider.nome + ', com ' + Math.round(chanceLider * 100) + '% de chance de ser a melhor.' + (chanceLider >= 0.95 ? ' Já dá para decidir.' : ' Ainda não é certeza (decide a partir de 95%).')))
+    // Versões internas do painel (v/…) abrem num celular aqui dentro: o claude.ai bloqueia abrir esses arquivos em aba nova.
+    const prev = el('div', { hidden: '', style: 'justify-self:center;width:100%;max-width:360px;aspect-ratio:390/780;background:#16130F;border-radius:34px;padding:9px' })
+    const verFrame = (url, btn) => {
+      const aberto = !prev.hidden && prev.dataset.url === url
+      prev.replaceChildren(); prev.hidden = aberto; prev.dataset.url = aberto ? '' : url
+      card.querySelectorAll('button[data-frame]').forEach((b) => b.setAttribute('aria-pressed', String(!aberto && b === btn)))
+      if (!aberto) prev.append(el('iframe', { src: url, title: 'Prévia da versão', style: 'width:100%;height:100%;border:0;border-radius:26px;background:#F7F5F2;display:block' }))
+    }
+    card.append(el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap' }, ...t.links.map((l) => l.frame
+      ? el('button', { class: 'b pri', type: 'button', 'data-frame': l.frame, 'aria-pressed': 'false', onclick: (e) => verFrame(l.frame, e.currentTarget) }, l.rot)
+      : l.tab
+        ? el('button', { class: 'b pri', type: 'button', onclick: () => abrir(l.tab) }, l.rot)
+        : el('a', { class: 'b pri', href: l.url, target: '_blank', rel: 'noopener' }, l.rot + ' ↗'))), prev)
   }
-  const at = $('testes-at'); if (at) at.textContent = 'Atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  const at = $('testes-at'); if (at) at.textContent = 'Atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 }
+$('testes-atualizar').addEventListener('click', () => testesWatch())
 
 const QUIZ_NOVO = '2026-10-08T11:10:00Z'
 // Filtro "Escolher datas" (de/até, horário de Brasília). Começa no dia do quiz novo (08/10).
