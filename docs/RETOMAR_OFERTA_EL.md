@@ -4,23 +4,64 @@ Cole o bloco abaixo como primeira mensagem de uma sessão nova do Claude Code (m
 repositório LR_LauraRosaPersonal, branch `claude/relaxed-cray-r4bnc9`).
 
 ```
-Vamos continuar a NOVA OFERTA do quiz "De Volta ao Eixo". Responda SEMPRE em português do Brasil, curto.
+Vamos continuar o quiz "De Volta ao Eixo" e o painel. Responda SEMPRE em português do Brasil, curto.
 
 1. Branch claude/relaxed-cray-r4bnc9 (git fetch origin claude/relaxed-cray-r4bnc9 && git checkout
    claude/relaxed-cray-r4bnc9 && git pull). Outra sessão também faz push nela: sempre pull antes.
-2. Leia: CLAUDE.md, docs/RETOMAR_OFERTA_EL.md (estado, decisões e fila) e docs/TESTE_A_OFERTAS.md.
-3. Me diga em até 5 linhas onde paramos e já comece o ITEM 4 (teste C: assinatura mensal R$ 37 × R$ 27):
-   me peça o link da assinatura de R$ 27 na Greenn.
+2. Leia: CLAUDE.md, docs/RETOMAR_OFERTA_EL.md (seção "Estado em 09/10, fim da noite") e
+   docs/CONTEXTO_COMERCIAL.md.
+3. Me diga em até 5 linhas onde paramos e me pergunte (múltipla escolha) as 4 aprovações pendentes do CRM
+   da Aline listadas no doc. Depois, os números dos testes T1/T2/T4 desde 09/10 16h30.
 
-Como trabalhamos, item a item: você mostra o item, manda o esboço (imagem antes × depois enviada aqui no
-chat), eu aprovo, você pede os links 1 a 1, deixa pronto, coloca no painel (aba Testes, mesmo padrão do
-T1/T2/T3) e me avisa; eu digo "publicar"; você publica, confere o deploy na Vercel e no ar, e seguimos.
-Perguntas em formato de múltipla escolha, recomendada primeiro. Meta: R$ 10 mil de lucro em outubro.
+Painel: https://claude.ai/artifact/FkDqzBBekcELvdVp4EWgEN (fonte tools/painel-anuncios/index.html; leia a
+versão publicada antes de republicar). Painel da Aline: https://claude.ai/artifact/8Ys79EhBMSiRkDqm3n6QbG
+(a rotina trig_01RbMXryDXAy1eLzpCmAtuj6 republica às 11:59 e 23:59; não apague).
+
+Como trabalhamos, item a item: você mostra o item, manda o esboço, eu aprovo, você pede os links 1 a 1,
+deixa pronto no painel e me avisa; eu digo "publicar"; você publica e confere no ar.
+Versões no painel: só a anterior e a publicada; as antigas ficam no banco. Perguntas em múltipla escolha,
+recomendada primeiro. Meta: R$ 10 mil de lucro em outubro.
 
 Regras: preço, oferta, checkout, upsell, garantia e links de pagamento só mudam com meu ok explícito
 (CLAUDE.md). Nada vai ao ar sem eu dizer "publicar". Supabase fjlbvoephhextnxemygf e UMCLIQUE: só leitura.
-Meta Ads: nada muda sem aprovação. Apagar artefato: só com minha confirmação, um por um.
+CRM ysgsyhmkixvlxpgbyqkl: só leitura até eu aprovar. Meta Ads: nada muda sem aprovação.
+Apagar artefato: só com minha confirmação, um por um.
 ```
+
+## Estado em 09/10, fim da noite
+
+**No ar no site (v9, desde 15h46; números contam desde 16h30):** T1 (1ª tela G-A × G-B, 100% das visitas),
+T4/teste E (oferta com Efeito Lipo × só Comunidade, 50/50), T2/teste B (Efeito Lipo R$ 37 × R$ 47, só dentro do E-A).
+
+**Painel (v55):**
+- Quiz e testes: Marca saiu do menu (tudo decidido). Versões mostra só v8 (anterior) e v9 (no ar), sem decisões.
+- Editar textos abre a v9 e mostra o aviso "teste acontecendo, versão em fase de testes" na T1 e na T26.
+- Funil do quiz: "Sugestões" saiu; tem o botão "Atualizar números".
+  - Corrigido: "só anúncios" contava 46 visitas de robôs/revisão do Meta (de 151). Com a correção, quem começa o quiz é 45% e não 31%.
+  - Corrigido: "comprou" só via a oferta QN7gci (R$ 37); agora conta qualquer venda aprovada com o mesmo xcod.
+- Perfil de recomeço: a regra do painel é igual à do código (_data.ts perfilRecomeco).
+
+**Painel de Leads da Aline (v8):**
+- O KPI "em andamento" contava também os sem classificação; agora eles têm um card próprio.
+- "Confirmadas no pagamento" no lugar de "na Greenn". Atualiza às 11:59 e às 23:59 (trigger trig_01RbMXryDXAy1eLzpCmAtuj6).
+
+**Por que os números da Aline não batem (outubro até 09/10: 25 vendas da Comunidade):**
+- 5 são renovações.
+- 8 são novas pela Greenn: 6 marcadas "comprou" no CRM, 2 marcadas errado como em_andamento.
+- 12 são novas pela Hotmart (oferta s97oneau). Essas não existem no UMCLIQUE, então vieram fora do WhatsApp da Aline.
+- A rotina só reconhece links payfast.greenn e só confere pagamento na Greenn.
+- 43 leads em_andamento deviam estar fechados pela regra (11 com mais de 14 dias, 32 com preço há mais de 7 dias).
+
+**Pendente de aprovação do Patrik (escrita no CRM ysgsyhmkixvlxpgbyqkl):**
+1. Fechar os 43 leads parados.
+2. Marcar as 2 compradoras Greenn como comprou.
+3. Rotina: reconhecer links da Hotmart e cruzar vendas aprovadas (Greenn + Hotmart) pelo telefone.
+4. Texto "Todo dia às 23:59" nas instruções da rotina → "11:59 e 23:59".
+
+**Fila:**
+- 2 notificações no painel: recuperar Pix e passar R$ 20/dia de verba.
+- Teste C precisa do link da assinatura de R$ 27.
+- T5 e T6 (upsell) são ideias.
 
 ## No ar (09/10)
 
