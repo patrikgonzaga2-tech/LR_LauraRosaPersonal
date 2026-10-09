@@ -561,7 +561,6 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
   // Teste B: o preço do EL desta sessão (começa em A no servidor e troca no navegador).
   const [of, setOf] = useState<Oferta>(OFERTAS.A)
   useEffect(() => { setOf(OFERTAS[pickOfertaArm()]) }, [])
-  const rec = PERFIS[perfilRecomeco(answers || {})]
   const soAssinatura = !of.el
 
   const Check = ({ ok = true }: { ok?: boolean }) => (
@@ -650,17 +649,16 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
 
       <div className="mx-auto px-5 py-8" style={{ maxWidth: 600 }}>
         <div className="text-center"><Logo size="lg" /></div>
-        <div className="text-center mt-5">
-          <span className="inline-block font-display" style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--g)', background: 'rgba(28,135,60,.1)', padding: '6px 14px', borderRadius: 99 }}>Seu perfil: {rec.nome}</span>
-        </div>
-        <h1 className="font-display text-center mt-3" style={{ fontSize: 'clamp(27px,5.8vw,40px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
-          Seu Efeito Lipo<br /><span style={{ color: 'var(--o)' }}>começa hoje</span>
+
+        {/* Topo igual à T26 que estava no ar (modelo aprovado pelo Patrik em 09/10): fica em todos os braços */}
+        <h1 className="font-display text-center mt-5" style={{ fontSize: 'clamp(25px,5.4vw,38px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
+          Seu roteiro de 21 dias<br /><span style={{ color: 'var(--o)' }}>para voltar ao eixo</span>
         </h1>
-        <p className="text-center" style={{ fontSize: 15.5, lineHeight: 1.55, color: 'var(--sub)', maxWidth: 470, margin: '12px auto 0' }}>
-          <b style={{ color: 'var(--ink)' }}>Em 7 dias você sente o corpo menos inchado</b> — e quando o resultado aparece rápido, você não larga na sexta. 15 minutos por dia, em casa, sem dieta maluca.
+        <p className="text-center" style={{ fontSize: 15.5, lineHeight: 1.6, color: 'var(--sub)', maxWidth: 480, margin: '14px auto 0' }}>
+          Com base nas suas respostas, você vai receber um roteiro de 21 dias para voltar ao eixo — treinos em casa, sem dieta maluca, sem passar fome e sem as canetinhas caras.
         </p>
 
-        {/* As 3 semanas do roteiro (igual à T26 anterior; fica em todos os braços) */}
+        {/* As 3 semanas do roteiro */}
         <div className="grid grid-cols-3 gap-2 mx-auto mt-6" style={{ maxWidth: 420 }}>
           {SALES.semanas.map(([sem, fase]) => (
             <div key={sem} className="rounded-xl p-3 text-center" style={{ background: 'rgba(245,113,0,.06)', border: '1px solid rgba(245,113,0,.2)' }}>
@@ -669,8 +667,7 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
             </div>
           ))}
         </div>
-
-        <div className="mt-7"><Principal pos="topo" /></div>
+        <div className="mt-7"><a href={href} onClick={onBuy} target="_blank" rel="noopener noreferrer" className="block"><CtaButton full glow dataLabel="topo">Quero meu protocolo agora</CtaButton></a></div>
 
         <SectionTitle>Antes e depois de voltar ao eixo</SectionTitle>
         <div className="space-y-2.5">
@@ -688,6 +685,20 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
           ))}
         </div>
 
+        <SectionTitle>Resultados reais de alunas</SectionTitle>
+        <div className="grid grid-cols-3 gap-2">
+          {SALES.gallery.map((g, i) => (
+            <div key={i} className="relative rounded-xl overflow-hidden" style={{ boxShadow: '0 4px 16px rgba(0,0,0,.1)' }}>
+              <Photo img={g.img} alt={g.alt} ratio="3 / 4" />
+              {g.tag && <span className="absolute top-1.5 left-1.5 font-display" style={{ fontSize: 10, fontWeight: 800, color: '#000', background: '#FFC53D', padding: '2px 7px', borderRadius: 99 }}>{g.tag}</span>}
+            </div>
+          ))}
+        </div>
+
+        {/* Oferta: Efeito Lipo (preço do teste B) */}
+        <div className="mt-8"><Principal pos="oferta" /></div>
+
+
         <SectionTitle>Por que começar pelo efeito rápido</SectionTitle>
         <div className="rounded-2xl p-5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)' }}>
           <ul className="space-y-2.5">
@@ -703,16 +714,6 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
             <div key={s} className="flex items-center gap-3 rounded-xl p-3.5" style={{ background: '#fff', border: '1px solid rgba(245,113,0,.2)' }}>
               <div className="grid place-items-center font-display rounded-full" style={{ width: 38, height: 38, flexShrink: 0, background: i === 0 ? 'var(--o)' : 'rgba(245,113,0,.12)', color: i === 0 ? '#000' : 'var(--od)', fontWeight: 800 }}>{i + 1}</div>
               <div><div className="font-display" style={{ fontSize: 14, fontWeight: 800, color: 'var(--od)' }}>{s} · {f}</div><div style={{ fontSize: 14, color: 'var(--ink)', marginTop: 1 }}>{d}</div></div>
-            </div>
-          ))}
-        </div>
-
-        <SectionTitle>Resultados reais de alunas</SectionTitle>
-        <div className="grid grid-cols-3 gap-2">
-          {SALES.gallery.map((g, i) => (
-            <div key={i} className="relative rounded-xl overflow-hidden" style={{ boxShadow: '0 4px 16px rgba(0,0,0,.1)' }}>
-              <Photo img={g.img} alt={g.alt} ratio="3 / 4" />
-              {g.tag && <span className="absolute top-1.5 left-1.5 font-display" style={{ fontSize: 10, fontWeight: 800, color: '#000', background: '#FFC53D', padding: '2px 7px', borderRadius: 99 }}>{g.tag}</span>}
             </div>
           ))}
         </div>
