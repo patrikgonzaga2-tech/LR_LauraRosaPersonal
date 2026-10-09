@@ -68,7 +68,7 @@ Os 5 criativos prontos somam cerca de 170 s, ou **≈ US$ 8,50 (R$ 45)**. Com um
 ### 1.2 HeyGen (avatar) — carteira da API
 1. Abra https://app.heygen.com/signup e entre com o Google (mesma conta do negócio).
 2. Pule o tour inicial e **não** assine plano do site.
-3. Abra https://app.heygen.com/settings?nav=API (ou: foto de perfil → **Settings** → aba **API**).
+3. Abra https://app.heygen.com/developers/api (o endereço antigo, settings?nav=API, agora abre só a tela de Conta).
 4. Procure a área de **API billing / Add funds / Top up** (o nome pode variar) e adicione **US$ 20**.
    - Tabela de preços da API: https://www.heygen.com/api-pricing
 5. ✅ Deu certo se a tela da API mostrar saldo de US$ 20.
@@ -91,7 +91,7 @@ Os 5 criativos prontos somam cerca de 170 s, ou **≈ US$ 8,50 (R$ 45)**. Com um
 5. Clique em **Create** e **copie a chave na hora**. Ela só aparece uma vez. Guarde num lugar seguro, como o gerenciador de senhas do Google.
 
 ### 2.2 Chave da HeyGen
-1. Abra https://app.heygen.com/settings?nav=API
+1. Abra https://app.heygen.com/developers/api
 2. Em **API Token**, clique em **Generate** (ou **Copy**, se já existir).
 3. Copie e guarde no mesmo lugar seguro.
 
