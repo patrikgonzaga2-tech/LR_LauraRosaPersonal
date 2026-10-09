@@ -1343,12 +1343,14 @@ function abrir(t, foco) {
   window.scrollTo({ top: 0 })
   if (foco) setTimeout(() => { const f = $(foco); if (f) { f.focus(); f.setSelectionRange && f.setSelectionRange(f.value.length, f.value.length) } }, 50)
 }
-// Número em cima de cada seção = soma dos avisos das partes dela.
+// Número em cada seção = quantas coisas esperam você ali (propostas para aprovar, Pix para chamar,
+// sugestões do quiz, roteiros para a Laura gravar). Não conta o que já foi feito nem a fila de textos do Claude.
+const SO_INFO = ['nb-versoes', 'nb-marca', 'nb-obj', 'nb-videos', 'nb-aprovados', 'nb-fila']
 function somaGrupos() {
   for (const g of Object.keys(GRUPO_NOME)) {
     let n = 0, hot = false
-    for (const b of SUBS.filter((x) => x.dataset.grupo === g)) { const bd = b.querySelector('.badge'); if (!bd || bd.id === 'nb-versoes' || bd.id === 'nb-marca' || bd.id === 'nb-obj' || bd.id === 'nb-videos') continue; const v = parseInt(bd.textContent, 10); if (v > 0) n += v; if (bd.classList.contains('hot')) hot = true }
-    const el = $('ng-' + g); el.textContent = n ? String(n) : ''; el.classList.toggle('hot', hot)
+    for (const b of SUBS.filter((x) => x.dataset.grupo === g)) { const bd = b.querySelector('.badge'); if (!bd || SO_INFO.includes(bd.id)) continue; const v = parseInt(bd.textContent, 10); if (v > 0) n += v; if (bd.classList.contains('hot')) hot = true }
+    const ng = $('ng-' + g); ng.textContent = n ? String(n) : ''; ng.classList.toggle('hot', hot); ng.title = n ? n + (n === 1 ? ' coisa esperando você aqui' : ' coisas esperando você aqui') : ''
   }
 }
 setInterval(somaGrupos, 2000)
