@@ -2072,19 +2072,19 @@ const TESTES = [
     arms: [['G-A', 'A · tela atual (v7)'], ['G-B', 'B · título de recomeço']],
     base: 'visitas', pos: 'comecou', cols: [['Visitas', 'visitas', null], ['Começaram', 'comecou', 'visitas'], ['Chegaram ao resultado', 'resultado', 'visitas'], ['Clicaram comprar', 'comprar', 'visitas']],
     sql: (d) => `select coalesce(intro_ab,'') braco, count(*) visitas, count(*) filter (where status<>'pageview') comecou, count(*) filter (where reached_index>=24) resultado, count(*) filter (where checkout_clicked) comprar from quiz_sessions where intro_ab in ('G-A','G-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
-    links: [{ rot: 'Ver versão A (tela atual)', frame: 'v/v8/t1-a.html' }, { rot: 'Ver versão B (título de recomeço)', frame: 'v/v8/t1-b.html' }] },
+    links: [{ rot: 'Abrir A aqui (1ª tela atual)', frame: 'v/v9/t1-a.html?step=0' }, { rot: 'Abrir B aqui (título de recomeço)', frame: 'v/v9/t1-b.html?step=0' }] },
   { id: 'T2', grupo: 'ar', nome: 'Preço do Efeito Lipo: R$ 37 × R$ 47', status: 'no ar desde 09/10 15h28 · pouca gente chega à oferta', desde: '2026-10-09T15:28:00-03:00',
-    sobre: 'Na página de oferta (T26), metade vê o Efeito Lipo a R$ 37 e metade a R$ 47 (com 3 bumps). Mede quem compra depois de clicar. Só conta quem chega ao fim do quiz, por isso enche devagar.',
+    sobre: 'Na página de oferta (T26), metade vê o Efeito Lipo a R$ 37 e metade a R$ 47 (com 3 bumps). Mede quem compra depois de clicar. Só conta quem chega ao fim do quiz, por isso enche devagar. Desde 09/10 16h15 roda só na metade A do T4 (a metade B não vê o Efeito Lipo avulso).',
     arms: [['greenn', 'A · R$ 37 (QN7gci)'], ['greenn-B', 'B · R$ 47 (gLO7Gm)']],
     base: 'clicks', pos: 'vendas', cols: [['Clicaram comprar', 'clicks', null], ['Venderam', 'vendas', 'clicks']],
     sql: (d) => `select checkout_ab braco, count(*) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas from quiz_sessions s where checkout_ab in ('greenn','greenn-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
-    links: [{ rot: 'Ver checkout A (R$ 37)', url: 'https://payfast.greenn.com.br/redirect/297430' }, { rot: 'Ver checkout B (R$ 47)', url: 'https://payfast.greenn.com.br/redirect/795991' }] },
+    links: [{ rot: 'Abrir A aqui (oferta R$ 37)', frame: 'v/v9/t2-a.html?step=25' }, { rot: 'Abrir B aqui (oferta R$ 47)', frame: 'v/v9/t2-b.html?step=25' }, { rot: 'Checkout A (R$ 37)', url: 'https://payfast.greenn.com.br/redirect/297430' }, { rot: 'Checkout B (R$ 47)', url: 'https://payfast.greenn.com.br/redirect/795991' }] },
   { id: 'T4', grupo: 'ar', nome: 'Página de oferta: com Efeito Lipo × só a Comunidade', status: 'no ar desde 09/10 16h15', desde: '2026-10-09T16:15:00-03:00',
     sobre: 'Metade vê a página de hoje (Efeito Lipo + Comunidade). A outra metade vê só a Comunidade Corpo Feliz a R$ 37/mês, com os entregáveis que a Aline apresenta e o Efeito Lipo incluso. Mede receita por visita na página de oferta. O preço do Efeito Lipo (T2) segue sorteando só na metade A.',
     arms: [['E-A', 'A · Efeito Lipo + Comunidade'], ['E-B', 'B · só Comunidade R$ 37/mês']],
     base: 'visitas', pos: 'vendas', cols: [['Viram a oferta', 'visitas', null], ['Clicaram comprar', 'clicks', 'visitas'], ['Compraram', 'vendas', 'visitas'], ['Receita (R$)', 'receita', null]],
     sql: (d) => `with e as (select distinct on (session_id) session_id, answer braco from quiz_events where event='oferta' and created_at >= '${d}' order by session_id, created_at) select e.braco, count(*) visitas, count(*) filter (where s.checkout_clicked) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas, coalesce(sum((select sum(v.price) from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))),0) receita from e join quiz_sessions s on s.id = e.session_id where coalesce(s.utm_source,'')<>'qa-painel' group by 1`,
-    links: [{ rot: 'Ver esboço A × B', img: 'v/e/cmp-T26-testeE.jpg' }, { rot: 'Ver checkout da Comunidade (R$ 37/mês)', url: 'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597' }] },
+    links: [{ rot: 'Abrir A aqui (com Efeito Lipo)', frame: 'v/v9/t4-a.html?step=25' }, { rot: 'Abrir B aqui (só Comunidade)', frame: 'v/v9/t4-b.html?step=25' }, { rot: 'Checkout da Comunidade (R$ 37/mês)', url: 'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597' }] },
   { id: 'T3', grupo: 'ideia', nome: 'Preço da Comunidade: R$ 37 × R$ 27 por mês', status: 'falta o link de R$ 27 na Greenn',
     sobre: 'Testar se a mensal mais barata vende mais. Falta você criar na Greenn a assinatura de R$ 27/mês (recorrente, só cartão, mesmo produto da WOqOSI). Cuidado: R$ 27/mês fica perto da anual (R$ 297 = R$ 24,75/mês), que é a que mais vende.' },
   { id: 'T5', grupo: 'ideia', nome: 'Formato da Comunidade: mensal R$ 37 × trimestral R$ 97', status: 'depois do T3 e do T4',
@@ -2140,7 +2140,13 @@ function renderTeste(box, t) {
     card.append(el('div', { style: 'display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline' }, el('strong', {}, t.id + ' · ' + t.nome), el('span', { class: 'muted' }, t.status)))
     if (t.sobre) card.append(el('p', { style: 'margin:0;font-size:14px;color:var(--sub)' }, t.sobre))
     box.append(card)
-    if (t.grupo !== 'ar') { if (t.links) card.append(testeLinks(card, t)); return }
+    if (t.grupo === 'ar') testeNumeros(card, t)
+    if (t.links) card.append(testeLinks(card, t))
+  }
+}
+// Números de um teste no ar: chance de cada versão ser a melhor + tabela. Os botões vêm depois, sempre.
+function testeNumeros(card, t) {
+  {
     const d = TESTE_D[t.id]
     if (!d) { card.append(el('p', { class: 'muted' }, mcp ? 'Lendo os números…' : 'Os números aparecem para quem tem o conector do Supabase.')); return }
     if (d.erro) { card.append(el('p', { class: 'muted' }, 'Supabase: ' + d.erro + '.')); return }
@@ -2161,7 +2167,6 @@ function renderTeste(box, t) {
     card.append(el('p', { style: 'margin:0', class: 'muted' }, menor < TESTE_MIN
       ? 'Ainda sem resposta: ' + menor + ' de ' + TESTE_MIN + ' no braço menor. Quem está na frente hoje: ' + lider.nome + '.'
       : 'Vencendo: ' + lider.nome + ', com ' + Math.round(chanceLider * 100) + '% de chance de ser a melhor.' + (chanceLider >= 0.95 ? ' Já dá para decidir.' : ' Ainda não é certeza (decide a partir de 95%).')))
-    card.append(testeLinks(card, t))
   }
 }
 // Versões internas do painel (v/…) abrem num celular aqui dentro: o claude.ai bloqueia abrir esses arquivos em aba nova.
@@ -2178,7 +2183,7 @@ function testeLinks(card, t) {
     ? el('button', { class: 'b pri', type: 'button', 'data-frame': l.frame || l.img, 'aria-pressed': 'false', onclick: (e) => verFrame(l.frame || l.img, e.currentTarget, !!l.img) }, l.rot)
     : l.tab
       ? el('button', { class: 'b pri', type: 'button', onclick: () => abrir(l.tab) }, l.rot)
-      : el('a', { class: 'b pri', href: l.url, target: '_blank', rel: 'noopener' }, l.rot + ' ↗'))), prev)
+      : el('a', { class: 'b', href: l.url, target: '_blank', rel: 'noopener', title: 'Abre a Greenn em outra aba' }, l.rot + ' ↗'))), prev)
 }
 $('testes-atualizar').addEventListener('click', () => testesWatch())
 
@@ -3093,7 +3098,7 @@ document.querySelector('nav [data-tab="videos"]').addEventListener('click', () =
 vdRender()
 
 // ── Arranque ───────────────────────────────────────────────────────
-renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); renderRcPlano(null); renderRef(); renderRoteiros()
+renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); renderRcPlano(null); renderRef(); renderRoteiros(); renderTestes()
 ;(async () => {
   const c = window.claude
   if (!c) { $('pr-state').textContent = 'abra no claude.ai'; $('ch-state').textContent = 'abra no claude.ai'; $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; return }

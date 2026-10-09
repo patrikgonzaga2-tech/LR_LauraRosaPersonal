@@ -36,7 +36,7 @@ Meta Ads: nada muda sem aprovação. Apagar artefato: só com minha confirmaçã
 - Aba **Números → Testes**: T1, T2, T3. Cada um mostra a chance de cada versão ser a melhor (teste de duas
   proporções), números absolutos e %, botão laranja "Recarregar números" e botões laranja para conferir A e B.
   Decide com ≥ 100 no braço menor e chance ≥ 95%. Sessões com `utm_source=qa-painel` ficam de fora.
-- T1 abre as versões num celular dentro do card (`v/v8/t1-a.html`, `v/v8/t1-b.html`; o claude.ai bloqueia abrir
+- T1, T2 e T4 abrem o início de cada braço num celular dentro do card (`v/v9/t1-a.html?step=0`, `t2-a/b` e `t4-a/b` com `?step=25`; prévias em `tools/painel-anuncios/v/v9/`, o `quiz.js` da v9 é montado do código de hoje com `tools/quiz-revisao`; o claude.ai bloqueia abrir
   arquivos do painel em aba nova). T2/T3 abrem os checkouts da Greenn.
 - **Para acrescentar um teste:** um objeto em `TESTES` (`tools/painel-anuncios/index.html`) com `arms`, `base`,
   `pos`, `cols`, `sql`, `links`. O painel publicado tem a aba Vídeos (de outra sessão): sempre partir do arquivo
