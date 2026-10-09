@@ -1,0 +1,224 @@
+
+===== SEÇÃO 1 · fundo #AD1F1F =====
+  [heading] title: BLOCO 1 - VENDER SOZINHO
+
+===== SEÇÃO 2 · fundo #E7E7E7 =====
+  [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-5.png
+  [heading] title: Descubra como {promessa principal} em {tempo específico}, mesmo que {objeção/dificuldade }.
+  [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-3.png
+
+===== SEÇÃO 3 · fundo #AD1F1F =====
+  [heading] title: BLOCO 1 - VENDER SOZINHO - ANTES E DEPOIS
+
+===== SEÇÃO 4 · fundo #E7E7E7 =====
+  [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-5.png
+  [heading] title: Descubra como {promessa principal} em {tempo específico}, mesmo que {objeção/dificuldade }.
+  [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-4.png
+
+===== SEÇÃO 5 · fundo #AD1F1F =====
+  [heading] title: BLOCO 2 - DEPOIMENTOS
+
+===== SEÇÃO 6 · fundo #FFFFFF =====
+  [heading] title: Veja o antes e depois de pessoas que {situação inicial negativa} e que, após {nome do produto}, conseguiram {resultado positivo desejado}
+    [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-8.png
+    [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-8.png
+    [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-8.png
+    [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-8.png
+    [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-8.png
+    [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-8.png
+
+===== SEÇÃO 7 · fundo #AD1F1F =====
+  [heading] title: BLOCO 3 - RUMINAÇÃO
+
+===== SEÇÃO 8 · fundo #E7E7E7 =====
+  [heading] title: Você não aguenta mais {ação repetitiva/dor cotidiana} e ver sempre {resultado frustrante}.
+  [heading] title: Por isso, você pensa:
+  [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-9.png
+  [heading] title: Eu sei…
+  [text-editor] editor: Você não aguenta mais {dor específica que a persona vive}.
+  [heading] title: Estou certo?
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-10.png
+      [heading] title: Estou certo?
+      [text-editor] editor: Se você pudesse ter {resultado/benefício principal}, sem {objeção maior},
+  [heading] title: Se a sua resposta for “SIM”, o {nome do produto} é para você.
+
+===== SEÇÃO 9 · fundo #AD1F1F =====
+  [heading] title: BLOCO 4 - PASSO A PASSO
+
+===== SEÇÃO 10 · fundo #303030 =====
+  [heading] title: Esses são os 3 passos para {resultado principal}
+      [heading] title: Passo 1:
+      [heading] title: {INSIRA O PASSO 1}
+      [text-editor] editor: {ADICIONE UMA BREVE DESCRIÇÃO SOBRE O PASSO 1
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-11.png
+      [heading] title: Passo 2:
+      [heading] title: {INSIRA O PASSO 2}
+      [text-editor] editor: {ADICIONE UMA BREVE DESCRIÇÃO SOBRE O PASSO 2
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-11.png
+      [heading] title: Passo 3:
+      [heading] title: {INSIRA O PASSO 3}
+      [text-editor] editor: {ADICIONE UMA BREVE DESCRIÇÃO SOBRE O PASSO 3}
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-11.png
+
+===== SEÇÃO 11 · fundo #AD1F1F =====
+  [heading] title: BLOCO EXTRA BENEFÍCIOS
+
+===== SEÇÃO 12 · fundo #FFFFFF =====
+  [heading] title: Como esse passo a passo você vai:
+        [image] 
+        [heading] title: Título
+        [text-editor] editor: Benefício 3 - Adicione a descrição
+        [image] 
+        [heading] title: Título
+        [text-editor] editor: Benefício 3 - Adicione a descrição
+        [image] 
+        [heading] title: Título
+        [text-editor] editor: Benefício 3 - Adicione a descrição
+        [image] 
+        [heading] title: Título
+        [text-editor] editor: Benefício 3 - Adicione a descrição
+
+===== SEÇÃO 13 · fundo #AD1F1F =====
+  [heading] title: BLOCO 5 - ENTREGÁVEIS
+
+===== SEÇÃO 14 · fundo #303030 =====
+  [heading] title: E tem mais!
+  [heading] title: Veja tudo que você vai receber com o {NOME DO SEU PRODUTO}
+
+===== SEÇÃO 15 · fundo #E7E7E7 =====
+      [heading] title: CHECKLIST {Promessa Principal}
+      [text-editor] editor: Você terá em mãos um checklist de {tipo de ações: rápidas, simples, práticas} que tornará impossível você não {resultado desejado principal} em {tempo específico}.
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-13.png
+      [heading] title: Template de Exercícios Práticos para {RESULTADO}
+      [text-editor] editor: Um passo a passo para você {ação principal}, ou seja, {explicação curta do que isso significa}. Você vai saber exatamente como {transformação/benefício principal}.
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-13.png
+      [heading] title: GUIA DE AÇÕES PARA {RESULTADO}
+      [text-editor] editor: Guia completo com exercícios {característica: simples, rápidos, poderosos}, para você aplicar {tempo de aplicação: ainda hoje, em apenas alguns minutos, em 7 dias} e {benefício principal/transformação}, sem que você precise {objeção comum}.
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-13.png
+      [heading] title: Lista de Erros te impedem de {alcançar resultado esperado}
+      [text-editor] editor: Você vai receber uma lista com os {número de erros} erros mais comuns que acontecem quando {situação/dor da persona}.
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-13.png
+
+===== SEÇÃO 16 · fundo #AD1F1F =====
+  [heading] title: BLOCO 6 - BÔNUS
+
+===== SEÇÃO 17 · fundo #FFFFFF =====
+  [heading] title: AINDA NÃO ACABOU
+  [heading] title: Você também vai receber…
+      [heading] title: Manual da {Transformação }
+      [text-editor] editor: Neste manual você vai receber {tipo de conteúdo: dicas práticas, estratégias simples, exercícios rápidos} para {transformação desejada} e nunca mais {dor ou situação negativa que a persona quer evitar}.
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-12.png
+      [heading] title: Calendário do {benefício principal}
+      [text-editor] editor: O calendário tem toda sua programação diária, para você {benefício/resultado principal} em {tempo específico}.
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-12.png
+      [heading] title: Protocolo para {promessa principal}
+      [text-editor] editor: Um passo a passo prático e comprovado para você {transformação/resultado principal}, mesmo que {objeção/dificuldade comum}.
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-12.png
+
+===== SEÇÃO 18 · fundo #AD1F1F =====
+  [heading] title: BLOCO 7 - PARA QUEM SERVE
+
+===== SEÇÃO 19 · fundo #303030 =====
+  [heading] title: O {NOME DO SEU PRODUTO} é para você que:
+      [icon-list]   · text: ✅ {Desejo ou objetivo que a persona tem}; |   · text: ✅ {Dor ou frustração que a persona enfrenta}; |   · text: ✅ {Limitação comum que atrapalha}; |   · text: ✅ {Erro ou perda de dinheiro que costuma acontecer}; |   · text: ✅ {Promessa clara de benefício desejado}; |   · text: ✅ {Segmento de pessoas que se encaixa no produto}.
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-16.png
+  [heading] title: Enfim…
+  [heading] title: Se você quer {DESEJO DA PERSONA}... O {NOME DO SEU PRODUTO} é para você!
+
+===== SEÇÃO 20 · fundo #AD1F1F =====
+  [heading] title: BLOCO 8 - RECAPITULANDO
+
+===== SEÇÃO 21 · fundo #FFFFFF =====
+  [heading] title: RECAPITULANDO…
+  [heading] title: Veja tudo que você vai receber no {NOME DO PRODUTO}
+        [icon-list]   · text: ✅ ENTREGÁVEL
+        [heading] title: 147,00
+        [icon-list]   · text: ✅ ENTREGÁVEL
+        [heading] title: 147,00
+        [icon-list]   · text: ✅ ENTREGÁVEL
+        [heading] title: 147,00
+        [icon-list]   · text: ✅ ENTREGÁVEL
+        [heading] title: 147,00
+        [icon-list]   · text: ✅ ENTREGÁVEL
+        [heading] title: 97,00
+        [icon-list]   · text: ✅ ENTREGÁVEL
+        [heading] title: 97,00
+  [heading] title: TUDO ISSO DEVERIA CUSTAR: {SOMATÓRIA DE TODOS OS ENTREGÁVEIS}
+  [heading] title: Mas somente hoje você pode ter acesso ao {NOME DO PRODUTO} por um valor muito mais acessível!
+
+===== SEÇÃO 22 · fundo #AD1F1F =====
+  [heading] title: BLOCO 9 - VALOR
+
+===== SEÇÃO 23 · fundo #303030 =====
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-17.png
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-14.png
+      [divider] text: Divisor
+      [heading] title: Por apenas:
+        [heading] title: 9x de 8,80
+      [heading] title: ou 67,00 à vista
+      [button] text: QUERO COMPRAR AGORA
+      [divider] text: Divisor
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-COMBO-34.png
+
+===== SEÇÃO 24 · fundo #AD1F1F =====
+  [heading] title: BLOCO 10 - COMO ACESSAR
+
+===== SEÇÃO 25 · fundo #E7E7E7 =====
+  [heading] title: Compre agora e receba seu acesso no e-mail imediatamente!
+      [icon-box] title_text: FAÇA SUA COMPRA | description_text: Assim que finalizar sua compra, você vai receber seu acesso no email.
+      [icon-box] title_text: BAIXE TODO O MATERIAL | description_text: Você vai receber todos os entregáveis junto com os bônus imediatamente para usar quando e como quiser.
+      [icon-box] title_text: TUDO PRONTO! | description_text: Agora é só aplicar o {NOME DO PRODUTO} e {REFORÇAR A PROMESSA}
+
+===== SEÇÃO 26 · fundo #AD1F1F =====
+  [heading] title: BLOCO 11 - AUTORIDADE
+
+===== SEÇÃO 27 · fundo #E7E7E7 =====
+    [heading] title: SEU NOME
+    [heading] title: Criador do {NOME DO SEU PRODUTO}
+    [text-editor] editor: BREVE DESCRICÃO SOBRE VOCÊ
+    [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-18.png
+
+===== SEÇÃO 28 · fundo #AD1F1F =====
+  [heading] title: BLOCO 12 - CONVERSA SÉRIA
+
+===== SEÇÃO 29 · fundo #FFFFFF =====
+  [heading] title: Agora você tem duas opções:
+      [icon] 
+      [heading] title: Opção 1:
+      [text-editor] editor: Continuar sofrendo com {dor da persona}
+      [icon] 
+      [heading] title: Opção 2:
+      [text-editor] editor: Acessar o {NOME DO PRODUTO} e finalmente {TRANSFORMAÇÃO}
+  [heading] title: Eu sei (e você também sabe): a opção 2 é a mais inteligente.
+  [heading] title: Então clique no botão abaixo e acesse agora mesmo o {NOME DO PRODUTO}
+
+===== SEÇÃO 30 · fundo #AD1F1F =====
+  [heading] title: BLOCO 13 - VALOR
+
+===== SEÇÃO 31 · fundo #303030 =====
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-17.png
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-TEMPLATE-14.png
+      [divider] text: Divisor
+      [heading] title: Por apenas:
+        [heading] title: 9x de 8,80
+      [heading] title: ou 67,00 à vista
+      [button] text: QUERO COMPRAR AGORA
+      [divider] text: Divisor
+      [image] IMG https://ivory-goose-959131.hostingersite.com/wp-content/uploads/2025/10/IMG-COMBO-34.png
+
+===== SEÇÃO 32 · fundo #AD1F1F =====
+  [heading] title: BLOCO 14 - FAQ
+
+===== SEÇÃO 33 · fundo #E7E7E7 =====
+  [heading] title: Perguntas Frequentes
+  [nested-accordion]   · item_title: Pergunta 1 |   · item_title: Pergunta 2 |   · item_title: Pergunta 3
+      [text-editor] editor: RESPOSTA DA PERGUNTA
+      [text-editor] editor: RESPOSTA DA PERGUNTA
+      [text-editor] editor: RESPOSTA DA PERGUNTA
+
+===== SEÇÃO 34 · fundo #AD1F1F =====
+  [heading] title: BLOCO 15 - RODAPÉ
+
+===== SEÇÃO 35 · fundo #303030 =====
+  [text-editor] editor: TERMOS DE USO E POLÍTICA DE PRIVACIDADE | DISCLOSURE Copyright © {Nome do Autor/Empresa} – {Nome da Marca/Negócio} – {Ano}
+  [text-editor] editor: Este site não é afiliado ao Facebook ou a qualquer entidade do Facebook. Depois que você sair do Facebook, a responsabilidade não é deles e sim do nosso site. A compra desse material não garante nenhum tipo de resultado. Fazemos todos os esforços para indicar claramente e mostrar todas as provas do produto e usamos resultados reais de alunos.
