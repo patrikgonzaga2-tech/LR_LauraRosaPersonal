@@ -71,6 +71,14 @@ o Claude pode produzir imagens, vídeos com avatar da Laura (só depois de aprov
 - Conta Meta 1094091162588572. Régua: custo por venda até R$ 37; T1 32%; clicar comprar 18,7% das sessões.
 
 ## Diário
+- **09/10/2026 (2), 08h50**: **Resumo** ganhou "O que fazer hoje" (Pix a chamar, conjunto com R$ 40+ sem clique em comprar,
+  anúncio reprovado em campanha ligada, propostas esperando, resultado a conferir, custos desatualizados, meta abaixo do ritmo,
+  conjunto pronto para escalar). **Meta ao vivo**: colunas Gasto · Começaram o quiz · Clicaram comprar · Vendas · Custo por
+  venda · Sinal (Escalar / Vendendo / Caro / Pausar? / Pouco dado / Acompanhar; régua R$ 37 e corte R$ 40 sem clique);
+  verba/dia e CTR embaixo do nome; vendas por conjunto (tracking_src) e por anúncio (utm_content da sessão ligada pelo xcod).
+  **Sugestão quiz**: % ao lado dos números do funil; Respostas mostram todas as telas T2–T25 (T3/T9/T16/T24/T25 sem pergunta
+  com quantas passaram, T15 "Faz sentido/É novidade", T22 altura e T23 peso em faixas); a aba agora carrega ao abrir o painel
+  (antes só depois de trocar o período). **Escolher datas** (de/até) na Sugestão quiz e no Clicou e não comprou.
 - **09/10/2026, 08h40**: aba **Clicou e não comprou** refeita para decidir rápido: (1) uma frase + barra (comprou / Pix sem pagar /
   saiu do checkout); (2) **O que fazer agora**, numerado por prioridade (chamar Pix no WhatsApp, remarketing para quem saiu,
   medo mais comum de quem não comprou com a dica de mensagem, aviso de "ainda é cedo" com menos de 5 compras); (3) **Pessoas**

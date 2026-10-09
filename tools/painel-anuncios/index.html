@@ -221,7 +221,8 @@ tr.det td{background:#FFFBF6;text-align:left}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:50;background:var(--gd);color:#fff;font-weight:700;font-size:14px;padding:11px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:calc(100% - 32px)}
 /* sugestão quiz */
 .qfunil{display:grid;gap:5px}
-.qrow{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1.3fr) 92px;gap:10px;align-items:center;font-size:13px}
+.qrow{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1.3fr) 128px;gap:10px;align-items:center;font-size:13px}
+.qrow .pc{color:var(--sub);font-weight:600}
 .qrow .n{color:var(--mute);font-variant-numeric:tabular-nums}
 .qrow .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .qrow .track{height:16px;border-radius:99px;background:rgba(0,0,0,.06);overflow:hidden}
@@ -229,7 +230,7 @@ tr.det td{background:#FFFBF6;text-align:left}
 .qrow.perda .fill{background:var(--bad)}
 .qrow b{text-align:right;font-variant-numeric:tabular-nums}
 .qrow .drop{font-size:11px;color:var(--bad);font-weight:700}
-@media (max-width:640px){.qrow{grid-template-columns:28px minmax(0,1fr) 80px}.qrow .track{grid-column:2/4}}
+@media (max-width:640px){.qrow{grid-template-columns:28px minmax(0,1fr) 118px}.qrow .track{grid-column:2/4}}
 .qperfis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .qperfis div{background:var(--pale);border-radius:12px;padding:12px;display:grid;gap:2px;min-width:0}
 .qperfis b{font-family:var(--display);font-size:24px}
@@ -237,6 +238,7 @@ tr.det td{background:#FFFBF6;text-align:left}
 .qresp{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr));gap:12px}
 .qresp .card{display:grid;gap:6px;padding:14px 16px}
 .qresp h4{margin:0;font:800 14px/1.3 var(--display)}
+.qresp .card.sem{background:var(--pale);box-shadow:none;align-content:start}
 .rbar{display:grid;grid-template-columns:minmax(0,1fr) 60px;gap:8px;font-size:12.5px;align-items:center}
 .rbar .lab{position:relative;padding:3px 6px;border-radius:6px;overflow:hidden;z-index:0}
 .rbar .lab i{position:absolute;inset:0 auto 0 0;background:var(--o-soft);z-index:-1}
@@ -300,6 +302,10 @@ tr.lead-det td{background:#FFFBF6;text-align:left}
 .ob-aviso{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:700}
 /* clicou e não comprou */
 .rc-sec{display:grid;gap:12px;scroll-margin-top:76px}
+.datas{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.datas[hidden]{display:none}
+.datas label{display:flex;gap:6px;align-items:center;font-size:13.5px;color:var(--sub);font-weight:700}
+.datas input{font:500 14px var(--body);border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:var(--wh);color:var(--ink);min-width:0}
 .rc-top{display:grid;gap:12px}
 .rc-frase{font:800 19px/1.3 var(--display);letter-spacing:-.01em}
 .rc-frase em{font-style:normal;color:var(--od)}
@@ -671,6 +677,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
     <!-- RESUMO -->
     <section class="tab" id="tab-resumo" role="tabpanel">
       <div class="pagehead"><div style="display:grid;gap:4px"><h2>Resumo de hoje</h2><p>O que aconteceu, o que espera você e o que o Claude está fazendo.</p></div><span class="pill n" id="m-at-r">carregando…</span></div>
+      <div class="rc-sec"><h3>O que fazer hoje</h3><div class="rc-acoes" id="hoje-acoes"><div class="empty">Carregando…</div></div></div>
       <button type="button" class="card objstrip" id="r-obj" data-go="objetivo"><div style="display:grid;gap:2px"><span class="k">Meta do painel</span><span class="t" id="r-obj-t">Defina a meta do painel →</span></div><div class="mini" id="r-obj-m"><span class="muted">Ex.: bater 100 mil de lucro em 30 dias. Eu acompanho em % e sugiro como chegar lá.</span></div></button>
       <div class="card status" id="rot"><span class="dot" id="rot-dot"></span><div style="display:grid;gap:2px;min-width:0"><b id="rot-t">Rotina do Claude</b><span class="muted" id="rot-m">Ainda não rodou. A primeira análise automática é amanhã às 7h.</span></div></div>
       <div class="tiles">
@@ -681,7 +688,6 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
         <div class="tile g"><span class="k">Vendas</span><span class="v" id="r-v">–</span><span class="s" id="r-v-s">custo por venda: –</span></div>
       </div>
       <div class="card an" id="an-box"><div class="row"><h3>Análise do Claude</h3><span class="pill n" id="an-at">aguardando</span></div><p class="muted">A primeira análise chega amanhã às 7h. Para pedir uma agora, use a aba Aprovar e conversar.</p></div>
-      <div class="card row" id="r-aprovar"><div style="display:grid;gap:2px"><h3 id="r-aprovar-t">Nada esperando você</h3><span class="muted">Propostas de ajuste e criativos novos aparecem em "Para aprovar".</span></div><button class="b pri" type="button" data-go="aprovar">Ver propostas</button></div>
     </section>
 
     <!-- APROVADOS -->
@@ -772,20 +778,20 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
       </div>
       <h3>Campanhas</h3>
       <div class="tbl"><table id="t-camps">
-        <thead><tr><th class="sort" data-k="name">Campanha</th><th class="sort" data-k="budget">Verba/dia</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="cliques">Cliques</th><th class="sort" data-k="lp">View page</th><th class="sort" data-k="sessoes">Quiz</th><th class="sort" data-k="res">Última etapa</th><th class="sort" data-k="comprar">Clicou comprar</th><th class="l">Otimiza</th></tr></thead>
-        <tbody id="m-camps"><tr><td colspan="9" class="l muted">Carregando do Meta…</td></tr></tbody>
+        <thead><tr><th class="sort" data-k="name">Campanha</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="sessoes">Começaram o quiz</th><th class="sort" data-k="comprar">Clicaram comprar</th><th class="sort" data-k="vendas">Vendas</th><th class="sort" data-k="cpv">Custo por venda</th><th class="l">Sinal</th></tr></thead>
+        <tbody id="m-camps"><tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr></tbody>
       </table></div>
       <h3>Conjuntos</h3>
       <div class="tbl"><table id="t-sets">
-        <thead><tr><th class="sort" data-k="name">Conjunto</th><th class="sort" data-k="budget">Verba/dia</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="cliques">Cliques</th><th class="sort" data-k="lp">View page</th><th class="sort" data-k="sessoes">Quiz</th><th class="sort" data-k="res">Última etapa</th><th class="sort" data-k="comprar">Clicou comprar</th><th class="l">Otimiza</th></tr></thead>
-        <tbody id="m-sets"><tr><td colspan="9" class="l muted">Carregando do Meta…</td></tr></tbody>
+        <thead><tr><th class="sort" data-k="name">Conjunto</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="sessoes">Começaram o quiz</th><th class="sort" data-k="comprar">Clicaram comprar</th><th class="sort" data-k="vendas">Vendas</th><th class="sort" data-k="cpv">Custo por venda</th><th class="l">Sinal</th></tr></thead>
+        <tbody id="m-sets"><tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr></tbody>
       </table></div>
       <h3>Anúncios</h3>
       <div class="tbl"><table id="t-ads">
-        <thead><tr><th class="sort" data-k="name">Anúncio</th><th class="sort" data-k="ctr">CTR</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="cliques">Cliques</th><th class="sort" data-k="lp">View page</th><th class="sort" data-k="sessoes">Quiz</th><th class="sort" data-k="res">Última etapa</th><th class="sort" data-k="comprar">Clicou comprar</th><th class="l">Otimiza</th></tr></thead>
-        <tbody id="m-ads"><tr><td colspan="9" class="l muted">Carregando do Meta…</td></tr></tbody>
+        <thead><tr><th class="sort" data-k="name">Anúncio</th><th class="sort" data-k="gasto" aria-sort="descending">Gasto</th><th class="sort" data-k="sessoes">Começaram o quiz</th><th class="sort" data-k="comprar">Clicaram comprar</th><th class="sort" data-k="vendas">Vendas</th><th class="sort" data-k="cpv">Custo por venda</th><th class="l">Sinal</th></tr></thead>
+        <tbody id="m-ads"><tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr></tbody>
       </table></div>
-      <p class="muted"><b>View page</b>: páginas do quiz que carregaram (Meta). <b>Quiz</b>: sessões que começaram no quiz vindas daquele anúncio. <b>Última etapa</b>: chegaram ao resultado (perfil). <b>Clicou comprar</b>: clicaram no botão de compra. Vendas são da oferta do quiz na Greenn (QN7gci). "3 dias" e "7 dias" incluem hoje. <b>Ativas</b>: só o que está rodando de verdade (campanha, conjunto e anúncio ligados). Clique em <b>Com problema</b> ou <b>Reprovado</b> para ver o motivo e pedir a correção. Alerta vermelho: R$ 40 ou mais gastos sem ninguém clicar em comprar.</p>
+      <p class="muted"><b>Sinal</b> (régua: custo por venda até R$ 37): <b>Escalar</b> = 3 ou mais vendas dentro da régua · <b>Vendendo</b> = já vendeu dentro da régua · <b>Caro</b> = vendeu, mas acima de R$ 37 · <b>Pausar?</b> = R$ 40 ou mais gastos e ninguém clicou em comprar · <b>Pouco dado</b> = menos de R$ 10 gastos. <b>Vendas</b>: oferta do quiz na Greenn (QN7gci), ligadas ao conjunto e ao anúncio de onde a pessoa veio. Toque numa linha para ver o caminho inteiro (cliques → página → quiz → comprar). "3 dias" e "7 dias" incluem hoje. <b>Ativas</b> = campanha, conjunto e anúncio ligados.</p>
       <div class="state" id="m-err" hidden></div>
     </section>
 
@@ -863,7 +869,8 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
     <!-- CLICOU E NÃO COMPROU -->
     <section class="tab" id="tab-recuperar" role="tabpanel" hidden>
       <div class="pagehead"><div style="display:grid;gap:4px"><h2>Clicou em comprar e não comprou</h2><p>Quem chegou no botão de compra e parou. Aqui você vê o que fazer agora, quem chamar e o que as respostas do quiz dizem.</p></div><span class="pill n" id="rc-at">carregando…</span></div>
-      <div class="seg" role="group" aria-label="Período" id="rc-per"><button type="button" data-p="today" aria-pressed="false">Hoje</button><button type="button" data-p="last_7d" aria-pressed="false">7 dias</button><button type="button" data-p="novo" aria-pressed="true">Desde o quiz novo (08/10)</button></div>
+      <div class="seg" role="group" aria-label="Período" id="rc-per"><button type="button" data-p="today" aria-pressed="false">Hoje</button><button type="button" data-p="last_7d" aria-pressed="false">7 dias</button><button type="button" data-p="novo" aria-pressed="true">Desde o quiz novo (08/10)</button><button type="button" data-p="datas" aria-pressed="false">Escolher datas</button></div>
+      <div class="datas" id="rc-datas" hidden><label>De <input type="date" id="rc-de"></label><label>até <input type="date" id="rc-ate"></label><button class="b pri" type="button" id="rc-datas-ok">Aplicar</button><span class="muted" id="rc-datas-st"></span></div>
       <div class="card rc-top" id="rc-top"><span class="muted">Carregando…</span></div>
       <div class="rc-sec"><h3>O que fazer agora</h3><div class="rc-acoes" id="rc-acoes"></div></div>
       <div class="rc-sec" id="rc-pessoas-box">
@@ -1040,16 +1047,18 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;m
           <button type="button" data-p="today" aria-pressed="false">Hoje</button>
           <button type="button" data-p="last_7d" aria-pressed="false">7 dias</button>
           <button type="button" data-p="novo" aria-pressed="true">Desde o quiz novo (08/10)</button>
+          <button type="button" data-p="datas" aria-pressed="false">Escolher datas</button>
         </div>
         <div class="seg" role="group" aria-label="Origem" id="q-orig">
           <button type="button" data-o="fb" aria-pressed="true">Só anúncios do Meta</button>
           <button type="button" data-o="todas" aria-pressed="false">Todas as origens</button>
         </div>
       </div>
+      <div class="datas" id="q-datas" hidden><label>De <input type="date" id="q-de"></label><label>até <input type="date" id="q-ate"></label><button class="b pri" type="button" id="q-datas-ok">Aplicar</button><span class="muted" id="q-datas-st"></span></div>
       <div class="tiles" id="q-tiles"></div>
       <h3>Minhas sugestões para o quiz</h3>
       <div class="props cr-novos" id="q-props"></div>
-      <div class="card" style="display:grid;gap:10px"><div class="row"><h3>Funil tela a tela</h3><span class="muted" style="font-size:12.5px">quantas pessoas passaram de cada tela · em vermelho, as 3 maiores perdas</span></div><div class="qfunil" id="q-funil"></div></div>
+      <div class="card" style="display:grid;gap:10px"><div class="row"><h3>Funil tela a tela</h3><span class="muted" style="font-size:12.5px">quantas pessoas passaram de cada tela e a % de quem viu a 1ª tela · em vermelho, as 3 maiores perdas</span></div><div class="qfunil" id="q-funil"></div></div>
       <div class="card" style="display:grid;gap:10px"><div class="row"><h3>Perfil de recomeço</h3><span class="muted" style="font-size:12.5px">quem chegou ao resultado · quantos clicaram comprar e compraram</span></div><div class="qperfis" id="q-perfis"></div></div>
       <h3>Respostas</h3>
       <div class="qresp" id="q-resp"></div>
@@ -1367,7 +1376,6 @@ function renderProps() {
   const abertas = Object.entries(props).filter(([, p]) => ['pendente', 'ajuste'].includes(p.status))
   const esperando = abertas.filter(([, p]) => p.status === 'pendente').length
   const nb = $('nb-aprovar'); nb.textContent = String(esperando); nb.classList.toggle('hot', esperando > 0)
-  $('r-aprovar-t').textContent = esperando ? (esperando === 1 ? '1 proposta esperando você' : esperando + ' propostas esperando você') : 'Nada esperando você'
   const lista = abertas.filter(([, p]) => filtro === 'todos' || p.tipo === filtro).sort((a, b) => String(b[1].criado_em || '').localeCompare(String(a[1].criado_em || '')))
   if (!lista.length) box.append(el('div', { class: 'empty' }, filtro === 'todos' ? 'Nada esperando aprovação.' : 'Nenhuma proposta deste tipo agora.'))
   for (const [id, p] of lista) box.append(cardProposta(id, p))
@@ -1379,6 +1387,7 @@ function renderProps() {
     hb.append(el('tr', {}, el('td', {}, p.titulo || '–'), el('td', { class: 'l' }, el('span', { class: 'pill ' + st[0] }, st[1])), el('td', { class: 'l' }, fmtDt(p.decidido_em)), el('td', { class: 'l' }, fmtDt(p.executado_em)), el('td', { class: 'l' }, fmtD(p.conferir_em)), el('td', { class: 'l' }, p.resultado || p.nota || '–')))
   }
   renderAprovados(); renderCriativos(); if (typeof renderQuiz === 'function') renderQuiz(); if (typeof renderOtimizar === 'function' && !$('tab-otimizar').hidden) renderOtimizar()
+  renderHoje()
   if (foco) { const t = $(foco[0]); if (t) { t.focus(); try { t.setSelectionRange(foco[1], foco[1]) } catch {} } }
 }
 
@@ -1497,7 +1506,7 @@ function janelaSQL(p) {
   return [d0 + " - interval '6 days'", 'now()']
 }
 const ERRS = { server_not_connected: 'o conector não está ligado na sua conta', needs_reauth: 'reconecte o conector em claude.ai → Configurações → Conectores', not_in_manifest: 'libere o conector no menu de Permissões desta página', not_granted: 'você negou o acesso; libere no menu de Permissões desta página', approval_required: 'a página precisa da sua permissão para ler', blocked_by_policy: 'bloqueado pela política da organização' }
-let M = { camps: null, sets: null, ads: null }, Q = { porAd: null, porSet: null, vendas: null, total: null }, stamp = null, hoje = { sets: null, quiz: null, vendas: null }
+let M = { camps: null, sets: null, ads: null }, Q = { porAd: null, porSet: null, vendas: null, total: null, vendSet: null, vendAd: null }, stamp = null, hoje = { sets: null, quiz: null, vendas: null }
 let stFiltro = 'ativas', busca = ''
 const ATIVOS = ['ACTIVE', 'WITH_ISSUES', 'PENDING_REVIEW', 'IN_PROCESS', 'PREAPPROVED']
 const achar = (lista, id) => id ? (lista || []).find((x) => x.id === id) : null
@@ -1515,13 +1524,24 @@ function linhaCamp(c) {
   const q = vazioQ(); let temQ = false
   for (const st of M.sets || []) if (st.campaign_id === c.id) { const x = Q.porSet && Q.porSet[st.id]; if (x) { temQ = true; q.sessoes += x.sessoes; q.t1 += x.t1; q.res += x.res; q.comprar += x.comprar } }
   const budgetSets = (M.sets || []).filter((st) => st.campaign_id === c.id && ATIVOS.includes(st.effective_status)).reduce((a, st) => a + N(st.daily_budget), 0)
-  return { nivel: 'campanha', id: c.id, name: c.name, camp: c.name, st: c.effective_status, budget: N(c.daily_budget) || budgetSets, gasto: N(c.amount_spent), cliques: N(c.link_click), lp: N(c.omni_landing_page_view), ...q, temQ: temQ || !!Q.porSet, ev: '' }
+  const vendas = Q.vendSet ? (M.sets || []).filter((st) => st.campaign_id === c.id).reduce((a, st) => a + (Q.vendSet[st.id] || 0), 0) : null
+  return comVendas({ nivel: 'campanha', id: c.id, name: c.name, camp: c.name, st: c.effective_status, budget: N(c.daily_budget) || budgetSets, gasto: N(c.amount_spent), cliques: N(c.link_click), lp: N(c.omni_landing_page_view), ...q, temQ: temQ || !!Q.porSet, ev: '' }, vendas)
 }
-function linhaSet(s) { const q = (Q.porSet && Q.porSet[s.id]) || null; return { nivel: 'conjunto', id: s.id, name: s.name, camp: s.campaign_name || '–', campId: s.campaign_id, st: s.effective_status, budget: N(s.daily_budget), gasto: N(s.amount_spent), cliques: N(s.link_click), lp: N(s.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porSet, ev: evento(s.results) } }
-function linhaAd(a) { const q = Q.porAd && (Q.porAd[(a.adset_id || '') + '|' + a.name] || Q.porAd['|' + a.name]); return { nivel: 'anúncio', id: a.id, name: a.name, set: a.adset_name || '', setId: a.adset_id, camp: a.campaign_name || '–', campId: a.campaign_id, st: a.effective_status, gasto: N(a.amount_spent), ctr: N(a.ctr), cpm: N(a.cpm), cliques: N(a.link_click), lp: N(a.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porAd, ev: evento(a.results) } }
+const comVendas = (r, vendas) => Object.assign(r, { vendas, cpv: vendas > 0 ? r.gasto / vendas : null })
+function linhaSet(s) { const q = (Q.porSet && Q.porSet[s.id]) || null; return comVendas({ nivel: 'conjunto', id: s.id, name: s.name, camp: s.campaign_name || '–', campId: s.campaign_id, st: s.effective_status, budget: N(s.daily_budget), gasto: N(s.amount_spent), cliques: N(s.link_click), lp: N(s.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porSet, ev: evento(s.results) }, Q.vendSet ? (Q.vendSet[s.id] || 0) : null) }
+function linhaAd(a) { const q = Q.porAd && (Q.porAd[(a.adset_id || '') + '|' + a.name] || Q.porAd['|' + a.name]), va = Q.vendAd; return comVendas({ nivel: 'anúncio', id: a.id, name: a.name, set: a.adset_name || '', setId: a.adset_id, camp: a.campaign_name || '–', campId: a.campaign_id, st: a.effective_status, gasto: N(a.amount_spent), ctr: N(a.ctr), cpm: N(a.cpm), cliques: N(a.link_click), lp: N(a.omni_landing_page_view), ...(q || vazioQ()), temQ: !!Q.porAd, ev: evento(a.results) }, va ? (va[(a.adset_id || '') + '|' + a.name] || va['|' + a.name] || 0) : null) }
+// Sinal para decidir rápido (régua do quiz: custo por venda até R$ 37; corte: R$ 40 sem clique em comprar).
+function sinal(r) {
+  if (r.vendas == null) return null
+  if (r.vendas > 0 && r.cpv <= 37) return r.vendas >= 3 ? ['ok', 'Escalar', r.vendas + ' vendas a ' + brl(r.cpv) + ' cada: dentro da régua de R$ 37'] : ['ok', 'Vendendo', 'vendeu dentro da régua; com 3 vendas vira "Escalar"']
+  if (r.vendas > 0) return ['wait', 'Caro', 'custo por venda de ' + brl(r.cpv) + ', acima da régua de R$ 37']
+  if (r.gasto >= 40 && r.comprar === 0) return ['no', 'Pausar?', brl(r.gasto) + ' gastos e ninguém clicou em comprar']
+  if (r.gasto < 10) return ['n', 'Pouco dado', 'menos de R$ 10 gastos']
+  return ['n', 'Acompanhar', 'ainda sem venda; ' + (r.comprar ? plural(r.comprar, 'pessoa clicou', 'pessoas clicaram') + ' em comprar' : 'ninguém clicou em comprar')]
+}
 function ordenar(lista, s) { return lista.sort((a, b) => { const x = a[s.k], y = b[s.k]; return typeof x === 'string' ? s.dir * x.localeCompare(y) : s.dir * ((x || 0) - (y || 0)) }) }
 function funil(r) {
-  const passos = [['Cliques no anúncio', r.cliques], ['View page', r.lp], ['Começaram o quiz', r.sessoes], ['Passaram da 1ª tela', r.t1], ['Última etapa (resultado)', r.res], ['Clicaram comprar', r.comprar]]
+  const passos = [['Cliques no anúncio', r.cliques], ['Abriram a página do quiz', r.lp], ['Começaram o quiz', r.sessoes], ['Passaram da 1ª tela', r.t1], ['Viram o resultado', r.res], ['Clicaram comprar', r.comprar]]
   const max = Math.max(1, ...passos.map((p) => p[1]))
   return el('div', { class: 'funil' }, ...passos.map(([t, v], i) => el('div', { class: 'fbar' }, el('span', {}, t), el('div', { class: 'track' }, el('div', { class: 'fill' + (i === passos.length - 1 ? ' g' : ''), style: 'width:' + Math.max(v ? 3 : 0, Math.round(100 * v / max)) + '%' })), el('b', {}, String(v)))))
 }
@@ -1530,7 +1550,7 @@ function detalhe(r, cols) {
   const custo = r.comprar > 0 ? brl(r.gasto / r.comprar) + ' por clique em comprar' : 'ninguém clicou em comprar ainda'
   return el('tr', { class: 'det' }, el('td', { colspan: String(cols) },
     el('div', { style: 'display:grid;gap:10px' },
-      el('div', { class: 'muted' }, (r.nivel === 'anúncio' ? 'Conjunto: ' + r.set + ' · ' : '') + (r.nivel !== 'campanha' ? 'Campanha: ' + r.camp + ' · ' : '') + custo),
+      el('div', { class: 'muted' }, (r.nivel === 'anúncio' ? 'Conjunto: ' + r.set + ' · ' : '') + (r.nivel !== 'campanha' ? 'Campanha: ' + r.camp + ' · ' : '') + custo + (r.ev ? ' · otimiza: ' + r.ev : '') + (sinal(r) ? ' · sinal: ' + sinal(r)[1] + ' (' + sinal(r)[2] + ')' : '')),
       funil(r),
       el('div', { class: 'det-actions' },
         el('button', { class: 'b pri', type: 'button', onclick: (e) => { e.stopPropagation(); abrirOtimizar(r) } }, 'Otimizar'),
@@ -1540,19 +1560,25 @@ function celOtimiza(r) {
   const filhos = r.nivel === 'campanha' ? (M.sets || []).filter((x) => x.campaign_id === r.id).map((x) => x.id) : []
   const tem = propostasDe(r.id, filhos).some(([, p]) => ['pendente', 'ajuste'].includes(p.status))
   const alvo = r
-  return el('td', { class: 'l' }, r.ev ? el('span', {}, r.ev) : null, r.ev ? el('br') : null,
+  const s = sinal(r)
+  return el('td', { class: 'l' }, s ? el('span', { class: 'pill ' + s[0], title: s[2] }, s[1]) : null, s ? el('br') : null,
     el('button', { class: 'otbtn', type: 'button', title: 'Ver o que eu mudaria e conversar', onclick: (e) => { e.stopPropagation(); abrirOtimizar(alvo) } }, 'Otimizar →', tem ? el('span', { class: 'dot', title: 'Tem sugestão esperando você' }) : null))
 }
-function linhaTabela(r, cols, key, primeira, numeros) {
-  const st = STATUS[r.st] || ['n', r.st], alerta = r.gasto >= 40 && r.comprar === 0
+// Colunas: nome (verba/dia ou CTR embaixo) · gasto · começaram o quiz · clicaram comprar · vendas · custo por venda · sinal.
+function numerosLinha(r) {
+  return [el('td', { style: 'white-space:nowrap' }, brl(r.gasto)), el('td', {}, r.temQ ? String(r.sessoes) : '–'), el('td', {}, r.temQ ? r.comprar + (r.sessoes ? ' · ' + pct(r.comprar, r.sessoes) : '') : '–'),
+    el('td', {}, r.vendas == null ? '–' : String(r.vendas)), el('td', { style: 'white-space:nowrap;' + (r.cpv > 37 ? 'color:var(--bad);font-weight:700' : r.cpv ? 'color:var(--gd);font-weight:700' : '') }, r.cpv ? brl(r.cpv) : '–')]
+}
+function linhaTabela(r, cols, key, primeira) {
+  const st = STATUS[r.st] || ['n', r.st]
+  const extra = [primeira, r.nivel === 'anúncio' ? (r.ctr ? 'CTR ' + r.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%' : '') : (r.budget ? brl(r.budget) + '/dia' : '')].filter(Boolean).join(' · ')
   const tr = el('tr', { class: 'click' + (abertoKey === key ? ' open' : ''), tabindex: '0', 'aria-expanded': String(abertoKey === key) },
-    el('td', {}, el('b', {}, r.name), PROBLEMA.includes(r.st) ? el('button', { class: 'pill no probbtn', type: 'button', style: 'margin-left:6px', title: 'Ver o problema e pedir a correção', onclick: (e) => { e.stopPropagation(); abrirOtimizar(r) } }, st[1] + ' →') : st[0] !== 'ok' ? el('span', { class: 'pill ' + st[0], style: 'margin-left:6px' }, st[1]) : null, alerta ? el('span', { class: 'warnchip' }, 'R$ 40+ sem compra') : null, primeira ? el('br') : null, primeira ? el('span', { class: 'muted' }, primeira) : null),
-    ...numeros, celOtimiza(r))
+    el('td', {}, el('b', {}, r.name), PROBLEMA.includes(r.st) ? el('button', { class: 'pill no probbtn', type: 'button', style: 'margin-left:6px', title: 'Ver o problema e pedir a correção', onclick: (e) => { e.stopPropagation(); abrirOtimizar(r) } }, st[1] + ' →') : st[0] !== 'ok' ? el('span', { class: 'pill ' + st[0], style: 'margin-left:6px' }, st[1]) : null, extra ? el('br') : null, extra ? el('span', { class: 'muted' }, extra) : null),
+    ...numerosLinha(r), celOtimiza(r))
   const tog = () => { abertoKey = abertoKey === key ? null : key; render() }
   tr.addEventListener('click', tog); tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tog() } })
   return abertoKey === key ? [tr, detalhe(r, cols)] : [tr]
 }
-const qcel = (r, v, soNum) => el('td', {}, r.temQ ? (soNum ? String(v) : v + ' · ' + pct(v, r.sessoes)) : '–')
 function render() {
   if (stamp) { const t = 'atualizado ' + stamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ' · próxima em 1 h'; $('m-at').textContent = t; if (periodo === 'today') $('m-at-r').textContent = t }
   renderSelects()
@@ -1561,8 +1587,8 @@ function render() {
   if (M.camps) {
     const rows = ordenar(M.camps.map(linhaCamp).filter((r) => passaStatus(r.st) && (!campAlvo || r.id === campAlvo) && passaBusca(r.name)), sortSt.camps)
     const tb = $('m-camps'); tb.textContent = ''
-    for (const r of rows) tb.append(...linhaTabela(r, 9, 'c' + r.id, '', [el('td', {}, r.budget ? brl(r.budget) : '–'), el('td', {}, brl(r.gasto)), el('td', {}, String(r.cliques)), el('td', {}, String(r.lp)), qcel(r, r.sessoes, true), qcel(r, r.res), qcel(r, r.comprar)]))
-    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '9', class: 'l muted' }, 'Nenhuma campanha com esse filtro.')))
+    for (const r of rows) tb.append(...linhaTabela(r, 7, 'c' + r.id, ''))
+    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhuma campanha com esse filtro.')))
   }
   if (M.sets) {
     const rows = ordenar(M.sets.map(linhaSet).filter((r) => passaStatus(r.st, r.campId) && (!campAlvo || r.campId === campAlvo) && (!setAlvo || r.id === setAlvo) && passaBusca(r.name, r.camp)), sortSt.sets)
@@ -1570,9 +1596,9 @@ function render() {
     let gasto = 0, cliq = 0, verba = 0
     for (const r of rows) {
       gasto += r.gasto; cliq += r.cliques; if (ATIVOS.includes(r.st)) verba += r.budget
-      tb.append(...linhaTabela(r, 9, 's' + r.id, r.camp, [el('td', {}, r.budget ? brl(r.budget) : '–'), el('td', {}, brl(r.gasto)), el('td', {}, String(r.cliques)), el('td', {}, String(r.lp)), qcel(r, r.sessoes, true), qcel(r, r.res), qcel(r, r.comprar)]))
+      tb.append(...linhaTabela(r, 7, 's' + r.id, r.camp))
     }
-    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '9', class: 'l muted' }, 'Nenhum conjunto com esse filtro.')))
+    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhum conjunto com esse filtro.')))
     $('m-gasto').textContent = brl(gasto); $('m-gasto-s').textContent = 'verba ativa: ' + brl(verba) + '/dia'
     $('m-cliq').textContent = String(cliq); $('m-cliq-s').textContent = gasto > 0 && cliq > 0 ? brl(gasto / cliq) + ' por clique' : ' '
     if (Q.vendas) { $('m-v').textContent = String(Q.vendas.vendas); $('m-v-s').textContent = 'custo por venda: ' + (Q.vendas.vendas > 0 ? brl(gasto / Q.vendas.vendas) : '–') + ' · régua R$ 37' }
@@ -1580,8 +1606,8 @@ function render() {
   if (M.ads) {
     const rows = ordenar(M.ads.map(linhaAd).filter((r) => passaStatus(r.st, r.campId, r.setId) && (!campAlvo || r.campId === campAlvo) && (!setAlvo || r.setId === setAlvo) && (!adSel || r.id === adSel) && passaBusca(r.name, r.set, r.camp)), sortSt.ads)
     const tb = $('m-ads'); tb.textContent = ''
-    for (const r of rows) tb.append(...linhaTabela(r, 9, 'a' + r.id, r.set, [el('td', {}, r.ctr ? r.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%' : '–'), el('td', {}, brl(r.gasto)), el('td', {}, String(r.cliques)), el('td', {}, String(r.lp)), qcel(r, r.sessoes, true), qcel(r, r.res), qcel(r, r.comprar)]))
-    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '9', class: 'l muted' }, 'Nenhum anúncio com esse filtro.')))
+    for (const r of rows) tb.append(...linhaTabela(r, 7, 'a' + r.id, r.set))
+    if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhum anúncio com esse filtro.')))
   }
   if (Q.total) { const t = Q.total; $('m-sess').textContent = String(t.sessoes); $('m-sess-s').textContent = t.t1 + ' passaram da 1ª tela (' + pct(t.t1, t.sessoes) + ')'; $('m-ck').textContent = String(t.comprar); $('m-ck-s').textContent = pct(t.comprar, t.sessoes) + ' das sessões · régua 18,7%' }
   renderResumo(); renderOtSel(); if (otAlvo) renderOtimizar()
@@ -1591,6 +1617,29 @@ function renderResumo() {
   if (s) { const g = s.reduce((a, x) => a + N(x.amount_spent), 0), b = s.filter((x) => ATIVOS.includes(x.effective_status)).reduce((a, x) => a + N(x.daily_budget), 0); $('r-gasto').textContent = brl(g); $('r-gasto-s').textContent = 'de ' + brl(b) + ' de verba ativa/dia'; if (v) $('r-v-s').textContent = 'custo por venda: ' + (v.vendas > 0 ? brl(g / v.vendas) : '–') + ' · régua R$ 37' }
   if (q) { $('r-sess').textContent = String(q.sessoes); $('r-t1').textContent = String(q.t1); $('r-t1-s').textContent = pct(q.t1, q.sessoes) + ' · régua 32%'; $('r-ck').textContent = String(q.comprar); $('r-ck-s').textContent = pct(q.comprar, q.sessoes) + ' · régua 18,7%' }
   if (v) $('r-v').textContent = String(v.vendas)
+  renderHoje()
+}
+// ── Resumo: o que fazer hoje (junta o que pede uma decisão sua, do mais urgente ao menos) ──
+function renderHoje() {
+  const box = $('hoje-acoes'); if (!box) return
+  const L = [], ir = (t, fn) => () => { abrir(t); if (fn) fn() }
+  if (RC) { const n = RC.filter((r) => r.sit === 'pix' && !rcFeitos.has(r.id)).length; if (n) L.push({ cls: 'urg', t: n === 1 ? '1 pessoa gerou Pix e não pagou' : n + ' pessoas geraram Pix e não pagaram', d: 'Chame no WhatsApp em até 1 hora: é a venda mais fácil de recuperar.', b: ['Chamar agora', ir('recuperar', () => irPessoas('pix')), 'pri'] }) }
+  if (periodo === 'today' && M.sets && Q.vendSet) {
+    const sets = M.sets.map(linhaSet).filter((r) => ativoEnt(r.st, r.campId)), sig = (r) => (sinal(r) || [])[1]
+    const pausar = sets.filter((r) => sig(r) === 'Pausar?'), escalar = sets.filter((r) => sig(r) === 'Escalar')
+    if (pausar.length) L.push({ cls: 'urg', t: plural(pausar.length, 'conjunto gastou', 'conjuntos gastaram') + ' R$ 40 ou mais hoje sem ninguém clicar em comprar', d: pausar.map((r) => r.name + ' (' + brl(r.gasto) + ')').join(' · '), b: ['Ver e decidir', () => abrirOtimizar(pausar[0]), 'pri'] })
+    if (escalar.length) L.push({ cls: 'ok', t: plural(escalar.length, 'conjunto pronto', 'conjuntos prontos') + ' para escalar', d: escalar.map((r) => r.name + ' (' + brl(r.cpv) + ' por venda)').join(' · '), b: ['Ver', () => abrirOtimizar(escalar[0])] })
+  }
+  if (M.ads) { const prob = M.ads.filter((a) => PROBLEMA.includes(a.effective_status) && ativoEnt('ACTIVE', a.campaign_id, a.adset_id)); if (prob.length) L.push({ cls: 'urg', t: plural(prob.length, 'anúncio reprovado ou com problema', 'anúncios reprovados ou com problema') + ' em campanha ligada', d: prob.map((a) => a.name).join(' · '), b: ['Ver o motivo', () => abrirOtimizar(linhaAd(prob[0])), 'pri'] }) }
+  const esperando = Object.values(props).filter((p) => p.status === 'pendente').length
+  if (esperando) L.push({ t: plural(esperando, 'proposta esperando', 'propostas esperando') + ' a sua aprovação', d: 'Nada muda no Meta sem o seu "Aprovar".', b: ['Ver propostas', ir('aprovar'), 'pri'] })
+  const hj = diaBR(0), d3 = diaBR(3), conferir = Object.values(props).filter((p) => p.status === 'executado' && p.conferir_em && String(p.conferir_em).slice(0, 10) <= hj && String(p.conferir_em).slice(0, 10) >= d3)
+  if (conferir.length) L.push({ t: 'Conferir o resultado de ' + plural(conferir.length, 'mudança', 'mudanças'), d: conferir.map((p) => p.titulo).join(' · '), b: ['Ver no histórico', ir('historico')] })
+  if (objOk(OBJ) && custosVelhos(OBJ)) L.push({ t: 'Atualizar os outros custos da empresa', d: OBJ.custos_em ? 'Última atualização em ' + fmtD(OBJ.custos_em) + '. Sem isso o lucro fica errado.' : 'Ainda não foram preenchidos: o lucro está sem eles.', b: ['Atualizar custos', ir('objetivo', () => editarObj('custos'))] })
+  if (objOk(OBJ) && OBJD && !OBJD.erro && objJanela(OBJ).comecou) { const c = calcObj(); if (estadoObj(c)[0] === 'no') L.push({ t: 'Meta do painel bem abaixo do ritmo', d: pctN(c.pctMeta) + ' da meta com ' + pctN(c.pctTempo) + ' do prazo.', b: ['Ver o plano', ir('objetivo')] }) }
+  if (!L.length) L.push({ cls: 'ok', t: 'Nada urgente agora ✓', d: 'Quando algo pedir uma decisão sua, aparece aqui.' })
+  box.textContent = ''
+  L.forEach((x, i) => box.append(el('div', { class: 'card rc-acao ' + (x.cls || '') }, el('span', { class: 'num' }, String(i + 1)), el('h4', {}, x.t), el('p', {}, x.d), x.b ? el('div', { class: 'btns' }, el('button', { class: 'b ' + (x.b[2] || ''), type: 'button', onclick: x.b[1] }, x.b[0])) : null)))
 }
 sortSt.camps = { k: 'gasto', dir: -1 }
 function sortable(tableId, key) {
@@ -1630,6 +1679,9 @@ function porQuiz(rows) {
 const HORA = 3600000
 const qQuiz = (p) => { const [ini, fim] = janelaSQL(p); return `select coalesce(utm_term,'') conjunto, coalesce(utm_content,'') anuncio, count(*) filter (where status<>'pageview') sessoes, count(*) filter (where reached_index>=1) t1, count(*) filter (where reached_index>=24) res, count(*) filter (where checkout_clicked) comprar from quiz_sessions where created_at>=${ini} and created_at<${fim} and utm_source='FB' group by 1,2` }
 const qVendas = (p) => { const [ini, fim] = janelaSQL(p); return `with v as (select distinct on (coalesce(transaction,hotmart_event_id)) * from vendas where received_at>=${ini} and received_at<${fim} order by coalesce(transaction,hotmart_event_id), received_at desc) select count(*) filter (where offer_code='QN7gci' and status in ('APPROVED','COMPLETED')) vendas, coalesce(sum(full_price) filter (where offer_code='QN7gci' and status in ('APPROVED','COMPLETED')),0) receita from v` }
+// Vendas da oferta do quiz por conjunto (tracking_src) e por anúncio (utm_content da sessão do quiz ligada pelo xcod).
+const qVendasPor = (p) => { const [ini, fim] = janelaSQL(p); return `with v as (select distinct on (coalesce(transaction,hotmart_event_id)) * from vendas where received_at>=${ini} and received_at<${fim} order by coalesce(transaction,hotmart_event_id), received_at desc)
+select coalesce(v.tracking_src,'') conjunto, coalesce((select q.utm_content from quiz_sessions q where v.tracking_xcod is not null and q.xcod = v.tracking_xcod order by (q.checkout_at is null), q.created_at desc limit 1),'') anuncio, count(*) vendas from v where v.offer_code='QN7gci' and v.status in ('APPROVED','COMPLETED') group by 1,2` }
 const diaBR = (menos) => { const d = new Date(Date.now() - menos * 86400000); return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d) }
 const DIAS = { last_3d: 2, last_7d: 6 }
 const baseIn = (p) => ({ ad_account_id: ACCOUNT, ...(DIAS[p] != null ? { time_range: JSON.stringify({ since: diaBR(DIAS[p]), until: diaBR(0) }) } : { date_preset: p }), include_additional_context: false, client_conversation_id: CONV })
@@ -1638,11 +1690,11 @@ const inSets = (p) => ({ ...baseIn(p), level: 'adset', fields: ['id', 'name', 'e
 const inAds = (p) => ({ ...baseIn(p), level: 'ad', fields: ['id', 'name', 'effective_status', 'campaign_id', 'campaign_name', 'adset_name', 'adset_id', 'amount_spent', 'impressions', 'link_click', 'omni_landing_page_view', 'ctr', 'cpm', 'results'], limit: 500 })
 function watchPeriodo() {
   for (const u of unsub) { try { u() } catch {} }
-  unsub = []; M = { camps: null, sets: null, ads: null }; Q = { porAd: null, porSet: null, vendas: null, total: null }; abertoKey = null
-  for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="9" class="l muted">Carregando do Meta…</td></tr>'
+  unsub = []; M = { camps: null, sets: null, ads: null }; Q = { porAd: null, porSet: null, vendas: null, total: null, vendSet: null, vendAd: null }; abertoKey = null
+  for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="7" class="l muted">Carregando do Meta…</td></tr>'
   $('m-err').hidden = true
   const onMeta = (k) => (ev) => {
-    if (ev.type === 'error') { if (ev.error.code === 'server_not_connected' && META === METAS[0]) { META = METAS[1]; watchPeriodo(); return } showErr('Meta', ev.error); if (ERRS[ev.error.code]) for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="9" class="l muted">Sem acesso ao Meta.</td></tr>'; return }
+    if (ev.type === 'error') { if (ev.error.code === 'server_not_connected' && META === METAS[0]) { META = METAS[1]; watchPeriodo(); return } showErr('Meta', ev.error); if (ERRS[ev.error.code]) for (const id of ['m-camps', 'm-sets', 'm-ads']) $(id).innerHTML = '<tr><td colspan="7" class="l muted">Sem acesso ao Meta.</td></tr>'; return }
     const rows = parseMeta(ev.result.payload); if (!rows) { showErr('Meta', { code: 'formato', message: 'resposta em formato inesperado' }); return }
     M[k] = rows; if (periodo === 'today' && k === 'sets') hoje.sets = rows
     stamp = ev.result.cache && ev.result.cache.storedAt ? new Date(ev.result.cache.storedAt) : new Date(); render()
@@ -1654,6 +1706,13 @@ function watchPeriodo() {
     if (ev.type === 'error') { showErr('Quiz (Supabase)', ev.error); return }
     const rows = parseRows(ev.result.payload); if (!rows) return
     const r = porQuiz(rows); Q.porAd = r.porAd; Q.porSet = r.porSet; Q.total = r.total; if (periodo === 'today') hoje.quiz = r.total; render()
+  }, { refetchInterval: HORA }))
+  unsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: qVendasPor(periodo) }, (ev) => {
+    if (ev.type === 'error') return
+    const rows = parseRows(ev.result.payload); if (!rows) return
+    const vs = {}, va = {}
+    for (const r of rows) { const n = Number(r.vendas) || 0, st = r.conjunto || '', nome = dec(r.anuncio); vs[st] = (vs[st] || 0) + n; if (nome) va[st + '|' + nome] = (va[st + '|' + nome] || 0) + n }
+    Q.vendSet = vs; Q.vendAd = va; render()
   }, { refetchInterval: HORA }))
   unsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: qVendas(periodo) }, (ev) => {
     if (ev.type === 'error') return
@@ -1773,11 +1832,11 @@ function tabelaFilhos(titulo, rows, pre, col2) {
   ordenar(rows, { k: 'gasto', dir: -1 })
   const filtro = { ativas: 'ativos', pausadas: 'pausados', todas: 'todos' }[stFiltro]
   const tb = el('tbody', {})
-  for (const r of rows) tb.append(...linhaTabela(r, 9, pre + r.id, r.nivel === 'anúncio' && otAlvo.nivel === 'campanha' ? r.set : '', [el('td', {}, col2 === 'CTR' ? (r.ctr ? r.ctr.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%' : '–') : (r.budget ? brl(r.budget) : '–')), el('td', {}, brl(r.gasto)), el('td', {}, String(r.cliques)), el('td', {}, String(r.lp)), qcel(r, r.sessoes, true), qcel(r, r.res), qcel(r, r.comprar)]))
-  if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '9', class: 'l muted' }, 'Nenhum ' + filtro.replace(/s$/, '') + ' aqui. Troque o filtro em Meta ao vivo (Ativas/Pausadas/Todas).')))
+  for (const r of rows) tb.append(...linhaTabela(r, 7, pre + r.id, r.nivel === 'anúncio' && otAlvo.nivel === 'campanha' ? r.set : ''))
+  if (!rows.length) tb.append(el('tr', {}, el('td', { colspan: '7', class: 'l muted' }, 'Nenhum ' + filtro.replace(/s$/, '') + ' aqui. Troque o filtro em Meta ao vivo (Ativas/Pausadas/Todas).')))
   const th = (t) => el('th', {}, t)
   return el('div', { class: 'ot-filhos' }, el('h3', {}, titulo + ' · ' + filtro),
-    el('div', { class: 'tbl' }, el('table', {}, el('thead', {}, el('tr', {}, el('th', {}, pre === 'os' ? 'Conjunto' : 'Anúncio'), th(col2), th('Gasto'), th('Cliques'), th('View page'), th('Quiz'), th('Última etapa'), th('Clicou comprar'), el('th', { class: 'l' }, 'Otimiza'))), tb)))
+    el('div', { class: 'tbl' }, el('table', {}, el('thead', {}, el('tr', {}, el('th', {}, pre === 'os' ? 'Conjunto' : 'Anúncio'), th('Gasto'), th('Começaram o quiz'), th('Clicaram comprar'), th('Vendas'), th('Custo por venda'), el('th', { class: 'l' }, 'Sinal'))), tb)))
 }
 const otConv = () => otAlvo ? 'ot-' + otAlvo.id : null
 function renderOtChat() {
@@ -1819,13 +1878,36 @@ document.querySelectorAll('#m-per button, #ot-per button').forEach((b) => b.addE
 
 // ── Sugestão quiz: trajetória do lead ─────────────────────────────
 // Telas do quiz (de app/efeito-lipo-quiz/_data.ts, 08/10). reached_index = última tela respondida.
-const QSTEPS = [{"i": 0, "id": "intro", "k": "intro", "t": "Abertura", "o": []}, {"i": 1, "id": "idade", "k": "single", "t": "Qual a sua faixa etária?", "o": [["-29", "Menos de 29 anos"], ["29-39", "Entre 29 e 39 anos"], ["40-49", "Entre 40 e 49 anos"], ["50+", "50 anos ou mais"]]}, {"i": 2, "id": "laura", "k": "laura", "t": "Apresentação da Laura", "o": []}, {"i": 3, "id": "objetivo", "k": "single", "t": "Qual é o seu principal objetivo agora?", "o": [["barriga", "Secar a barriga de vez"], ["roupa", "Caber naquela roupa especial"], ["bracos", "Afinar os braços"], ["autoestima", "Recuperar minha autoestima"], ["tudo", "Tudo acima"]]}, {"i": 4, "id": "recomecos", "k": "single", "t": "Quantas vezes você já recomeçou?", "o": [["1-2", "Uma ou duas vezes"], ["varias", "Várias vezes"], ["perdi-conta", "Já perdi a conta"], ["comecando", "Ainda estou tentando começar"]]}, {"i": 5, "id": "rotina", "k": "single", "t": "Como é a sua rotina hoje?", "o": [["corrida", "Super corrida, mal tenho tempo pra mim"], ["equilibrada", "Equilibrada mas sem sobra"], ["casa", "Fico em casa mas nunca sobra tempo"], ["tempo", "Tenho tempo para me dedicar"]]}, {"i": 6, "id": "canetinha", "k": "single", "t": "Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?", "o": [["usei", "Sim, já usei"], ["usando", "Sim, estou usando"], ["considerando", "Sim, estou considerando"], ["nao-usar", "Pensei mas decidi não usar"], ["nunca", "Nunca considerei"]]}, {"i": 7, "id": "fisico", "k": "single", "t": "Como você descreveria seu corpo hoje?", "o": [["inchada", "Bem de peso, mas inchada e sem definição"], ["leve-acima", "Levemente acima do peso"], ["acima", "Acima do peso"], ["muito-acima", "Muito acima do peso"]]}, {"i": 8, "id": "prova", "k": "prova", "t": "Prova social", "o": []}, {"i": 9, "id": "corpo-sonhos", "k": "single", "t": "Qual é o corpo que você quer ter?", "o": [["seca", "Seca e definida"], ["lisa", "Barriga lisa e braços finos"], ["curvas", "Com curvas e sem inchaço"], ["leve", "Leve — me sentir bem no meu corpo"]]}, {"i": 10, "id": "alimentacao", "k": "single", "t": "Como você descreveria a sua alimentação hoje?", "o": [["exagero", "Tento comer bem, mas acabo exagerando"], ["dieta", "Faço dieta, mas não vejo resultado"], ["sem-controle", "Como de tudo sem muito controle"], ["desorganizada", "Completamente desorganizada"]]}, {"i": 11, "id": "sabotador", "k": "single", "t": "Qual é o seu maior sabotador?", "o": [["doce", "Doce e chocolate"], ["carbo", "Pão, massa e carboidrato"], ["ansiedade", "Ansiedade e estresse"], ["noite", "Belisco à noite"], ["delivery", "Delivery e fast food"]]}, {"i": 12, "id": "dia-dificil", "k": "single", "t": "Em que dia da semana fica mais difícil manter sua rotina?", "o": [["segunda", "Segunda"], ["terca", "Terça"], ["quarta", "Quarta"], ["quinta", "Quinta"], ["sexta", "Sexta"], ["fim-de-semana", "Fim de semana"], ["sem-dia", "Não tem um dia fixo"]]}, {"i": 13, "id": "sono", "k": "single", "t": "Como anda seu sono e seu inchaço?", "o": [["mal", "Durmo mal e acordo cansada"], ["inchada", "Durmo ok, mas acordo inchada"], ["sem-energia", "Durmo bem, mas sem energia"], ["bom", "Sono bom e energia ok"]]}, {"i": 14, "id": "insight", "k": "insight", "t": "Ciclo do recomeço", "o": []}, {"i": 15, "id": "loading-1", "k": "loading", "t": "Carregando", "o": []}, {"i": 16, "id": "medo", "k": "single", "t": "Qual é o seu maior medo em relação a emagrecer?", "o": [["fracasso", "Medo de não conseguir de novo"], ["tempo", "Medo de não ter tempo"], ["dinheiro", "Medo de gastar e não ter resultado"], ["fome", "Medo de passar fome"], ["rebote", "Medo do efeito rebote"]]}, {"i": 17, "id": "pensamento", "k": "single", "t": "Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?", "o": [["bonita", "“Finalmente me sinto bonita de verdade”"], ["roupa", "“Vou usar aquela roupa que ficou guardada por meses”"], ["biquini", "“Não vou ter vergonha de colocar biquíni”"], ["foto", "“Vou querer tirar foto em tudo que é lugar”"], ["consegui", "“Consegui. Eu sabia que era capaz”"]]}, {"i": 18, "id": "regiao", "k": "multi", "t": "Qual região do seu corpo te incomoda mais?", "o": [["barriga", "Barriga e inchaço abdominal"], ["bracos", "Braços"], ["cintura", "Cintura e laterais"], ["quadril", "Quadril e coxas"], ["inteiro", "Corpo inteiro — tudo me incomoda"], ["nenhuma", "Não tenho queixa específica"]]}, {"i": 19, "id": "tempo-dia", "k": "single", "t": "Quanto tempo você consegue dedicar ao seu corpo por dia?", "o": [["10-15", "10 a 15 minutos"], ["15-20", "15 a 20 minutos"], ["20-30", "20 a 30 minutos"], ["30+", "Mais de 30 minutos"]]}, {"i": 20, "id": "motivo", "k": "multi", "t": "O que te fez chegar até aqui hoje?", "o": [["confianca", "Me sentir confiante no próprio corpo"], ["roupas", "Voltar a usar as roupas que eu amo"], ["saude", "Ter mais saúde e energia no dia a dia"], ["fotos", "Parar de me esconder nas fotos"], ["provar", "Provar pra mim mesma que consigo"]]}, {"i": 21, "id": "altura", "k": "input", "t": "Qual é a sua altura?", "o": []}, {"i": 22, "id": "peso", "k": "input", "t": "Qual é o seu peso atual?", "o": []}, {"i": 23, "id": "loading-2", "k": "loading", "t": "Carregando", "o": []}, {"i": 24, "id": "result", "k": "result", "t": "Resultado (perfil)", "o": []}, {"i": 25, "id": "sales", "k": "sales", "t": "Página de vendas", "o": []}]
+const QSTEPS = [{"i": 0, "id": "intro", "k": "intro", "t": "Abertura", "o": []}, {"i": 1, "id": "idade", "k": "single", "t": "Qual a sua faixa etária?", "o": [["-29", "Menos de 29 anos"], ["29-39", "Entre 29 e 39 anos"], ["40-49", "Entre 40 e 49 anos"], ["50+", "50 anos ou mais"]]}, {"i": 2, "id": "laura", "k": "laura", "t": "Apresentação da Laura", "o": []}, {"i": 3, "id": "objetivo", "k": "single", "t": "Qual é o seu principal objetivo agora?", "o": [["barriga", "Secar a barriga de vez"], ["roupa", "Caber naquela roupa especial"], ["bracos", "Afinar os braços"], ["autoestima", "Recuperar minha autoestima"], ["tudo", "Tudo acima"]]}, {"i": 4, "id": "recomecos", "k": "single", "t": "Quantas vezes você já recomeçou?", "o": [["1-2", "Uma ou duas vezes"], ["varias", "Várias vezes"], ["perdi-conta", "Já perdi a conta"], ["comecando", "Ainda estou tentando começar"]]}, {"i": 5, "id": "rotina", "k": "single", "t": "Como é a sua rotina hoje?", "o": [["corrida", "Super corrida, mal tenho tempo pra mim"], ["equilibrada", "Equilibrada mas sem sobra"], ["casa", "Fico em casa mas nunca sobra tempo"], ["tempo", "Tenho tempo para me dedicar"]]}, {"i": 6, "id": "canetinha", "k": "single", "t": "Você já pensou em usar Ozempic, Mounjaro ou alguma canetinha emagrecedora?", "o": [["usei", "Sim, já usei"], ["usando", "Sim, estou usando"], ["considerando", "Sim, estou considerando"], ["nao-usar", "Pensei mas decidi não usar"], ["nunca", "Nunca considerei"]]}, {"i": 7, "id": "fisico", "k": "single", "t": "Como você descreveria seu corpo hoje?", "o": [["inchada", "Bem de peso, mas inchada e sem definição"], ["leve-acima", "Levemente acima do peso"], ["acima", "Acima do peso"], ["muito-acima", "Muito acima do peso"]]}, {"i": 8, "id": "prova", "k": "prova", "t": "Prova social", "o": []}, {"i": 9, "id": "corpo-sonhos", "k": "single", "t": "Qual é o corpo que você quer ter?", "o": [["seca", "Seca e definida"], ["lisa", "Barriga lisa e braços finos"], ["curvas", "Com curvas e sem inchaço"], ["leve", "Leve — me sentir bem no meu corpo"]]}, {"i": 10, "id": "alimentacao", "k": "single", "t": "Como você descreveria a sua alimentação hoje?", "o": [["exagero", "Tento comer bem, mas acabo exagerando"], ["dieta", "Faço dieta, mas não vejo resultado"], ["sem-controle", "Como de tudo sem muito controle"], ["desorganizada", "Completamente desorganizada"]]}, {"i": 11, "id": "sabotador", "k": "single", "t": "Qual é o seu maior sabotador?", "o": [["doce", "Doce e chocolate"], ["carbo", "Pão, massa e carboidrato"], ["ansiedade", "Ansiedade e estresse"], ["noite", "Belisco à noite"], ["delivery", "Delivery e fast food"]]}, {"i": 12, "id": "dia-dificil", "k": "single", "t": "Em que dia da semana fica mais difícil manter sua rotina?", "o": [["segunda", "Segunda"], ["terca", "Terça"], ["quarta", "Quarta"], ["quinta", "Quinta"], ["sexta", "Sexta"], ["fim-de-semana", "Fim de semana"], ["sem-dia", "Não tem um dia fixo"]]}, {"i": 13, "id": "sono", "k": "single", "t": "Como anda seu sono e seu inchaço?", "o": [["mal", "Durmo mal e acordo cansada"], ["inchada", "Durmo ok, mas acordo inchada"], ["sem-energia", "Durmo bem, mas sem energia"], ["bom", "Sono bom e energia ok"]]}, {"i": 14, "id": "insight", "k": "insight", "t": "Ciclo do recomeço", "o": [["faz-sentido", "Faz sentido — nunca tinha pensado assim"], ["novidade", "É novidade pra mim — quero entender melhor"]]}, {"i": 15, "id": "loading-1", "k": "loading", "t": "Carregando", "o": []}, {"i": 16, "id": "medo", "k": "single", "t": "Qual é o seu maior medo em relação a emagrecer?", "o": [["fracasso", "Medo de não conseguir de novo"], ["tempo", "Medo de não ter tempo"], ["dinheiro", "Medo de gastar e não ter resultado"], ["fome", "Medo de passar fome"], ["rebote", "Medo do efeito rebote"]]}, {"i": 17, "id": "pensamento", "k": "single", "t": "Se você acordasse amanhã no corpo que sempre sonhou, qual seria o seu primeiro pensamento?", "o": [["bonita", "“Finalmente me sinto bonita de verdade”"], ["roupa", "“Vou usar aquela roupa que ficou guardada por meses”"], ["biquini", "“Não vou ter vergonha de colocar biquíni”"], ["foto", "“Vou querer tirar foto em tudo que é lugar”"], ["consegui", "“Consegui. Eu sabia que era capaz”"]]}, {"i": 18, "id": "regiao", "k": "multi", "t": "Qual região do seu corpo te incomoda mais?", "o": [["barriga", "Barriga e inchaço abdominal"], ["bracos", "Braços"], ["cintura", "Cintura e laterais"], ["quadril", "Quadril e coxas"], ["inteiro", "Corpo inteiro — tudo me incomoda"], ["nenhuma", "Não tenho queixa específica"]]}, {"i": 19, "id": "tempo-dia", "k": "single", "t": "Quanto tempo você consegue dedicar ao seu corpo por dia?", "o": [["10-15", "10 a 15 minutos"], ["15-20", "15 a 20 minutos"], ["20-30", "20 a 30 minutos"], ["30+", "Mais de 30 minutos"]]}, {"i": 20, "id": "motivo", "k": "multi", "t": "O que te fez chegar até aqui hoje?", "o": [["confianca", "Me sentir confiante no próprio corpo"], ["roupas", "Voltar a usar as roupas que eu amo"], ["saude", "Ter mais saúde e energia no dia a dia"], ["fotos", "Parar de me esconder nas fotos"], ["provar", "Provar pra mim mesma que consigo"]]}, {"i": 21, "id": "altura", "k": "input", "t": "Qual é a sua altura?", "o": []}, {"i": 22, "id": "peso", "k": "input", "t": "Qual é o seu peso atual?", "o": []}, {"i": 23, "id": "loading-2", "k": "loading", "t": "Carregando", "o": []}, {"i": 24, "id": "result", "k": "result", "t": "Resultado (perfil)", "o": []}, {"i": 25, "id": "sales", "k": "sales", "t": "Página de vendas", "o": []}]
 const QOPT = {}; for (const st of QSTEPS) for (const [id, lab] of st.o) QOPT[st.id + '|' + id] = lab
 const QUIZ_NOVO = '2026-10-08T11:10:00Z'
+// Filtro "Escolher datas" (de/até, horário de Brasília). Começa no dia do quiz novo (08/10).
+const DIA0 = '2026-10-08', okDia = (d) => /^\d{4}-\d{2}-\d{2}$/.test(d || '')
+const janelaDatas = (de, ate) => "s.created_at >= greatest(('" + de + "'::date::timestamp at time zone 'America/Sao_Paulo'), '" + QUIZ_NOVO + "'::timestamptz) and s.created_at < (('" + ate + "'::date + 1)::timestamp at time zone 'America/Sao_Paulo')"
+const txtDatas = (de, ate) => de === ate ? 'Em ' + fmtD(de) : 'De ' + fmtD(de) + ' a ' + fmtD(ate)
+function ligarPeriodo(pre, aplicar) {
+  const box = $(pre + '-datas'), de = $(pre + '-de'), ate = $(pre + '-ate'), st = $(pre + '-datas-st'), hoje = diaBR(0)
+  for (const i of [de, ate]) { i.min = DIA0; i.max = hoje }
+  de.value = diaBR(6) < DIA0 ? DIA0 : diaBR(6); ate.value = hoje
+  document.querySelectorAll('#' + pre + '-per button').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('#' + pre + '-per button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
+    box.hidden = b.dataset.p !== 'datas'
+    if (b.dataset.p === 'datas') { de.focus(); return }
+    aplicar(b.dataset.p)
+  }))
+  $(pre + '-datas-ok').addEventListener('click', () => {
+    let a = de.value, z = ate.value
+    if (!okDia(a) || !okDia(z)) { st.textContent = 'Escolha as duas datas.'; return }
+    if (a > z) [a, z] = [z, a]
+    if (a < DIA0) a = DIA0
+    st.textContent = txtDatas(a, z); aplicar('datas', a, z)
+  })
+}
 const PERFIL = { emocional: 'A Emocional', 'sem-tempo': 'A Sem Tempo', 'tudo-ou-nada': 'A Tudo ou Nada', cansada: 'A Cansada de Recomeçar' }
 const perfilSQL = "case when answers->>'sabotador' in ('ansiedade','noite') then 'emocional' when answers->>'rotina' in ('corrida','casa') or answers->>'tempo-dia'='10-15' then 'sem-tempo' when answers->>'alimentacao' in ('exagero','dieta') then 'tudo-ou-nada' else 'cansada' end"
-let qPer = 'novo', qOrig = 'fb', qUnsub = [], qAberto = null, Qd = {}
+let qPer = 'novo', qOrig = 'fb', qUnsub = [], qAberto = null, Qd = {}, qDe = '', qAte = ''
 function qJanela() {
+  if (qPer === 'datas' && okDia(qDe) && okDia(qAte)) return janelaDatas(qDe, qAte) + (qOrig === 'fb' ? " and s.utm_source='FB'" : '')
   const d0 = "(date_trunc('day', now() at time zone 'America/Sao_Paulo') at time zone 'America/Sao_Paulo')"
   const ini = qPer === 'today' ? d0 : qPer === 'last_7d' ? d0 + " - interval '7 days'" : "'" + QUIZ_NOVO + "'::timestamptz"
   return "s.created_at >= greatest(" + ini + ", '" + QUIZ_NOVO + "'::timestamptz)" + (qOrig === 'fb' ? " and s.utm_source='FB'" : '')
@@ -1867,7 +1949,7 @@ function renderQuiz() {
       const d = k ? etapas[k - 1].n - e.n : 0
       box.append(el('div', { class: 'qrow' + (quedas.includes(k) ? ' perda' : '') }, el('span', { class: 'n' }, e.i < 0 ? 'T1' : e.i === 0 ? '' : e.i <= 24 ? 'T' + (e.i + 1) : e.i === 25 ? 'T26' : '$'),
         el('span', { class: 't', title: e.t }, e.t), el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + Math.max(e.n ? 1 : 0, Math.round(100 * e.n / max)) + '%' })),
-        el('b', {}, String(e.n), ' ', d > 0 ? el('span', { class: 'drop' }, '−' + d) : null)))
+        el('b', {}, String(e.n), el('span', { class: 'pc' }, ' · ' + pct(e.n, viu)), ' ', d > 0 ? el('span', { class: 'drop' }, '−' + d) : null)))
     })
   }
   if (Qd.perfis) {
@@ -1878,11 +1960,24 @@ function renderQuiz() {
   if (Qd.resp) {
     const b = $('q-resp'); b.textContent = ''
     const g = {}; for (const r of Qd.resp) { if (r.v == null) continue; (g[r.k] ||= []).push(r) }
+    // Quantas pessoas passaram de cada tela (para as telas sem pergunta: Laura, prova social, carregando, resultado)
+    const porR2 = {}; let viu2 = 0
+    for (const r of Qd.funil || []) { const n = Number(r.n) || 0; viu2 += n; porR2[r.r] = (porR2[r.r] || 0) + n }
+    const passou2 = (i) => Object.entries(porR2).reduce((a, [r, n]) => a + (Number(r) >= i ? n : 0), 0)
+    const FAIXA = { altura: [[0, 155, 'Até 1,54 m'], [155, 165, '1,55 a 1,64 m'], [165, 175, '1,65 a 1,74 m'], [175, 999, '1,75 m ou mais']], peso: [[0, 60, 'Até 59 kg'], [60, 70, '60 a 69 kg'], [70, 80, '70 a 79 kg'], [80, 90, '80 a 89 kg'], [90, 999, '90 kg ou mais']] }
     for (const st of QSTEPS) {
-      const l = g[st.id]; if (!l || !st.o.length) continue
+      if (st.i === 0 || st.k === 'sales') continue   // T1 (abertura) e T26 (oferta) estão no funil
+      let l = g[st.id]
+      if (FAIXA[st.id] && l) { const m = {}; for (const r of l) { const x = Number(String(r.v).replace(',', '.')), f = FAIXA[st.id].find(([a, z]) => x >= a && x < z); if (f) m[f[2]] = (m[f[2]] || 0) + (Number(r.n) || 0) } l = FAIXA[st.id].filter((f) => m[f[2]]).map((f) => ({ v: f[2], n: m[f[2]], lab: f[2] })) }
+      if (!l || !l.length) {
+        if (!Qd.funil || st.o.length) continue
+        const n = passou2(st.i)
+        b.append(el('div', { class: 'card sem' }, el('h4', {}, 'T' + (st.i + 1) + ' · ' + st.t), el('span', { class: 'muted', style: 'font-size:12.5px' }, 'Tela sem pergunta: ' + n + ' passaram por ela (' + pct(n, viu2) + ' de quem viu a 1ª tela, igual ao funil).')))
+        continue
+      }
       const tot = l.reduce((a, r) => a + (Number(r.n) || 0), 0), mx = Math.max(...l.map((r) => Number(r.n) || 0))
-      const card = el('div', { class: 'card' }, el('h4', {}, 'T' + (st.i + 1) + ' · ' + st.t), el('span', { class: 'muted', style: 'font-size:12px' }, tot + ' respostas'))
-      for (const r of l.sort((a, c) => c.n - a.n)) card.append(el('div', { class: 'rbar' }, el('span', { class: 'lab' }, el('i', { style: 'width:' + Math.round(100 * r.n / mx) + '%' }), QOPT[st.id + '|' + r.v] || r.v), el('b', {}, r.n + ' · ' + pct(r.n, tot))))
+      const card = el('div', { class: 'card' }, el('h4', {}, 'T' + (st.i + 1) + ' · ' + st.t), el('span', { class: 'muted', style: 'font-size:12px' }, tot + ' respostas' + (st.k === 'multi' ? ' (podia marcar mais de uma)' : '')))
+      for (const r of (FAIXA[st.id] ? l : l.sort((a, c) => c.n - a.n))) card.append(el('div', { class: 'rbar' }, el('span', { class: 'lab' }, el('i', { style: 'width:' + Math.round(100 * r.n / mx) + '%' }), r.lab || QOPT[st.id + '|' + r.v] || r.v), el('b', {}, r.n + ' · ' + pct(r.n, tot))))
       b.append(card)
     }
     if (!b.children.length) b.append(el('div', { class: 'empty' }, 'Ainda sem respostas neste período.'))
@@ -1913,7 +2008,7 @@ function renderQuiz() {
   if (!lista.length) qp.append(el('div', { class: 'empty' }, 'Nenhuma sugestão para o quiz ainda. Elas chegam na análise das 7h, ou peça no chat, assunto "Quiz".'))
   for (const [id, p] of lista) qp.append(cardProposta(id, p, 'qz-'))
 }
-document.querySelectorAll('#q-per button').forEach((b) => b.addEventListener('click', () => { qPer = b.dataset.p; document.querySelectorAll('#q-per button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); qWatch() }))
+ligarPeriodo('q', (p, a, z) => { qPer = p; if (p === 'datas') { qDe = a; qAte = z } qWatch() })
 document.querySelectorAll('#q-orig button').forEach((b) => b.addEventListener('click', () => { qOrig = b.dataset.o; document.querySelectorAll('#q-orig button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); qWatch() }))
 
 
@@ -2026,7 +2121,7 @@ function renderObj() {
     if (!$('ob-custos').children.length) { for (const n of CUSTOS_PADRAO) $('ob-custos').append(linhaCusto(n, '')); somaCustos() }
     if (!objOk(OBJ)) box.append(el('div', { class: 'empty' }, 'Ainda não tem meta. Preencha abaixo, por exemplo: Lucro · R$ 100.000 · 30 dias. A meta vale para o painel todo e para a análise das 7h.'))
   } else form.hidden = true
-  renderObStrip(); renderObChat()
+  renderObStrip(); renderObChat(); renderHoje()
   if (!objOk(OBJ)) { $('ob-at').textContent = 'sem meta'; $('ob-conta').textContent = ''; return }
   const o = OBJ, J = objJanela(o)
   const titulo = o.texto || ('Bater ' + valorObj(o, o.valor) + ' ' + (o.tipo === 'vendas' ? '' : TIPO_OBJ[o.tipo]) + ' em ' + o.dias + ' dias').replace(/\s+/g, ' ')
@@ -2174,10 +2269,11 @@ $('ob-pedir').addEventListener('click', (e) => {
 })
 
 // ── Clicou em comprar e não comprou ────────────────────────────────
-let rcPer = 'novo', rcSit = 'nao', rcUnsub = null, RC = null, rcAberto = null, rcPlano = null
+let rcPer = 'novo', rcSit = 'nao', rcUnsub = null, RC = null, rcAberto = null, rcPlano = null, rcDe = '', rcAte = ''
 const rcFeitos = new Map() // id da sessão do quiz → {feito_em}: quem você já chamou no WhatsApp (só o id, sem dados da pessoa)
 const MEDO = { fracasso: 'Não conseguir de novo', tempo: 'Não ter tempo', dinheiro: 'Gastar e não ter resultado', fome: 'Passar fome', rebote: 'Efeito rebote' }
 function rcJanela() {
+  if (rcPer === 'datas' && okDia(rcDe) && okDia(rcAte)) return janelaDatas(rcDe, rcAte)
   const d0 = "(date_trunc('day', now() at time zone 'America/Sao_Paulo') at time zone 'America/Sao_Paulo')"
   const ini = rcPer === 'today' ? d0 : rcPer === 'last_7d' ? d0 + " - interval '6 days'" : "'" + QUIZ_NOVO + "'::timestamptz"
   return "s.created_at >= greatest(" + ini + ", '" + QUIZ_NOVO + "'::timestamptz)"
@@ -2238,7 +2334,7 @@ function renderRec() {
   const ck = RC.length, comp = RC.filter((r) => r.sit === 'comprou'), pix = RC.filter((r) => r.sit === 'pix'), saiu = RC.filter((r) => r.sit === 'saiu'), nao = [...pix, ...saiu]
   const aChamar = pix.filter((r) => !rcFeitos.has(r.id)).length
   const nb = $('nb-rc'); nb.textContent = String(aChamar); nb.classList.toggle('hot', aChamar > 0)
-  const PER = { today: 'Hoje', last_7d: 'Nos últimos 7 dias', novo: 'Desde o quiz novo (08/10)' }[rcPer]
+  const PER = rcPer === 'datas' ? txtDatas(rcDe, rcAte) : { today: 'Hoje', last_7d: 'Nos últimos 7 dias', novo: 'Desde o quiz novo (08/10)' }[rcPer]
   // 1 · A situação numa frase + barra
   top.textContent = ''
   if (!ck) top.append(el('p', { class: 'rc-frase' }, PER + ', ninguém clicou em comprar ainda.'))
@@ -2307,7 +2403,7 @@ function renderRec() {
   mot.append(el('div', { class: 'rc-ajuda' }, el('b', {}, 'Como ler'), el('span', {}, 'Cada linha é uma resposta do quiz. "4 de 8" quer dizer que 4 das 8 pessoas daquele grupo marcaram essa resposta. Em vermelho, a resposta mais comum de quem não comprou.'),
     comp.length < 5 ? el('span', {}, 'Atenção: só ' + plural(comp.length, 'pessoa comprou', 'pessoas compraram') + ' no período, então a coluna "Compraram" ainda não diz muito. Fica confiável com umas 10 compras.') : null))
   if (cards.length) mot.append(el('div', { class: 'rc-cmp' }, ...cards)); else mot.append(el('p', { class: 'muted' }, 'Ainda sem respostas suficientes para comparar.'))
-  renderRcChat()
+  renderRcChat(); renderHoje()
 }
 function acoesPix(r, tel) {
   const feito = rcFeitos.get(r.id), box = el('div', { style: 'display:flex;flex-wrap:wrap;gap:6px;align-items:center' })
@@ -2362,7 +2458,7 @@ $('rc-pedir').addEventListener('click', (e) => {
   if (RC) { const pix = RC.filter((r) => r.sit === 'pix').length, saiu = RC.filter((r) => r.sit === 'saiu').length, comp = RC.filter((r) => r.sit === 'comprou').length; est = ' Agora: ' + RC.length + ' clicaram comprar, ' + comp + ' compraram, ' + pix + ' geraram Pix/boleto sem pagar, ' + saiu + ' saíram do checkout.' }
   enviarRc('Descubra por que quem clicou em comprar não comprou e monte o plano de recuperação.' + est + ' Use as respostas do quiz delas. Sugira o que você achar que faz essa pessoa comprar: anúncio de remarketing, mudança no checkout ou na página, campanha nova e automação de recuperação no WhatsApp. Cada mudança como proposta para eu aprovar.', e.currentTarget)
 })
-document.querySelectorAll('#rc-per button').forEach((b) => b.addEventListener('click', () => { rcPer = b.dataset.p; document.querySelectorAll('#rc-per button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); rcWatch() }))
+ligarPeriodo('rc', (p, a, z) => { rcPer = p; if (p === 'datas') { rcDe = a; rcAte = z } rcWatch() })
 
 setInterval(() => { if (Object.values(msgs).some((m) => m.papel !== 'claude' && !m.respondido)) { renderChat(); renderOtChat(); renderObChat(); renderRcChat() } }, 30000)
 // ── Arranque ───────────────────────────────────────────────────────
@@ -2372,7 +2468,7 @@ renderProps(); renderChat(); renderObj(); renderObPlano(null); renderRec(); rend
   if (!c) { $('pr-state').textContent = 'abra no claude.ai'; $('ch-state').textContent = 'abra no claude.ai'; $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; return }
   ;[db, user, mcp] = await Promise.all([c.use('db').catch(() => null), c.use('user').catch(() => null), c.use('mcp').catch(() => null)])
   if (user) { try { me = await user.id() } catch {} }
-  if (mcp) { watchPeriodo(); rcWatch() }
+  if (mcp) { watchPeriodo(); rcWatch(); qWatch() }
   else { $('m-at').textContent = 'sem conexão'; $('m-at-r').textContent = 'sem conexão'; $('m-sets').innerHTML = '<tr><td colspan="7" class="l muted">Os números ao vivo aparecem para quem tem os conectores do Meta e do Supabase.</td></tr>'; $('m-ads').innerHTML = '' }
   if (!db) { $('pr-state').textContent = 'entre na sua conta'; $('ch-state').textContent = 'entre na sua conta'; return }
   $('pr-state').textContent = 'aprovações salvas no painel'; $('ch-state').textContent = 'conversas salvas no painel'
