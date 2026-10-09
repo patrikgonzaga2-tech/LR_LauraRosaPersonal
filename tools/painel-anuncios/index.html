@@ -2076,6 +2076,11 @@ const TESTES = [
     base: 'clicks', pos: 'vendas', cols: [['Clicaram comprar', 'clicks', null], ['Venderam', 'vendas', 'clicks']],
     sql: (d) => `select checkout_ab braco, count(*) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas from quiz_sessions s where checkout_ab in ('greenn','greenn-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
     links: [{ rot: 'Ver checkout A (R$ 37)', url: 'https://payfast.greenn.com.br/redirect/297430' }, { rot: 'Ver checkout B (R$ 47)', url: 'https://payfast.greenn.com.br/redirect/795991' }] },
+  { id: 'T3', nome: 'Assinatura mensal R$ 37 × R$ 27 (teste C)', status: 'A no ar desde 09/10 15h47 · B aguardando o link de R$ 27', desde: '2026-10-09T15:47:00-03:00',
+    arms: [['assinatura-37', 'A · R$ 37/mês (WOqOSI)'], ['assinatura-27', 'B · R$ 27/mês']],
+    base: 'clicks', pos: 'vendas', cols: [['Clicaram assinar', 'clicks', null], ['Assinaram', 'vendas', 'clicks']],
+    sql: (d) => `select checkout_ab braco, count(*) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas from quiz_sessions s where checkout_ab in ('assinatura-37','assinatura-27') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
+    links: [{ rot: 'Ver checkout A (R$ 37/mês)', url: 'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597' }] },
 ]
 let testesUnsub = [], TESTE_D = {}
 function testesWatch() {

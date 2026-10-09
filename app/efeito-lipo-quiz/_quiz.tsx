@@ -578,6 +578,9 @@ function Sales({ perfil, answers, onCheckout }: { perfil: InnerProps['perfil']; 
       <Item><b>Roteiro de 21 dias</b> em 3 fases: Limpeza, Ativação e Queima Total</Item>
       <Item><b>21 Treinos Hormonais</b> de 15 minutos, em casa, sem equipamento</Item>
       <Item>Módulo <b>Comece por Aqui</b> + autoavaliação inicial e final</Item>
+      <Item>Guia Alimentar <b>"Sem Neura"</b>: cardápio dos 21 dias e lista de compras</Item>
+      <Item>Áudios <b>"Quebra de Sabotagem"</b> para a hora da vontade</Item>
+      <Item><b>Planner de Progresso</b> para acompanhar sua evolução</Item>
       <Item>Bônus: aula do <b>Ciclo Menstrual</b> e e-book <b>Anti-Pelanquinha</b></Item>
     </>
   )

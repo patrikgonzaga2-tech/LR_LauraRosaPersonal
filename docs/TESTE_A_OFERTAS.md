@@ -50,6 +50,7 @@ Status: só o **Teste A** está feito. Os outros esperam sua aprovação e os li
 - **Substituído:** o desenho de 5 braços A a E do esboço da T26 some. Ele vira os Testes B, C e D.
 - **Teste G (T1), decidido em 09/10:** braço A = T1 atual; braço B = mesma foto da Laura, título "Descubra seu perfil de recomeço em 2 minutos e o primeiro passo para sentir o corpo menos inchado" (sem prazo de resultado, por risco de reprovação no Meta). Botão igual nos dois braços ("Quero descobrir meu perfil"). Falta só o esboço antes × depois (a troca é o título em `app/efeito-lipo-quiz/_quiz.tsx`, `IntroB`, linhas 728 e 731).
 - **T1 B aprovada no esboço (09/10), com o subtítulo "Descubra o porquê em 2 minutos." tirado.** A (no ar) = v7 + fbclid (main `56b52b9`). Imagem: `tools/quiz-revisao/esbocos/img/cmp-T1-antes-depois.jpg`.
+- **No ar em 09/10:** teste G (PR #16/#17), teste B (PR #18, R$ 37 × R$ 47, link 795991 com 3 bumps) e T25/T26 novas (PR #19): topo igual ao modelo anterior (título, 3 semanas, botão, antes e depois, alunas), cartão do Efeito Lipo com o preço do teste B e cartão da Comunidade R$ 37/mês (oferta WOqOSI, clique grava `assinatura-37`).
 - **Aprovado (09/10): popup de 20% (EFEITOLIPO20) vale em todos os braços dos testes.**
 - **Medida em todos:** receita por visita na T26 (inclui a 1ª mensalidade).
 
