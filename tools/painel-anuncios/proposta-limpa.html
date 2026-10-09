@@ -1,0 +1,228 @@
+<title>Painel Volta ao Eixo · proposta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Layout: mesma marca do painel atual (verde-escuro + laranja), 5 abas em vez de 19; cada aba começa pelo que pede decisão. Tema claro de propósito, cores da marca. */
+:root{
+  color-scheme:light;
+  --o:#F57100; --od:#B84A00; --o-soft:#FFF1E5;
+  --g:#1C873C; --gd:#004811; --g-soft:#E8F4EC;
+  --ink:#1A1A1A; --sub:#555049; --mute:#8A847C; --pale:#F7F5F2; --wh:#FFFFFF; --line:#E8E3DC;
+  --warn:#8F5400; --warn-soft:#FFF4DC; --bad:#B8382B; --bad-soft:#FBE9E6;
+  --display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif; --body:'DM Sans',ui-sans-serif,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pale);color:var(--ink);font:15px/1.55 var(--body)}
+h1,h2,h3,h4{font-family:var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--gd);color:#fff}
+.top-in{max-width:1120px;margin:0 auto;padding:10px 20px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+.brand{font:800 18px var(--display)}.brand span{color:var(--o)}
+.tabs{display:flex;flex-wrap:wrap;gap:4px}
+.tabs button{all:unset;cursor:pointer;font-weight:700;font-size:14px;padding:8px 13px;border-radius:9px;color:rgba(255,255,255,.85)}
+.tabs button:hover{background:rgba(255,255,255,.1)}
+.tabs button[aria-selected="true"]{background:var(--o);color:#000}
+.tabs button:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.tabs .n{display:inline-block;min-width:20px;text-align:center;font-size:11.5px;border-radius:99px;padding:0 6px;margin-left:6px;background:#FFC53D;color:#000}
+main{max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:20px 60px;display:grid;gap:18px}
+.aviso{font-size:13px;color:var(--warn);background:var(--warn-soft);border-radius:10px;padding:8px 12px}
+section[hidden]{display:none}
+section{display:grid;gap:16px}
+.card{background:var(--wh);border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:16px 18px;display:grid;gap:10px;min-width:0}
+.muted{color:var(--mute);font-size:13.5px}
+.k{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.pill{display:inline-flex;align-items:center;font-size:12px;font-weight:700;border-radius:99px;padding:2px 10px;white-space:nowrap}
+.ok{background:var(--g-soft);color:var(--gd)}.wait{background:var(--warn-soft);color:var(--warn)}.no{background:var(--bad-soft);color:var(--bad)}.n0{background:var(--pale);color:var(--sub);border:1px solid var(--line)}
+/* Meta */
+.meta{border-top:5px solid var(--o)}
+.meta-top{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
+.meta h2{font-size:24px}
+.bar{position:relative;height:16px;border-radius:99px;background:var(--pale);border:1px solid var(--line);overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--o);border-radius:99px}
+.bar b{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--ink)}
+.conta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.conta div{background:var(--pale);border-radius:10px;padding:10px 12px;min-width:0}
+.conta strong{display:block;font:800 21px var(--display);font-variant-numeric:tabular-nums}
+.conta span{font-size:12.5px;color:var(--sub)}
+@media (max-width:760px){.conta{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Ações do dia */
+.acoes{display:grid;gap:10px}
+.acao{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:4px 12px;align-items:start;background:var(--wh);border:1px solid rgba(0,0,0,.07);border-left:5px solid var(--line);border-radius:12px;padding:14px 16px}
+.acao.urg{border-left-color:var(--o)}.acao.bom{border-left-color:var(--g)}
+.acao .num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:800 13px var(--display);background:var(--pale)}
+.acao.urg .num{background:var(--o);color:#000}.acao.bom .num{background:var(--g);color:#fff}
+.acao h4{font-size:16px}.acao p{font-size:14px;color:var(--sub)}
+.acao .btn{grid-column:3;grid-row:1/span 2}
+@media (max-width:640px){.acao{grid-template-columns:28px minmax(0,1fr)}.acao .btn{grid-column:2;grid-row:auto}}
+.btn{font:700 13.5px var(--body);border-radius:10px;border:1px solid var(--line);background:var(--wh);color:var(--ink);padding:8px 13px;cursor:pointer;white-space:nowrap}
+.btn.pri{background:var(--o);border-color:var(--o);color:#000}
+.btn:focus-visible{outline:2px solid var(--o);outline-offset:2px}
+/* Tabelas */
+.tbl{overflow-x:auto;border:1px solid rgba(0,0,0,.07);border-radius:14px;background:var(--wh)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:700}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td b{font-weight:700}
+/* Funil */
+.funil{display:grid;gap:6px}
+.f{display:grid;grid-template-columns:190px minmax(0,1fr) 60px;gap:10px;align-items:center;font-size:13.5px}
+.f .tr{height:16px;border-radius:99px;background:rgba(0,0,0,.06);overflow:hidden}.f .tr i{display:block;height:100%;background:var(--o);border-radius:99px}
+.f b{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:560px){.f{grid-template-columns:120px minmax(0,1fr) 44px}}
+/* Testes */
+.camadas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.camada{background:var(--pale);border-radius:12px;padding:12px 14px;display:grid;gap:6px;min-width:0}
+.camada h4{font-size:15px}
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ab div{background:var(--wh);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:13px;min-width:0}
+.ab b{display:block;font-size:11px;letter-spacing:.06em;color:var(--od)}
+@media (max-width:860px){.camadas{grid-template-columns:1fr}}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.lista{margin:0;padding-left:18px;display:grid;gap:5px;font-size:14px}
+</style>
+
+<header class="top"><div class="top-in">
+  <div class="brand">Painel <span>Volta ao Eixo</span></div>
+  <nav class="tabs" role="tablist" aria-label="Seções">
+    <button role="tab" data-t="hoje" aria-selected="true">Hoje <span class="n">3</span></button>
+    <button role="tab" data-t="anuncios" aria-selected="false">Anúncios</button>
+    <button role="tab" data-t="quiz" aria-selected="false">Quiz e testes</button>
+    <button role="tab" data-t="conteudo" aria-selected="false">Conteúdo da Laura</button>
+    <button role="tab" data-t="conversar" aria-selected="false">Aprovar e conversar</button>
+  </nav>
+</div></header>
+
+<main>
+  <p class="aviso">Proposta de layout. Os números são uma foto de 09/10 às 16h45 (Supabase, Meta e Greenn), só para mostrar como ficaria. O painel de verdade continua sendo o "Painel Volta ao Eixo".</p>
+
+  <!-- HOJE -->
+  <section id="hoje" role="tabpanel">
+    <div class="card meta">
+      <div class="meta-top"><h2>R$ 10 mil de lucro em outubro</h2><span class="pill no">Bem abaixo do ritmo</span></div>
+      <div class="bar" role="img" aria-label="1% da meta com 29% do mês"><i style="width:1.4%"></i><b style="left:29%"></b></div>
+      <p class="muted">A linha preta é onde deveríamos estar hoje (dia 9 de 31). Faltam R$ 9.865 em 22 dias: R$ 448 de lucro por dia.</p>
+      <div class="conta">
+        <div><strong>R$ 6.620</strong><span>Comunidade líquido · 25 vendas</span></div>
+        <div><strong>R$ 278</strong><span>Efeito Lipo e bumps · 12 vendas</span></div>
+        <div><strong>− R$ 463</strong><span>Anúncios no Meta</span></div>
+        <div><strong>− R$ 6.300</strong><span>Outros custos (confirmar)</span></div>
+      </div>
+      <p style="font-size:14px"><b>Lucro até agora: R$ 135.</b> Quem paga as contas é a Comunidade vendida pela Aline. O Efeito Lipo vendeu 3.032 em julho e 12 em outubro.</p>
+    </div>
+
+    <h3>Faça hoje</h3>
+    <div class="acoes">
+      <div class="acao urg"><span class="num">1</span><h4>Pôr mais verba nos posts da Laura que viram clique</h4><p>Os posts orgânicos (3 Pilares, 1802…6874, 1800…3180) dão 7% a 11% de cliques. As artes A a I dão 1% a 4%. Proposta: tirar R$ 15/dia das artes e pôr nos posts.</p><button class="btn pri" type="button">Ver proposta</button></div>
+      <div class="acao urg"><span class="num">2</span><h4>Comunidade: 2,8 vendas por dia, precisa de 4</h4><p>Para bater a meta só com a Comunidade (R$ 265 líquido por venda), faltam cerca de 37 vendas em 22 dias. A Aline tem leads quentes parados em "Follow up".</p><button class="btn" type="button">Ver plano</button></div>
+      <div class="acao"><span class="num">3</span><h4>Testes: nada para decidir hoje</h4><p>T1, T2 e T4 têm menos de 100 pessoas por versão. Volte amanhã.</p><button class="btn" type="button">Ver testes</button></div>
+    </div>
+
+    <div class="conta">
+      <div><strong>R$ 66</strong><span>Gasto hoje no Meta</span></div>
+      <div><strong>23</strong><span>Visitas reais do anúncio no quiz</span></div>
+      <div><strong>1</strong><span>Clicou em comprar</span></div>
+      <div><strong>0</strong><span>Vendas pelo quiz hoje</span></div>
+    </div>
+  </section>
+
+  <!-- ANÚNCIOS -->
+  <section id="anuncios" role="tabpanel" hidden>
+    <div class="card">
+      <h3>Melhor anúncio hoje: post "1802…6874"</h3>
+      <p style="font-size:14px">10,7% das pessoas que viram clicaram (12 cliques por R$ 9,10). <b>O que resolver:</b> conferir se esses cliques chegam ao quiz. Hoje o Meta contou 52 cliques e o quiz recebeu 23 visitas do anúncio.</p>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Anúncio (hoje)</th><th class="num">Gasto</th><th class="num">Cliques</th><th class="num">% clique</th><th>Sinal</th><th>O que fazer</th></tr></thead>
+      <tbody>
+        <tr><td><b>Post 1802…6874</b><br><span class="muted">post do Instagram</span></td><td class="num">R$ 9,10</td><td class="num">12</td><td class="num">10,7%</td><td><span class="pill ok">Melhor clique</span></td><td>Manter e subir verba aos poucos</td></tr>
+        <tr><td><b>Post 3 Pilares · 7896</b><br><span class="muted">vendeu 2 em 03/10</span></td><td class="num">R$ 11,41</td><td class="num">10</td><td class="num">7,2%</td><td><span class="pill ok">Bom</span></td><td>Manter</td></tr>
+        <tr><td><b>Post 1800…3180</b></td><td class="num">R$ 10,44</td><td class="num">11</td><td class="num">6,8%</td><td><span class="pill ok">Bom</span></td><td>Manter</td></tr>
+        <tr><td><b>DATA (aberto, 12/10)</b></td><td class="num">R$ 4,72</td><td class="num">5</td><td class="num">6,0%</td><td><span class="pill n0">Pouco dado</span></td><td>Esperar</td></tr>
+        <tr><td><b>A Segunda-Sexta · Stories</b></td><td class="num">R$ 5,93</td><td class="num">2</td><td class="num">1,3%</td><td><span class="pill no">Trocar</span></td><td>Pausar e passar a verba para os posts</td></tr>
+        <tr><td><b>G Quantas vezes · Stories</b></td><td class="num">R$ 3,94</td><td class="num">2</td><td class="num">2,6%</td><td><span class="pill wait">Fraco</span></td><td>Esperar mais um dia</td></tr>
+        <tr><td><b>C Perfis · Feed</b></td><td class="num">R$ 3,66</td><td class="num">1</td><td class="num">1,6%</td><td><span class="pill no">Trocar</span></td><td>Pausar</td></tr>
+      </tbody>
+    </table></div>
+    <p class="muted">Uma tabela só, já em ordem do melhor para o pior, com um "o que fazer" por linha. Campanhas e conjuntos ficam num botão "Ver detalhes". Junta as abas Meta ao vivo, Otimizar e Criativos.</p>
+  </section>
+
+  <!-- QUIZ E TESTES -->
+  <section id="quiz" role="tabpanel" hidden>
+    <div class="card">
+      <h3>Funil desde 13h40</h3>
+      <div class="funil">
+        <div class="f"><span>Abriram o quiz</span><span class="tr"><i style="width:100%"></i></span><b>55</b></div>
+        <div class="f"><span>Vieram do anúncio</span><span class="tr"><i style="width:42%"></i></span><b>23</b></div>
+        <div class="f"><span>Começaram</span><span class="tr"><i style="width:18%"></i></span><b>10</b></div>
+        <div class="f"><span>Chegaram à oferta</span><span class="tr"><i style="width:5%"></i></span><b>3</b></div>
+        <div class="f"><span>Clicaram comprar</span><span class="tr"><i style="width:2%"></i></span><b>1</b></div>
+        <div class="f"><span>Compraram</span><span class="tr"><i style="width:0%"></i></span><b>0</b></div>
+      </div>
+      <p class="muted">32 visitas chegaram sem dizer de onde vêm (sem anúncio e sem site de origem). Precisamos entender o que são antes de confiar na taxa da 1ª tela.</p>
+    </div>
+
+    <div class="card">
+      <h3>Os 3 testes, com exemplo</h3>
+      <div class="camadas">
+        <div class="camada"><span class="k">1ª camada · todas as visitas</span><h4>T1 · Primeira tela</h4>
+          <div class="ab"><div><b>A</b>"Você começa toda segunda e na sexta já saiu do plano?"</div><div><b>B</b>"Descubra seu perfil de recomeço em 2 minutos…"</div></div>
+          <p style="font-size:13.5px"><b>Exemplo:</b> a Ana cai no B e começa o quiz; a Bia cai no A e fecha. Ganha a frase que faz mais gente começar.</p>
+          <p class="muted">Hoje: A 23 · B 31 visitas</p></div>
+        <div class="camada"><span class="k">2ª camada · quem chega à oferta</span><h4>T4 · O que a oferta mostra</h4>
+          <div class="ab"><div><b>A</b>Efeito Lipo + Comunidade</div><div><b>B</b>Só a Comunidade R$ 37/mês</div></div>
+          <p style="font-size:13.5px"><b>Exemplo:</b> a Ana termina o quiz e cai no B: vê só a Comunidade. Ganha a página que traz mais reais por pessoa.</p>
+          <p class="muted">Hoje: ninguém chegou ainda</p></div>
+        <div class="camada"><span class="k">3ª camada · só quem caiu no A do T4</span><h4>T2 · Preço do Efeito Lipo</h4>
+          <div class="ab"><div><b>A</b>R$ 37</div><div><b>B</b>R$ 47</div></div>
+          <p style="font-size:13.5px"><b>Exemplo:</b> a Bia cai no A do T4 e vê o Efeito Lipo a R$ 47. Ganha o preço que traz mais reais por pessoa.</p>
+          <p class="muted">Hoje: 1 clique no R$ 37</p></div>
+      </div>
+      <p class="muted">De cada 100 pessoas na oferta: 50 veem só a Comunidade, 25 veem R$ 37, 25 veem R$ 47. Decide com 100 pessoas por versão e 95% de chance.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card"><h3>Clicou e não comprou</h3><p style="font-size:14px">1 pessoa desde 13h40, saiu do checkout sem deixar contato. Só remarketing alcança.</p></div>
+      <div class="card"><h3>Mudanças no quiz</h3><p style="font-size:14px">Versões, comparar e editar textos ficam num botão "Histórico do quiz", fora da vista do dia.</p></div>
+    </div>
+  </section>
+
+  <!-- CONTEÚDO -->
+  <section id="conteudo" role="tabpanel" hidden>
+    <div class="grid2">
+      <div class="card"><h3>O que está funcionando</h3>
+        <ul class="lista">
+          <li><b>Anúncio:</b> posts da própria Laura (3 Pilares, Mounjaro, Seca e Definida) dão 2 a 4 vezes mais clique que as artes.</li>
+          <li><b>Instagram:</b> os 5 posts com mais salvos do mês, com "por que funcionou".</li>
+          <li><b>Biblioteca do Meta:</b> concorrentes no ar há mais de 30 dias (quem paga há tempo, vende).</li>
+        </ul>
+        <button class="btn" type="button">Buscar referências agora</button></div>
+      <div class="card"><h3>Roteiros para a Laura gravar</h3>
+        <ul class="lista">
+          <li>Para gravar, cada um nascido de uma referência acima.</li>
+          <li>Cena a cena, com o texto completo para ler.</li>
+          <li>Botões: copiar, mandar no WhatsApp, "já gravei".</li>
+        </ul>
+        <p class="muted">Junta as abas Referência, Roteiros da Laura, Vídeos e o painel "Roteiros de vídeo — Laura".</p></div>
+    </div>
+  </section>
+
+  <!-- CONVERSAR -->
+  <section id="conversar" role="tabpanel" hidden>
+    <div class="card"><h3>Uma fila só para aprovar</h3><p style="font-size:14px">Anúncio, criativo, quiz e oferta numa lista, com antes e depois e um botão Aprovar. À direita, um chat só, que entende o assunto de cada proposta. O que foi aprovado vai para "Feito" e some depois de 24 horas.</p></div>
+  </section>
+</main>
+
+<script>
+const tabs = document.querySelectorAll('.tabs [role=tab]')
+function abrir(t) {
+  tabs.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.t === t)))
+  document.querySelectorAll('main > section').forEach((s) => { s.hidden = s.id !== t })
+  try { localStorage.setItem('proposta_tab', t) } catch (e) {}
+}
+tabs.forEach((b) => b.addEventListener('click', () => abrir(b.dataset.t)))
+document.querySelectorAll('.acao .btn').forEach((b, i) => b.addEventListener('click', () => abrir(['anuncios', 'conversar', 'quiz'][i])))
+try { const t = localStorage.getItem('proposta_tab'); if (t && document.getElementById(t)) abrir(t) } catch (e) {}
+</script>
