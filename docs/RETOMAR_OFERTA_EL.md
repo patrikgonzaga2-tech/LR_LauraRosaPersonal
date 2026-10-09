@@ -52,11 +52,15 @@ T4/teste E (oferta com Efeito Lipo × só Comunidade, 50/50), T2/teste B (Efeito
 - A rotina só reconhece links payfast.greenn e só confere pagamento na Greenn.
 - 43 leads em_andamento deviam estar fechados pela regra (11 com mais de 14 dias, 32 com preço há mais de 7 dias).
 
-**Pendente de aprovação do Patrik (escrita no CRM ysgsyhmkixvlxpgbyqkl):**
-1. Fechar os 43 leads parados.
-2. Marcar as 2 compradoras Greenn como comprou.
-3. Rotina: reconhecer links da Hotmart e cruzar vendas aprovadas (Greenn + Hotmart) pelo telefone.
-4. Texto "Todo dia às 23:59" nas instruções da rotina → "11:59 e 23:59".
+**Aprovações do CRM (Patrik aprovou as 4 em 09/10 ~17h; ysgsyhmkixvlxpgbyqkl):**
+1. FEITO: 42 leads parados fechados (nao_comprou / sumiu_sem_resposta). O 43º (conversas_lidas.id 172) comprou → item 2.
+2. FEITO: ids 417 e 172 → comprou (Anual R$ 297 e R$ 397 na Greenn em 09/10, greenn_status = confirmada_telefone).
+3. PARCIAL: nas instruções (rotina_diaria_crm_v3) já estão os links da Hotmart em recebeu_link e os números
+   novos na resposta final. FALTA: o passo 3.1 (SELECT em public.vendas do banco de vendas + cruzar pelo
+   telefone) e trocar "nunca tocar no projeto de vendas" por "só SELECT em public.vendas" (na linha
+   "Proibido" das instruções e no prompt do trigger). Todo UPDATE com esse texto dá timeout de 60s no
+   execute_sql (testado 5x; os outros UPDATEs passam). Enquanto isso, a rotina não confere pagamento.
+4. FEITO: "às 11:59 e às 23:59" nas instruções e no prompt do trigger trig_01RbMXryDXAy1eLzpCmAtuj6.
 
 **Fila:**
 - 2 notificações no painel: recuperar Pix e passar R$ 20/dia de verba.
