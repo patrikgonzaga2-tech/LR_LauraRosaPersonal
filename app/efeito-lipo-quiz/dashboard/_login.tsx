@@ -31,7 +31,7 @@ export default function Login({ configured }: { configured: boolean }) {
       <form onSubmit={submit} className="w-full" style={{ maxWidth: 380 }}>
         <div className="rounded-3xl p-7" style={{ background: '#fff', boxShadow: '0 24px 60px rgba(0,0,0,.3)' }}>
           <div className="font-display text-center" style={{ fontWeight: 800, fontSize: 22, color: 'var(--ink)' }}>
-            Dashboard <span style={{ color: 'var(--o)' }}>Efeito Lipo</span>
+            Painel <span style={{ color: 'var(--o)' }}>Corpo Feliz</span>
           </div>
           <p className="text-center" style={{ fontSize: 13.5, color: 'var(--sub)', margin: '6px 0 20px' }}>Área restrita — informe a senha.</p>
           {!configured && (

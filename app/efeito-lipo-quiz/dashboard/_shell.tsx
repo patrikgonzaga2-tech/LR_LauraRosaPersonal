@@ -1,60 +1,12 @@
-// Estrutura do dashboard: menu lateral com grupos + abas. Server component
-// (a aba ativa vem por prop). Pensado pra crescer: novos grupos entram no
-// array GROUPS.
+// As abas antigas do dashboard do Efeito Lipo agora vivem dentro do Painel Corpo
+// Feliz (mesmo menu). As de detalhe (Produtos, Gateways, Upsell) seguem neste
+// endereço; Geral, Funil, Quiz, Anúncios e UTM foram substituídas pelas abas novas
+// do /painel, mas continuam abrindo por link direto.
 import type { ReactNode } from 'react'
+import { PainelShell } from '../../painel/_shell'
 
-const BASE = '/efeito-lipo-quiz/dashboard'
-
-const GROUPS: { label: string; tabs: { key: string; label: string; href: string }[] }[] = [
-  {
-    label: 'Quiz',
-    tabs: [
-      { key: 'geral', label: 'Geral', href: `${BASE}/geral` },
-      { key: 'funil', label: 'Funil', href: `${BASE}/funil` },
-      { key: 'quiz', label: 'Quiz', href: `${BASE}/quiz` },
-      { key: 'anuncios', label: 'Anúncios', href: `${BASE}/anuncios` },
-      { key: 'utm', label: 'Origem (UTM)', href: `${BASE}/utm` },
-      { key: 'produtos', label: 'Produtos', href: `${BASE}/produtos` },
-      { key: 'gateways', label: 'Gateways', href: `${BASE}/gateways` },
-      { key: 'upsell', label: 'Upsell', href: `${BASE}/upsell` },
-    ],
-  },
-]
+const MAPA: Record<string, string> = { produtos: 'el-produtos', gateways: 'el-gateways', upsell: 'el-upsell', quiz: 'quiz', anuncios: 'anuncios', funil: 'quiz', geral: 'marca-geral', utm: 'comercial' }
 
 export function DashboardShell({ active, children }: { active: string; children: ReactNode }) {
-  return (
-    <div className="min-h-[100dvh] md:flex" style={{ background: 'var(--pale)' }}>
-      <aside className="md:w-56 md:shrink-0 md:min-h-[100dvh] md:sticky md:top-0 z-20" style={{ background: 'var(--gd)', color: '#fff' }}>
-        <div className="px-5 py-4 font-display" style={{ fontWeight: 800, fontSize: 18 }}>
-          Dashboard <span style={{ color: 'var(--o)' }}>Efeito Lipo</span>
-          <a href="/painel" className="block" style={{ fontSize: 11.5, fontWeight: 700, color: 'rgba(255,255,255,.55)', marginTop: 3, textDecoration: 'none' }}>← Painel da Marca</a>
-        </div>
-        <nav className="px-3 pb-3">
-          {GROUPS.map((g) => (
-            <div key={g.label} className="mb-2">
-              <div className="hidden md:block px-2 pt-2 pb-1" style={{ fontSize: 10.5, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 700, color: 'rgba(255,255,255,.45)' }}>{g.label}</div>
-              <div className="flex md:block gap-2 overflow-x-auto">
-                {g.tabs.map((t) => {
-                  const on = active === t.key
-                  return (
-                    <a
-                      key={t.key}
-                      href={t.href}
-                      className="block rounded-lg px-3 py-2 whitespace-nowrap transition-colors"
-                      style={{ fontSize: 14, fontWeight: 700, color: on ? '#000' : 'rgba(255,255,255,.82)', background: on ? 'var(--o)' : 'transparent' }}
-                    >
-                      {t.label}
-                    </a>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
-        </nav>
-      </aside>
-      <main className="flex-1 min-w-0 px-5 md:px-8 py-6">
-        <div className="mx-auto" style={{ maxWidth: 1180 }}>{children}</div>
-      </main>
-    </div>
-  )
+  return <PainelShell active={MAPA[active] || ''}>{children}</PainelShell>
 }
