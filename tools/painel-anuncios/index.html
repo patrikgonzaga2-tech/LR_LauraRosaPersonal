@@ -1150,7 +1150,7 @@ button.b.bad:hover{background:var(--bad);color:#fff}
 
     <!-- SUGESTÃO QUIZ -->
     <section class="tab" id="tab-testes" role="tabpanel" hidden>
-      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Testes</h2><p>Cada teste do quiz, com a chance de cada versão ser a melhor. Conta só o que entrou depois do início do teste. Dá para decidir com pelo menos 100 visitas em cada versão e uma chance de 95% ou mais.</p></div></div>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Testes</h2><p>Os testes do quiz em três grupos: no ar, prontos esperando publicar e ideias para criar. Nos que estão no ar, a chance de cada versão ser a melhor. Conta só o que entrou depois do início do teste. Dá para decidir com pelo menos 100 visitas em cada versão e uma chance de 95% ou mais.</p></div></div>
       <div class="row"><button class="b pri" type="button" id="testes-atualizar">Recarregar números</button><span class="muted" id="testes-at"></span></div>
       <div id="testes-lista" style="display:grid;gap:14px"></div>
     </section>
@@ -2065,22 +2065,32 @@ const QOPT = {}; for (const st of QSTEPS) for (const [id, lab] of st.o) QOPT[st.
 // Cada teste: braços (valor gravado no banco), colunas da tabela, consulta e links para conferir.
 // Sessões de teste (utm_source=qa-painel) ficam de fora.
 const TESTE_MIN = 100
+// grupo: 'ar' = no ar recebendo gente (lê os números) · 'pronto' = feito, falta o Patrik dizer "publicar" · 'ideia' = falta criar.
 const TESTES = [
-  { id: 'T1', nome: 'Primeira tela (teste G)', status: 'no ar desde 09/10 13h40', desde: '2026-10-09T13:40:00-03:00',
+  { id: 'T1', grupo: 'ar', nome: 'Primeira tela do quiz: tela atual × título de recomeço', status: 'no ar desde 09/10 13h40', desde: '2026-10-09T13:40:00-03:00',
+    sobre: 'Metade vê a tela atual, metade vê "Descubra seu perfil de recomeço em 2 minutos…". Mede quantas começam o quiz. É o teste que mais recebe gente, porque toda visita do anúncio passa por ele.',
     arms: [['G-A', 'A · tela atual (v7)'], ['G-B', 'B · título de recomeço']],
     base: 'visitas', pos: 'comecou', cols: [['Visitas', 'visitas', null], ['Começaram', 'comecou', 'visitas'], ['Chegaram ao resultado', 'resultado', 'visitas'], ['Clicaram comprar', 'comprar', 'visitas']],
     sql: (d) => `select coalesce(intro_ab,'') braco, count(*) visitas, count(*) filter (where status<>'pageview') comecou, count(*) filter (where reached_index>=24) resultado, count(*) filter (where checkout_clicked) comprar from quiz_sessions where intro_ab in ('G-A','G-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
     links: [{ rot: 'Ver versão A (tela atual)', frame: 'v/v8/t1-a.html' }, { rot: 'Ver versão B (título de recomeço)', frame: 'v/v8/t1-b.html' }] },
-  { id: 'T2', nome: 'Preço do Efeito Lipo (teste B)', status: 'no ar desde 09/10 15h28', desde: '2026-10-09T15:28:00-03:00',
+  { id: 'T2', grupo: 'ar', nome: 'Preço do Efeito Lipo: R$ 37 × R$ 47', status: 'no ar desde 09/10 15h28 · pouca gente chega à oferta', desde: '2026-10-09T15:28:00-03:00',
+    sobre: 'Na página de oferta (T26), metade vê o Efeito Lipo a R$ 37 e metade a R$ 47 (com 3 bumps). Mede quem compra depois de clicar. Só conta quem chega ao fim do quiz, por isso enche devagar.',
     arms: [['greenn', 'A · R$ 37 (QN7gci)'], ['greenn-B', 'B · R$ 47 (gLO7Gm)']],
     base: 'clicks', pos: 'vendas', cols: [['Clicaram comprar', 'clicks', null], ['Venderam', 'vendas', 'clicks']],
     sql: (d) => `select checkout_ab braco, count(*) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas from quiz_sessions s where checkout_ab in ('greenn','greenn-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
     links: [{ rot: 'Ver checkout A (R$ 37)', url: 'https://payfast.greenn.com.br/redirect/297430' }, { rot: 'Ver checkout B (R$ 47)', url: 'https://payfast.greenn.com.br/redirect/795991' }] },
-  { id: 'T3', nome: 'Assinatura mensal R$ 37 × R$ 27 (teste C)', status: 'A no ar desde 09/10 15h47 · B aguardando o link de R$ 27', desde: '2026-10-09T15:47:00-03:00',
-    arms: [['assinatura-37', 'A · R$ 37/mês (WOqOSI)'], ['assinatura-27', 'B · R$ 27/mês']],
-    base: 'clicks', pos: 'vendas', cols: [['Clicaram assinar', 'clicks', null], ['Assinaram', 'vendas', 'clicks']],
-    sql: (d) => `select checkout_ab braco, count(*) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas from quiz_sessions s where checkout_ab in ('assinatura-37','assinatura-27') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
-    links: [{ rot: 'Ver checkout A (R$ 37/mês)', url: 'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597' }] },
+  { id: 'T4', grupo: 'pronto', nome: 'Página de oferta: com Efeito Lipo × só a Comunidade', status: 'pronto · falta você dizer "publicar"', desde: '2026-10-09T23:59:00-03:00',
+    sobre: 'Metade vê a página de hoje (Efeito Lipo + Comunidade). A outra metade vê só a Comunidade Corpo Feliz a R$ 37/mês, com os entregáveis que a Aline apresenta e o Efeito Lipo incluso. Mede receita por visita na página de oferta. O preço do Efeito Lipo (T2) segue sorteando só na metade A.',
+    arms: [['E-A', 'A · Efeito Lipo + Comunidade'], ['E-B', 'B · só Comunidade R$ 37/mês']],
+    base: 'visitas', pos: 'vendas', cols: [['Viram a oferta', 'visitas', null], ['Clicaram comprar', 'clicks', 'visitas'], ['Compraram', 'vendas', 'visitas'], ['Receita (R$)', 'receita', null]],
+    sql: (d) => `with e as (select distinct on (session_id) session_id, answer braco from quiz_events where event='oferta' and created_at >= '${d}' order by session_id, created_at) select e.braco, count(*) visitas, count(*) filter (where s.checkout_clicked) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas, coalesce(sum((select sum(v.price) from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))),0) receita from e join quiz_sessions s on s.id = e.session_id where coalesce(s.utm_source,'')<>'qa-painel' group by 1`,
+    links: [{ rot: 'Ver esboço A × B', img: 'v/e/cmp-T26-testeE.jpg' }, { rot: 'Ver checkout da Comunidade (R$ 37/mês)', url: 'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597' }] },
+  { id: 'T3', grupo: 'ideia', nome: 'Preço da Comunidade: R$ 37 × R$ 27 por mês', status: 'falta o link de R$ 27 na Greenn',
+    sobre: 'Testar se a mensal mais barata vende mais. Falta você criar na Greenn a assinatura de R$ 27/mês (recorrente, só cartão, mesmo produto da WOqOSI). Cuidado: R$ 27/mês fica perto da anual (R$ 297 = R$ 24,75/mês), que é a que mais vende.' },
+  { id: 'T5', grupo: 'ideia', nome: 'Formato da Comunidade: mensal R$ 37 × trimestral R$ 97', status: 'depois do T3 e do T4',
+    sobre: 'Mesma página, troca a mensal pela trimestral (O8j7nc, já existe). Mede receita por visita.' },
+  { id: 'T6', grupo: 'ideia', nome: 'Oferta depois da compra do Efeito Lipo', status: 'falta esboço e o redirect na Greenn',
+    sobre: 'Quem acabou de comprar o Efeito Lipo (cerca de 24 por dia) vê na /acompanhamento-up a Comunidade (R$ 37/mês × trimestral R$ 97), com botão "não, obrigada" que leva ao grupo. Maior chance de lucro em outubro, porque pega todas as compradoras, não só o quiz.' },
 ]
 let testesUnsub = [], TESTE_D = {}
 function testesWatch() {
@@ -2089,11 +2099,12 @@ function testesWatch() {
   if (!mcp) { renderTestes(); return }
   const at = $('testes-at'); if (at) at.textContent = 'Atualizando…'
   for (const t of TESTES) {
+    if (t.grupo !== 'ar' || !t.sql) continue
     testesUnsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: t.sql(t.desde) }, (ev) => {
       if (ev.type === 'error') { TESTE_D[t.id] = { erro: ERRS[ev.error.code] || 'não consegui ler agora' }; renderTestes(); return }
       if (ev.type !== 'data') return
       const rows = parseRows(ev.result.payload); if (!rows) return
-      TESTE_D[t.id] = rows.map((r) => ({ braco: r.braco, visitas: Number(r.visitas) || 0, comecou: Number(r.comecou) || 0, resultado: Number(r.resultado) || 0, comprar: Number(r.comprar) || 0, clicks: Number(r.clicks) || 0, vendas: Number(r.vendas) || 0 }))
+      TESTE_D[t.id] = rows.map((r) => ({ braco: r.braco, visitas: Number(r.visitas) || 0, comecou: Number(r.comecou) || 0, resultado: Number(r.resultado) || 0, comprar: Number(r.comprar) || 0, clicks: Number(r.clicks) || 0, vendas: Number(r.vendas) || 0, receita: Math.round(Number(r.receita) || 0) }))
       renderTestes()
     }, { refetchInterval: 3600000 }))
   }
@@ -2114,14 +2125,26 @@ function normCdf(z) { // Abramowitz & Stegun 26.2.17
 function renderTestes() {
   const box = $('testes-lista'); if (!box) return
   box.replaceChildren()
-  for (const t of TESTES) {
-    const card = el('div', { style: 'background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:10px' })
+  const GRUPOS = [['ar', 'No ar', 'Rodando agora com quem vem dos anúncios.', 'ok'], ['pronto', 'Prontos, esperando publicar', 'Feitos e conferidos. Vão ao ar quando você disser "publicar".', 'wait'], ['ideia', 'Ideias para criar', 'Ainda não existem. Em ordem de prioridade para vender.', 'n']]
+  for (const [g, tit, sub, pill] of GRUPOS) {
+    const lista = TESTES.filter((t) => t.grupo === g)
+    box.append(el('div', { style: 'display:grid;gap:4px;margin-top:8px' }, el('h3', {}, tit + ' ', el('span', { class: 'pill ' + pill }, String(lista.length))), el('p', { class: 'muted' }, sub)))
+    if (!lista.length) box.append(el('p', { class: 'empty' }, 'Nenhum por enquanto.'))
+    for (const t of lista) renderTeste(box, t)
+  }
+  const at = $('testes-at'); if (at) at.textContent = 'Atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+}
+function renderTeste(box, t) {
+  {
+    const card = el('div', { style: 'background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:10px' + (t.grupo === 'ar' ? ';border-left:5px solid var(--g)' : t.grupo === 'pronto' ? ';border-left:5px solid #E0A100' : '') })
     card.append(el('div', { style: 'display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline' }, el('strong', {}, t.id + ' · ' + t.nome), el('span', { class: 'muted' }, t.status)))
+    if (t.sobre) card.append(el('p', { style: 'margin:0;font-size:14px;color:var(--sub)' }, t.sobre))
     box.append(card)
+    if (t.grupo !== 'ar') { if (t.links) card.append(testeLinks(card, t)); return }
     const d = TESTE_D[t.id]
-    if (!d) { card.append(el('p', { class: 'muted' }, mcp ? 'Lendo os números…' : 'Os números aparecem para quem tem o conector do Supabase.')); continue }
-    if (d.erro) { card.append(el('p', { class: 'muted' }, 'Supabase: ' + d.erro + '.')); continue }
-    const zero = { visitas: 0, comecou: 0, resultado: 0, comprar: 0, clicks: 0, vendas: 0 }
+    if (!d) { card.append(el('p', { class: 'muted' }, mcp ? 'Lendo os números…' : 'Os números aparecem para quem tem o conector do Supabase.')); return }
+    if (d.erro) { card.append(el('p', { class: 'muted' }, 'Supabase: ' + d.erro + '.')); return }
+    const zero = { visitas: 0, comecou: 0, resultado: 0, comprar: 0, clicks: 0, vendas: 0, receita: 0 }
     const linhas = t.arms.map(([k, nome]) => ({ k, nome, ...(d.find((x) => x.braco === k) || zero) }))
     const [a, b] = linhas
     const pB = normCdf(zTeste(a, b, t)), pA = 1 - pB
@@ -2138,21 +2161,24 @@ function renderTestes() {
     card.append(el('p', { style: 'margin:0', class: 'muted' }, menor < TESTE_MIN
       ? 'Ainda sem resposta: ' + menor + ' de ' + TESTE_MIN + ' no braço menor. Quem está na frente hoje: ' + lider.nome + '.'
       : 'Vencendo: ' + lider.nome + ', com ' + Math.round(chanceLider * 100) + '% de chance de ser a melhor.' + (chanceLider >= 0.95 ? ' Já dá para decidir.' : ' Ainda não é certeza (decide a partir de 95%).')))
-    // Versões internas do painel (v/…) abrem num celular aqui dentro: o claude.ai bloqueia abrir esses arquivos em aba nova.
-    const prev = el('div', { hidden: '', style: 'justify-self:center;width:100%;max-width:360px;aspect-ratio:390/780;background:#16130F;border-radius:34px;padding:9px' })
-    const verFrame = (url, btn) => {
-      const aberto = !prev.hidden && prev.dataset.url === url
-      prev.replaceChildren(); prev.hidden = aberto; prev.dataset.url = aberto ? '' : url
-      card.querySelectorAll('button[data-frame]').forEach((b) => b.setAttribute('aria-pressed', String(!aberto && b === btn)))
-      if (!aberto) prev.append(el('iframe', { src: url, title: 'Prévia da versão', style: 'width:100%;height:100%;border:0;border-radius:26px;background:#F7F5F2;display:block' }))
-    }
-    card.append(el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap' }, ...t.links.map((l) => l.frame
-      ? el('button', { class: 'b pri', type: 'button', 'data-frame': l.frame, 'aria-pressed': 'false', onclick: (e) => verFrame(l.frame, e.currentTarget) }, l.rot)
-      : l.tab
-        ? el('button', { class: 'b pri', type: 'button', onclick: () => abrir(l.tab) }, l.rot)
-        : el('a', { class: 'b pri', href: l.url, target: '_blank', rel: 'noopener' }, l.rot + ' ↗'))), prev)
+    card.append(testeLinks(card, t))
   }
-  const at = $('testes-at'); if (at) at.textContent = 'Atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+}
+// Versões internas do painel (v/…) abrem num celular aqui dentro: o claude.ai bloqueia abrir esses arquivos em aba nova.
+function testeLinks(card, t) {
+  const prev = el('div', { hidden: '', style: 'justify-self:center;width:100%;max-width:360px;aspect-ratio:390/780;background:#16130F;border-radius:34px;padding:9px' })
+  const verFrame = (url, btn, img) => {
+    const aberto = !prev.hidden && prev.dataset.url === url
+    prev.replaceChildren(); prev.hidden = aberto; prev.dataset.url = aberto ? '' : url
+    prev.style.cssText = img ? 'justify-self:stretch;width:100%;max-height:80vh;overflow:auto;border:1px solid var(--line);border-radius:12px' : 'justify-self:center;width:100%;max-width:360px;aspect-ratio:390/780;background:#16130F;border-radius:34px;padding:9px'
+    card.querySelectorAll('button[data-frame]').forEach((b) => b.setAttribute('aria-pressed', String(!aberto && b === btn)))
+    if (!aberto) prev.append(img ? el('img', { src: url, alt: 'Esboço', style: 'width:100%;display:block' }) : el('iframe', { src: url, title: 'Prévia da versão', style: 'width:100%;height:100%;border:0;border-radius:26px;background:#F7F5F2;display:block' }))
+  }
+  return el('div', { style: 'display:grid;gap:10px' }, el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap' }, ...t.links.map((l) => (l.frame || l.img)
+    ? el('button', { class: 'b pri', type: 'button', 'data-frame': l.frame || l.img, 'aria-pressed': 'false', onclick: (e) => verFrame(l.frame || l.img, e.currentTarget, !!l.img) }, l.rot)
+    : l.tab
+      ? el('button', { class: 'b pri', type: 'button', onclick: () => abrir(l.tab) }, l.rot)
+      : el('a', { class: 'b pri', href: l.url, target: '_blank', rel: 'noopener' }, l.rot + ' ↗'))), prev)
 }
 $('testes-atualizar').addEventListener('click', () => testesWatch())
 
