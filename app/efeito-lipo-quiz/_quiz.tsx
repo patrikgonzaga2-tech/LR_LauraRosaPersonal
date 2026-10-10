@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
-  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, pickOfertaArm, pickComElArm, CHECKOUT_HREF_SUB, subscriptionHref, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
+  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, pickOfertaArm, pickComElArm, CHECKOUT_HREF_SUB, CHECKOUT_HREF_SUB_TRI, subscriptionHref, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
   PERFIS, perfilRecomeco, RESULT_MARCOS, ROTEIRO_21, SALES, STEPS,
 } from './_data'
 import type { ImgKey, Step } from './_data'
@@ -127,7 +127,7 @@ export default function QuizApp() {
     return <Intro onStart={() => { const intro_ab = (typeof window !== 'undefined' && sessionStorage.getItem(INTRO_AB_KEY)) || undefined; persist({ id: sidRef.current, action: 'start', intro_ab, ...captureContext() }); track('quiz_start', { intro_ab }); next() }} />
   }
   if (step.kind === 'sales') {
-    return <Sales perfil={perfil} answers={answers} onOferta={(oferta_ab) => persist({ id: sidRef.current, action: 'oferta', oferta_ab })} onCheckout={(tipo) => { const arm = pickCheckoutArm(); const ab = tipo === 'sub' ? (pickComElArm() === 'E-B' ? 'E-B-assinatura' : 'assinatura-37') : arm === 'greenn' && pickOfertaArm() === 'B' ? 'greenn-B' : arm; persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: ab }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: ab }) }} />
+    return <Sales perfil={perfil} answers={answers} onOferta={(oferta_ab) => persist({ id: sidRef.current, action: 'oferta', oferta_ab })} onCheckout={(tipo) => { const arm = pickCheckoutArm(); const e = pickComElArm(); const ab = tipo === 'sub' ? (e === 'E-B' ? 'E-B-assinatura' : e === 'E-C' ? 'E-C-trimestral' : 'assinatura-37') : arm === 'greenn' && pickOfertaArm() === 'B' ? 'greenn-B' : arm; persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: ab }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: ab }) }} />
   }
 
   const darkBg = step.kind === 'loading' || step.kind === 'result'
@@ -534,12 +534,16 @@ function useCountdown(start = 600) {
 }
 
 // T26 — Efeito Lipo em destaque (compra por impulso) + assinatura da Comunidade como
-// alternativa. Preço do EL pelo teste B (A = R$ 37, B = R$ 47), sorteado em pickOfertaArm().
-// Teste E (pickComElArm): no E-B sai o EL e a Comunidade vira o cartão principal.
-type Oferta = { id: string; el: null | { preco: string; parc: string; dia: string }; sub: { preco: string; per: string; nota: string; parcCurta: string } }
+// alternativa. Teste B (preço do EL) encerrado em 10/10: todos veem R$ 37 (OFERTA_AB em _data.ts).
+// Teste E (pickComElArm): no E-B e no E-C sai o EL e a Comunidade vira o cartão principal
+// (E-B mensal R$ 37/mês, E-C trimestral R$ 97 a cada 3 meses).
+type Sub = { preco: string; per: string; nota: string; parcCurta: string }
+type Oferta = { id: string; el: null | { preco: string; parc: string; dia: string }; sub: Sub }
+const SUB_MENSAL: Sub = { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' }
+const SUB_TRI: Sub = { preco: '97', per: 'a cada 3 meses', nota: 'menos de R$ 33 por mês · cancele quando quiser', parcCurta: 'R$ 97 a cada 3 meses' }
 const OFERTAS: Record<'A' | 'B', Oferta> = {
-  A: { id: 'A', el: { preco: '37', parc: '12x de R$ 3,80', dia: '1,76' }, sub: { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' } },
-  B: { id: 'B', el: { preco: '47', parc: '12x de R$ 4,83', dia: '2,24' }, sub: { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' } },
+  A: { id: 'A', el: { preco: '37', parc: '12x de R$ 3,80', dia: '1,76' }, sub: SUB_MENSAL },
+  B: { id: 'B', el: { preco: '47', parc: '12x de R$ 4,83', dia: '2,24' }, sub: SUB_MENSAL },
 }
 
 function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['perfil']; answers?: InnerProps['answers']; onOferta: (arm: string) => void; onCheckout: (tipo?: 'sub') => void }) {
@@ -551,21 +555,21 @@ function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['
     try { e.currentTarget.href = buildHref() } catch { /* mantém o href do estado */ }
     onCheckout()
   }
-  // Assinatura da Comunidade (R$ 37/mês, oferta WOqOSI): link próprio, com o mesmo rastreio do EL.
+  // Assinatura da Comunidade (mensal WOqOSI; trimestral O8j7nc no E-C): link próprio, com o mesmo rastreio do EL.
   const [hrefSub, setHrefSub] = useState(CHECKOUT_HREF_SUB)
-  const buildHrefSub = () => subscriptionHref(readAdId(), readXcod(), readFbclid())
+  const buildHrefSub = () => subscriptionHref(readAdId(), readXcod(), readFbclid(), pickComElArm() === 'E-C' ? CHECKOUT_HREF_SUB_TRI : CHECKOUT_HREF_SUB)
   useEffect(() => { setHrefSub(buildHrefSub()) }, [])
   const onBuySub = (e: React.MouseEvent<HTMLAnchorElement>) => {
     try { e.currentTarget.href = buildHrefSub() } catch { /* mantém o href do estado */ }
     onCheckout('sub')
   }
-  // Teste E (com ou sem EL) e, dentro do E-A, teste B (preço do EL). Começa em A no servidor e troca no navegador.
+  // Teste E (com ou sem EL; 3 braços). Começa em A no servidor e troca no navegador.
   const [of, setOf] = useState<Oferta>(OFERTAS.A)
   useEffect(() => {
     const e = pickComElArm()
-    const b = e === 'E-B' ? null : pickOfertaArm()
-    setOf(b ? OFERTAS[b] : { ...OFERTAS.A, id: 'E', el: null })
-    onOferta(b ? e + ':' + b : e) // E-A:A / E-A:B (T2 dentro do A do T4) ou E-B
+    const b = e === 'E-A' ? pickOfertaArm() : null // sempre 'A' com o teste B encerrado
+    setOf(b ? OFERTAS[b] : { ...OFERTAS.A, id: e, el: null, sub: e === 'E-C' ? SUB_TRI : SUB_MENSAL })
+    onOferta(b ? e + ':' + b : e) // E-A:A, E-B ou E-C
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const soAssinatura = !of.el
 
@@ -615,7 +619,7 @@ function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['
     </div>
   )
 
-  // Comunidade: alternativa (teste E-A) ou cartão principal (teste E-B)
+  // Comunidade: alternativa (teste E-A) ou cartão principal (testes E-B e E-C)
   const CardSub = ({ pos, principal }: { pos: string; principal?: boolean }) => (
     <div id={principal ? undefined : 'assinatura'} className="relative rounded-2xl p-5" style={{ background: '#fff', border: principal ? '2.5px solid var(--g)' : '1.5px solid rgba(28,135,60,.35)', boxShadow: principal ? '0 16px 44px rgba(28,135,60,.2)' : 'none' }}>
       <span className="inline-block font-display" style={{ fontSize: 11.5, fontWeight: 800, color: '#fff', background: 'var(--g)', padding: '4px 12px', borderRadius: 99 }}>{principal ? '⚡ Acesso na hora · comece hoje' : 'Com a Laura do seu lado'}</span>
@@ -626,7 +630,7 @@ function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['
         <span className="font-display" style={{ fontSize: principal ? 40 : 32, fontWeight: 800, color: 'var(--g)', lineHeight: 1 }}>R$ {of.sub.preco}</span>
         <span style={{ fontSize: 14, color: 'var(--sub)', fontWeight: 700 }}>{of.sub.per}</span>
       </div>
-      <div style={{ fontSize: 12.5, color: 'var(--sub)' }}>{of.sub.nota} · no cartão</div>
+      <div style={{ fontSize: 12.5, color: 'var(--sub)' }}>{of.sub.nota} · Pix ou cartão</div>
       {/* Entregáveis como a Aline apresenta a Comunidade no WhatsApp (aprovado pelo Patrik em 09/10) */}
       <ul className="space-y-2 mt-4">
         <Item><b>App da Comunidade</b> com treinos para secar e definir, em casa ou na academia</Item>
@@ -706,7 +710,7 @@ function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['
           ))}
         </div>
 
-        {/* Oferta: Efeito Lipo (preço do teste B) */}
+        {/* Oferta: Efeito Lipo (E-A) ou Comunidade (E-B mensal, E-C trimestral) */}
         <div className="mt-8"><Principal pos="oferta" /></div>
 
 

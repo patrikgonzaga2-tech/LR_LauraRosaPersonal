@@ -128,22 +128,28 @@ export const CHECKOUT_HREF_GREENN =
 // Teste B (preço do Efeito Lipo, 09/10): braço B = R$ 47 (oferta gLO7Gm, mesmos 3 bumps da QN7gci).
 export const CHECKOUT_HREF_GREENN_B =
   'https://payfast.greenn.com.br/redirect/795991?utm_source=efeito-lipo-quiz'
-// Assinatura da Comunidade R$ 37/mês (oferta WOqOSI, recorrente, só cartão). Mesmos UTMs do EL.
+// Assinatura da Comunidade R$ 37/mês (oferta WOqOSI, recorrente, Pix ou cartão). Mesmos UTMs do EL.
 export const CHECKOUT_HREF_SUB =
   'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597&utm_source=efeito-lipo-quiz'
-export function subscriptionHref(adId?: string | null, xcod?: string | null, fbclid?: string | null): string {
+// Comunidade trimestral R$ 97 a cada 3 meses (oferta O8j7nc, a mesma do upsell; aceita Pix). Braço E-C do teste E.
+export const CHECKOUT_HREF_SUB_TRI =
+  'https://payfast.greenn.com.br/148339/offer/O8j7nc?utm_source=efeito-lipo-quiz'
+export function subscriptionHref(adId?: string | null, xcod?: string | null, fbclid?: string | null, base: string = CHECKOUT_HREF_SUB): string {
   const extra: string[] = []
   if (adId) extra.push(`utm_term=${encodeURIComponent(adId)}`)
   if (xcod) extra.push(`utm_content=${encodeURIComponent(xcod)}`)
   if (fbclid) extra.push(`fbclid=${encodeURIComponent(fbclid)}`)
-  return extra.length ? `${CHECKOUT_HREF_SUB}&${extra.join('&')}` : CHECKOUT_HREF_SUB
+  return extra.length ? `${base}&${extra.join('&')}` : base
 }
+// Teste B (preço do EL) ENCERRADO em 10/10 pelo Patrik: sem volume para decidir.
+// Com enabled:false todo mundo vê R$ 37 (QN7gci). Para religar, ponha true.
+export const OFERTA_AB = { enabled: false }
 export const OFERTA_AB_KEY = 'el_oferta_ab'
 export type OfertaArm = 'A' | 'B'
 
 // Sorteia (ou relê da gaveta) o preço do EL desta sessão. Client-only; no servidor, 'A'.
 export function pickOfertaArm(): OfertaArm {
-  if (typeof window === 'undefined') return 'A'
+  if (typeof window === 'undefined' || !OFERTA_AB.enabled) return 'A'
   try {
     const saved = sessionStorage.getItem(OFERTA_AB_KEY)
     if (saved === 'A' || saved === 'B') return saved
@@ -155,16 +161,19 @@ export function pickOfertaArm(): OfertaArm {
   }
 }
 
-// Teste E (com ou sem Efeito Lipo, 09/10): E-A = cartão do EL (preço do teste B) + Comunidade;
-// E-B = só a Comunidade Corpo Feliz R$ 37/mês (WOqOSI). O teste B só roda dentro do E-A.
+// Teste E (com ou sem Efeito Lipo; 3 braços desde 10/10, um terço cada):
+// E-A = cartão do EL R$ 37 + Comunidade mensal como alternativa;
+// E-B = só a Comunidade mensal R$ 37/mês (WOqOSI);
+// E-C = só a Comunidade trimestral R$ 97 a cada 3 meses (O8j7nc).
 export const COM_EL_AB_KEY = 'el_com_ab'
-export type ComElArm = 'E-A' | 'E-B'
+export type ComElArm = 'E-A' | 'E-B' | 'E-C'
 export function pickComElArm(): ComElArm {
   if (typeof window === 'undefined') return 'E-A'
   try {
     const saved = sessionStorage.getItem(COM_EL_AB_KEY)
-    if (saved === 'E-A' || saved === 'E-B') return saved
-    const arm: ComElArm = Math.random() < 0.5 ? 'E-A' : 'E-B'
+    if (saved === 'E-A' || saved === 'E-B' || saved === 'E-C') return saved
+    const r = Math.random()
+    const arm: ComElArm = r < 1 / 3 ? 'E-A' : r < 2 / 3 ? 'E-B' : 'E-C'
     try { sessionStorage.setItem(COM_EL_AB_KEY, arm) } catch { /* ignore */ }
     return arm
   } catch {

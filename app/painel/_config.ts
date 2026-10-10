@@ -103,9 +103,9 @@ export const META_ADS = {
 // Ofertas que o painel reconhece pelo código da oferta (vendas.offer_code).
 export const OFERTAS: Record<string, string> = {
   QN7gci: 'Efeito Lipo R$ 37 (quiz, braço A)',
-  gLO7Gm: 'Efeito Lipo R$ 47 (quiz, braço B)',
+  gLO7Gm: 'Efeito Lipo R$ 47 (quiz, teste B encerrado)',
   WOqOSI: 'Comunidade R$ 37/mês (quiz)',
-  O8j7nc: 'Comunidade trimestral R$ 97 (upsell)',
+  O8j7nc: 'Comunidade trimestral R$ 97 (upsell e quiz E-C)',
   s97oneau: 'Comunidade anual (Hotmart, renovação da base)',
   f01f1zpy: 'Comunidade 30+ (Hotmart, renovação da base)',
   L4SSxY: 'Comunidade R$ 27/mês (teste C)',
@@ -135,6 +135,11 @@ export const QUIZ_NOVO = '2026-10-08T11:10:00Z'
 export const TESTES_DESDE = '2026-10-09T16:30:00-03:00'
 export const TESTE_MIN = 100 // mínimo no braço menor para decidir
 export const TESTE_CHANCE = 0.95 // chance mínima para decidir
+// T2 (preço do EL R$ 37 × R$ 47) encerrado em 10/10 sem volume para decidir.
+export const T2_FIM = '2026-10-10T18:00:00-03:00'
+// T4 com 3 braços (E-A com EL, E-B mensal R$ 37 com Pix, E-C trimestral R$ 97) conta daqui:
+// antes disso o E-B era só cartão e o E-C não existia. Ajustar para a hora exata do deploy.
+export const T4_DESDE = '2026-10-10T18:00:00-03:00'
 
 // Faixas de referência (pesquisa de mercado, 09/10; são pontos de partida, não regra).
 export const REGUA = {
