@@ -10,7 +10,8 @@
 //   meta_status        → status de conjuntos e anúncios
 //   quiz_sessions / quiz_events → o quiz
 //   assinantes_norm    → a Comunidade (MRR, vencimento)
-import { sbSelectAll, supabaseConfigured } from '@/lib/supabase'
+import { sbSelect, sbSelectAll, supabaseConfigured } from '@/lib/supabase'
+import { META_PADRAO, validaMeta, type MetaCfg } from '../_config'
 import { diaBR, N } from './fmt'
 
 export { supabaseConfigured }
@@ -66,6 +67,12 @@ export async function historicoComunidade(until: string): Promise<Map<string, st
   return m
 }
 
+/** Transações da Hotmart que são cobrança recorrente (recurrence_number ≥ 2): renovação, não venda nova. */
+export async function renovacoesHotmart(since: string, until: string): Promise<Set<string>> {
+  const rows = await sbSelectAll<{ transaction: string | null; rec: string | null }>('vendas', `select=transaction,rec:raw->data->purchase->>recurrence_number&gateway=eq.hotmart&received_at=gte.${q(since)}&received_at=lt.${q(until)}&order=received_at.asc,id.asc`)
+  return new Set(rows.filter((r) => r.transaction && Number(r.rec) >= 2).map((r) => r.transaction!))
+}
+
 const VENDA_COLS = 'received_at,status,event,transaction,product_name,offer_code,price,producer_value,gateway,tracking_src,tracking_sck,tracking_xcod,payment_method,buyer_name,buyer_phone,buyer_email'
 export async function vendasRaw(since: string, until: string): Promise<VendaRaw[]> {
   return sbSelectAll<VendaRaw>('vendas', `select=${VENDA_COLS}&received_at=gte.${q(since)}&received_at=lt.${q(until)}&order=received_at.desc,id.desc`)
@@ -107,6 +114,13 @@ export async function eventosOferta(since: string): Promise<{ session_id: string
 export async function assinantes(): Promise<Assinante[]> {
   const rows = await sbSelectAll<Assinante>('assinantes_norm', 'select=email,nome,cobrancas,total_pago,primeira,ultima,ultimo_valor,plano_dias,plano_nome,vence_em,mrr,status&order=email.asc')
   return rows.map((r) => ({ ...r, total_pago: N(r.total_pago), ultimo_valor: N(r.ultimo_valor), mrr: N(r.mrr), cobrancas: N(r.cobrancas), plano_dias: N(r.plano_dias) }))
+}
+
+/** Meta e custos editados no Cockpit (tabela painel_config). Sem linha válida, usa o padrão do código. */
+export async function lerMeta(): Promise<{ cfg: MetaCfg; atualizadoEm: string | null; doBanco: boolean }> {
+  const r = await sbSelect<{ valor: unknown; atualizado_em: string }>('painel_config', 'select=valor,atualizado_em&id=eq.meta&limit=1')
+  const v = r[0] ? validaMeta(r[0].valor) : null
+  return v && typeof v !== 'string' ? { cfg: v, atualizadoEm: r[0].atualizado_em, doBanco: true } : { cfg: META_PADRAO, atualizadoEm: null, doBanco: false }
 }
 
 // ─── Regras (uma definição só para o painel inteiro) ─────────────────
@@ -155,15 +169,17 @@ export const ORIGEM_COR: Record<string, string> = {
  * "recorrência", o que esconde as vendas NOVAS da Aline e da Hotmart. Aqui:
  *  1. xcod casa com uma sessão do quiz → Quiz
  *  2. id de conjunto no src / FB| no sck → Anúncio direto
- *  3. Comunidade com compra viva anterior do mesmo e-mail há 20+ dias → Renovação
+ *  3. Hotmart com recurrence_number ≥ 2 (cobrança automática da assinatura) ou Comunidade com
+ *     compra viva anterior do mesmo e-mail há 20+ dias → Renovação
  *  4. Comunidade nova na Greenn sem rastreio → WhatsApp (Aline) (é por onde ela vende; provável)
  *  5. Hotmart sem rastreio → Hotmart (link direto)
  *  6. resto → Sem rastreio
  */
-export function origemDe(c: Compra, xcodsQuiz: Set<string>, hist?: Map<string, string[]>): Origem {
+export function origemDe(c: Compra, xcodsQuiz: Set<string>, hist?: Map<string, string[]>, renovHotmart?: Set<string>): Origem {
   if (c.xcod && xcodsQuiz.has(c.xcod)) return 'Quiz'
   if ((c.sck || '') === 'efeito-lipo-quiz') return 'Quiz'
   if (ehAnuncio(c.src, c.sck)) return 'Anúncio direto'
+  if (renovHotmart?.has(c.transaction)) return 'Renovação'
   if (c.familia === 'Comunidade' && c.email_norm && hist) {
     const t = new Date(c.approved_at).getTime()
     const antes = (hist.get(c.email_norm) || []).some((d) => t - new Date(d).getTime() > 20 * 86_400_000)

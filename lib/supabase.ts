@@ -42,6 +42,24 @@ export async function sbUpsert(table: string, row: Record<string, unknown>) {
   }
 }
 
+/** Upsert por id que AVISA se deu certo (para telas que precisam confirmar a gravação). */
+export async function sbUpsertOk(table: string, row: Record<string, unknown>): Promise<boolean> {
+  if (!supabaseConfigured()) return false
+  try {
+    const res = await fetch(restUrl(table, 'on_conflict=id'), {
+      method: 'POST',
+      headers: headers({ Prefer: 'resolution=merge-duplicates,return=minimal' }),
+      body: JSON.stringify(row),
+      cache: 'no-store',
+    })
+    if (!res.ok) console.error(`[supabase] sbUpsertOk ${table} HTTP ${res.status}:`, await res.text().catch(() => ''))
+    return res.ok
+  } catch (e) {
+    console.error('[supabase] sbUpsertOk falhou:', e)
+    return false
+  }
+}
+
 /** Insere uma linha SE ainda não existir (on conflict id -> do nothing).
  *  Diferente do upsert: NUNCA sobrescreve uma linha existente. Usado no
  *  pageview, que pode chegar DEPOIS de a sessão já ter avançado (start/

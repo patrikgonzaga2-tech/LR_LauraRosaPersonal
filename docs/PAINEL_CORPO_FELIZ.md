@@ -8,6 +8,7 @@ Senha: a mesma do dashboard (variável `QUIZ_DASHBOARD_PASSWORD` na Vercel).
 
 | Grupo | Aba | Rota | O que responde |
 |---|---|---|---|
+| Hoje | Comparar meses | `/painel/meses` | Faturamento, investimento, custos, lucro, margem, ROI e lucro por R$ 1 mês a mês (planilha "Gestão financeira Corpo feliz" para meses fechados + mês atual ao vivo) e conferência planilha × banco |
 | Hoje | Cockpit do dia | `/painel` | Meta de lucro do mês (ritmo, projeção, quanto falta por dia em R$ e em vendas da Comunidade), hoje × ontem × 7 dias, "O que fazer agora" (regras fixas), conta do lucro (DRE) e de onde veio o dinheiro |
 | Tráfego | Anúncios e ROI | `/painel/anuncios` | Campanha / conjunto / anúncio: gasto, CTR, CPM, cliques, % que abriu a página, visitas e início do quiz, clique em comprar, compras reais, líquido, ROI, custo por compra, sinal (Escalar, Lucrando, Prejuízo, Pausar?, Trocar criativo) e "Como melhorar" |
 | Tráfego | Criativos | `/painel/anuncios?nivel=anuncio` | A mesma tabela no nível anúncio |
@@ -23,7 +24,8 @@ Senha: a mesma do dashboard (variável `QUIZ_DASHBOARD_PASSWORD` na Vercel).
 
 - **Dinheiro** = view `compras_aprovadas`, venda viva (sem reembolso/chargeback) e sem e-mail de teste. Líquido = o que cai na conta.
 - **Compra** = carrinho: e-mail + dia de Brasília (principal + bumps contam 1, decisão do Vinicius). **Itens** = transações.
-- **Lucro** = líquido − Meta Ads − outros custos do mês. Nos cards diários os custos são rateados por dia.
+- **Lucro** = líquido dos gateways − Meta Ads − custos em % (imposto DARF sobre o líquido, imposto Meta Ads sobre o investimento, comissão da Aline sobre as vendas dela) − custos fixos do mês. A "conta do lucro" segue a ordem da planilha "Gestão financeira Corpo feliz" (grupos até a margem de contribuição, depois estrutura e capacitações). Nos cards diários os fixos são rateados por dia.
+- **Convenção da planilha:** a "receita" dela é o valor LÍQUIDO dos gateways (a Hotmart de out/26 bate exato com o banco). Comparar meses usa a mesma convenção.
 - **ROI** = líquido ÷ gasto (1 = empate).
 - **Venda de anúncio** = id do conjunto no `src` (quiz/LP) ou `FB|campanha` no `sck`. O anúncio é achado pela sessão do quiz com o mesmo `xcod`.
 - **Visita real de anúncio** = utm FB/IG, sem `utm_medium` de revisão e robôs (Facebook_Right_Column, Others, {{placement}}, an, audience_network). Sessões `qa-painel` e Tag Assistant ficam fora.
@@ -39,7 +41,8 @@ Senha: a mesma do dashboard (variável `QUIZ_DASHBOARD_PASSWORD` na Vercel).
 
 ## Onde mudar
 
-- **Meta do mês, custos fixos e ofertas conhecidas:** `app/painel/_config.ts`. Mudar é editar e publicar.
+- **Meta do mês e custos fixos:** editáveis no Cockpit ("Editar meta e custos"). Ficam na tabela `painel_config` (id `meta`), a única em que o painel escreve (`supabase/painel-config.sql`, rota `/api/painel/meta`, só com a senha). O padrão do código está em `app/painel/_config.ts`.
+- **Ofertas conhecidas:** `app/painel/_config.ts`.
 - **Dados:** todas as leituras ficam em `app/painel/_lib/dados.ts`.
   - É **só leitura** no Supabase de vendas, pelo servidor: nenhuma tabela ou função nova no banco.
   - O cálculo é feito no Node.

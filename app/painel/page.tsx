@@ -1,11 +1,12 @@
 // COCKPIT DO DIA — a primeira tela do Painel Corpo Feliz.
 // Responde, nesta ordem: (1) vamos bater a meta de lucro do mês? (2) como foi
 // hoje × ontem × 7 dias? (3) o que eu faço agora? (4) de onde veio o dinheiro?
-import { META, custosDoMes, metaAtual } from './_config'
+import { GRUPOS, custosFixos, custosVariaveis, metaAtual, valorCusto, type BaseCusto } from './_config'
+import EditarMeta from './_lib/editar-meta'
 import { PainelShell } from './_shell'
 import { bloqueio } from './_lib/acesso'
 import {
-  ATIVOS, PROBLEMA, assinantes, compras, contaCompras, historicoComunidade, metaAnuncios, metaAtualizadoEm, metaConjuntos,
+  ATIVOS, PROBLEMA, assinantes, lerMeta, renovacoesHotmart, compras, contaCompras, historicoComunidade, metaAnuncios, metaAtualizadoEm, metaConjuntos,
   metaStatus, montarAnuncios, origemDe, ORIGEM_COR, pendentes, sessoes, sinal, vendasRaw, visitaAnuncio, sessaoTeste, type Compra, type MetaLinha,
 } from './_lib/dados'
 import { brl, brl0, diaBR, div, horaBR, int, pct, plural } from './_lib/fmt'
@@ -26,12 +27,13 @@ export default async function Cockpit() {
   const ontem = somaDias(hoje, -1)
   const d7 = somaDias(hoje, -6)
   const d3 = somaDias(hoje, -2)
-  const MA = metaAtual(hoje)
+  const { cfg: META, atualizadoEm: metaEditadaEm } = await lerMeta()
+  const MA = metaAtual(hoje, META)
   const mesIni = MA.inicio
   const desde = d7 < mesIni ? d7 : mesIni
   const agora = new Date().toISOString()
 
-  const [cs, conj, ads, st, raw, ses, hist, assin, metaEm] = await Promise.all([
+  const [cs, conj, ads, st, raw, ses, hist, assin, metaEm, renovH] = await Promise.all([
     compras(`${desde}T00:00:00-03:00`, agora),
     metaConjuntos(desde, hoje),
     metaAnuncios(d7, hoje),
@@ -41,9 +43,16 @@ export default async function Cockpit() {
     historicoComunidade(agora),
     assinantes(),
     metaAtualizadoEm(),
+    renovacoesHotmart(`${desde}T00:00:00-03:00`, agora),
   ])
 
+  // ── Origem de cada compra (para a comissão da Aline e o "de onde veio") ──
+  const xcodsQuiz = new Set(ses.map((s) => s.xcod).filter(Boolean) as string[])
+  const origemDaCompra = new Map(cs.map((c) => [c.transaction, origemDe(c, xcodsQuiz, hist, renovH)]))
+  const ehAline = (c: Compra) => origemDaCompra.get(c.transaction) === 'WhatsApp (Aline)'
+
   // ── Recortes por dia ──
+  // contrib = líquido − Meta − custos em % (imposto, imposto do Meta, comissão). Os fixos saem à parte.
   const noDia = (c: Compra, a: string, z: string) => { const d = diaBR(c.approved_at); return d >= a && d <= z }
   const gastoEntre = (a: string, z: string, rows: MetaLinha[] = conj) => rows.filter((r) => r.date >= a && r.date <= z).reduce((s, r) => s + r.spend, 0)
   const resumo = (a: string, z: string) => {
@@ -51,14 +60,17 @@ export default async function Cockpit() {
     const gasto = gastoEntre(a, z)
     const liquido = l.reduce((s, c) => s + c.liquido, 0)
     const receita = l.reduce((s, c) => s + c.price, 0)
-    return { itens: l.length, compras: contaCompras(l), receita, liquido, gasto, lucroAds: liquido - gasto }
+    const brutoAline = l.filter(ehAline).reduce((s, c) => s + c.price, 0)
+    const base: BaseCusto = { receita: liquido, gasto, brutoAline } // planilha: imposto sobre o líquido dos gateways
+    const variaveis = custosVariaveis(META, base)
+    return { itens: l.length, compras: contaCompras(l), receita, liquido, gasto, base, variaveis, lucroAds: liquido - gasto - variaveis }
   }
   const rHoje = resumo(hoje, hoje), rOntem = resumo(ontem, ontem), r7 = resumo(d7, hoje)
   const mesFim = somaDias(mesIni, MA.dias - 1)
   const rMes = resumo(mesIni, mesFim)
 
-  // ── Meta do mês (lucro = líquido − Meta − outros custos) ──
-  const custos = custosDoMes()
+  // ── Meta do mês (lucro = líquido − Meta − custos em % − custos fixos) ──
+  const custos = custosFixos(META)
   const custoDia = custos / MA.dias
   const t0 = new Date(`${mesIni}T00:00:00-03:00`).getTime()
   const passados = Math.min(MA.dias, Math.max(0, (Date.now() - t0) / DIA))
@@ -73,22 +85,23 @@ export default async function Cockpit() {
   const projMes = rMes.lucroAds + ritmoMes * resta - custos
   const proj7 = rMes.lucroAds + ritmo7 * resta - custos
   const falta = Math.max(0, META.lucro - lucro)
-  const precisaDia = resta > 0.01 ? falta / resta : falta // lucro dos anúncios (líquido − Meta) por dia
+  const precisaDia = resta > 0.01 ? falta / resta : falta // líquido − Meta − custos em %, por dia
   const estado: ['ok' | 'wait' | 'no' | 'n', string] =
     lucro >= META.lucro ? ['ok', 'Meta batida'] : pctTempo < 0.03 ? ['n', 'Começando'] : pctMeta >= pctTempo ? ['ok', 'No ritmo'] : pctMeta >= pctTempo * 0.6 ? ['wait', 'Abaixo do ritmo'] : ['no', 'Bem abaixo do ritmo']
 
   // Meta diária reversa em vendas: quantas anuais (ou Comunidade) por dia fecham a conta.
   const comMes = cs.filter((c) => c.familia === 'Comunidade' && noDia(c, mesIni, mesFim))
-  const liqCom = div(comMes.reduce((s, c) => s + c.liquido, 0), comMes.length)
+  // Quanto sobra de cada venda da Comunidade depois do imposto e da comissão (se for da Aline).
+  const pctDe = (t: string) => META.custos.filter((c) => c.tipo === t).reduce((a, c) => a + c.valor / 100, 0)
+  const liqCom = div(comMes.reduce((s, c) => s + c.liquido - c.liquido * pctDe('pct_fat') - (ehAline(c) ? c.price * pctDe('pct_aline') : 0), 0), comMes.length)
   const elMes = cs.filter((c) => c.familia === 'Efeito Lipo' && noDia(c, mesIni, mesFim))
   const liqEl = div(elMes.reduce((s, c) => s + c.liquido, 0), contaCompras(elMes))
   const comPorDia = liqCom > 0 ? precisaDia / liqCom : null
 
   // ── Origem do dinheiro no mês ──
-  const xcodsQuiz = new Set(ses.map((s) => s.xcod).filter(Boolean) as string[])
   const origens = new Map<string, { itens: number; liquido: number }>()
   for (const c of cs.filter((c) => noDia(c, mesIni, mesFim))) {
-    const o = origemDe(c, xcodsQuiz, hist)
+    const o = origemDaCompra.get(c.transaction) || 'Sem rastreio'
     const x = origens.get(o) ?? { itens: 0, liquido: 0 }
     x.itens++; x.liquido += c.liquido
     origens.set(o, x)
@@ -129,6 +142,32 @@ export default async function Cockpit() {
   if (estado[0] === 'no' || estado[0] === 'wait') acoes.push({ tipo: estado[0], titulo: `Meta: ${estado[1].toLowerCase()}`, texto: `Para fechar R$ ${int(META.lucro)} faltam ${brl0(falta)}: ${brl0(precisaDia)} de lucro dos anúncios por dia${comPorDia ? ` (≈ ${comPorDia.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} vendas da Comunidade por dia)` : ''}.` })
   if (!acoes.length) acoes.push({ tipo: 'ok', titulo: 'Nada urgente agora', texto: 'Sem Pix parado, sem anúncio com problema e nenhum conjunto pedindo pausa ou escala.' })
 
+  // ── Conta do lucro (DRE) no formato da planilha ──
+  const doMes = cs.filter((c) => noDia(c, mesIni, mesFim))
+  const porGw = (g: string) => doMes.filter((c) => c.gateway === g).reduce((a, c) => a + c.price, 0)
+  const vc = (c: (typeof META.custos)[number]) => valorCusto(c, rMes.base, 1)
+  const grupo = (g: string) => META.custos.filter((c) => c.grupo === g)
+  const somaG = (gs: readonly string[]) => gs.reduce((a, g) => a + grupo(g).reduce((x, c) => x + vc(c), 0), 0)
+  const linhasGrupo = (g: string): [string, number, 'grupo' | 'item' | 'total'][] =>
+    grupo(g).length ? [[`− ${g}`, -grupo(g).reduce((a, c) => a + vc(c), 0), 'grupo'], ...grupo(g).map((c) => [`${c.nome}${c.tipo === 'fixo' ? '' : ` (${c.valor.toLocaleString('pt-BR')}% ${c.tipo === 'pct_fat' ? 'do líquido' : c.tipo === 'pct_meta' ? 'do Meta' : 'das vendas da Aline'})`}`, -vc(c), 'item'] as [string, number, 'item'])] : []
+  const ANTES_MARGEM = ['Impostos e contabilidade', 'Ferramentas de vendas', 'Comercial', 'Comissões e vendedoras'] as const
+  const DEPOIS_MARGEM = GRUPOS.filter((g) => !(ANTES_MARGEM as readonly string[]).includes(g))
+  const taxas = rMes.receita - rMes.liquido
+  const margem = rMes.liquido - rMes.gasto - somaG(ANTES_MARGEM)
+  const lucroDre = margem - somaG(DEPOIS_MARGEM)
+  const dre: [string, number, 'grupo' | 'item' | 'total'][] = [
+    ['Faturamento bruto', rMes.receita, 'total'],
+    ['Greenn', porGw('greenn'), 'item'],
+    ['Hotmart', porGw('hotmart'), 'item'],
+    ['− Taxas da Greenn e da Hotmart', -taxas, 'grupo'],
+    ['= Líquido dos gateways', rMes.liquido, 'total'],
+    ['− Tráfego (Meta Ads)', -rMes.gasto, 'grupo'],
+    ...ANTES_MARGEM.flatMap(linhasGrupo),
+    ['= Margem de contribuição', margem, 'total'],
+    ...DEPOIS_MARGEM.flatMap(linhasGrupo),
+    ['= Lucro líquido', lucroDre, 'total'],
+  ]
+
   const varia = (a: number, b: number) => (b ? `${a >= b ? '▲' : '▼'} ${pct(Math.abs(a - b), Math.abs(b), 0)} vs ontem` : 'ontem: —')
   const lucroDia = (r: typeof rHoje) => r.lucroAds - custoDia
 
@@ -145,17 +184,19 @@ export default async function Cockpit() {
         </div>
         <Barra valor={pctMeta} marca={pctTempo} cor={estado[0] === 'ok' ? 'var(--g)' : estado[0] === 'wait' ? '#b9770e' : '#c0392b'} />
         <div style={{ fontSize: 12.5, color: 'var(--sub)', marginTop: 6 }}>Lucro até agora, com os custos fixos rateados pelos dias: <strong>{brl0(lucroAteHoje)}</strong> ({pct(Math.max(0, lucroAteHoje), META.lucro, 0)} da meta). A linha preta é onde deveria estar hoje ({pct(passados, MA.dias, 0)}).</div>
-        {MA.desatualizada && <div className="mt-2"><Caixa tom="alerta">A meta e os custos fixos em <code>app/painel/_config.ts</code> são de outro mês. Estou usando os mesmos valores para este mês: confirme com o Patrik e atualize.</Caixa></div>}
+        {MA.desatualizada && <div className="mt-2"><Caixa tom="alerta">A meta e os custos salvos são de outro período. Estou usando os mesmos valores para este mês: confira em “Editar meta e custos” e salve os do mês novo.</Caixa></div>}
         <div className="mt-4"><Grade min={175}>
-          <Tile label="Lucro final do mês, hoje" value={brl0(lucro)} sub={`líquido ${brl0(rMes.liquido)} − Meta ${brl0(rMes.gasto)} − custos ${brl0(custos)}`} cor={lucro >= 0 ? 'var(--g)' : '#c0392b'} />
-          <Tile label="Se continuar como no mês" value={brl0(projMes)} sub={`ritmo ${brl0(ritmoMes)}/dia de lucro dos anúncios`} cor={projMes >= META.lucro ? 'var(--g)' : '#c0392b'} />
+          <Tile label="Lucro final do mês, hoje" value={brl0(lucro)} sub={`líquido ${brl0(rMes.liquido)} − Meta ${brl0(rMes.gasto)} − custos em % ${brl0(rMes.variaveis)} − fixos ${brl0(custos)}`} cor={lucro >= 0 ? 'var(--g)' : '#c0392b'} />
+          <Tile label="Se continuar como no mês" value={brl0(projMes)} sub={`ritmo ${brl0(ritmoMes)}/dia antes dos custos fixos`} cor={projMes >= META.lucro ? 'var(--g)' : '#c0392b'} />
           <Tile label="Se continuar como em 7 dias" value={brl0(proj7)} sub={`ritmo ${brl0(ritmo7)}/dia (7 dias completos)`} cor={proj7 >= META.lucro ? 'var(--g)' : '#c0392b'} />
-          <Tile destaque label="Precisa por dia" value={brl0(precisaDia)} sub={comPorDia ? `≈ ${comPorDia.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} vendas da Comunidade/dia (líquido médio ${brl0(liqCom)})` : 'de líquido − Meta, até o fim do mês'} />
+          <Tile destaque label="Precisa por dia" value={brl0(precisaDia)} sub={comPorDia ? `≈ ${comPorDia.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} vendas da Comunidade/dia (líquido médio ${brl0(liqCom)})` : 'de líquido − Meta − custos em %, até o fim do mês'} />
         </Grade></div>
       </div>
 
+      <EditarMeta inicial={META} editadoEm={metaEditadaEm} />
+
       {/* HOJE × ONTEM × 7 DIAS */}
-      <Secao titulo="Hoje" sub={`Lucro do dia = líquido − Meta − custos fixos do dia (${brl0(custoDia)}). Compras = carrinho (principal + bumps contam 1).`}>
+      <Secao titulo="Hoje" sub={`Lucro do dia = líquido − Meta − custos em % (impostos, comissão) − custos fixos do dia (${brl0(custoDia)}). Compras = carrinho (principal + bumps contam 1).`}>
         <Grade min={160}>
           <Tile label="Gasto no Meta" value={brl0(rHoje.gasto)} sub={`ontem ${brl0(rOntem.gasto)} · 7d ${brl0(r7.gasto / 7)}/dia`} />
           <Tile label="Compras" value={int(rHoje.compras)} sub={`${int(rHoje.itens)} itens · ${varia(rHoje.compras, rOntem.compras)}`} cor="var(--g)" />
@@ -182,20 +223,18 @@ export default async function Cockpit() {
         </div>
       </Secao>
 
-      {/* A CONTA DO LUCRO (DRE) */}
-      <Secao titulo="A conta do lucro do mês" sub="Faturamento até agora, menos o que não é nosso. Os custos fixos entram inteiros (são do mês).">
-        <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px,100%),1fr))' }}>
-          <Tabela min={300}>
+      {/* A CONTA DO LUCRO (DRE) — mesma ordem da planilha "Gestão financeira Corpo feliz" */}
+      <Secao titulo="A conta do lucro do mês" sub={<>Mesmo formato da planilha <strong>Gestão financeira Corpo feliz</strong>. Vendas reais do mês até agora; custos fixos inteiros (são do mês); custos em % calculados sobre o que já entrou. Para mudar os custos: <strong>Editar meta e custos</strong>, no topo.</>}>
+        <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(360px,100%),1fr))' }}>
+          <Tabela min={340}>
+            <thead><tr><th style={thL}>Mês até agora</th><th style={th}>R$</th><th style={th}>% fat.</th></tr></thead>
             <tbody>
-              {([
-                ['Faturamento (bruto)', rMes.receita, ''],
-                ['− Taxas dos gateways', -(rMes.receita - rMes.liquido), ''],
-                ['= Líquido', rMes.liquido, 'b'],
-                ['− Meta Ads', -rMes.gasto, ''],
-                ...META.custos.map((c) => [`− ${c.nome}`, -c.valor, ''] as [string, number, string]),
-                ['= Lucro final', lucro, 'b'],
-              ] as [string, number, string][]).map(([k, v, bold]) => (
-                <tr key={k}><td style={{ ...tdL, fontWeight: bold ? 800 : 500 }}>{k}</td><td style={{ ...td, fontWeight: bold ? 800 : 500, color: v < 0 ? '#c0392b' : 'var(--ink)' }}>{brl0(v)}</td></tr>
+              {dre.map(([k, v, tipo], i) => (
+                <tr key={i} style={{ background: tipo === 'total' ? 'rgba(0,72,17,.05)' : undefined }}>
+                  <td style={{ ...tdL, fontWeight: tipo === 'item' ? 500 : 800, paddingLeft: tipo === 'item' ? 26 : 10, color: tipo === 'item' ? 'var(--sub)' : 'var(--ink)' }}>{k}</td>
+                  <td style={{ ...td, fontWeight: tipo === 'item' ? 500 : 800, color: v < 0 ? '#c0392b' : tipo === 'total' && v > 0 ? 'var(--g)' : 'var(--ink)' }}>{brl(v)}</td>
+                  <td style={{ ...td, color: 'var(--mute)' }}>{pct(Math.abs(v), rMes.receita)}</td>
+                </tr>
               ))}
             </tbody>
           </Tabela>
@@ -218,7 +257,7 @@ export default async function Cockpit() {
           <Tile label="Líquido médio por compra do Efeito Lipo" value={elMes.length ? brl(liqEl) : '—'} sub={`${int(contaCompras(elMes))} compras no mês (com bumps)`} />
           <Tile label="Líquido médio da Comunidade" value={comMes.length ? brl0(liqCom) : '—'} sub={`${int(comMes.length)} vendas no mês`} cor="var(--g)" />
           <Tile label="Custo por compra (7 dias, todas)" value={r7.compras ? brl(div(r7.gasto, r7.compras)) : '—'} sub={`${brl0(r7.gasto)} ÷ ${int(r7.compras)} compras de todas as origens`} />
-          <Tile label="Custos fixos por dia" value={brl0(custoDia)} sub={`${brl0(custos)} no mês · atualizados em ${META.custosAtualizadosEm.split('-').reverse().slice(0, 2).join('/')}`} />
+          <Tile label="Custos fixos por dia" value={brl0(custoDia)} sub={`${brl0(custos)} no mês · ${metaEditadaEm ? `editados em ${horaBR(metaEditadaEm)}` : 'valores padrão do código'}`} />
         </Grade>
         <div className="mt-3"><Caixa>💡 Regra de escala: só subir a verba de um conjunto com 2+ compras e ROI acima de 1 nos últimos 3 dias, no máximo 20% a cada 2–3 dias (subir mais reinicia o aprendizado do Meta). Pausar o que gastou R$ 40 sem ninguém clicar em comprar.</Caixa></div>
       </Secao>

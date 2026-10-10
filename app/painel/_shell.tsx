@@ -11,7 +11,7 @@ const EL = '/efeito-lipo-quiz/dashboard'
 
 type Tab = { key: string; label: string; href: string; ext?: boolean }
 const GROUPS: { label: string; tabs: Tab[] }[] = [
-  { label: 'Hoje', tabs: [{ key: 'hoje', label: 'Cockpit do dia', href: P }] },
+  { label: 'Hoje', tabs: [{ key: 'hoje', label: 'Cockpit do dia', href: P }, { key: 'meses', label: 'Comparar meses', href: `${P}/meses` }] },
   {
     label: 'Tráfego',
     tabs: [
