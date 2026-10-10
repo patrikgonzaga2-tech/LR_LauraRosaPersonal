@@ -1,7 +1,8 @@
-// TESTES A/B do quiz e da oferta. Contam a partir de 09/10 16h30 (pedido do Patrik).
-// Estatística: teste de duas proporções; "chance de ser a melhor" = Φ(z).
+// TESTES A/B do quiz e da oferta. Contam a partir de 09/10 16h30 (pedido do Patrik);
+// o T4 com 3 braços conta de T4_DESDE. O T2 foi encerrado em 10/10 (T2_FIM).
+// Estatística: teste de duas proporções contra o braço A; "chance de ser melhor" = Φ(z).
 // Decide com ≥ 100 no braço menor e chance ≥ 95%.
-import { TESTE_CHANCE, TESTE_MIN, TESTES_DESDE } from '../_config'
+import { T2_FIM, T4_DESDE, TESTE_CHANCE, TESTE_MIN, TESTES_DESDE } from '../_config'
 import { PainelShell } from '../_shell'
 import { bloqueio } from '../_lib/acesso'
 import { compras, ehRobo, eventosOferta, sessaoTeste, sessoes, visitaAnuncio, type Compra, type Sessao } from '../_lib/dados'
@@ -26,7 +27,7 @@ function chanceB(posA: number, baseA: number, posB: number, baseB: number) {
 }
 
 type Braco = { nome: string; base: number; pos: number; cols: [string, string][] }
-type Teste = { id: string; nome: string; sobre: string; status: string; baseRot: string; posRot: string; a: Braco; b: Braco }
+type Teste = { id: string; nome: string; sobre: string; status: string; baseRot: string; posRot: string; bracos: Braco[] } // bracos[0] = A (controle)
 
 export default async function Testes() {
   const b = await bloqueio('testes')
@@ -45,38 +46,38 @@ export default async function Testes() {
     const c = l.filter((s) => s.status !== 'pageview').length
     return { nome, base: l.length, pos: c, cols: [['Visitas', int(l.length)], ['Começaram', `${int(c)} (${pct(c, l.length, 0)})`], ['Viram o perfil', int(l.filter((s) => (s.reached_index || 0) >= 24).length)], ['Clicaram comprar', int(l.filter((s) => s.checkout_clicked).length)], ['Compraram', int(l.filter(comprou).length)]] }
   }
-  // T2 — preço do Efeito Lipo (checkout_ab greenn × greenn-B)
+  // T2 — preço do Efeito Lipo (checkout_ab greenn × greenn-B), encerrado em T2_FIM
   const t2 = (arm: string, nome: string): Braco => {
-    const l = ses.filter((s) => s.checkout_ab === arm)
+    const l = ses.filter((s) => s.checkout_ab === arm && s.created_at < new Date(T2_FIM).toISOString())
     const v = l.filter(comprou).length
     return { nome, base: l.length, pos: v, cols: [['Clicaram comprar', int(l.length)], ['Compraram', `${int(v)} (${pct(v, l.length, 0)})`], ['Receita', brl0(l.reduce((a, s) => a + receita(s), 0))]] }
   }
-  // T4 — oferta com Efeito Lipo × só Comunidade (evento "oferta": E-A:A / E-A:B / E-B)
+  // T4 — oferta com Efeito Lipo × só Comunidade (evento "oferta": E-A:A / E-B / E-C), desde T4_DESDE
   const primeiro = new Map<string, string>()
   for (const e of evs) if (!primeiro.has(e.session_id)) primeiro.set(e.session_id, e.answer)
   const sesPorId = new Map(ses.map((s) => [s.id, s]))
+  const t4Desde = new Date(T4_DESDE).toISOString()
   const t4 = (arm: string, nome: string): Braco => {
-    const l = [...primeiro.entries()].filter(([, a]) => a.split(':')[0] === arm).map(([id]) => sesPorId.get(id)).filter(Boolean) as Sessao[]
-    const v = l.filter(comprou).length
-    return { nome, base: l.length, pos: v, cols: [['Viram a oferta', int(l.length)], ['Clicaram comprar', int(l.filter((s) => s.checkout_clicked).length)], ['Compraram', `${int(v)} (${pct(v, l.length, 1)})`], ['Receita', brl0(l.reduce((a, s) => a + receita(s), 0))]] }
+    const l = [...primeiro.entries()].filter(([, a]) => a.split(':')[0] === arm).map(([id]) => sesPorId.get(id)).filter((s): s is Sessao => !!s && s.created_at >= t4Desde)
+    const v = l.filter(comprou).length, r = l.reduce((a, s) => a + receita(s), 0)
+    return { nome, base: l.length, pos: v, cols: [['Viram a oferta', int(l.length)], ['Clicaram comprar', int(l.filter((s) => s.checkout_clicked).length)], ['Compraram', `${int(v)} (${pct(v, l.length, 1)})`], ['Receita', brl0(r)], ['Receita por visita', l.length ? `R$ ${(r / l.length).toFixed(2).replace('.', ',')}` : '—']] }
   }
 
   const testes: Teste[] = [
-    { id: 'T1', nome: '1ª tela do quiz: tela atual × título de recomeço', status: 'no ar desde 09/10 13h40', baseRot: 'visitas', posRot: 'começaram', sobre: 'Metade vê a tela atual; metade vê "Descubra seu perfil de recomeço em 2 minutos…". Mede quantas começam o quiz. É o teste que mais recebe gente.', a: t1('G-A', 'A · tela atual'), b: t1('G-B', 'B · título de recomeço') },
-    { id: 'T4', nome: 'Oferta: com Efeito Lipo × só a Comunidade', status: 'no ar desde 09/10 16h15', baseRot: 'visitas na oferta', posRot: 'compraram', sobre: 'Metade vê Efeito Lipo + Comunidade; metade vê só a Comunidade a R$ 37/mês com o Efeito Lipo incluso. Olhe também a receita: o braço que vende menos pode faturar mais.', a: t4('E-A', 'A · Efeito Lipo + Comunidade'), b: t4('E-B', 'B · só Comunidade R$ 37/mês') },
-    { id: 'T2', nome: 'Preço do Efeito Lipo: R$ 37 × R$ 47', status: 'no ar desde 09/10 15h28 (só dentro do A do T4)', baseRot: 'cliques em comprar', posRot: 'compraram', sobre: 'Na oferta, metade vê R$ 37 e metade R$ 47 (com 3 bumps). Mede quem compra depois de clicar. Enche devagar: só conta quem chega ao fim do quiz.', a: t2('greenn', 'A · R$ 37 (QN7gci)'), b: t2('greenn-B', 'B · R$ 47 (gLO7Gm)') },
+    { id: 'T1', nome: '1ª tela do quiz: tela atual × título de recomeço', status: 'no ar desde 09/10 13h40', baseRot: 'visitas', posRot: 'começaram', sobre: 'Metade vê a tela atual; metade vê "Descubra seu perfil de recomeço em 2 minutos…". Mede quantas começam o quiz. É o teste que mais recebe gente.', bracos: [t1('G-A', 'A · tela atual'), t1('G-B', 'B · título de recomeço')] },
+    { id: 'T4', nome: 'Oferta: com Efeito Lipo × só a Comunidade (mensal ou trimestral)', status: `3 braços desde ${horaBR(T4_DESDE)}`, baseRot: 'visitas na oferta', posRot: 'compraram', sobre: 'Um terço vê Efeito Lipo R$ 37 + Comunidade; um terço vê só a Comunidade a R$ 37/mês (só cartão); um terço vê só a Comunidade trimestral a R$ 97 a cada 3 meses (Pix ou cartão). Decida pela receita por visita: o braço que vende menos pode faturar mais.', bracos: [t4('E-A', 'A · Efeito Lipo + Comunidade'), t4('E-B', 'B · só Comunidade R$ 37/mês'), t4('E-C', 'C · só Comunidade R$ 97/trimestre')] },
   ]
+  const t2Fim = [t2('greenn', 'A · R$ 37 (QN7gci)'), t2('greenn-B', 'B · R$ 47 (gLO7Gm)')]
 
   const reais = ses.filter(visitaAnuncio).length
   const ideias = [
     ['T3', 'Comunidade R$ 37 × R$ 27 por mês', 'Falta criar na Greenn a assinatura de R$ 27/mês. Cuidado: fica perto da anual (R$ 297 = R$ 24,75/mês), que é a que mais vende.'],
-    ['T5', 'Comunidade mensal R$ 37 × trimestral R$ 97', 'Mesma página, troca a mensal pela trimestral (O8j7nc, já existe). Mede receita por visita.'],
     ['T6', 'Oferta logo depois da compra do Efeito Lipo', 'Quem acabou de comprar vê a Comunidade na /acompanhamento-up, com "não, obrigada" levando ao grupo. Pega todas as compradoras, não só as do quiz.'],
   ]
 
   return (
     <PainelShell active="testes">
-      <Titulo titulo="Testes A/B" sub={<>Contam desde {horaBR(TESTES_DESDE)} (sessões de teste do painel e robôs do Meta ficam de fora). Decide com <strong>{TESTE_MIN}+ no braço menor</strong> e <strong>{Math.round(TESTE_CHANCE * 100)}% de chance</strong>. Os testes são em camadas: toda visita passa pelo T1; quem chega à oferta cai no T4; só o A do T4 vê o T2.</>} />
+      <Titulo titulo="Testes A/B" sub={<>Contam desde {horaBR(TESTES_DESDE)} (sessões de teste do painel e robôs do Meta ficam de fora). Decide com <strong>{TESTE_MIN}+ no braço menor</strong> e <strong>{Math.round(TESTE_CHANCE * 100)}% de chance</strong>. Os testes são em camadas: toda visita passa pelo T1; quem chega à oferta cai no T4 (3 braços, um terço cada).</>} />
       <Grade min={160}>
         <Tile label="Visitas desde o início" value={int(ses.length)} sub={`${int(reais)} reais do anúncio`} />
         <Tile label="Chegaram à oferta" value={int(primeiro.size)} sub="entraram no T4" />
@@ -84,10 +85,15 @@ export default async function Testes() {
       </Grade>
 
       {testes.map((t) => {
-        const pB = chanceB(t.a.pos, t.a.base, t.b.pos, t.b.base)
-        const menor = Math.min(t.a.base, t.b.base)
-        const empate = Math.abs(pB - 0.5) < 0.02 || !t.a.base || !t.b.base
-        const lider = pB >= 0.5 ? t.b : t.a
+        const a = t.bracos[0]
+        // Desafiante = o braço com a maior taxa; a chance é dele contra o A.
+        const desafiantes = t.bracos.slice(1)
+        const taxa = (x: Braco) => (x.base ? x.pos / x.base : 0)
+        const b = desafiantes.reduce((m, x) => (taxa(x) > taxa(m) ? x : m), desafiantes[0])
+        const pB = chanceB(a.pos, a.base, b.pos, b.base)
+        const menor = Math.min(...t.bracos.map((x) => x.base))
+        const empate = Math.abs(pB - 0.5) < 0.02 || t.bracos.some((x) => !x.base)
+        const lider = pB >= 0.5 ? b : a
         const chance = Math.max(pB, 1 - pB)
         const decide = menor >= TESTE_MIN && chance >= TESTE_CHANCE
         return (
@@ -97,15 +103,22 @@ export default async function Testes() {
                 <Pill tipo={decide ? 'ok' : menor < TESTE_MIN ? 'n' : 'wait'}>{decide ? 'Já dá para decidir' : menor < TESTE_MIN ? 'Juntando dados' : 'Ainda sem certeza'}</Pill>
                 <span style={{ fontSize: 13.5 }}>{menor < TESTE_MIN ? <>Faltam {int(TESTE_MIN - menor)} {t.baseRot} no braço menor. {empate ? 'Por enquanto, empate.' : <>Na frente hoje: <strong>{lider.nome}</strong>.</>}</> : <>Vencendo: <strong>{lider.nome}</strong>, com {Math.round(chance * 100)}% de chance de ser a melhor ({t.posRot} ÷ {t.baseRot}).</>}</span>
               </div>
-              <div className="mb-3"><div style={{ fontSize: 12, color: 'var(--mute)', marginBottom: 4 }}>Chance do B ser melhor: {Math.round(pB * 100)}%</div><Barra valor={pB} marca={0.5} cor={pB >= 0.5 ? 'var(--g)' : 'var(--o)'} /></div>
+              <div className="mb-3"><div style={{ fontSize: 12, color: 'var(--mute)', marginBottom: 4 }}>Chance de {desafiantes.length > 1 ? b.nome.split(' · ')[0] : 'B'} ser melhor que A: {Math.round(pB * 100)}%</div><Barra valor={pB} marca={0.5} cor={pB >= 0.5 ? 'var(--g)' : 'var(--o)'} /></div>
               <Tabela min={480}>
-                <thead><tr><th style={thL}>Braço</th>{t.a.cols.map(([k]) => <th key={k} style={th}>{k}</th>)}</tr></thead>
-                <tbody>{[t.a, t.b].map((x) => <tr key={x.nome}><td style={{ ...tdL, fontWeight: 700 }}>{x.nome}</td>{x.cols.map(([k, v]) => <td key={k} style={td}>{v}</td>)}</tr>)}</tbody>
+                <thead><tr><th style={thL}>Braço</th>{a.cols.map(([k]) => <th key={k} style={th}>{k}</th>)}</tr></thead>
+                <tbody>{t.bracos.map((x) => <tr key={x.nome}><td style={{ ...tdL, fontWeight: 700 }}>{x.nome}</td>{x.cols.map(([k, v]) => <td key={k} style={td}>{v}</td>)}</tr>)}</tbody>
               </Tabela>
             </div>
           </Secao>
         )
       })}
+
+      <Secao titulo="Testes encerrados" sub="Ficam aqui com o resultado final.">
+        <Caixa>
+          <strong>T2 · Preço do Efeito Lipo: R$ 37 × R$ 47.</strong> Encerrado em {horaBR(T2_FIM)} pelo Patrik: só recebia quem caía no A do T4 e clicava em comprar (≈ 2 por dia), então levaria meses para decidir. Ficou R$ 37 para todos.{' '}
+          {t2Fim.map((x) => `${x.nome}: ${x.cols.map(([k, v]) => `${k.toLowerCase()} ${v}`).join(', ')}`).join(' · ')}.
+        </Caixa>
+      </Secao>
 
       <Secao titulo="Ideias para os próximos testes" sub="Mexem em preço ou oferta: só entram no ar com o ok do Patrik.">
         <div className="grid gap-2">{ideias.map(([id, n, s]) => <Caixa key={id}><strong>{id} · {n}.</strong> {s}</Caixa>)}</div>

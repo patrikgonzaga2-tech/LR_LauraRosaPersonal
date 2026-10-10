@@ -55,3 +55,4 @@ Status: só o **Teste A** está feito. Os outros esperam sua aprovação e os li
 - **Medida em todos:** receita por visita na T26 (inclui a 1ª mensalidade).
 
 Nada disso muda preço, checkout ou link até você aprovar e criar as ofertas na Greenn (CLAUDE.md).
+- **10/10:** Teste B (T2) **encerrado** sem volume (todos veem o EL a R$ 37). Teste E (T4) passou a ter 3 braços: E-A com EL, E-B só Comunidade mensal R$ 37 (WOqOSI, só cartão), E-C só Comunidade trimestral R$ 97 (O8j7nc). O antigo Teste D (mensal × trimestral) roda dentro dele.
