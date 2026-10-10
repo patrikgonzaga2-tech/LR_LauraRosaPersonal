@@ -10,7 +10,8 @@
 //   meta_status        → status de conjuntos e anúncios
 //   quiz_sessions / quiz_events → o quiz
 //   assinantes_norm    → a Comunidade (MRR, vencimento)
-import { sbSelectAll, supabaseConfigured } from '@/lib/supabase'
+import { sbSelect, sbSelectAll, supabaseConfigured } from '@/lib/supabase'
+import { META_PADRAO, validaMeta, type MetaCfg } from '../_config'
 import { diaBR, N } from './fmt'
 
 export { supabaseConfigured }
@@ -107,6 +108,13 @@ export async function eventosOferta(since: string): Promise<{ session_id: string
 export async function assinantes(): Promise<Assinante[]> {
   const rows = await sbSelectAll<Assinante>('assinantes_norm', 'select=email,nome,cobrancas,total_pago,primeira,ultima,ultimo_valor,plano_dias,plano_nome,vence_em,mrr,status&order=email.asc')
   return rows.map((r) => ({ ...r, total_pago: N(r.total_pago), ultimo_valor: N(r.ultimo_valor), mrr: N(r.mrr), cobrancas: N(r.cobrancas), plano_dias: N(r.plano_dias) }))
+}
+
+/** Meta e custos editados no Cockpit (tabela painel_config). Sem linha válida, usa o padrão do código. */
+export async function lerMeta(): Promise<{ cfg: MetaCfg; atualizadoEm: string | null; doBanco: boolean }> {
+  const r = await sbSelect<{ valor: unknown; atualizado_em: string }>('painel_config', 'select=valor,atualizado_em&id=eq.meta&limit=1')
+  const v = r[0] ? validaMeta(r[0].valor) : null
+  return v && typeof v !== 'string' ? { cfg: v, atualizadoEm: r[0].atualizado_em, doBanco: true } : { cfg: META_PADRAO, atualizadoEm: null, doBanco: false }
 }
 
 // ─── Regras (uma definição só para o painel inteiro) ─────────────────
