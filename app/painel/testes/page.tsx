@@ -65,7 +65,7 @@ export default async function Testes() {
 
   const testes: Teste[] = [
     { id: 'T1', nome: '1ª tela do quiz: tela atual × título de recomeço', status: 'no ar desde 09/10 13h40', baseRot: 'visitas', posRot: 'começaram', sobre: 'Metade vê a tela atual; metade vê "Descubra seu perfil de recomeço em 2 minutos…". Mede quantas começam o quiz. É o teste que mais recebe gente.', bracos: [t1('G-A', 'A · tela atual'), t1('G-B', 'B · título de recomeço')] },
-    { id: 'T4', nome: 'Oferta: com Efeito Lipo × só a Comunidade (mensal ou trimestral)', status: `3 braços desde ${horaBR(T4_DESDE)}`, baseRot: 'visitas na oferta', posRot: 'compraram', sobre: 'Um terço vê Efeito Lipo R$ 37 + Comunidade; um terço vê só a Comunidade a R$ 37/mês (Pix ou cartão); um terço vê só a Comunidade trimestral a R$ 97 a cada 3 meses. Decida pela receita por visita: o braço que vende menos pode faturar mais.', bracos: [t4('E-A', 'A · Efeito Lipo + Comunidade'), t4('E-B', 'B · só Comunidade R$ 37/mês'), t4('E-C', 'C · só Comunidade R$ 97/trimestre')] },
+    { id: 'T4', nome: 'Oferta: com Efeito Lipo × só a Comunidade (mensal ou trimestral)', status: `3 braços desde ${horaBR(T4_DESDE)}`, baseRot: 'visitas na oferta', posRot: 'compraram', sobre: 'Um terço vê Efeito Lipo R$ 37 + Comunidade; um terço vê só a Comunidade a R$ 37/mês (só cartão); um terço vê só a Comunidade trimestral a R$ 97 a cada 3 meses (Pix ou cartão). Decida pela receita por visita: o braço que vende menos pode faturar mais.', bracos: [t4('E-A', 'A · Efeito Lipo + Comunidade'), t4('E-B', 'B · só Comunidade R$ 37/mês'), t4('E-C', 'C · só Comunidade R$ 97/trimestre')] },
   ]
   const t2Fim = [t2('greenn', 'A · R$ 37 (QN7gci)'), t2('greenn-B', 'B · R$ 47 (gLO7Gm)')]
 

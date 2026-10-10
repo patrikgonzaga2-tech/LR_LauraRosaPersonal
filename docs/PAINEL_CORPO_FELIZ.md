@@ -13,7 +13,7 @@ Senha: a mesma do dashboard (variável `QUIZ_DASHBOARD_PASSWORD` na Vercel).
 | Tráfego | Anúncios e ROI | `/painel/anuncios` | Campanha / conjunto / anúncio: gasto, CTR, CPM, cliques, % que abriu a página, visitas e início do quiz, clique em comprar, compras reais, líquido, ROI, custo por compra, sinal (Escalar, Lucrando, Prejuízo, Pausar?, Trocar criativo) e "Como melhorar" |
 | Tráfego | Criativos | `/painel/anuncios?nivel=anuncio` | A mesma tabela no nível anúncio |
 | Quiz e oferta | Funil do quiz | `/painel/quiz` | Tela a tela (onde as pessoas param), perfil de recomeço, anúncio de origem com valor por visita, respostas que mais compram, últimas sessões |
-| Quiz e oferta | Testes A/B | `/painel/testes` | T1, T4, T2 com a chance de cada braço ser o melhor (duas proporções) + ideias T3, T5, T6 |
+| Quiz e oferta | Testes A/B | `/painel/testes` | T1 e T4 (3 braços) com a chance de cada braço ser o melhor (duas proporções contra o A), T2 em encerrados + ideias T3 e T6 |
 | Quiz e oferta | Recuperar vendas | `/painel/recuperar` | Pix/boleto sem pagar e cartão recusado (com botão de WhatsApp), quem clicou comprar e não comprou, e "Por que não compram" |
 | Vendas | Origem e comercial | `/painel/comercial` | De onde veio cada venda (Quiz, Anúncio direto, WhatsApp da Aline, Hotmart direto, Renovação), Comunidade nova × renovação, plano, oferta, dia a dia e funil da Aline (CRM, se ligado) |
 | Vendas | Visão da marca, Canais, Cross-sell, Recorrência | `/painel/marca`, `/canais`, `/cross-sell`, `/recorrencia` | As abas antigas do Painel da Marca. A Recorrência ganhou a lista de assinaturas a vencer e vencidas (14 dias) |
@@ -37,7 +37,7 @@ Senha: a mesma do dashboard (variável `QUIZ_DASHBOARD_PASSWORD` na Vercel).
   5. Hotmart (link direto).
   6. Sem rastreio.
 - **Pix/boleto pendente** = a transação nunca aprovou nem foi recusada ou cancelada, o último status é WAITING_PAYMENT, DELAYED, BILLET_PRINTED ou CREATED, e o e-mail não comprou depois.
-- **Testes**: contam desde 09/10 16h30 e decidem com 100+ no braço menor e 95% de chance.
+- **Testes**: contam desde 09/10 16h30 (o T4 com 3 braços desde 10/10 15h, `T4_DESDE`) e decidem com 100+ no braço menor e 95% de chance. O T4 se decide pela receita por visita.
 
 ## Onde mudar
 

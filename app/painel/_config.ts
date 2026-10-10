@@ -136,10 +136,10 @@ export const TESTES_DESDE = '2026-10-09T16:30:00-03:00'
 export const TESTE_MIN = 100 // mínimo no braço menor para decidir
 export const TESTE_CHANCE = 0.95 // chance mínima para decidir
 // T2 (preço do EL R$ 37 × R$ 47) encerrado em 10/10 sem volume para decidir.
-export const T2_FIM = '2026-10-10T18:00:00-03:00'
-// T4 com 3 braços (E-A com EL, E-B mensal R$ 37 com Pix, E-C trimestral R$ 97) conta daqui:
-// antes disso o E-B era só cartão e o E-C não existia. Ajustar para a hora exata do deploy.
-export const T4_DESDE = '2026-10-10T18:00:00-03:00'
+export const T2_FIM = '2026-10-10T15:00:00-03:00'
+// T4 com 3 braços (E-A com EL R$ 37, E-B mensal R$ 37 só cartão, E-C trimestral R$ 97) conta daqui:
+// antes disso eram 2 braços e metade do E-A via o EL a R$ 47. Deploy de 10/10 ficou pronto antes das 15h.
+export const T4_DESDE = '2026-10-10T15:00:00-03:00'
 
 // Faixas de referência (pesquisa de mercado, 09/10; são pontos de partida, não regra).
 export const REGUA = {

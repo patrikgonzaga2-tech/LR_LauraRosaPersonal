@@ -537,10 +537,10 @@ function useCountdown(start = 600) {
 // alternativa. Teste B (preço do EL) encerrado em 10/10: todos veem R$ 37 (OFERTA_AB em _data.ts).
 // Teste E (pickComElArm): no E-B e no E-C sai o EL e a Comunidade vira o cartão principal
 // (E-B mensal R$ 37/mês, E-C trimestral R$ 97 a cada 3 meses).
-type Sub = { preco: string; per: string; nota: string; parcCurta: string }
+type Sub = { preco: string; per: string; nota: string; pag: string; parcCurta: string }
 type Oferta = { id: string; el: null | { preco: string; parc: string; dia: string }; sub: Sub }
-const SUB_MENSAL: Sub = { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' }
-const SUB_TRI: Sub = { preco: '97', per: 'a cada 3 meses', nota: 'menos de R$ 33 por mês · cancele quando quiser', parcCurta: 'R$ 97 a cada 3 meses' }
+const SUB_MENSAL: Sub = { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', pag: 'no cartão', parcCurta: 'R$ 37/mês' } // WOqOSI: só cartão (decisão do Patrik, 10/10)
+const SUB_TRI: Sub = { preco: '97', per: 'a cada 3 meses', nota: 'menos de R$ 33 por mês · cancele quando quiser', pag: 'Pix ou cartão', parcCurta: 'R$ 97 a cada 3 meses' } // O8j7nc aceita Pix
 const OFERTAS: Record<'A' | 'B', Oferta> = {
   A: { id: 'A', el: { preco: '37', parc: '12x de R$ 3,80', dia: '1,76' }, sub: SUB_MENSAL },
   B: { id: 'B', el: { preco: '47', parc: '12x de R$ 4,83', dia: '2,24' }, sub: SUB_MENSAL },
@@ -630,7 +630,7 @@ function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['
         <span className="font-display" style={{ fontSize: principal ? 40 : 32, fontWeight: 800, color: 'var(--g)', lineHeight: 1 }}>R$ {of.sub.preco}</span>
         <span style={{ fontSize: 14, color: 'var(--sub)', fontWeight: 700 }}>{of.sub.per}</span>
       </div>
-      <div style={{ fontSize: 12.5, color: 'var(--sub)' }}>{of.sub.nota} · Pix ou cartão</div>
+      <div style={{ fontSize: 12.5, color: 'var(--sub)' }}>{of.sub.nota} · {of.sub.pag}</div>
       {/* Entregáveis como a Aline apresenta a Comunidade no WhatsApp (aprovado pelo Patrik em 09/10) */}
       <ul className="space-y-2 mt-4">
         <Item><b>App da Comunidade</b> com treinos para secar e definir, em casa ou na academia</Item>

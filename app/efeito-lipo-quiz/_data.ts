@@ -128,7 +128,7 @@ export const CHECKOUT_HREF_GREENN =
 // Teste B (preço do Efeito Lipo, 09/10): braço B = R$ 47 (oferta gLO7Gm, mesmos 3 bumps da QN7gci).
 export const CHECKOUT_HREF_GREENN_B =
   'https://payfast.greenn.com.br/redirect/795991?utm_source=efeito-lipo-quiz'
-// Assinatura da Comunidade R$ 37/mês (oferta WOqOSI, recorrente, Pix ou cartão). Mesmos UTMs do EL.
+// Assinatura da Comunidade R$ 37/mês (oferta WOqOSI, recorrente, só cartão). Mesmos UTMs do EL.
 export const CHECKOUT_HREF_SUB =
   'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597&utm_source=efeito-lipo-quiz'
 // Comunidade trimestral R$ 97 a cada 3 meses (oferta O8j7nc, a mesma do upsell; aceita Pix). Braço E-C do teste E.
@@ -163,8 +163,8 @@ export function pickOfertaArm(): OfertaArm {
 
 // Teste E (com ou sem Efeito Lipo; 3 braços desde 10/10, um terço cada):
 // E-A = cartão do EL R$ 37 + Comunidade mensal como alternativa;
-// E-B = só a Comunidade mensal R$ 37/mês (WOqOSI);
-// E-C = só a Comunidade trimestral R$ 97 a cada 3 meses (O8j7nc).
+// E-B = só a Comunidade mensal R$ 37/mês (WOqOSI, só cartão);
+// E-C = só a Comunidade trimestral R$ 97 a cada 3 meses (O8j7nc, Pix ou cartão).
 export const COM_EL_AB_KEY = 'el_com_ab'
 export type ComElArm = 'E-A' | 'E-B' | 'E-C'
 export function pickComElArm(): ComElArm {
