@@ -1,0 +1,110 @@
+From d5c3724efdd6605f24a45588d3b8196111da684d Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 10 Oct 2026 16:17:42 +0000
+Subject: [PATCH] =?UTF-8?q?greenn-webhook:=20manda=20cada=20venda=20aprova?=
+ =?UTF-8?q?da=20nova=20ao=20Meta=20(API=20de=20convers=C3=B5es,=202=20pixe?=
+ =?UTF-8?q?ls)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Evento Purchase com e-mail/telefone/nome em SHA-256, valor e event_id = id da venda.
+Só venda aprovada e gravada agora (reenvio não repete). Sem token, não envia.
+Aprovado pelo Patrik em 10/10. Commit LOCAL: push e deploy só quando ele pedir.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KvRsAQoTQovxnjRZt9Aqpr
+---
+ supabase/functions/greenn-webhook/index.ts | 62 +++++++++++++++++++++-
+ 1 file changed, 61 insertions(+), 1 deletion(-)
+
+diff --git a/supabase/functions/greenn-webhook/index.ts b/supabase/functions/greenn-webhook/index.ts
+index 1b4334d..96f929e 100644
+--- a/supabase/functions/greenn-webhook/index.ts
++++ b/supabase/functions/greenn-webhook/index.ts
+@@ -26,6 +26,59 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? ''
+ const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+ const WEBHOOK_TOKEN = (Deno.env.get('GREENN_WEBHOOK_TOKEN') ?? '').trim()
+ 
++// ── API de conversões do Meta (aprovado pelo Patrik em 10/10) ──
++// Toda venda aprovada da Greenn vira um "Purchase" nos dois pixels, para o Meta
++// enxergar também as vendas que não passam pelo navegador (WhatsApp da Aline, links
++// diretos). Cada pixel é de um business diferente: um token para cada (secrets do
++// Supabase). Sem token, nada é enviado.
++const CAPI = [
++  { pixel: '28090278990632923', token: (Deno.env.get('META_CAPI_TOKEN_LP') ?? '').trim() },      // LP (campanhas)
++  { pixel: '944444744178548',   token: (Deno.env.get('META_CAPI_TOKEN_OFICIAL') ?? '').trim() }, // Oficial
++].filter((c) => c.token)
++
++async function sha256(v: string): Promise<string> {
++  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v))
++  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('')
++}
++
++// 1 Purchase por venda aprovada e NOVA no banco. Telefone, e-mail e nome vão só como
++// hash SHA-256 (exigência do Meta). event_id = id da venda: se repetir, o Meta descarta.
++// Evento padrão "Purchase", separado do "Compra Realizada" que a Greenn já manda no
++// pixel da LP: não duplica nem muda o que as campanhas otimizam.
++async function enviarCompraMeta(row: Record<string, any>) {
++  if (!CAPI.length || !row.transaction) return
++  const tel = String(row.buyer_phone ?? '').replace(/\D/g, '')
++  const ud: Record<string, string[]> = {}
++  if (row.buyer_email) ud.em = [await sha256(String(row.buyer_email).trim().toLowerCase())]
++  if (tel) ud.ph = [await sha256(tel.length <= 11 ? `55${tel}` : tel)]
++  const partes = String(row.buyer_name ?? '').trim().toLowerCase().split(/\s+/).filter(Boolean)
++  if (partes[0]) ud.fn = [await sha256(partes[0])]
++  if (partes.length > 1) ud.ln = [await sha256(partes[partes.length - 1])]
++  if (!ud.em && !ud.ph) return
++  const t = new Date(row.approved_date ?? Date.now()).getTime()
++  const evento = {
++    event_name: 'Purchase',
++    // O Meta recusa evento com mais de 7 dias: venda antiga reenviada vai com a hora de agora.
++    event_time: Math.floor((Date.now() - t < 6 * 86_400_000 ? t : Date.now()) / 1000),
++    event_id: `greenn-${row.transaction}`,
++    action_source: 'system_generated',
++    user_data: ud,
++    custom_data: { currency: 'BRL', value: Number(row.price) || 0, content_name: row.product_name ?? undefined, order_id: row.transaction },
++  }
++  for (const c of CAPI) {
++    try {
++      const r = await fetch(`https://graph.facebook.com/v21.0/${c.pixel}/events?access_token=${encodeURIComponent(c.token)}`, {
++        method: 'POST',
++        headers: { 'Content-Type': 'application/json' },
++        body: JSON.stringify({ data: [evento] }),
++      })
++      if (!r.ok) console.error('[greenn-webhook] Meta recusou:', c.pixel, r.status, await r.text())
++    } catch (e) {
++      console.error('[greenn-webhook] Meta erro de rede:', c.pixel, e)
++    }
++  }
++}
++
+ // Pega o primeiro valor "de verdade" de uma lista de caminhos possíveis.
+ function pick(...vals: unknown[]): any {
+   for (const v of vals) if (v !== undefined && v !== null && v !== '') return v
+@@ -261,7 +314,9 @@ Deno.serve(async (req) => {
+           apikey: SERVICE_KEY,
+           Authorization: `Bearer ${SERVICE_KEY}`,
+           'Content-Type': 'application/json',
+-          Prefer: 'resolution=ignore-duplicates,return=minimal',
++          // representation: devolve a linha só se ela foi gravada AGORA (reenvio do
++          // mesmo aviso volta vazio), para mandar a compra ao Meta uma vez só.
++          Prefer: 'resolution=ignore-duplicates,return=representation',
+         },
+         body: JSON.stringify(row),
+       },
+@@ -272,6 +327,11 @@ Deno.serve(async (req) => {
+       // erros. O log acima já serve pra investigar.
+       return new Response('stored-with-warning', { status: 200 })
+     }
++    const novas = await res.json().catch(() => [])
++    if (mapped.event === 'PURCHASE_APPROVED' && Array.isArray(novas) && novas.length) {
++      // Falha no Meta nunca derruba a venda: só fica no log.
++      await enviarCompraMeta(row).catch((e) => console.error('[greenn-webhook] Meta falhou:', e))
++    }
+   } catch (e) {
+     console.error('[greenn-webhook] erro de rede:', e)
+     return new Response('error-logged', { status: 200 })
+-- 
+2.43.0
+
