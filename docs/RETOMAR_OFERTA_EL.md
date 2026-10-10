@@ -28,6 +28,38 @@ CRM ysgsyhmkixvlxpgbyqkl: só leitura até eu aprovar. Meta Ads: nada muda sem a
 Apagar artefato: só com minha confirmação, um por um.
 ```
 
+## Estado em 10/10 (fim da conversa)
+
+**No ar:** Painel Corpo Feliz em laurarosapersonal.com/painel (PRs #23 e #24): Cockpit com "Editar meta e custos"
+(tabela `painel_config` no banco de vendas, aprovada pelo Patrik; custos de out/26 da planilha "Gestão financeira
+Corpo feliz": R$ 9.402 fixos + DARF 11% do líquido + imposto Meta 12,5% + comissão Aline 10%), conta do lucro no
+formato da planilha, aba Comparar meses (set/25–set/26 da planilha + mês atual ao vivo), Hotmart com
+recurrence_number ≥ 2 = Renovação. Doc: `docs/PAINEL_CORPO_FELIZ.md`.
+
+**Achados:**
+- Hotmart (s97oneau, f01f1zpy) NÃO é canal de aquisição: 100% das vendas da Comunidade na Hotmart desde junho são
+  2ª cobrança em diante (renovação automática da base de 2025). Proteger renovações (aviso antes da cobrança,
+  recuperar cartão recusado = "assinatura atrasada" no Recuperar vendas).
+- A planilha registra a receita LÍQUIDA dos gateways (Hotmart out/26 = R$ 3.371 nos dois).
+- Greenn out/26 até 10/10: banco 18 vendas / R$ 2.939 líquido × Greenn 28 itens / R$ 5.792 → ~10 vendas não chegam
+  ao banco (webhook não configurado em alguma oferta/produto?). Precisa da exportação de outubro da Greenn.
+- /acompanhamento-up (upsell) sem visitas desde 04/09: as ofertas QN7gci/gLO7Gm não redirecionam para ela.
+
+**Pendente do Patrik:**
+1. "Publicar" o PR #25 (teste C: assinatura R$ 37 × R$ 27/mês, oferta L4SSxY; testado; card T3 no painel).
+2. greenn-webhook → Meta (API de conversões, 2 pixels): APROVADO e pronto, mas NÃO aplicado no repositório.
+   A alteração está em `docs/propostas/greenn-webhook-capi-meta.patch` (aplicar com `git am`). Falta: Patrik criar
+   os tokens `META_CAPI_TOKEN_LP` e `META_CAPI_TOKEN_OFICIAL` (secrets do Supabase) e pedir push + deploy da função.
+3. Exportação de outubro da Greenn (conferir as ~10 vendas que faltam).
+4. Rodar no Supabase do CRM o SQL do passo 3.1 da rotina (conferir pagamento Greenn+Hotmart pelo telefone) e
+   trocar no prompt do trigger "nunca toque no projeto fjlbvoephhextnxemygf" por "só SELECT em public.vendas".
+   (UPDATE com esse texto trava no execute_sql desta sessão.)
+5. Verba +R$ 20/dia: dizer em qual conjunto. Pix parado: a Greenn recupera sozinha (decisão do Patrik).
+6. CRM no painel: criar CRM_SUPABASE_URL e CRM_SUPABASE_KEY na Vercel.
+
+**Próximo do Claude:** esboço do T6 (Comunidade R$ 37/mês × trimestral R$ 97 logo após a compra do EL, "não,
+obrigada" → /obg-gp-efeito-lipo) + Patrik configurar o redirect pós-compra das ofertas QN7gci e gLO7Gm na Greenn.
+
 ## Estado em 09/10, fim da noite
 
 **Painel Corpo Feliz publicado (09/10 ~18h, PR #23, deploy READY):** laurarosapersonal.com/painel (mesma senha do
