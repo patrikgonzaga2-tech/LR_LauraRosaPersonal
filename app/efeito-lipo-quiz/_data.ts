@@ -131,12 +131,31 @@ export const CHECKOUT_HREF_GREENN_B =
 // Assinatura da Comunidade R$ 37/mês (oferta WOqOSI, recorrente, só cartão). Mesmos UTMs do EL.
 export const CHECKOUT_HREF_SUB =
   'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597&utm_source=efeito-lipo-quiz'
+// Teste C (10/10, aprovado pelo Patrik): metade vê a assinatura a R$ 27/mês (oferta L4SSxY,
+// mesmo produto 148344). Sorteio 50/50 por sessão, nos dois braços do teste E.
+export const CHECKOUT_HREF_SUB_27 =
+  'https://payfast.greenn.com.br/148344/offer/L4SSxY?utm_source=efeito-lipo-quiz'
+export const SUB_AB_KEY = 'el_sub_ab'
+export type SubArm = '37' | '27'
+export function pickSubArm(): SubArm {
+  if (typeof window === 'undefined') return '37'
+  try {
+    const saved = sessionStorage.getItem(SUB_AB_KEY)
+    if (saved === '37' || saved === '27') return saved
+    const arm: SubArm = Math.random() < 0.5 ? '37' : '27'
+    try { sessionStorage.setItem(SUB_AB_KEY, arm) } catch { /* ignore */ }
+    return arm
+  } catch {
+    return '37'
+  }
+}
 export function subscriptionHref(adId?: string | null, xcod?: string | null, fbclid?: string | null): string {
+  const base = pickSubArm() === '27' ? CHECKOUT_HREF_SUB_27 : CHECKOUT_HREF_SUB
   const extra: string[] = []
   if (adId) extra.push(`utm_term=${encodeURIComponent(adId)}`)
   if (xcod) extra.push(`utm_content=${encodeURIComponent(xcod)}`)
   if (fbclid) extra.push(`fbclid=${encodeURIComponent(fbclid)}`)
-  return extra.length ? `${CHECKOUT_HREF_SUB}&${extra.join('&')}` : CHECKOUT_HREF_SUB
+  return extra.length ? `${base}&${extra.join('&')}` : base
 }
 export const OFERTA_AB_KEY = 'el_oferta_ab'
 export type OfertaArm = 'A' | 'B'

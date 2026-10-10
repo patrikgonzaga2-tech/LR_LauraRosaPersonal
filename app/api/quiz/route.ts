@@ -10,6 +10,7 @@ type Body = {
   intro_ab?: string // teste A/B da 1ª tela: 'A' (original) | 'B' (nova)
   checkout_ab?: string // teste A/B de checkout: 'hotmart' | 'greenn'
   oferta_ab?: string // teste E na T26: 'E-A:A' | 'E-A:B' (com o braço do teste B) | 'E-B'
+  sub_ab?: string // teste C na T26: preço da assinatura visto ('37' | '27')
   utm_source?: string; utm_medium?: string; utm_campaign?: string; utm_content?: string; utm_term?: string
   xcod?: string // id de dedup do Meta (user_id_purchase) — ponte venda↔anúncio
   sck?: string; referrer?: string; user_agent?: string
@@ -69,7 +70,9 @@ export async function POST(req: Request) {
       await sbInsert('quiz_events', { session_id: id, event: 'complete' })
     } else if (action === 'oferta') {
       // Braço do teste E visto na T26 (E-A com EL / E-B só Comunidade): base do painel.
-      await sbInsert('quiz_events', { session_id: id, event: 'oferta', step_id: 'sales', answer: b.oferta_ab ?? null })
+      // Teste C (preço da assinatura) vai no payload, sem mudar o answer que o T4/T2 já leem.
+      const sub = b.sub_ab === '27' || b.sub_ab === '37' ? b.sub_ab : null
+      await sbInsert('quiz_events', { session_id: id, event: 'oferta', step_id: 'sales', answer: b.oferta_ab ?? null, ...(sub ? { payload: { sub } } : {}) })
     } else if (action === 'checkout') {
       // No clique de compra o xcod (user_id_purchase) já existe — é o mesmo que
       // segue pra Hotmart no link. Gravamos aqui pra ligar a venda ao anúncio.

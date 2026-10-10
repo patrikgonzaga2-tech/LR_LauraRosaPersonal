@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
-  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, pickOfertaArm, pickComElArm, CHECKOUT_HREF_SUB, subscriptionHref, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
+  CHECKOUT_HREF, checkoutHrefFor, pickCheckoutArm, pickOfertaArm, pickComElArm, CHECKOUT_HREF_SUB, subscriptionHref, pickSubArm, readAdId, readFbclid, readXcod, IMG, INSIGHT, LAURA_PARAGRAFOS, PROVA_GRID,
   PERFIS, perfilRecomeco, RESULT_MARCOS, ROTEIRO_21, SALES, STEPS,
 } from './_data'
 import type { ImgKey, Step } from './_data'
@@ -127,7 +127,7 @@ export default function QuizApp() {
     return <Intro onStart={() => { const intro_ab = (typeof window !== 'undefined' && sessionStorage.getItem(INTRO_AB_KEY)) || undefined; persist({ id: sidRef.current, action: 'start', intro_ab, ...captureContext() }); track('quiz_start', { intro_ab }); next() }} />
   }
   if (step.kind === 'sales') {
-    return <Sales perfil={perfil} answers={answers} onOferta={(oferta_ab) => persist({ id: sidRef.current, action: 'oferta', oferta_ab })} onCheckout={(tipo) => { const arm = pickCheckoutArm(); const ab = tipo === 'sub' ? (pickComElArm() === 'E-B' ? 'E-B-assinatura' : 'assinatura-37') : arm === 'greenn' && pickOfertaArm() === 'B' ? 'greenn-B' : arm; persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: ab }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: ab }) }} />
+    return <Sales perfil={perfil} answers={answers} onOferta={(oferta_ab) => persist({ id: sidRef.current, action: 'oferta', oferta_ab, sub_ab: pickSubArm() })} onCheckout={(tipo) => { const arm = pickCheckoutArm(); const ab = tipo === 'sub' ? (pickComElArm() === 'E-B' ? (pickSubArm() === '27' ? 'E-B-assinatura-27' : 'E-B-assinatura') : 'assinatura-' + pickSubArm()) : arm === 'greenn' && pickOfertaArm() === 'B' ? 'greenn-B' : arm; persist({ id: sidRef.current, action: 'checkout', xcod: readXcod() ?? undefined, checkout_ab: ab }); track('initiate_checkout', { variante: 'efeito-lipo-quiz', checkout_ab: ab }) }} />
   }
 
   const darkBg = step.kind === 'loading' || step.kind === 'result'
@@ -537,6 +537,7 @@ function useCountdown(start = 600) {
 // alternativa. Preço do EL pelo teste B (A = R$ 37, B = R$ 47), sorteado em pickOfertaArm().
 // Teste E (pickComElArm): no E-B sai o EL e a Comunidade vira o cartão principal.
 type Oferta = { id: string; el: null | { preco: string; parc: string; dia: string }; sub: { preco: string; per: string; nota: string; parcCurta: string } }
+const SUB_27: Oferta['sub'] = { preco: '27', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 27/mês' }
 const OFERTAS: Record<'A' | 'B', Oferta> = {
   A: { id: 'A', el: { preco: '37', parc: '12x de R$ 3,80', dia: '1,76' }, sub: { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' } },
   B: { id: 'B', el: { preco: '47', parc: '12x de R$ 4,83', dia: '2,24' }, sub: { preco: '37', per: '/mês', nota: 'assinatura mensal · cancele quando quiser', parcCurta: 'R$ 37/mês' } },
@@ -551,7 +552,7 @@ function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['
     try { e.currentTarget.href = buildHref() } catch { /* mantém o href do estado */ }
     onCheckout()
   }
-  // Assinatura da Comunidade (R$ 37/mês, oferta WOqOSI): link próprio, com o mesmo rastreio do EL.
+  // Assinatura da Comunidade (R$ 37/mês WOqOSI ou R$ 27/mês L4SSxY, teste C): link próprio, com o mesmo rastreio do EL.
   const [hrefSub, setHrefSub] = useState(CHECKOUT_HREF_SUB)
   const buildHrefSub = () => subscriptionHref(readAdId(), readXcod(), readFbclid())
   useEffect(() => { setHrefSub(buildHrefSub()) }, [])
@@ -564,7 +565,9 @@ function Sales({ perfil, answers, onOferta, onCheckout }: { perfil: InnerProps['
   useEffect(() => {
     const e = pickComElArm()
     const b = e === 'E-B' ? null : pickOfertaArm()
-    setOf(b ? OFERTAS[b] : { ...OFERTAS.A, id: 'E', el: null })
+    // Teste C: preço da assinatura (R$ 37 × R$ 27), nos dois braços do teste E.
+    const sub = pickSubArm() === '27' ? SUB_27 : OFERTAS.A.sub
+    setOf(b ? { ...OFERTAS[b], sub } : { ...OFERTAS.A, id: 'E', el: null, sub })
     onOferta(b ? e + ':' + b : e) // E-A:A / E-A:B (T2 dentro do A do T4) ou E-B
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const soAssinatura = !of.el

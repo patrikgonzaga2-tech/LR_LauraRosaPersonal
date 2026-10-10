@@ -107,8 +107,8 @@ export async function sessoes(since: string, until: string, cols = SESSAO_COLS):
 }
 const safeJson = (s: string) => { try { return JSON.parse(s) } catch { return {} } }
 
-export async function eventosOferta(since: string): Promise<{ session_id: string; answer: string; created_at: string }[]> {
-  return sbSelectAll('quiz_events', `select=session_id,answer,created_at&event=eq.oferta&created_at=gte.${q(since)}&order=created_at.asc,id.asc`)
+export async function eventosOferta(since: string): Promise<{ session_id: string; answer: string; created_at: string; sub: string | null }[]> {
+  return sbSelectAll('quiz_events', `select=session_id,answer,created_at,sub:payload->>sub&event=eq.oferta&created_at=gte.${q(since)}&order=created_at.asc,id.asc`)
 }
 
 export async function assinantes(): Promise<Assinante[]> {

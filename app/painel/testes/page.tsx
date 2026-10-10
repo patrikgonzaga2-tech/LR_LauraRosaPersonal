@@ -53,7 +53,8 @@ export default async function Testes() {
   }
   // T4 — oferta com Efeito Lipo × só Comunidade (evento "oferta": E-A:A / E-A:B / E-B)
   const primeiro = new Map<string, string>()
-  for (const e of evs) if (!primeiro.has(e.session_id)) primeiro.set(e.session_id, e.answer)
+  const subVisto = new Map<string, string>() // teste C: preço da assinatura visto (payload.sub)
+  for (const e of evs) { if (!primeiro.has(e.session_id)) primeiro.set(e.session_id, e.answer); if (e.sub && !subVisto.has(e.session_id)) subVisto.set(e.session_id, e.sub) }
   const sesPorId = new Map(ses.map((s) => [s.id, s]))
   const t4 = (arm: string, nome: string): Braco => {
     const l = [...primeiro.entries()].filter(([, a]) => a.split(':')[0] === arm).map(([id]) => sesPorId.get(id)).filter(Boolean) as Sessao[]
@@ -61,15 +62,23 @@ export default async function Testes() {
     return { nome, base: l.length, pos: v, cols: [['Viram a oferta', int(l.length)], ['Clicaram comprar', int(l.filter((s) => s.checkout_clicked).length)], ['Compraram', `${int(v)} (${pct(v, l.length, 1)})`], ['Receita', brl0(l.reduce((a, s) => a + receita(s), 0))]] }
   }
 
+  // T3 — preço da assinatura da Comunidade (R$ 37 × R$ 27), sorteado na oferta nos dois braços do T4.
+  const t3 = (arm: string, nome: string): Braco => {
+    const l = [...subVisto.entries()].filter(([, v]) => v === arm).map(([id]) => sesPorId.get(id)).filter(Boolean) as Sessao[]
+    const cliqueSub = l.filter((s) => (s.checkout_ab || '').includes('assinatura')).length
+    const v = l.filter(comprou).length
+    return { nome, base: l.length, pos: v, cols: [['Viram a oferta', int(l.length)], ['Clicaram na assinatura', int(cliqueSub)], ['Compraram (qualquer produto)', `${int(v)} (${pct(v, l.length, 1)})`], ['Receita', brl0(l.reduce((a, s) => a + receita(s), 0))]] }
+  }
+
   const testes: Teste[] = [
     { id: 'T1', nome: '1ª tela do quiz: tela atual × título de recomeço', status: 'no ar desde 09/10 13h40', baseRot: 'visitas', posRot: 'começaram', sobre: 'Metade vê a tela atual; metade vê "Descubra seu perfil de recomeço em 2 minutos…". Mede quantas começam o quiz. É o teste que mais recebe gente.', a: t1('G-A', 'A · tela atual'), b: t1('G-B', 'B · título de recomeço') },
-    { id: 'T4', nome: 'Oferta: com Efeito Lipo × só a Comunidade', status: 'no ar desde 09/10 16h15', baseRot: 'visitas na oferta', posRot: 'compraram', sobre: 'Metade vê Efeito Lipo + Comunidade; metade vê só a Comunidade a R$ 37/mês com o Efeito Lipo incluso. Olhe também a receita: o braço que vende menos pode faturar mais.', a: t4('E-A', 'A · Efeito Lipo + Comunidade'), b: t4('E-B', 'B · só Comunidade R$ 37/mês') },
+    { id: 'T4', nome: 'Oferta: com Efeito Lipo × só a Comunidade', status: 'no ar desde 09/10 16h15', baseRot: 'visitas na oferta', posRot: 'compraram', sobre: 'Metade vê Efeito Lipo + Comunidade; metade vê só a Comunidade (preço do T3) com o Efeito Lipo incluso. Olhe também a receita: o braço que vende menos pode faturar mais.', a: t4('E-A', 'A · Efeito Lipo + Comunidade'), b: t4('E-B', 'B · só Comunidade') },
     { id: 'T2', nome: 'Preço do Efeito Lipo: R$ 37 × R$ 47', status: 'no ar desde 09/10 15h28 (só dentro do A do T4)', baseRot: 'cliques em comprar', posRot: 'compraram', sobre: 'Na oferta, metade vê R$ 37 e metade R$ 47 (com 3 bumps). Mede quem compra depois de clicar. Enche devagar: só conta quem chega ao fim do quiz.', a: t2('greenn', 'A · R$ 37 (QN7gci)'), b: t2('greenn-B', 'B · R$ 47 (gLO7Gm)') },
+    { id: 'T3', nome: 'Preço da Comunidade: R$ 37 × R$ 27 por mês', status: 'no ar a partir da publicação de 10/10', baseRot: 'visitas na oferta', posRot: 'compraram', sobre: 'Na oferta, metade vê a assinatura a R$ 37/mês (WOqOSI) e metade a R$ 27/mês (L4SSxY), nos dois braços do T4. Olhe a receita e a anual: R$ 27/mês fica perto da anual (R$ 297 = R$ 24,75/mês), que é a que mais vende.', a: t3('37', 'A · R$ 37/mês (WOqOSI)'), b: t3('27', 'B · R$ 27/mês (L4SSxY)') },
   ]
 
   const reais = ses.filter(visitaAnuncio).length
   const ideias = [
-    ['T3', 'Comunidade R$ 37 × R$ 27 por mês', 'Falta criar na Greenn a assinatura de R$ 27/mês. Cuidado: fica perto da anual (R$ 297 = R$ 24,75/mês), que é a que mais vende.'],
     ['T5', 'Comunidade mensal R$ 37 × trimestral R$ 97', 'Mesma página, troca a mensal pela trimestral (O8j7nc, já existe). Mede receita por visita.'],
     ['T6', 'Oferta logo depois da compra do Efeito Lipo', 'Quem acabou de comprar vê a Comunidade na /acompanhamento-up, com "não, obrigada" levando ao grupo. Pega todas as compradoras, não só as do quiz.'],
   ]
