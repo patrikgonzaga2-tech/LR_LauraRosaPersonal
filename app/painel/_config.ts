@@ -106,8 +106,9 @@ export const OFERTAS: Record<string, string> = {
   gLO7Gm: 'Efeito Lipo R$ 47 (quiz, braço B)',
   WOqOSI: 'Comunidade R$ 37/mês (quiz)',
   O8j7nc: 'Comunidade trimestral R$ 97 (upsell)',
-  s97oneau: 'Comunidade (Hotmart)',
-  f01f1zpy: 'Comunidade (Hotmart)',
+  s97oneau: 'Comunidade anual (Hotmart, renovação da base)',
+  f01f1zpy: 'Comunidade 30+ (Hotmart, renovação da base)',
+  L4SSxY: 'Comunidade R$ 27/mês (teste C)',
   // Links que a Aline manda (Greenn), pelo valor visto nas vendas de outubro.
   ij3kFo: 'Comunidade anual (R$ 479)',
   hq2eWU: 'Comunidade anual (R$ 429)',

@@ -5,7 +5,7 @@ import { LINKS, OFERTAS } from '../_config'
 import { PainelShell } from '../_shell'
 import { bloqueio } from '../_lib/acesso'
 import { conversas, crmLigado } from '../_lib/crm'
-import { compras, historicoComunidade, origemDe, ORIGEM_COR, sessoes, vendasRaw } from '../_lib/dados'
+import { compras, historicoComunidade, origemDe, ORIGEM_COR, renovacoesHotmart, sessoes, vendasRaw } from '../_lib/dados'
 import { brl0, diaBR, div, int, pct } from '../_lib/fmt'
 import { FiltroPeriodo, periodo, type SP } from '../_lib/periodo'
 import { Barra, Caixa, Grade, Secao, Tabela, Tile, Titulo, td, tdL, th, thL } from '../_lib/ui'
@@ -31,18 +31,19 @@ export default async function Comercial({ searchParams }: { searchParams: Promis
   const per = periodo(sp, 'mes')
   const agora = new Date().toISOString()
 
-  const [cs, hist, raw, ses, crm] = await Promise.all([
+  const [cs, hist, raw, ses, crm, renovH] = await Promise.all([
     compras(per.since, per.until),
     historicoComunidade(agora),
     vendasRaw(per.since, agora),
     sessoes(new Date(new Date(per.since).getTime() - 2 * 86_400_000).toISOString(), per.until, 'id,created_at,status,xcod,utm_source,utm_medium,referrer'),
     conversas(per.diaIni, per.diaFim),
+    renovacoesHotmart(per.since, agora),
   ])
   const xq = new Set(ses.map((s) => s.xcod).filter(Boolean) as string[])
   const oferta = new Map<string, string>()
   for (const v of raw) if (v.transaction && v.offer_code && !oferta.has(v.transaction)) oferta.set(v.transaction, v.offer_code)
 
-  const linhas = cs.map((c) => ({ c, o: origemDe(c, xq, hist) }))
+  const linhas = cs.map((c) => ({ c, o: origemDe(c, xq, hist, renovH) }))
   const tot = { itens: cs.length, liq: cs.reduce((a, c) => a + c.liquido, 0), bruto: cs.reduce((a, c) => a + c.price, 0) }
   const porOrig = new Map<string, { itens: number; liq: number; bruto: number }>()
   for (const { c, o } of linhas) { const x = porOrig.get(o) ?? { itens: 0, liq: 0, bruto: 0 }; x.itens++; x.liq += c.liquido; x.bruto += c.price; porOrig.set(o, x) }
@@ -103,7 +104,7 @@ export default async function Comercial({ searchParams }: { searchParams: Promis
           </tbody>
         </Tabela>
         <p style={{ fontSize: 12, color: 'var(--mute)', marginTop: 8, lineHeight: 1.55 }}>
-          Regras: <strong>Renovação</strong> = mesmo e-mail já comprou a Comunidade há mais de 20 dias. <strong>Quiz</strong> = o código da compra bate com uma sessão do quiz. <strong>Anúncio direto</strong> = o link levou o id do conjunto. <strong>WhatsApp (Aline)</strong> = Comunidade nova na Greenn sem rastreio (é o link que ela manda; provável). <strong>Hotmart (link direto)</strong> = Hotmart sem rastreio: não passou pelo WhatsApp da Aline nem por anúncio rastreado. Para ter certeza, os links da Aline precisam levar <code>sck=whatsapp-aline</code> (depende do ok do Patrik).
+          Regras: <strong>Renovação</strong> = cobrança automática da assinatura na Hotmart (2ª cobrança em diante) ou mesmo e-mail que já comprou a Comunidade há mais de 20 dias. <strong>Quiz</strong> = o código da compra bate com uma sessão do quiz. <strong>Anúncio direto</strong> = o link levou o id do conjunto. <strong>WhatsApp (Aline)</strong> = Comunidade nova na Greenn sem rastreio (é o link que ela manda; provável). <strong>Hotmart (link direto)</strong> = 1ª compra na Hotmart sem rastreio (hoje quase não existe: a Hotmart é base antiga renovando). Para ter certeza, os links da Aline precisam levar <code>sck=whatsapp-aline</code> (depende do ok do Patrik).
         </p>
       </Secao>
 
@@ -119,7 +120,7 @@ export default async function Comercial({ searchParams }: { searchParams: Promis
         </Tabela>
       </Secao>
 
-      <Secao titulo="Ofertas das vendas novas" sub="Código da oferta na Greenn/Hotmart. A s97oneau (Hotmart) vende sem passar pelo WhatsApp: vale descobrir de onde vem esse link e pôr rastreio nele.">
+      <Secao titulo="Ofertas das vendas novas" sub="Código da oferta na Greenn/Hotmart. As vendas da Hotmart (s97oneau, f01f1zpy) são renovações automáticas da base antiga e por isso não aparecem aqui.">
         <Tabela min={480}>
           <thead><tr><th style={thL}>Oferta</th><th style={thL}>O que é</th><th style={th}>Vendas</th><th style={th}>Líquido</th></tr></thead>
           <tbody>{[...porOferta.entries()].sort((a, b) => b[1].liq - a[1].liq).map(([k, x]) => <tr key={k}><td style={{ ...tdL, fontWeight: 700 }}>{k}</td><td style={tdL}>{OFERTAS[k] || '—'}</td><td style={td}>{int(x.n)}</td><td style={{ ...td, color: 'var(--g)', fontWeight: 700 }}>{brl0(x.liq)}</td></tr>)}</tbody>

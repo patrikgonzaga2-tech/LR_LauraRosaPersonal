@@ -6,7 +6,7 @@ import EditarMeta from './_lib/editar-meta'
 import { PainelShell } from './_shell'
 import { bloqueio } from './_lib/acesso'
 import {
-  ATIVOS, PROBLEMA, assinantes, lerMeta, compras, contaCompras, historicoComunidade, metaAnuncios, metaAtualizadoEm, metaConjuntos,
+  ATIVOS, PROBLEMA, assinantes, lerMeta, renovacoesHotmart, compras, contaCompras, historicoComunidade, metaAnuncios, metaAtualizadoEm, metaConjuntos,
   metaStatus, montarAnuncios, origemDe, ORIGEM_COR, pendentes, sessoes, sinal, vendasRaw, visitaAnuncio, sessaoTeste, type Compra, type MetaLinha,
 } from './_lib/dados'
 import { brl, brl0, diaBR, div, horaBR, int, pct, plural } from './_lib/fmt'
@@ -33,7 +33,7 @@ export default async function Cockpit() {
   const desde = d7 < mesIni ? d7 : mesIni
   const agora = new Date().toISOString()
 
-  const [cs, conj, ads, st, raw, ses, hist, assin, metaEm] = await Promise.all([
+  const [cs, conj, ads, st, raw, ses, hist, assin, metaEm, renovH] = await Promise.all([
     compras(`${desde}T00:00:00-03:00`, agora),
     metaConjuntos(desde, hoje),
     metaAnuncios(d7, hoje),
@@ -43,11 +43,12 @@ export default async function Cockpit() {
     historicoComunidade(agora),
     assinantes(),
     metaAtualizadoEm(),
+    renovacoesHotmart(`${desde}T00:00:00-03:00`, agora),
   ])
 
   // ── Origem de cada compra (para a comissão da Aline e o "de onde veio") ──
   const xcodsQuiz = new Set(ses.map((s) => s.xcod).filter(Boolean) as string[])
-  const origemDaCompra = new Map(cs.map((c) => [c.transaction, origemDe(c, xcodsQuiz, hist)]))
+  const origemDaCompra = new Map(cs.map((c) => [c.transaction, origemDe(c, xcodsQuiz, hist, renovH)]))
   const ehAline = (c: Compra) => origemDaCompra.get(c.transaction) === 'WhatsApp (Aline)'
 
   // ── Recortes por dia ──

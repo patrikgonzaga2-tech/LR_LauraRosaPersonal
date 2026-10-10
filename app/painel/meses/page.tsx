@@ -5,7 +5,7 @@ import { HISTORICO } from '../_historico'
 import { custosFixos, custosVariaveis, metaAtual } from '../_config'
 import { PainelShell } from '../_shell'
 import { bloqueio } from '../_lib/acesso'
-import { compras, historicoComunidade, lerMeta, metaConjuntos, origemDe, sessoes } from '../_lib/dados'
+import { compras, historicoComunidade, lerMeta, metaConjuntos, origemDe, renovacoesHotmart, sessoes } from '../_lib/dados'
 import { brl0, diaBR, div, num2, pct } from '../_lib/fmt'
 import { diaHoje, somaDias } from '../_lib/periodo'
 import { Barra, Caixa, Grade, Secao, Tabela, Tile, Titulo, td, tdL, th, thL } from '../_lib/ui'
@@ -31,11 +31,12 @@ export default async function Meses() {
 
   // Vendas do banco desde jul/2026 (conferência) e o mês atual completo.
   const desde = `${BANCO_DESDE}-01T00:00:00-03:00`
-  const [cs, conj, ses, hist] = await Promise.all([
+  const [cs, conj, ses, hist, renovH] = await Promise.all([
     compras(desde, agora),
     metaConjuntos(MA.inicio, hoje),
     sessoes(`${MA.inicio}T00:00:00-03:00`, agora, 'id,created_at,status,xcod,utm_source,utm_medium,referrer'),
     historicoComunidade(agora),
+    renovacoesHotmart(`${MA.inicio}T00:00:00-03:00`, agora),
   ])
   // A planilha registra o valor LÍQUIDO dos gateways como "receita" (a Hotmart de out/26 bate exato: R$ 3.371).
   const liqBanco = new Map<string, number>()
@@ -46,7 +47,7 @@ export default async function Meses() {
   const doMes = cs.filter((c) => { const d = diaBR(c.approved_at); return d >= MA.inicio && d <= somaDias(MA.inicio, MA.dias - 1) })
   const liquido = doMes.reduce((a, c) => a + c.liquido, 0)
   const gasto = conj.reduce((a, r) => a + r.spend, 0)
-  const brutoAline = doMes.filter((c) => origemDe(c, xq, hist) === 'WhatsApp (Aline)').reduce((a, c) => a + c.price, 0)
+  const brutoAline = doMes.filter((c) => origemDe(c, xq, hist, renovH) === 'WhatsApp (Aline)').reduce((a, c) => a + c.price, 0)
   const lucroAtual = liquido - gasto - custosVariaveis(META, { receita: liquido, gasto, brutoAline }) - custosFixos(META)
 
   const linhas: Linha[] = [
