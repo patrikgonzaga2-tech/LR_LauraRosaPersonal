@@ -1223,7 +1223,7 @@ button.b.bad:hover{background:var(--bad);color:#fff}
 
     <!-- SUGESTÃO QUIZ -->
     <section class="tab" id="tab-testes" role="tabpanel" hidden>
-      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Testes</h2><p>Os testes do quiz em três grupos: no ar, prontos esperando publicar e ideias para criar. Nos que estão no ar, a chance de cada versão ser a melhor. Conta só o que entrou a partir de 09/10 16h30. Dá para decidir com pelo menos 100 visitas em cada versão e uma chance de 95% ou mais.</p></div></div>
+      <div class="pagehead"><div style="display:grid;gap:4px"><h2>Testes</h2><p>Os testes do quiz em quatro grupos: no ar, prontos esperando publicar, ideias para criar e encerrados. Nos que estão no ar, a chance de cada versão ser a melhor. Conta só o que entrou a partir de 09/10 16h30 (o T4 com 3 braços, desde 10/10 15h). Dá para decidir com pelo menos 100 visitas em cada versão e uma chance de 95% ou mais.</p></div></div>
       <div class="row"><button class="b pri" type="button" id="testes-atualizar">Recarregar números</button><span class="muted" id="testes-at"></span></div>
       <div id="testes-agora"></div>
       <div id="testes-lista" style="display:grid;gap:14px"></div>
@@ -2250,6 +2250,8 @@ const QOPT = {}; for (const st of QSTEPS) for (const [id, lab] of st.o) QOPT[st.
 // Cada teste: braços (valor gravado no banco), colunas da tabela, consulta e links para conferir.
 // Sessões de teste (utm_source=qa-painel) ficam de fora.
 const TESTE_MIN = 100
+// 10/10: T2 encerrado e T4 com 3 braços (deploy do PR #26 pronto às 14h39; conta a partir das 15h).
+const T2_FIM = '2026-10-10T15:00:00-03:00', T4_DESDE = '2026-10-10T15:00:00-03:00'
 // grupo: 'ar' = no ar recebendo gente (lê os números) · 'pronto' = feito, falta o Patrik dizer "publicar" · 'ideia' = falta criar.
 const TESTES = [
   { id: 'T1', grupo: 'ar', nome: 'Primeira tela do quiz: tela atual × título de recomeço', status: 'no ar desde 09/10 13h40 · conta desde 16h30', desde: '2026-10-09T13:40:00-03:00',
@@ -2258,38 +2260,36 @@ const TESTES = [
     base: 'visitas', pos: 'comecou', cols: [['Visitas', 'visitas', null], ['Começaram', 'comecou', 'visitas'], ['Chegaram ao resultado', 'resultado', 'visitas'], ['Clicaram comprar', 'comprar', 'visitas']],
     sql: (d) => `select coalesce(intro_ab,'') braco, count(*) visitas, count(*) filter (where status<>'pageview') comecou, count(*) filter (where reached_index>=24) resultado, count(*) filter (where checkout_clicked) comprar from quiz_sessions where intro_ab in ('G-A','G-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
     links: [{ rot: 'Abrir A aqui (1ª tela atual)', frame: 'v/v9/t1-a.html?step=0' }, { rot: 'Abrir B aqui (título de recomeço)', frame: 'v/v9/t1-b.html?step=0' }] },
-  { id: 'T2', grupo: 'ar', nome: 'Preço do Efeito Lipo: R$ 37 × R$ 47', status: 'no ar desde 09/10 15h28 · conta desde 16h30', desde: '2026-10-09T15:28:00-03:00',
-    sobre: 'Na página de oferta (T26), metade vê o Efeito Lipo a R$ 37 e metade a R$ 47 (com 3 bumps). Mede quem compra depois de clicar. Só conta quem chega ao fim do quiz, por isso enche devagar. Desde 09/10 16h15 roda só na metade A do T4 (a metade B não vê o Efeito Lipo avulso).',
+  { id: 'T2', grupo: 'fim', nome: 'Preço do Efeito Lipo: R$ 37 × R$ 47', status: 'encerrado em 10/10 15h · contou de 09/10 16h30 a 10/10 15h', desde: '2026-10-09T15:28:00-03:00',
+    sobre: 'Encerrado pelo Patrik em 10/10: só recebia quem caía no A do T4 e clicava em comprar (cerca de 2 por dia), então levaria meses para decidir. Ficou R$ 37 (QN7gci) para todos. Os números abaixo são o resultado final.',
     arms: [['greenn', 'A · R$ 37 (QN7gci)'], ['greenn-B', 'B · R$ 47 (gLO7Gm)']],
     base: 'clicks', pos: 'vendas', cols: [['Clicaram comprar', 'clicks', null], ['Venderam', 'vendas', 'clicks']],
-    sql: (d) => `select checkout_ab braco, count(*) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas from quiz_sessions s where checkout_ab in ('greenn','greenn-B') and created_at >= '${d}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
+    sql: (d) => `select checkout_ab braco, count(*) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas from quiz_sessions s where checkout_ab in ('greenn','greenn-B') and created_at >= '${d}' and created_at < '${T2_FIM}' and coalesce(utm_source,'')<>'qa-painel' group by 1`,
     links: [{ rot: 'Abrir A aqui (oferta R$ 37)', frame: 'v/v9/t2-a.html?step=25' }, { rot: 'Abrir B aqui (oferta R$ 47)', frame: 'v/v9/t2-b.html?step=25' }, { rot: 'Checkout A (R$ 37)', url: 'https://payfast.greenn.com.br/redirect/297430' }, { rot: 'Checkout B (R$ 47)', url: 'https://payfast.greenn.com.br/redirect/795991' }] },
-  { id: 'T4', grupo: 'ar', nome: 'Página de oferta: com Efeito Lipo × só a Comunidade', status: 'no ar desde 09/10 16h15 · conta desde 16h30', desde: '2026-10-09T16:15:00-03:00',
-    sobre: 'Metade vê a página de hoje (Efeito Lipo + Comunidade). A outra metade vê só a Comunidade Corpo Feliz a R$ 37/mês, com os entregáveis que a Aline apresenta e o Efeito Lipo incluso. Mede receita por visita na página de oferta. O preço do Efeito Lipo (T2) segue sorteando só na metade A.',
-    arms: [['E-A', 'A · Efeito Lipo + Comunidade'], ['E-B', 'B · só Comunidade R$ 37/mês']],
-    base: 'visitas', pos: 'vendas', cols: [['Viram a oferta', 'visitas', null], ['Clicaram comprar', 'clicks', 'visitas'], ['Compraram', 'vendas', 'visitas'], ['Receita (R$)', 'receita', null]],
+  { id: 'T4', grupo: 'ar', nome: 'Página de oferta: com Efeito Lipo × só a Comunidade (mensal ou trimestral)', status: '3 braços desde 10/10 15h', desde: T4_DESDE,
+    sobre: 'Um terço vê Efeito Lipo R$ 37 + Comunidade. Um terço vê só a Comunidade Corpo Feliz a R$ 37/mês (WOqOSI, só cartão). Um terço vê só a Comunidade trimestral a R$ 97 a cada 3 meses (O8j7nc, Pix ou cartão). Todas com o Efeito Lipo incluso na Comunidade. Decida pela receita por visita: o braço que vende menos pode faturar mais. Atenção: B × C muda preço e forma de pagamento juntos.',
+    arms: [['E-A', 'A · Efeito Lipo + Comunidade'], ['E-B', 'B · só Comunidade R$ 37/mês'], ['E-C', 'C · só Comunidade R$ 97/trimestre']],
+    base: 'visitas', pos: 'vendas', cols: [['Viram a oferta', 'visitas', null], ['Clicaram comprar', 'clicks', 'visitas'], ['Compraram', 'vendas', 'visitas'], ['Receita (R$)', 'receita', null], ['Receita por visita (R$)', 'rpv', null]],
     sql: (d) => `with e as (select distinct on (session_id) session_id, split_part(answer, ':', 1) braco from quiz_events where event='oferta' and created_at >= '${d}' order by session_id, created_at) select e.braco, count(*) visitas, count(*) filter (where s.checkout_clicked) clicks, count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas, coalesce(sum((select sum(v.price) from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))),0) receita from e join quiz_sessions s on s.id = e.session_id where coalesce(s.utm_source,'')<>'qa-painel' group by 1`,
-    links: [{ rot: 'Abrir A aqui (com Efeito Lipo)', frame: 'v/v9/t4-a.html?step=25' }, { rot: 'Abrir B aqui (só Comunidade)', frame: 'v/v9/t4-b.html?step=25' }, { rot: 'Checkout da Comunidade (R$ 37/mês)', url: 'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597' }] },
+    links: [{ rot: 'Abrir A aqui (com Efeito Lipo)', frame: 'v/v9/t4-a.html?step=25' }, { rot: 'Abrir B aqui (só Comunidade mensal)', frame: 'v/v9/t4-b.html?step=25' }, { rot: 'Checkout B (R$ 37/mês, só cartão)', url: 'https://payfast.greenn.com.br/148344/offer/WOqOSI?ch_id=140597' }, { rot: 'Checkout C (R$ 97 a cada 3 meses)', url: 'https://payfast.greenn.com.br/148339/offer/O8j7nc' }] },
   { id: 'T3', grupo: 'ideia', nome: 'Preço da Comunidade: R$ 37 × R$ 27 por mês', status: 'falta o link de R$ 27 na Greenn',
     sobre: 'Testar se a mensal mais barata vende mais. Falta você criar na Greenn a assinatura de R$ 27/mês (recorrente, só cartão, mesmo produto da WOqOSI). Cuidado: R$ 27/mês fica perto da anual (R$ 297 = R$ 24,75/mês), que é a que mais vende.' },
-  { id: 'T5', grupo: 'ideia', nome: 'Formato da Comunidade: mensal R$ 37 × trimestral R$ 97', status: 'depois do T3 e do T4',
-    sobre: 'Mesma página, troca a mensal pela trimestral (O8j7nc, já existe). Mede receita por visita.' },
   { id: 'T6', grupo: 'ideia', nome: 'Oferta depois da compra do Efeito Lipo', status: 'falta esboço e o redirect na Greenn',
     sobre: 'Quem acabou de comprar o Efeito Lipo (cerca de 24 por dia) vê na /acompanhamento-up a Comunidade (R$ 37/mês × trimestral R$ 97), com botão "não, obrigada" que leva ao grupo. Maior chance de lucro em outubro, porque pega todas as compradoras, não só o quiz.' },
 ]
 // Contagem nova a partir de 09/10 16h30 (pedido do Patrik): tudo antes disso fica fora da aba Testes.
 const CONTA_DESDE = '2026-10-09T16:30:00-03:00'
 // Quem entra: os testes são em camadas, não divididos entre si. Toda visita passa pelo T1;
-// quem chega à oferta cai no T4; só a metade A do T4 vê o Efeito Lipo e aí cai no T2.
+// quem chega à oferta cai no T4 (3 braços desde T4_DESDE). O T2 acabou em T2_FIM (todos veem R$ 37).
 const sqlAgora = (d) => `with s as (select q.*, upper(coalesce(q.utm_source,'')) in ('FB','FACEBOOK','IG','INSTAGRAM') ad,
  coalesce(q.utm_medium,'') not in ('Facebook_Right_Column','Others','{{placement}}','an','audience_network') rl
  from quiz_sessions q where q.created_at >= '${d}' and coalesce(q.utm_source,'')<>'qa-painel'),
-o as (select distinct on (session_id) session_id, answer from quiz_events where event='oferta' and created_at >= '${d}' order by session_id, created_at)
+o as (select distinct on (session_id) session_id, answer, created_at from quiz_events where event='oferta' and created_at >= '${d}' order by session_id, created_at)
 select count(*) visitas, count(*) filter (where ad) anuncio, count(*) filter (where ad and rl) reais,
  count(*) filter (where intro_ab='G-A') t1a, count(*) filter (where intro_ab='G-B') t1b, count(*) filter (where status<>'pageview') comecou,
- count(o.session_id) oferta, count(*) filter (where split_part(o.answer, ':', 1)='E-A') ea, count(*) filter (where o.answer='E-B') eb, count(*) filter (where o.answer='E-A:A') v37, count(*) filter (where o.answer='E-A:B') v47,
+ count(o.session_id) filter (where o.created_at >= '${T4_DESDE}') oferta, count(*) filter (where o.created_at >= '${T4_DESDE}' and split_part(o.answer, ':', 1)='E-A') ea, count(*) filter (where o.created_at >= '${T4_DESDE}' and o.answer='E-B') eb, count(*) filter (where o.created_at >= '${T4_DESDE}' and o.answer='E-C') ec,
  count(*) filter (where checkout_ab='greenn') c37, count(*) filter (where checkout_ab='greenn-B') c47,
- count(*) filter (where checkout_ab='assinatura-37') csa, count(*) filter (where checkout_ab='E-B-assinatura') csb,
+ count(*) filter (where checkout_ab='assinatura-37') csa, count(*) filter (where checkout_ab='E-B-assinatura') csb, count(*) filter (where checkout_ab='E-C-trimestral') csc,
  count(*) filter (where exists (select 1 from vendas v where v.tracking_xcod = s.xcod and s.xcod is not null and v.status in ('APPROVED','COMPLETED'))) vendas
 from s left join o on o.session_id = s.id`
 let AGORA = null
@@ -2299,7 +2299,7 @@ function renderAgora() {
   const desde = new Date(CONTA_DESDE).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }).replace(',', ' às')
   const card = el('div', { class: 'card', style: 'display:grid;gap:12px;border-left:5px solid var(--o)' },
     el('div', { class: 'row' }, el('h3', {}, 'Quem está entrando desde ' + desde), el('span', { class: 'muted' }, 'conta só daqui para frente')),
-    el('p', { style: 'margin:0;font-size:14px;color:var(--sub)' }, 'Não é 33% para cada teste. Eles são em camadas: 100% das visitas passam pelo T1 (metade A, metade B). Quem chega à página de oferta cai no T4 (metade A, metade B). Só quem cai no A do T4 vê o Efeito Lipo, e aí cai no T2 (metade R$ 37, metade R$ 47). Na oferta, então: 50% só Comunidade, 25% Efeito Lipo R$ 37 e 25% Efeito Lipo R$ 47.'))
+    el('p', { style: 'margin:0;font-size:14px;color:var(--sub)' }, 'Os testes são em camadas: 100% das visitas passam pelo T1 (metade A, metade B). Quem chega à página de oferta cai no T4, um terço em cada braço: A com Efeito Lipo R$ 37, B só a Comunidade R$ 37/mês (só cartão) e C só a Comunidade trimestral R$ 97 (Pix ou cartão). O T2 (preço do Efeito Lipo) foi encerrado em 10/10 15h: todos veem R$ 37.'))
   box.append(card)
   if (!AGORA) { card.append(el('p', { class: 'muted' }, mcp ? 'Lendo…' : 'Os números aparecem para quem tem o conector do Supabase.')); return }
   if (AGORA.erro) { card.append(el('p', { class: 'muted' }, 'Supabase: ' + AGORA.erro + '.')); return }
@@ -2308,10 +2308,9 @@ function renderAgora() {
   card.append(el('div', { class: 'tiles' },
     tile('Visitas reais do anúncio', a.reais, a.anuncio + ' do anúncio · ' + a.visitas + ' no total', 'o'),
     tile('T1 · 1ª tela', a.t1a + ' × ' + a.t1b, 'A ' + pc(a.t1a, a.t1a + a.t1b) + ' · B ' + pc(a.t1b, a.t1a + a.t1b) + ' · ' + a.comecou + ' começaram', 'gd'),
-    tile('T4 · viram a oferta', a.ea + ' × ' + a.eb, 'A (com EL) ' + pc(a.ea, a.oferta) + ' · B (só Comunidade) ' + pc(a.eb, a.oferta), 'gd'),
-    tile('T2 · viram o preço', a.v37 + ' × ' + a.v47, 'R$ 37 ' + pc(a.v37, a.v37 + a.v47) + ' · R$ 47 ' + pc(a.v47, a.v37 + a.v47) + ' · cliques ' + a.c37 + ' × ' + a.c47, 'gd'),
-    tile('Vendas', a.vendas, (a.c37 + a.c47 + a.csa + a.csb) + ' cliques em comprar · ' + (a.csa + a.csb) + ' na Comunidade', 'g')))
-  card.append(el('p', { class: 'muted', style: 'margin:0' }, '"Visitas reais" = vindas do anúncio (utm FB/IG), sem a coluna da direita nem a revisão do Meta. O T2 conta quem viu cada preço na página de oferta (só dentro do A do T4).'))
+    tile('T4 · viram a oferta', a.ea + ' × ' + a.eb + ' × ' + a.ec, 'desde 10/10 15h · A ' + pc(a.ea, a.oferta) + ' · B ' + pc(a.eb, a.oferta) + ' · C ' + pc(a.ec, a.oferta), 'gd'),
+    tile('Vendas', a.vendas, (a.c37 + a.c47 + a.csa + a.csb + a.csc) + ' cliques em comprar · ' + (a.csa + a.csb + a.csc) + ' na Comunidade', 'g')))
+  card.append(el('p', { class: 'muted', style: 'margin:0' }, '"Visitas reais" = vindas do anúncio (utm FB/IG), sem a coluna da direita nem a revisão do Meta. O T4 conta desde 10/10 15h, quando entrou o braço C; o T2 está em "Encerrados".'))
 }
 let testesUnsub = [], TESTE_D = {}
 function testesWatch() {
@@ -2327,12 +2326,12 @@ function testesWatch() {
     AGORA = Object.fromEntries(Object.entries(rows[0]).map(([k, v]) => [k, Number(v) || 0])); renderTestes()
   }, { refetchInterval: 600000 }))
   for (const t of TESTES) {
-    if (t.grupo !== 'ar' || !t.sql) continue
+    if (!['ar', 'fim'].includes(t.grupo) || !t.sql) continue
     testesUnsub.push(mcp.watchTool('Supabase', 'execute_sql', { project_id: PROJ, query: t.sql(t.desde > CONTA_DESDE ? t.desde : CONTA_DESDE) }, (ev) => {
       if (ev.type === 'error') { TESTE_D[t.id] = { erro: ERRS[ev.error.code] || 'não consegui ler agora' }; renderTestes(); return }
       if (ev.type !== 'data') return
       const rows = parseRows(ev.result.payload); if (!rows) return
-      TESTE_D[t.id] = rows.map((r) => ({ braco: r.braco, visitas: Number(r.visitas) || 0, comecou: Number(r.comecou) || 0, resultado: Number(r.resultado) || 0, comprar: Number(r.comprar) || 0, clicks: Number(r.clicks) || 0, vendas: Number(r.vendas) || 0, receita: Math.round(Number(r.receita) || 0) }))
+      TESTE_D[t.id] = rows.map((r) => ({ braco: r.braco, visitas: Number(r.visitas) || 0, comecou: Number(r.comecou) || 0, resultado: Number(r.resultado) || 0, comprar: Number(r.comprar) || 0, clicks: Number(r.clicks) || 0, vendas: Number(r.vendas) || 0, receita: Math.round(Number(r.receita) || 0), rpv: Number(r.visitas) ? (Number(r.receita || 0) / Number(r.visitas)).toFixed(2).replace('.', ',') : '–' }))
       renderTestes()
     }, { refetchInterval: 3600000 }))
   }
@@ -2354,7 +2353,7 @@ function renderTestes() {
   renderAgora()
   const box = $('testes-lista'); if (!box) return
   box.replaceChildren()
-  const GRUPOS = [['ar', 'No ar', 'Rodando agora com quem vem dos anúncios.', 'ok'], ['pronto', 'Prontos, esperando publicar', 'Feitos e conferidos. Vão ao ar quando você disser "publicar".', 'wait'], ['ideia', 'Ideias para criar', 'Ainda não existem. Em ordem de prioridade para vender.', 'n']]
+  const GRUPOS = [['ar', 'No ar', 'Rodando agora com quem vem dos anúncios.', 'ok'], ['pronto', 'Prontos, esperando publicar', 'Feitos e conferidos. Vão ao ar quando você disser "publicar".', 'wait'], ['ideia', 'Ideias para criar', 'Ainda não existem. Em ordem de prioridade para vender.', 'n'], ['fim', 'Encerrados', 'Saíram do ar. Ficam aqui com o resultado final.', 'n']]
   for (const [g, tit, sub, pill] of GRUPOS) {
     const lista = TESTES.filter((t) => t.grupo === g)
     box.append(el('div', { style: 'display:grid;gap:4px;margin-top:8px' }, el('h3', {}, tit + ' ', el('span', { class: 'pill ' + pill }, String(lista.length))), el('p', { class: 'muted' }, sub)))
@@ -2369,7 +2368,7 @@ function renderTeste(box, t) {
     card.append(el('div', { style: 'display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline' }, el('strong', {}, t.id + ' · ' + t.nome), el('span', { class: 'muted' }, t.status)))
     if (t.sobre) card.append(el('p', { style: 'margin:0;font-size:14px;color:var(--sub)' }, t.sobre))
     box.append(card)
-    if (t.grupo === 'ar') testeNumeros(card, t)
+    if (t.grupo === 'ar' || t.grupo === 'fim') testeNumeros(card, t)
     if (t.links) card.append(testeLinks(card, t))
   }
 }
@@ -2381,20 +2380,24 @@ function testeNumeros(card, t) {
     if (d.erro) { card.append(el('p', { class: 'muted' }, 'Supabase: ' + d.erro + '.')); return }
     const zero = { visitas: 0, comecou: 0, resultado: 0, comprar: 0, clicks: 0, vendas: 0, receita: 0 }
     const linhas = t.arms.map(([k, nome]) => ({ k, nome, ...(d.find((x) => x.braco === k) || zero) }))
-    const [a, b] = linhas
-    const pB = normCdf(zTeste(a, b, t)), pA = 1 - pB
-    const chance = { [a.k]: pA, [b.k]: pB }
+    const a = linhas[0], tres = linhas.length > 2
+    // 2 braços: chance de cada um ser o melhor. 3+: cada desafiante contra o A (controle).
+    const chance = {}; for (const x of linhas.slice(1)) chance[x.k] = normCdf(zTeste(a, x, t))
+    if (!tres) chance[a.k] = 1 - chance[linhas[1].k]
+    const taxa = (x) => x[t.base] ? x[t.pos] / x[t.base] : 0
+    const b = linhas.slice(1).reduce((m, x) => taxa(x) > taxa(m) ? x : m, linhas[1])
+    const pB = chance[b.k], pA = 1 - pB
     const fmtCel = (x, base, n) => base == null ? String(x[n]) : x[n] + ' (' + (x[base] ? Math.round(100 * x[n] / x[base]) : 0) + '%)'
-    card.append(el('div', { style: 'display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px' }, ...linhas.map((x) => el('div', { style: 'border-radius:10px;padding:12px;background:rgba(0,0,0,.03)' },
+    card.append(el('div', { style: 'display:grid;grid-template-columns:repeat(' + linhas.length + ',minmax(0,1fr));gap:12px' }, ...linhas.map((x) => el('div', { style: 'border-radius:10px;padding:12px;background:rgba(0,0,0,.03)' },
       el('small', { class: 'muted' }, x.nome),
-      el('div', { style: 'font-size:30px;font-weight:800;line-height:1.1' }, Math.round(chance[x.k] * 100) + '%'),
-      el('small', { class: 'muted' }, 'chance de ser a melhor')))))
+      el('div', { style: 'font-size:30px;font-weight:800;line-height:1.1' }, tres && x === a ? 'base' : Math.round(chance[x.k] * 100) + '%'),
+      el('small', { class: 'muted' }, tres ? (x === a ? 'os outros comparam com ele' : 'chance de ser melhor que A') : 'chance de ser a melhor')))))
     card.append(el('table', { style: 'width:100%;border-collapse:collapse;font-size:14px' },
       el('thead', {}, el('tr', {}, el('th', { style: 'text-align:left;padding:6px;border-bottom:1px solid var(--line)' }, 'Versão'), ...t.cols.map(([h]) => el('th', { style: 'text-align:left;padding:6px;border-bottom:1px solid var(--line)' }, h)))),
       el('tbody', {}, ...linhas.map((x) => el('tr', {}, el('td', { style: 'padding:6px' }, x.nome), ...t.cols.map(([, key, base]) => el('td', { style: 'padding:6px;font-variant-numeric:tabular-nums' }, fmtCel(x, base, key))))))))
-    const menor = Math.min(a[t.base], b[t.base]), lider = pB >= 0.5 ? b : a, chanceLider = Math.max(pA, pB)
+    const menor = Math.min(...linhas.map((x) => x[t.base])), lider = pB >= 0.5 ? b : a, chanceLider = Math.max(pA, pB)
     card.append(el('p', { style: 'margin:0', class: 'muted' }, menor < TESTE_MIN
-      ? 'Ainda sem resposta: ' + menor + ' de ' + TESTE_MIN + ' no braço menor. Quem está na frente hoje: ' + lider.nome + '.'
+      ? (t.grupo === 'fim' ? 'Encerrado sem resposta: ' : 'Ainda sem resposta: ') + menor + ' de ' + TESTE_MIN + ' no braço menor. ' + (Math.abs(pB - 0.5) < 0.02 ? (t.grupo === 'fim' ? 'Terminou empatado.' : 'Por enquanto, empate.') : (t.grupo === 'fim' ? 'Estava na frente: ' : 'Quem está na frente hoje: ') + lider.nome + '.')
       : 'Vencendo: ' + lider.nome + ', com ' + Math.round(chanceLider * 100) + '% de chance de ser a melhor.' + (chanceLider >= 0.95 ? ' Já dá para decidir.' : ' Ainda não é certeza (decide a partir de 95%).')))
   }
 }
@@ -3516,7 +3519,25 @@ window.irPara = (id) => abrir('qz-' + id)
         "Números contam a partir de 09/10 16h30."
       ],
       "motivo": "Testar a oferta da Comunidade e o preço do Efeito Lipo, com os números zerados daqui para frente.",
-      "sugestao": "Em fase de testes. Ver a aba Testes.",
+      "sugestao": "Versão anterior. Fica só para comparar. Em 4 dias de quiz novo (07 a 10/10) saíram 2 vendas pelo quiz (R$ 73 líquido) para R$ 330 no Meta.",
+      "metricas": {"visitas": 0, "reais": 0, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
+    },
+    {
+      "id": "v10",
+      "quando": "2026-10-10T14:39:00-03:00",
+      "medir_desde": "2026-10-10T15:00:00-03:00",
+      "commit": "7c50b34",
+      "pr": "26",
+      "arquivos": "v9",
+      "titulo": "Fim do teste B (T2) e T4 com 3 braços",
+      "mudou": [
+        "T2 encerrado: todo mundo que vê o Efeito Lipo vê R$ 37 (QN7gci).",
+        "T4 com 3 braços, um terço cada: A Efeito Lipo R$ 37 + Comunidade; B só a Comunidade R$ 37/mês (WOqOSI, só cartão); C só a Comunidade trimestral R$ 97 a cada 3 meses (O8j7nc, Pix ou cartão).",
+        "Teste T1 da 1ª tela continua.",
+        "A aba Testes conta o T4 desde 10/10 15h e mostra a receita por visita."
+      ],
+      "motivo": "Análise do mês: os testes não mudaram o caixa. O T2 recebia cerca de 2 pessoas por dia e levaria meses. Na mensal só no cartão, 7 clicaram em comprar e nenhuma tentou pagar; todas as compras do quiz em outubro foram por Pix. Patrik pediu para testar a mensal e a trimestral.",
+      "sugestao": "Decidir o T4 pela receita por visita, com 100+ visitas no braço menor (umas 2 semanas no ritmo atual). B × C mistura preço e Pix: se C ganhar, testar depois a mensal com Pix para saber qual dos dois pesou. A prévia do celular aqui mostra os arquivos da v9 (a T26 do braço C não aparece).",
       "metricas": {"visitas": 0, "reais": 0, "passou_t1": 0, "resultado": 0, "comprar": 0, "vendas": 0, "receita": 0}
     }
   ]
@@ -3535,6 +3556,8 @@ window.irPara = (id) => abrir('qz-' + id)
   const pct = (a, b) => b ? Math.round(100 * a / b) : null;
   const brl = n => 'R$ ' + Number(n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const nome = v => `${v.id} · ${v.titulo}`;
+  // Pasta das cópias do quiz (v/<pasta>/quiz.html): versões sem tela nova reaproveitam a pasta de outra.
+  const pasta = id => (V.find(v => v.id === id) || {}).arquivos || id;
 
   // ── 1 · Como estamos ─────────────────────────────────────────────
   // Referência = versão anterior com mais visitas reais (comparação justa).
@@ -3634,7 +3657,7 @@ window.irPara = (id) => abrir('qz-' + id)
   }
   function carregar() {
     const a = $('c-a').value, b = $('c-b').value, t = $('c-t').value || 0;
-    $('c-fa').src = `v/${a}/quiz.html?step=${t}`; $('c-fb').src = `v/${b}/quiz.html?step=${t}`;
+    $('c-fa').src = `v/${pasta(a)}/quiz.html?step=${t}`; $('c-fb').src = `v/${pasta(b)}/quiz.html?step=${t}`;
     const va = V.find(v => v.id === a), vb = V.find(v => v.id === b);
     $('c-ca').textContent = `A · ${nome(va)} · ${fmtQuando(va.quando)}`; $('c-cb').textContent = `B · ${nome(vb)} · ${fmtQuando(vb.quando)}`;
   }
@@ -3862,7 +3885,7 @@ select json_build_object('total', (select count(*) from w), 'passou_t1', (select
     linha(vd.t, `Pagou: ${brl(total)} (${STATUS[vd.status] || vd.status})`);
   }
   function mostrarTela(vid) {
-    $('uv-f').src = `v/${vid}/quiz.html?step=${uvTela}`;
+    $('uv-f').src = `v/${pasta(vid)}/quiz.html?step=${uvTela}`;
     const t = telas()[uvTela], tt = t ? (t.kind === 'intro' ? 'Tela de abertura' : t.title) : ''; $('uv-cap').textContent = `${vid} · T${uvTela + 1}${tt ? ' · ' + (tt.length > 40 ? tt.slice(0, 38) + '…' : tt) : ''}`;
   }
   $('uv').onclick = () => { const det = $('uv-det'), abrir = det.hidden; det.hidden = !abrir; $('uv').setAttribute('aria-expanded', String(abrir)); $('uv-go').textContent = abrir ? 'Fechar ▾' : 'Ver o quiz que ela fez ▸'; if (abrir) renderVenda() };
@@ -3942,7 +3965,7 @@ function renderEdit() {
   $('tno').textContent = `Tela ${s.idx + 1} de ${SCREENS.length} · ${s.kind}`;
   $('note').hidden = !s.note; $('note').textContent = s.note || '';
   { // Tela com teste A/B no ar: aviso de que esta versão está em fase de testes.
-    const TELA_TESTE = { 0: ['T1'], 25: ['T2', 'T4'] }, av = $('teste-aviso'), ts = (TELA_TESTE[s.idx] || []).map((id) => (typeof TESTES !== 'undefined' ? TESTES : []).find((t) => t.id === id && t.grupo === 'ar')).filter(Boolean);
+    const TELA_TESTE = { 0: ['T1'], 25: ['T4'] }, av = $('teste-aviso'), ts = (TELA_TESTE[s.idx] || []).map((id) => (typeof TESTES !== 'undefined' ? TESTES : []).find((t) => t.id === id && t.grupo === 'ar')).filter(Boolean);
     av.hidden = !ts.length; av.textContent = '';
     if (ts.length) {
       const b = document.createElement('b'); b.textContent = '⚑ Teste acontecendo nesta tela. Esta versão está em fase de testes.'; av.append(b);
